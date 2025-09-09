@@ -1,0 +1,14 @@
+{
+    "cSpell.words": [
+        "centimetre",
+        "consts",
+        "println",
+        "signum",
+        "struct"
+    ],
+    "rust-analyzer.linkedProjects": [
+        "./Cargo.toml",
+        "./Cargo.toml",
+        "./Cargo.toml"
+    ]
+}
