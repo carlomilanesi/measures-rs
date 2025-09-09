@@ -1,7 +1,7 @@
 // Run with: cargo run --example haversine_formula-measures
 // Expected output: Distance: 2887.2599506071106 km (1794.0601578078463 mi)
 
-rs_measures::define_measure_types! {
+measures::define_measure_types! {
     with_points: false,
     with_directions: true,
     with_2d: false,

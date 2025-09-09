@@ -77,7 +77,7 @@ macro_rules! inner_define_measure_2d {
                 Self::new(self.x * k, self.y * k)
             }
 
-            rs_measures::if_all_true! { {$with_points}
+            measures::if_all_true! { {$with_points}
                 /// Measure2d::from_direction(AnglePoint) -> Measure2d
                 pub fn from_direction<AngleUnit: AngleMeasurementUnit>(
                     direction: MeasurePoint<AngleUnit, Number>,
@@ -87,7 +87,7 @@ macro_rules! inner_define_measure_2d {
                 }
             }
 
-            rs_measures::if_all_true! { {$with_directions}
+            measures::if_all_true! { {$with_directions}
                 /// Measure2d.signed_direction() -> SignedDirection
                 pub fn signed_direction<AngleUnit: MeasurementUnit<Property = Angle>>(
                     self,
@@ -96,7 +96,7 @@ macro_rules! inner_define_measure_2d {
                 }
             }
 
-            rs_measures::if_all_true! { {$with_directions}
+            measures::if_all_true! { {$with_directions}
                 /// Measure2d.unsigned_direction() -> UnsignedDirection
                 pub fn unsigned_direction<AngleUnit: MeasurementUnit<Property = Angle>>(
                     self,

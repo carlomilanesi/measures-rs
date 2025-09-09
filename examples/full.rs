@@ -2,7 +2,7 @@
 //     cargo run --example full
 
 mod units;
-use rs_measures::{angle::Radian, dimensionless::One, traits::CrossProduct};
+use measures::{angle::Radian, dimensionless::One, traits::CrossProduct};
 use units::*;
 
 fn print_all_acceleration_units() {

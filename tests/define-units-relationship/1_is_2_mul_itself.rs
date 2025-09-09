@@ -1,4 +1,4 @@
-rs_measures::define_measure_types! {
+measures::define_measure_types! {
     with_points: false,
     with_directions: false,
     with_2d: true,
@@ -30,7 +30,7 @@ impl MeasurementUnit for U2 {
     const SUFFIX: &'static str = " u2";
 }
 
-rs_measures::define_units_relationship! { U1 == U2:2 * __ 2 }
+measures::define_units_relationship! { U1 == U2:2 * __ 2 }
 
 fn main() {
     let u1: Measure<U1> = Measure2d::<U2>::new(6., 4.) * Measure2d::<U2>::new(7., 8.);

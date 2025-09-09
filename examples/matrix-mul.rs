@@ -1,7 +1,7 @@
 // Build and run with:
 //     cargo run --release --example matrix-mul
 
-rs_measures::define_measure_types! {
+measures::define_measure_types! {
     with_points: false,
     with_directions: false,
     with_2d: false,

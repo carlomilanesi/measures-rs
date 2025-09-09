@@ -1,4 +1,4 @@
-rs_measures::define_measure_types! {
+measures::define_measure_types! {
     with_points: true,
     with_directions: true,
     with_2d: true,

@@ -1,7 +1,7 @@
 //! Rs-measures version of the example `unit.rs` of the crate `uom` version 0.35.0.
 //! Example showing how to add new units to existing quantities.
 mod units;
-use rs_measures::traits::MeasurementUnit;
+use measures::traits::MeasurementUnit;
 use units::{Length, Measure, Metre};
 
 pub struct Smoot;

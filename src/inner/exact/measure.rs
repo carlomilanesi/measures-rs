@@ -23,13 +23,13 @@ macro_rules! inner_define_measure {
                 }
             }
 
-            rs_measures::if_all_true! { {$with_approx}
+            measures::if_all_true! { {$with_approx}
                 pub const fn from_approx_measure(approx_measure: ApproxMeasure<Unit, Number>) -> Self {
                     Self::new(approx_measure.value)
                 }
             }
 
-            rs_measures::if_all_true! { {$with_approx}
+            measures::if_all_true! { {$with_approx}
                 pub fn to_approx_measure_with_variance(self, variance: Number) -> ApproxMeasure<Unit, Number> {
                     ApproxMeasure::<Unit, Number>::new_with_variance(self.value, variance)
                 }

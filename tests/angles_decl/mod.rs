@@ -1,4 +1,4 @@
-use rs_measures::{
+use measures::{
     angle::Angle,
     traits::{AngleMeasurementUnit, MeasurementUnit},
 };

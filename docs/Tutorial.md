@@ -701,7 +701,7 @@ When a measure having unit `Metre` is divided by a measure having unit `Second`,
 
 Also square roots are supported:
 ```rust
-    use rs_measures::traits::Sqrt;
+    use measures::traits::Sqrt;
     let length = Measure::<Metre>::new(10.);
     let width = Measure::<Metre>::new(4.);
     let area: Measure<SquareMetre> = length * width;
@@ -756,7 +756,7 @@ a work of 40 J is performed.
 
 But in a plane we can have two kinds of multiplication: that are the dot-product and the cross-product:
 ```rust
-    use rs_measures::traits::CrossProduct;
+    use measures::traits::CrossProduct;
     let force = Measure2d::<Newton>::new(10., 20.);
     let distance = Measure2d::<Metre>::new(4., 3.);
     let work: Measure<Joule> = force * distance;
@@ -781,14 +781,14 @@ that force causes a torque of -50 N·m.
 
 Notice that the operator `*`, when applied to two 2D vectors, computes the dot-product between them. Instead, to compute the cross-product, the method `cross_product` is called. It needs the declaration:
 ```
-    use rs_measures::traits::CrossProduct;
+    use measures::traits::CrossProduct;
 ```
 
 In physics, while the dot-product between a force and a displacement represents a work (or energy), and so that expression returns a measure in `Joule`, a cross-product between a force and a displacement represents a torque (or moment of force), and so that expression returns a measure in `NewtonMetre`; it is a another unit of measurement, incompatible with `Joule`.
 
 In 3D space we have this:
 ```rust
-    use rs_measures::traits::CrossProduct;
+    use measures::traits::CrossProduct;
     let force = Measure3d::<Newton>::new(10., 20., 0.4);
     let distance = Measure3d::<Metre>::new(4., 3., -5.);
     let work: Measure<Joule> = force * distance;
@@ -829,7 +829,7 @@ Let's see its contents.
 
 It begins with this statement:
 ```rust
-rs_measures::define_1d_2d_3d! {}
+measures::define_1d_2d_3d! {}
 ```
 
 This is a macro invocation which expands to the code which defines these types:
@@ -1041,7 +1041,7 @@ Though, it is not recommended for production use, for the following reasons:
 
 Therefore, the suggested procedure for production code is the following one:
 * Create your own file `units.rs` for your project.
-* Add as its first statement `rs_measures::define_1d! {}`, possibly replacing `1d` with `1d_and_directions`, `1d_2d`, `1d_3d`, or `1d_2d_3d`, in case you need the types defined by such macros.
+* Add as its first statement `measures::define_1d! {}`, possibly replacing `1d` with `1d_and_directions`, `1d_2d`, `1d_3d`, or `1d_2d_3d`, in case you need the types defined by such macros.
 * Search the provided example file for the properties, the units, and the relations you need, or the ones most similar to what you need. Copy and paste them into your own file.
 * Edit your file according to your needs.
 
@@ -1057,7 +1057,7 @@ use units_relation::define_units_relation;
 
 Here is an example of contents for a file `units.ts`;
 ```rust
-rs_measures::define_1d! {}
+measures::define_1d! {}
 
 pub struct Information;
 pub struct Bit;
@@ -1126,7 +1126,7 @@ For some measures, it is customary to used logarithmic values, typically in form
 
 The library rs-measures supports decibels only for the type `Measure`, as show in the following code:
 ```rust
-    let m = Measure::<Watt>::new(rs_measures::traits::Decibel::from_decibel(-30.));
+    let m = Measure::<Watt>::new(measures::traits::Decibel::from_decibel(-30.));
     let val = m.value.to_decibel();
     print!("{:.4}, {:.1}, {:.1};", m, val, m.format_in_decibels());
 ```

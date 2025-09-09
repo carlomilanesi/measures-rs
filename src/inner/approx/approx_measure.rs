@@ -27,7 +27,7 @@ macro_rules! inner_define_approx_measure {
                 }
             }
 
-            rs_measures::if_all_true! { {$exact}
+            measures::if_all_true! { {$exact}
                 /// ApproxMeasure::new_with_uncertainty(Number, Measure) -> ApproxMeasure
                 pub fn new_with_uncertainty(value: Number, uncertainty: Measure<Unit, Number>) -> Self {
                     Self {

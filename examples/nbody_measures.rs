@@ -9,7 +9,7 @@
 // -0.169075164 J
 // -0.169059907 J
 
-rs_measures::define_measure_types! {
+measures::define_measure_types! {
     with_points: true,
     with_directions: false,
     with_2d: false,

@@ -1,6 +1,8 @@
 #[macro_export]
 macro_rules! inner_define_approx_measure_3d {
     {$with_approx:ident} => {
+        /// Approximate 3d measurement with static unit of measurement and value type,
+        /// and with dynamic values and variance.
         pub struct ApproxMeasure3d<Unit, Number: ArithmeticOps = f64> {
             pub x: Number,
             pub y: Number,

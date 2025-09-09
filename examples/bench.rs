@@ -3,7 +3,7 @@
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
-rs_measures::define_measure_types! {
+measures::define_measure_types! {
     with_points: true,
     with_directions: false,
     with_2d: false,

@@ -2,7 +2,7 @@ mod angles_decl;
 
 #[test]
 fn angle_units_consts() {
-    use rs_measures::{
+    use measures::{
         angle::Radian,
         traits::{AngleMeasurementUnit, MeasurementUnit},
     };

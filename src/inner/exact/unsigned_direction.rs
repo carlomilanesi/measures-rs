@@ -31,7 +31,7 @@ macro_rules! inner_define_unsigned_direction {
                 }
             }
 
-            rs_measures::if_all_true! { { $with_points }
+            measures::if_all_true! { { $with_points }
                 /// UnsignedDirection::from_measure_point(MeasurePoint) -> UnsignedDirection
                 pub fn from_measure_point(m: MeasurePoint<Unit, Number>) -> Self {
                     Self::new(m.value)

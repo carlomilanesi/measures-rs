@@ -1,4 +1,4 @@
-rs_measures::define_measure_types! {
+measures::define_measure_types! {
     with_points: false,
     with_directions: false,
     with_2d: false,
@@ -13,20 +13,20 @@ rs_measures::define_measure_types! {
 }
 /*
 1
-    rs_measures::expand_1_1_same! {$exact $with_approx, $unit2 $unit1}
-    rs_measures::expand_1_1! {$exact $with_approx, $unit2 $unit3 $unit1}
+    measures::expand_1_1_same! {$exact $with_approx, $unit2 $unit1}
+    measures::expand_1_1! {$exact $with_approx, $unit2 $unit3 $unit1}
 2
-    rs_measures::expand_1_2! {$exact $with_approx, $unit2 $unit3 $unit1}
-    rs_measures::expand_2_2_same! {$exact $with_approx, $unit2 $unit1}
-    rs_measures::expand_2_2! {$exact $with_approx, $unit2 $unit3 $unit1}
-    rs_measures::expand_cross_2_same! {$exact $with_approx, $unit2 $unit1}
-    rs_measures::expand_cross_2! {$exact $with_approx, $unit2 $unit3 $unit1}
+    measures::expand_1_2! {$exact $with_approx, $unit2 $unit3 $unit1}
+    measures::expand_2_2_same! {$exact $with_approx, $unit2 $unit1}
+    measures::expand_2_2! {$exact $with_approx, $unit2 $unit3 $unit1}
+    measures::expand_cross_2_same! {$exact $with_approx, $unit2 $unit1}
+    measures::expand_cross_2! {$exact $with_approx, $unit2 $unit3 $unit1}
 3
-    rs_measures::expand_1_3! {$exact $with_approx, $unit2 $unit3 $unit1}
-    rs_measures::expand_3_3_same! {$exact $with_approx, $unit2 $unit1}
-    rs_measures::expand_3_3! {$exact $with_approx, $unit2 $unit3 $unit1}
-    rs_measures::expand_cross_3_same! {$exact $with_approx, $unit2 $unit1}
-    rs_measures::expand_cross_3! {$exact $with_approx, $unit2 $unit3 $unit1}
+    measures::expand_1_3! {$exact $with_approx, $unit2 $unit3 $unit1}
+    measures::expand_3_3_same! {$exact $with_approx, $unit2 $unit1}
+    measures::expand_3_3! {$exact $with_approx, $unit2 $unit3 $unit1}
+    measures::expand_cross_3_same! {$exact $with_approx, $unit2 $unit1}
+    measures::expand_cross_3! {$exact $with_approx, $unit2 $unit3 $unit1}
 */
 
 struct Length;
@@ -98,7 +98,7 @@ fn test_relationship_1_1_same() {
 }
 
 /*
-use rs_measures::define_units_relationship;
+use measures::define_units_relationship;
 
 #[test]
 fn test_u1_mul_u1_equals_u3() {

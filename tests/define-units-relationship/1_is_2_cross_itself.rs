@@ -1,4 +1,4 @@
-rs_measures::define_measure_types! {
+measures::define_measure_types! {
     with_points: false,
     with_directions: false,
     with_2d: true,
@@ -30,10 +30,10 @@ impl MeasurementUnit for U2 {
     const SUFFIX: &'static str = " u2";
 }
 
-rs_measures::define_units_relationship! { U1 == U2:2 X __ 2 }
+measures::define_units_relationship! { U1 == U2:2 X __ 2 }
 
 fn main() {
-    use rs_measures::traits::CrossProduct;
+    use measures::traits::CrossProduct;
     let u1: Measure<U1> = Measure2d::<U2>::new(6., 5.).cross_product(Measure2d::<U2>::new(7., 4.));
     assert_eq!(u1.value, -11.);
 }

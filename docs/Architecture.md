@@ -120,7 +120,7 @@ This library is meant to support computations commonly performed in software use
 ## Why macros are used
 
 Most crates define types and allow application code to use such types by instantiating them.
-Instead, the crate `rs_measures` is essentially a set of the five macros: `define_1d`, `define_1d_and_directions`, `define_1d_2d`, `define_1d_3d`, and `define_1d_2d_3d`.
+Instead, the crate `measures-rs` is essentially a set of the five macros: `define_1d`, `define_1d_and_directions`, `define_1d_2d`, `define_1d_3d`, and `define_1d_2d_3d`.
 
 Let's see why this solution has been chosen.
 
@@ -133,7 +133,7 @@ pub struct Time;
 
 Then, we define some units of measurement for the defined properties, like `Ampere` for `ElectricCurrent`, `Coulomb` for `ElectricCharge`, and `Second` for `Time`, using these statements:
 ```rust
-use rs_measures::traits::MeasurementUnit;
+use measures::traits::MeasurementUnit;
 
 pub struct Ampere;
 impl MeasurementUnit for Ampere {
@@ -162,7 +162,7 @@ impl MeasurementUnit for Second {
 
 With the above definitions, we can define measures having the defined units, with these statements:
 ```rust
-    use rs_measures::measure1d::Measure;
+    use measures::measure1d::Measure;
     let charge = Measure::<Coulomb>::new(6.);
     let time = Measure::<Second>::new(2.);
     let mut current: Measure<Ampere>;
@@ -219,13 +219,13 @@ In such a way, that trait implementation can be defined inside the application.
 
 To define both the type `Measure` and the implementation of `Div` in the application, without writing all the code there, the solution is to define macros. Such macros are defined in libraries, but they are expanded in the application, and so both the type `Measure` and the implementation of `Div` appear to the compiler as they were defined in the application.
 
-So, the crate `rs_measure` does not define directly the type `Measure` and other types. Instead it exposes, in addition to some auxiliary traits, functions, and macros, only five macros. When such macros are called, the features of the crate are expanded inside the caller code.
+So, the crate `measure` does not define directly the type `Measure` and other types. Instead it exposes, in addition to some auxiliary traits, functions, and macros, only five macros. When such macros are called, the features of the crate are expanded inside the caller code.
 
 In particular, one of such feature is the generic type `Measure`, that so becomes a user-defined type. Being `Measure` a user-defined type, a standard-library trait can be implemented for it.
 
-The crate `rs_measure` is designed to be used by applications needing only 1-dimensional measure, or by applications needing only 1-dimensional and 1-dimensional measures, or by applications needing also 3-dimensional measures. It would be a useless overhead to provide more dimensions than what is required.
+The crate `measure` is designed to be used by applications needing only 1-dimensional measure, or by applications needing only 1-dimensional and 1-dimensional measures, or by applications needing also 3-dimensional measures. It would be a useless overhead to provide more dimensions than what is required.
 
-Therefore, the crate `rs_measure` provides essentially the five declarative macros described in the section `Types`.
+Therefore, the crate `measure` provides essentially the five declarative macros described in the section `Types`.
 Actually, to implement them some other macros have been defined.
 Such macros must be called by the five macros, that are expanded in application code, and so they must be exported by the crate.
 Though, they shouldn't be used from code written by application programmers.

@@ -288,7 +288,7 @@ macro_rules! inner_define_linear_map_3d {
                 write!(
                     formatter,
                     "{}",
-                    rs_measures::matrix_utils::format_matrix::<3, 3, Number>(&self.c, "")
+                    measures::matrix_utils::format_matrix::<3, 3, Number>(&self.c, "")
                 )
             }
         }
@@ -299,7 +299,7 @@ macro_rules! inner_define_linear_map_3d {
                 write!(
                     formatter,
                     "{}",
-                    rs_measures::matrix_utils::format_matrix::<3, 3, Number>(&self.c, "")
+                    measures::matrix_utils::format_matrix::<3, 3, Number>(&self.c, "")
                 )
             }
         }

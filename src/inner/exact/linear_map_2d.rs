@@ -201,7 +201,7 @@ macro_rules! inner_define_linear_map_2d {
                 write!(
                     formatter,
                     "{}",
-                    rs_measures::matrix_utils::format_matrix::<2, 2, Number>(&self.c, "")
+                    measures::matrix_utils::format_matrix::<2, 2, Number>(&self.c, "")
                 )
             }
         }
@@ -212,7 +212,7 @@ macro_rules! inner_define_linear_map_2d {
                 write!(
                     formatter,
                     "{}",
-                    rs_measures::matrix_utils::format_matrix::<2, 2, Number>(&self.c, "")
+                    measures::matrix_utils::format_matrix::<2, 2, Number>(&self.c, "")
                 )
             }
         }

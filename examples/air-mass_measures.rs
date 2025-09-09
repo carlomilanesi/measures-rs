@@ -22,7 +22,7 @@
 // at 85 deg (in 0°..360°)      10.07896219      10.08115981
 // at 90 deg (in 0°..360°)      34.32981136      34.36666557
 
-rs_measures::define_measure_types! {
+measures::define_measure_types! {
     with_points: false,
     with_directions: true,
     with_2d: false,

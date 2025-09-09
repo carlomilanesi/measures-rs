@@ -1,8 +1,8 @@
 # Motivation
 
-This document describes the rationale for the crates `rs-measures` and `units-relation`.
+This document describes the rationale for the library `measures`, contained in the package `measures-rs`.
 
-Using primitive Rust data types to store the value of physical or geometrical quantities, several programming errors are possible. But some of them can be avoided, at no run-time cost, by encapsulating these values in custom types.
+You can store the value of physical or geometrical quantities by using only the primitive Rust data types, like `f32` or `f64`. Though, if you do this, several programming errors are possible. But some of them can be avoided, at no run-time cost, by encapsulating these values in custom types.
 
 ## Mixing measures having different unit of measurement
 
@@ -28,7 +28,7 @@ fn set_mass(val: Measure<Pound>) { /* ... */ }
 set_mass(mass1); // Compilation error.
 ```
 
-The third and the last statements cause compilation errors for type mismatch, as the values are encapsulated in objects whose types is characterized by a unit of measurement, and any value must have the same type of the variable to which it is assigned.
+The third and the last statements cause compilation errors for type mismatch, because the values are encapsulated in objects whose types is characterized by a unit of measurement, and any value must have the same type of the variable to which it is assigned.
 
 ## Unit conversions
 
@@ -53,11 +53,11 @@ mass2 = mass1.convert();
 let mass3 = mass1.convert::<Pound>();
 ```
 
-The third statement simply invokes the `convert` method. The correct formula is inferred by using the type of the destination variable. Instead, in the last statement, the destination variable does not have a type annotation, and so the unit conversion must specify the destination unit of measurement.
+The third statement simply invokes the method `convert`. The correct conversion formula is inferred by using the type of the source expression and the type of the destination variable. Instead, in the last statement, the destination variable does not have a type annotation, and so the unit conversion must specify the destination unit of measurement.
 
 ## Non-standard units of measurement
 
-Some existing libraries, for example the UOM crate, encapsulate each value in an object which represents that value in a standard unit of measurement, typically taken from the SI international standard.
+Some existing libraries, like, for example, the crate UOM, encapsulate each value in an object which represents that value in a standard unit of measurement, typically taken from the SI international standard.
 This raises the problem of how to handle non-standard units, like milligrams or pounds for mass.
 These libraries always use internally a standard unit, and so they can convert, at run-time, any input value from a user-chosen unit to a standard unit, and any output value from a standard unit to a user-chosen unit.
 
@@ -67,9 +67,9 @@ Such technique has the following drawbacks:
 2. It may introduce rounding errors.
 3. It introduces a small conversion overhead for every I/O operation.
 
-Instead, when using rs-measures, the developer can choose the pound as a unit of the mass, so that the input is in pounds, the computations are in pounds, and the output is in pounds. This eases debugging, avoids unexpected rounding errors, and avoids run-time conversion overhead.
+Instead, when using the library `measures`, the developer can choose the pound as a unit of the mass, so that the input is in pounds, the computations are in pounds, and the output is in pounds. This eases debugging, avoids unexpected rounding errors, and avoids run-time conversion overhead.
 
-Regarding the rounding errors, consider, for example, the following Rust code using the UOM crate:
+Regarding the rounding errors, consider, for example, the following Rust code using the crate UOM:
 
 ```rust
 use uom::fmt::DisplayStyle::Abbreviation;
@@ -91,14 +91,14 @@ fn main() {
 }
 ```
 
-It defines the variables `mass1` and `mass2` by specifying a value in grams and a value in pounds, but it stores internally those values in kilograms. Then it prints the first variable using two different formatters, one for grams, and one for kilograms, and the second variable using the formatter for pounds. The output is: `8030.0005 g, 8.030001 kg, 27.000002 lb.`.
+It defines the variables `mass1` and `mass2` by specifying a value in grams and a value in pounds, but it stores internally those values in kilograms. Then, it prints the first variable using two different formatters, one for grams, and one for kilograms, and the second variable using the formatter for pounds. The output is: `8030.0005 g, 8.030001 kg, 27.000002 lb.`.
 
 As you can see, even the value in grams and the value in pounds are different from the original values. This happens even with such small integer values, which usually do not introduce rounding errors in floating-point numbers.
 
-The corresponding program using rs-measures is this:
+The corresponding program using `measures` is this:
 
 ```rust
-using measures::{Measure, units::{Gram, KiloGram, Pound}};
+use measures::{Measure, units::{Gram, KiloGram, Pound}};
 fn main() {
     let mass1 = Measure::<Gram, f32>::new(8030.);
     let mass2 = Measure::<Pound, f32>::new(27.);
@@ -118,12 +118,12 @@ This has the following drawbacks:
 2. If the library is not extensible, it may be incomplete, as there are some little used units that some applications may require and which have not been included in the library. If it is extensible, it is usually somewhat difficult to extend it.
 3. It forces developers to use a specific natural language to name the properties and their units of measurements, instead of the natural language of the developers. For example, some people prefer to write `metre` and others prefer to write `meter`, for the same unit.
 
-Instead, the library `rs-measures` has just one built-in property, `Angle`, and just one built-in unit of measurement for it, `Radian`.
-Every other property and every other unit of measurement can be easily defined by the application developers.
-In this way:
+Instead, the library `measures` defines just two built-in properties, `Dimensionless` and `Angle`, and it defines just two built-in unit of measurements, `One` for the property `Dimensionless`, and `Radian` for the property `Angle`.
+
+Every other property and every other unit of measurement can be easily defined by the application developers. As consequences:
 1. The library uses little compile-time and run-time resources, because it will include only the few properties and units needed by the application.
 2. The library is by-design easily extensible, by adding custom properties and units.
-3. The developers can define their preferred names for the properties and the units of measurement, and also the preferred unit-of-measurement suffixes for outputting measures.
+3. The developers can define their preferred names for properties and for units of measurement, and they can define also the preferred unit-of-measurement suffixes for outputting measures.
 
 ## Specifying derived units
 
@@ -135,15 +135,15 @@ This has the following drawbacks:
 2. The complexity of the resulting types makes the compiler error messages quite cryptic.
 3. No relationships can be added by application developers.
 
-Instead, the library `rs-measures` has no built-in relationships to define derived properties.
+Instead, the library `measures` has no built-in relationships to define derived properties.
 Every derivation relationship can be easily defined by the application developers.
-In this way:
+As consequences:
 1. The simplicity of the resulting types makes the application quick to compile.
 2. The simplicity of the resulting types makes the compiler error messages quite clear.
 3. Application developers can define relationships for exotic properties or units of measurement.
 
 Regarding the compilation error messages, let's see some examples.
-If, using the UOM crate, we write the statement `let _: Length = Mass::new::<gram>(0.);`, which tries to assign a mass to a length, we get the following hard-to-understand compilation error message, shown in a 110-column terminal:
+If, using the crate UOM, we write the statement `let _: Length = Mass::new::<gram>(0.);`, which tries to assign a mass to a length, we get the following hard-to-understand compilation error message, shown in a 110-column terminal:
 
 ```text
 error[E0308]: mismatched types
@@ -160,7 +160,7 @@ error[E0308]: mismatched types
 = ..., Th = ...>, ..., ...>` (`PInt<UInt<..., ...>>`)
 ```
 
-Instead, using the crate `rs-measures`, if we write the statement `let _: Measure<Metre> = Measure::<Gram>::new(0.);`, which tries to assign a mass in grams to a length in metres, we get the following compilation error message:
+Instead, using the library `measures`, if we write the statement `let _: Measure<Metre> = Measure::<Gram>::new(0.);`, which tries to assign a mass in grams to a length in metres, we get the following compilation error message:
 
 ```text
 error[E0308]: mismatched types
@@ -196,7 +196,7 @@ note: expected this to be `Length`
 note: required by a bound in `units::Measure::<Unit, Number>::convert`
     --> src/units.rs:1:1
      |
-1    | rs_measures::define_1d! {}
+1    | measures::define_1d! {}
      | ^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `Measure::<Unit, Number>::convert`
 ```
 
@@ -304,12 +304,12 @@ The compilation of the assignment to `average_speed3` generates a type-mismatch 
 
 ## Plane (2D) And space (3D) measures
 
-So far, we have seen features comparable to what is offered by most other crates which handles units of measurement.
-Though, the library `rs-measures` has some multi-dimensional features which make it useful to work which bi-dimensional or three-dimensional quantities in an ergonomic and safe manner.
+So far, we have seen features comparable to what is offered by most other libraries handling units of measurement.
+Though, the library `measures` has some multi-dimensional features which make it useful to work with bi-dimensional or three-dimensional quantities, in an ergonomic and safe manner.
 
 Some physical or geometrical properties are properly described as multidimensional. For example, a displacement in a plane has two dimensions (X and Y), and a displacement in space has three dimensions (X, Y, and Z). They are called “vector measures”. Plane vector measures (a.k.a. 2D measures) have two components, and space vector measures (a.k.a. 3D measures) have three components.
 
-For vector measures, usually there is no reason to use a numeric type and a unit of measurement for one component, and a different numeric type or a different unit of measurement for another component. So, the library `rs-measures` allows to encapsulate all the components of a vector measure into a single object, like `Measure3<Metre, f64>`, in which all three components have `Metre` as unit of measurement and `f64` as inner type.
+For vector measures, usually it is good to have the same unit of measurement and the same numeric type for all the components. So, the library `measures` allows to encapsulate all the components of a vector measure into a single object, like `Measure3d<Metre, f64>`, in which all three components have `Metre` as unit of measurement and `f64` as inner type.
 
 For example, to represent a planar force and a planar displacement, instead of writing this code:
 
@@ -318,7 +318,7 @@ let force = (Measure::<Newton>::new(3.), Measure::<Newton>::new(4.));
 let displacement = (Measure::<Metre>::new(7.), Measure::<Metre>::new(1.));
 ```
 
-You can and should write this code:
+you can and should write this code:
 
 ```rust
 let force = Measure2d::<Newton>::new(3., 4.);
@@ -332,7 +332,7 @@ let force = Measure3d::<Newton>::new(3., 4., 5.);
 let displacement = Measure3d::<Metre>::new(7., 1., -6.);
 ```
 
-Points in a plane or in space can be represented by single objects:
+Also points in a plane or in space can be represented by single objects:
 
 ```rust
 let position_in_plane = MeasurePoint2d::<Metre>::new(3., 4.);
@@ -355,7 +355,7 @@ The value of `torque` is obtained by computing the cross product between `force`
 
 Notice that the unit `Joule` and `NewtonMetre` are different types, even if they have the same dimensional composition (mass space space / time time).
 
-Similarly it happens in 3D space:
+Similarly, it happens in 3D space:
 
 ```rust
 // In space
@@ -422,7 +422,7 @@ assert_eq!(signed_direction.value, -20.);
 
 ## Vector and affine transformations
 
-When using vector measures in a plane or in the 3D space, it is quite typical to need to perform vector operations. There are good linear algebra crates, like the crate `nalgebra`, which could be used for this. Though, when using them, it is not possible to keep the measurement unit information of components. Consider the following Rust program, which uses the crate `nalgebra`:
+When using vector measures in a plane or in the 3D space, it is quite typical to need to perform vector operations. There are good linear algebra libraries, like the crate `nalgebra`, which could be used for this. Though, when using them, it is not possible to keep the measurement unit information of components. Consider the following Rust program, which uses the crate `nalgebra`:
 
 ```rust
 extern crate nalgebra;
@@ -436,7 +436,7 @@ fn main() {
 
 First, it stores in `displacement` a 2D measure, with no units of measurement. Then, it stores in `rotation` a 2D linear transformation. Then, such rotation is applied to the displacement, using a matrix multiplication, obtaining a transformed 2D measure. Such resulting measure is stored in the variable `rotated_displacement`. Of course, such a variable is meant to have the same unit of measurement of the first variable, but this is not specified by the used types.
 
-so, let’s try to attach units of measurement to these measures:
+So, let’s try to attach units of measurement to these measures:
 
 ```rust
 let displacement = Vector2::new(
@@ -465,7 +465,7 @@ let rotated_displacement = rotation * displacement;
 This causes an error on the last statement, as `nalgebra` is not able to apply a linear transformation to a vector of `Measure` values, for the same reason that measures do not implement all the traits implemented by numbers.
 And even if it were able, probably the resulting value, which is assigned to `rotated_displacement`, wouldn’t have the proper unit of measurement.
 
-Instead, using the library `rs-measures`, it is possible to compile the following code:
+Instead, using the library `measures`, it is possible to compile the following code:
 
 ```rust
 // A 2D measure in metres.
@@ -485,3 +485,23 @@ let rotated_displacement = rotation.apply_to(displacement);
 The above code uses the type `LinearMap2d` to transform objects of type `Measure2d`. To transform objects of type `MeasurePoint2d`, the type `AffineMap2d` should be used instead.
 
 And when working in three dimensions, the types `LinearMap3d` and `AffineMap3d` should be used.
+
+## Working with uncertainty
+
+In experimental science and in engineering, you rarely handle exact measures. Typically, every measure is affected by some _uncertainty_ (often improperly name "error"). This means that a measure is not a number, but a probability distribution.
+
+Measuring something means to extract samples from this distribution.
+
+In most cases, the uncertainty is much smaller than the average value of the measurement. In such cases, the probability distribution has the shape of a bell-shaped _normal_ distribution. Such kind of distributions can be characterized by two numbers: the mean (μ) and the standard deviation (σ).
+
+So, it is quite typical to express a length as `170 ± 1.5 cm`, or a mass as `87.3 ± 0.2 kg`.
+
+We want to be able to represent such measures in a variable. Of course our variable will need to store two numbers.
+
+A problem regarding uncertainty is its propagation. For example, let's consider a physical object, for which we measured its mass as `87.3 ± 0.2 kg` and its volume as `0.3 ± 0.012 m³`. We can say that, for its mass density, the most likely value is `87.3 / 0.3 = 291 kg/m³`. But about the uncertainty of such derived measure?
+
+The library `measure` allows to define measures with an associated variance, that is the square of the standard deviation. In addition, the library allows to perform arithmetic operations on such measures, propagating the uncertainty to the results.
+
+The propagation of the uncertainty of measures follows rules depending on the statistical correlation of the measures involved in the operations. The usual infix operators (`+`, `-`, `*`, `/`) assume that their operands are statistically independent (i.e. they have correlation = 0).
+
+Though, in some applications, a non-zero correlation is a better representation of reality, and so, for every mathematical operation involving two measures, an alternate operation is provided, in which the correlation can be specified.

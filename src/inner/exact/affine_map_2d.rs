@@ -270,7 +270,7 @@ macro_rules! inner_define_affine_map_2d {
                 write!(
                     formatter,
                     "{}",
-                    rs_measures::matrix_utils::format_matrix::<2, 3, Number>(&self.c, Unit::SUFFIX)
+                    measures::matrix_utils::format_matrix::<2, 3, Number>(&self.c, Unit::SUFFIX)
                 )
             }
         }
@@ -286,7 +286,7 @@ macro_rules! inner_define_affine_map_2d {
                 write!(
                     formatter,
                     "{}",
-                    rs_measures::matrix_utils::format_matrix::<2, 3, Number>(&self.c, Unit::SUFFIX)
+                    measures::matrix_utils::format_matrix::<2, 3, Number>(&self.c, Unit::SUFFIX)
                 )
             }
         }

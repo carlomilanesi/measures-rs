@@ -379,7 +379,7 @@ macro_rules! inner_define_affine_map_3d {
                 write!(
                     formatter,
                     "{}",
-                    rs_measures::matrix_utils::format_matrix::<3, 4, Number>(&self.c, Unit::SUFFIX)
+                    measures::matrix_utils::format_matrix::<3, 4, Number>(&self.c, Unit::SUFFIX)
                 )
             }
         }
@@ -395,7 +395,7 @@ macro_rules! inner_define_affine_map_3d {
                 write!(
                     formatter,
                     "{}",
-                    rs_measures::matrix_utils::format_matrix::<3, 4, Number>(&self.c, Unit::SUFFIX)
+                    measures::matrix_utils::format_matrix::<3, 4, Number>(&self.c, Unit::SUFFIX)
                 )
             }
         }

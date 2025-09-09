@@ -1,5 +1,5 @@
 use std::f64::consts::TAU;
-rs_measures::define_measure_types! {
+measures::define_measure_types! {
     with_points: true,
     with_directions: false,
     with_2d: false,
@@ -10,7 +10,7 @@ rs_measures::define_measure_types! {
     []
 }
 
-use rs_measures::{assert_eq_32, assert_eq_64};
+use measures::{assert_eq_32, assert_eq_64};
 
 struct Length;
 impl VectorProperty for Length {}

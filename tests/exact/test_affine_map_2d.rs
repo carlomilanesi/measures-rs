@@ -1,8 +1,8 @@
 use std::f64::consts::TAU;
 
-use rs_measures::{assert_eq_32, assert_eq_64};
+use measures::{assert_eq_32, assert_eq_64};
 
-rs_measures::define_measure_types! {
+measures::define_measure_types! {
     with_points: true,
     with_directions: true,
     with_2d: true,

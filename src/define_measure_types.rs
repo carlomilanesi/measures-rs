@@ -2,7 +2,7 @@
 macro_rules! if_all_true {
     ( { } $( $fragment:item )* ) => { $( $fragment )* };
     ( { false $($rest:tt)* } $( $fragment:item )* ) => { };
-    ( { true  $($rest:tt)* } $( $fragment:item )* ) => { rs_measures::if_all_true! { { $($rest)* } $( $fragment )* } };
+    ( { true  $($rest:tt)* } $( $fragment:item )* ) => { measures::if_all_true! { { $($rest)* } $( $fragment )* } };
 }
 
 #[macro_export]
@@ -20,65 +20,65 @@ macro_rules! define_measure_types {
         ]
     } => {
         use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
-        use rs_measures::{
+        use measures::{
             dimensionless::{Dimensionless, One},
             angle::{Angle, Radian},
             traits::{
-                AngleMeasurementUnit, ArithmeticOps, LossyFrom, MeasurementUnit, Sqrt, VectorProperty,Trigonometry,
+                AngleMeasurementUnit, ArithmeticOps, LossyFrom, MeasurementUnit, Sqrt, VectorProperty, Trigonometry,
             },
         };
         use std::fmt;
         use std::marker::PhantomData;
 
-        rs_measures::inner_define_measure! { $with_approx }
-        rs_measures::if_all_true! { { $with_approx }
-            rs_measures::inner_define_approx_measure! { $exact }
+        measures::inner_define_measure! { $with_approx }
+        measures::if_all_true! { { $with_approx }
+            measures::inner_define_approx_measure! { $exact }
         }
-        rs_measures::if_all_true! { { $with_points }
-            rs_measures::inner_define_measure_point! { $with_approx }
+        measures::if_all_true! { { $with_points }
+            measures::inner_define_measure_point! { $with_approx }
         }
-        rs_measures::if_all_true! { { $with_approx $with_points }
-            rs_measures::inner_define_approx_measure_point ! { $exact }
+        measures::if_all_true! { { $with_approx $with_points }
+            measures::inner_define_approx_measure_point ! { $exact }
         }
-        rs_measures::if_all_true! { { $exact $with_directions }
-            rs_measures::inner_define_unsigned_direction! { $with_points }
+        measures::if_all_true! { { $exact $with_directions }
+            measures::inner_define_unsigned_direction! { $with_points }
         }
-        rs_measures::if_all_true! { { $exact $with_directions }
-            rs_measures::inner_define_signed_direction! { $with_points }
+        measures::if_all_true! { { $exact $with_directions }
+            measures::inner_define_signed_direction! { $with_points }
         }
-        rs_measures::if_all_true! { { $with_2d }
-            rs_measures::inner_define_measure_2d! { $with_points $with_directions }
+        measures::if_all_true! { { $with_2d }
+            measures::inner_define_measure_2d! { $with_points $with_directions }
         }
-        rs_measures::if_all_true! { { $with_2d $with_points $exact }
-            rs_measures::inner_define_measure_point_2d! { $with_approx }
+        measures::if_all_true! { { $with_2d $with_points $exact }
+            measures::inner_define_measure_point_2d! { $with_approx }
         }
 
-        rs_measures::if_all_true! { { $with_3d }
-            rs_measures::inner_define_measure_3d! { $with_approx }
+        measures::if_all_true! { { $with_3d }
+            measures::inner_define_measure_3d! { $with_approx }
         }
-        rs_measures::if_all_true! { { $with_approx $with_3d }
-            rs_measures::inner_define_approx_measure_3d! { $exact }
+        measures::if_all_true! { { $with_approx $with_3d }
+            measures::inner_define_approx_measure_3d! { $exact }
         }
-        rs_measures::if_all_true! { { $with_points $with_3d }
-            rs_measures::inner_define_measure_point_3d! { $with_approx }
+        measures::if_all_true! { { $with_points $with_3d }
+            measures::inner_define_measure_point_3d! { $with_approx }
         }
-        rs_measures::if_all_true! { { $with_approx $with_points $with_3d }
-            rs_measures::inner_define_approx_measure_point_3d! { $exact }
+        measures::if_all_true! { { $with_approx $with_points $with_3d }
+            measures::inner_define_approx_measure_point_3d! { $exact }
         }
-        rs_measures::if_all_true! { { $with_2d $with_transformations }
-            rs_measures::inner_define_linear_map_2d! {}
+        measures::if_all_true! { { $with_2d $with_transformations }
+            measures::inner_define_linear_map_2d! {}
         }
-        rs_measures::if_all_true! { { $with_3d $with_transformations }
-            rs_measures::inner_define_linear_map_3d! {}
+        measures::if_all_true! { { $with_3d $with_transformations }
+            measures::inner_define_linear_map_3d! {}
         }
-        rs_measures::if_all_true! { {$with_2d $with_transformations $with_points}
-            rs_measures::inner_define_affine_map_2d! {}
+        measures::if_all_true! { {$with_2d $with_transformations $with_points}
+            measures::inner_define_affine_map_2d! {}
         }
-        rs_measures::if_all_true! { {$with_3d $with_transformations $with_points}
-            rs_measures::inner_define_affine_map_3d! {}
+        measures::if_all_true! { {$with_3d $with_transformations $with_points}
+            measures::inner_define_affine_map_3d! {}
         }
         $(
-            rs_measures::define_units_relationship! {
+            measures::define_units_relationship! {
                 $exact $with_approx,
                 $unit1 $dim1 $unit2 $dim2 $op $unit3 $dim3
             }
