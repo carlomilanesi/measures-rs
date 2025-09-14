@@ -15,12 +15,31 @@ Here are the types that can be defined by this library:
 * `AffineMap2d<Unit, Number>`: It defines affine transformations in a plane of objects of type `MeasurePoint2d`. It directly depends on type `MeasurePoint2d`.
 * `LinearMap3d<Number>`: It defines linear transformations in 3d-space of objects of type `Measure3d`. It directly depends on type `Measure3d`.
 * `AffineMap3d<Unit, Number>`: It defines affine transformations in 3d-space of objects of type `MeasurePoint3d`. It directly depends on type `MeasurePoint3d`.
-* `Angle`: It is the only predefined measurement property. It has no dependencies.
+
+In addition, the following types can be defined:
+* `ApproxMeasure<Unit, Number>`: Similar to `Measure<Unit, Number>`.
+* `ApproxMeasurePoint<Unit, Number>`: Similar to `MeasurePoint<Unit, Number>`.
+* `ApproxUnsignedDirection<Unit, Number>`: Similar to `UnsignedDirection<Unit, Number>`.
+* `ApproxSignedDirection<Unit, Number>`: Similar to `SignedDirection<Unit, Number>`.
+* `ApproxMeasure2d<Unit, Number>`: Similar to `Measure2d<Unit, Number>`.
+* `ApproxMeasurePoint2d<Unit, Number>`: Similar to `MeasurePoint2d<Unit, Number>`.
+* `ApproxMeasure3d<Unit, Number>`: Similar to `Measure3d<Unit, Number>`.
+* `ApproxMeasurePoint3d<Unit, Number>`: Similar to `MeasurePoint3d<Unit, Number>`.
+* `ApproxLinearMap2d<Number>`: Similar to `LinearMap2d<Unit, Number>`.
+* `ApproxAffineMap2d<Unit, Number>`: Similar to `AffineMap2d<Unit, Number>`.
+* `ApproxLinearMap3d<Number>`: Similar to `LinearMap3d<Unit, Number>`.
+* `ApproxAffineMap3d<Unit, Number>`: Similar to `AffineMap3d<Unit, Number>`.
+
+All of them store and use the additional field `variance`, to represent the square of the uncertainty of the values of the measure.
+
+* `Angle`: It is a predefined measurement property. It has no dependencies.
 * `Radian`: It is the only predefined unit of measurement of property `Angle`. It depends on type `Angle`.
+* `Dimensionless`: It is a predefined measurement property. It has no dependencies.
+* `One`: It is the only predefined unit of measurement of property `Dimensionless`. It depends on type `Angle`.
 
 Such types and their dependencies are shown in this class diagram:
 
-### All types (`define_1d_2d_3d`)
+### All types
 ```mermaid
 classDiagram
     Measure <-- MeasurePoint
@@ -43,65 +62,9 @@ classDiagram
     MeasurePoint <-- MeasurePoint3d
 ```
 
-To use them, they must be defined *inside* application code, by invoking a macro.
-Any application does not necessarily needs all those types.
-Therefore, the library provides several macros, to define just some of the above types.
+A similar diagram is obtained by adding the prefix `Approx` to every class. In addition, every class depends on the class `Measure`.
 
-Here are the available macros:
-* `define_1d`: It defines the 1-dimensional types `Measure` and `MeasurePoint`.
-* `define_1d_and_directions`: In addition to what defined by `define_1d`, it defines the direction types `UnsignedDirection` and `SignedDirection`.
-* `define_1d_2d`: In addition to what defined by `define_1d_and_directions`, it defines the 2-dimensional types `Measure2d` and `MeasurePoint2d`, and the 2-dimensional transformation types `LinearMap2d` and `AffineMap2d`.
-* `define_1d_3d`: In addition to what defined by `define_1d`, it defines the 3-dimensional types `Measure3d` and `MeasurePoint3d`, and the 3-dimensional transformation types `LinearMap3d` and `AffineMap3d`.
-* `define_1d_2d_3d`: In addition to what defined by `define_2d`, it defines the 3-dimensional types `Measure3d` and `MeasurePoint3d`, and the 3-dimensional transformation types `LinearMap3d` and `AffineMap3d`.
-
-A diagram for the macro `define_1d_2d_3d` has already been shown before.
-Here are the diagrams showing the schema defined by the other macros.
-
-### 1D measures (`define_1d`)
-```mermaid
-classDiagram
-    Measure <-- MeasurePoint
-```
-
-### 1D measures and directions (`define_1d_and_directions`)
-```mermaid
-classDiagram
-    Measure <-- MeasurePoint
-    UnsignedDirection <--> SignedDirection
-    Measure <-- UnsignedDirection
-    MeasurePoint <-- UnsignedDirection
-    Measure <-- SignedDirection
-    MeasurePoint <-- SignedDirection
-```
-
-### 1D measures, 2D measures, 2D transformations, and directions (`define_1d_2d`)
-```mermaid
-classDiagram
-    Measure <-- MeasurePoint
-    UnsignedDirection <--> SignedDirection
-    Measure <-- UnsignedDirection
-    MeasurePoint <-- UnsignedDirection
-    Measure <-- SignedDirection
-    MeasurePoint <-- SignedDirection
-    Measure <-- Measure2d
-    MeasurePoint <-- Measure2d
-    UnsignedDirection <-- Measure2d
-    SignedDirection <-- Measure2d
-    Measure2d <-- LinearMap2d
-    Measure2d <-- MeasurePoint2d
-    MeasurePoint2d <-- AffineMap2d
-```
-
-### 1D measures, 3D measures, 3D transformations (`define_1d_3d`)
-```mermaid
-classDiagram
-    Measure <-- MeasurePoint
-    Measure3d <-- MeasurePoint3d
-    Measure3d <-- LinearMap3d
-    MeasurePoint3d <-- AffineMap3d
-    Measure <-- Measure3d
-    MeasurePoint <-- MeasurePoint3d
-```
+To use these types, they must be defined *inside* application code, by invoking the macro `define_measure_types`.
 
 ## Limitations
 
@@ -115,12 +78,12 @@ This library is not meant to support:
 
 ## Why only three dimensions
 
-This library is meant to support computations commonly performed in software used for engineering. Such systems use typically only 1, 2, or 3 dimensions to represent quantities.
+This library is meant to support computations commonly performed in software used for applied science or engineering. Such systems use typically only 1, 2, or 3 dimensions to represent quantities. When more dimensions (or "degrees of freedom") are needed, the formulas become so much more complex that this library is not going to cover such multidimensional things as single variables.
 
-## Why macros are used
+## Why a macro is used
 
 Most crates define types and allow application code to use such types by instantiating them.
-Instead, the crate `measures-rs` is essentially a set of the five macros: `define_1d`, `define_1d_and_directions`, `define_1d_2d`, `define_1d_3d`, and `define_1d_2d_3d`.
+Instead, the crate `measures` is essentially a single huge macro: `define_measure_types`.
 
 Let's see why this solution has been chosen.
 
@@ -165,7 +128,7 @@ With the above definitions, we can define measures having the defined units, wit
     use measures::measure1d::Measure;
     let charge = Measure::<Coulomb>::new(6.);
     let time = Measure::<Second>::new(2.);
-    let mut current: Measure<Ampere>;
+    let current: Measure<Ampere>;
 ```
 
 Though, the operations involving values of more that one property are not allowed yet. For example, the following statement, albeit reasonable, would generate a syntax error:
@@ -177,71 +140,56 @@ The main error message is: ``cannot divide `Measure<Coulomb>` by `Measure<Second
 
 So, there is the need to implement the trait `Div<Measure<Second>>` for the type `Measure<Coulomb>`.
 
-The Rust language specifies that *only traits defined in the current crate can be implemented for types defined outside of the crate*. So, either the trait or the type for which it is implemented must be defined in the same crate in which there is the implementation.
+The Rust language specifies that *only traits defined in the current crate can be implemented for types defined outside of the crate*. So, either the trait or the type for which it is implemented must be defined in the same crate in which there is the implementation of the trait.
 
-Let's consider these alternatives:
-1. Either the trait or the type are defined in our library. In such a case, we can implement that trait inside our library.
-2. Either the trait or the type are defined in our application. In such a case, we can implement that trait inside our application.
+There are two alternatives:
+1. Such trait implementation is in the library crate. In such a case, either the trait or the type are defined in our library.
+2. Such trait implementation is in the application crate. In such a case, either the trait or the type are defined in our application.
 
-The trait is `core::ops::Div`, and so it is defined neither in our library nor in our application.
+The trait we are talking about is `core::ops::Div`, and so it is defined neither in our library nor in our application.
 
-The type for which it is implemented is `Measure<Coulomb>`. We need it to be defined in the library or in the application. By design, we want to keep `Coulomb` in the application. So, `Measure<Coulomb>` cannot be in the library.
-But if in the library there is this definition:
-```rust
-pub struct Measure<Unit> {
-    pub value: f64,
-    phantom: core::marker::PhantomData<Unit>,
-}
-```
+Therefore, the type for which `Div` is implemented (which is `Measure<Coulomb>`) must be completely defined either in our library or in our application.
 
-and in the application there is this definition:
-```rust
-impl core::ops::Div<Measure<Second>> for Measure<Coulomb> {
-    type Output = Measure<Ampere>;
-    fn div(self, other: Measure<Second>) -> Self::Output {
-        Self::Output::new(self.value / other.value)
-    }
-}
-```
+Though, by design, we want to keep the generic type `Measure` in the library, and the concrete type `Coulomb` in the application.
+So, we cannot have what we want, by using only normal Rust code.
 
-When compiling this application code, this error is obtained:
-```text
-only traits defined in the current crate can be implemented for types defined outside of the crate
-```
+A trick to do what we want is to have the library define a macro, which generates the definition of the generic type `Measure` and the implementation of the trait `Div` for the type `Measure<Coulomb>`.
+Such macro is used is application code, and therefore we have:
+* The definition of the type `Coulomb` is in application code, best if it is in a module dedicated to user-defined units of measurement.
+* The definition of the generic type `Measure` is generated by the macro expansion in application code.
+* Therefore, the whole concrete type `Measure<Coulomb>` is defined in application code.
+* The implementation of the trait `Div` for the type `Measure<Coulomb>` is generated by the macro expansion in application code.
 
-and the further explanation:
-```text
-impl doesn't use only types from inside the current crate
-```
+So, we have that the foreign trait `Div` is implemented locally for a local type; and this is allowed.
 
-Therefore, the type `Measure<Coulomb>` must be wholly kept in the application, i.e. we must define also `Measure` in the application.
-In such a way, that trait implementation can be defined inside the application.
+## Which arguments should be passed to the macro
 
-To define both the type `Measure` and the implementation of `Div` in the application, without writing all the code there, the solution is to define macros. Such macros are defined in libraries, but they are expanded in the application, and so both the type `Measure` and the implementation of `Div` appear to the compiler as they were defined in the application.
+The crate `measure` is designed to be used by applications needing only 1-dimensional measures, or by applications needing only 1-dimensional and 2-dimensional measures, or by applications needing also 3-dimensional measures. It would be a useless overhead to provide more dimensions than what is required.
 
-So, the crate `measure` does not define directly the type `Measure` and other types. Instead it exposes, in addition to some auxiliary traits, functions, and macros, only five macros. When such macros are called, the features of the crate are expanded inside the caller code.
+Such overhead is probably not about runtime performance, but mainly about compiler performance and also about cognitive overload.
+If the code for 2-dimensional measures is generated also for applications needing only 1-dimensional measures, means that such useless code must be compiled anyway, and the IDE should provide assistance for such unneeded types.
+This is is a concept usually handled by the concept of "feature" of crates.
+Though, for this library, the code to be included or not is not a feature of the crate, but some code to be generated or not by the macro inside the application.
 
-In particular, one of such feature is the generic type `Measure`, that so becomes a user-defined type. Being `Measure` a user-defined type, a standard-library trait can be implemented for it.
+Therefore, the macro has many options, which are quite similar to features of typical crates.
+Consider that relative 1-dimension measures (belonging to a 1-dimension vector space) are essential to the library, and so they cannot be excluded.
 
-The crate `measure` is designed to be used by applications needing only 1-dimensional measure, or by applications needing only 1-dimensional and 1-dimensional measures, or by applications needing also 3-dimensional measures. It would be a useless overhead to provide more dimensions than what is required.
+For some applications, absolute measures (belonging to an affine space) may also be needed, and so there is the boolean option `with_points`, meaning "with absolute measures in an affine space". Typical uses are for positions, instants, temperatures.
 
-Therefore, the crate `measure` provides essentially the five declarative macros described in the section `Types`.
-Actually, to implement them some other macros have been defined.
-Such macros must be called by the five macros, that are expanded in application code, and so they must be exported by the crate.
-Though, they shouldn't be used from code written by application programmers.
-To make this clear, they are defined in source files put in the folder `inner`, and their name make somewhat clear their private use.
-They are:
-* `inner_define_measure`. It defines the generic type `Measure<Unit, Number>`.
-* `inner_define_measure_2d`. It defines the generic type `Measure2d<Unit, Number>`.
-* `inner_define_measure_3d`. It defines the generic type `Measure3d<Unit, Number>`.
-* `inner_define_measure_point`. It defines the generic type `MeasurePoint<Unit, Number>`.
-* `inner_define_measure_point_2d`. It defines the generic type `MeasurePoint2d<Unit, Number>`.
-* `inner_define_measure_point_3d`. It defines the generic type `MeasurePoint3d<Unit, Number>`.
-* `inner_define_linear_map_2d`. It defines the generic type `LinearMap2d<Number>`.
-* `inner_define_linear_map_3d`. It defines the generic type `LinearMap3d<Number>`.
-* `inner_define_affine_map_2d`. It defines the generic type `AffineMap2d<Unit, Number>`.
-* `inner_define_affine_map_3d`. It defines the generic type `AffineMap3d<Unit, Number>`.
-* `inner_define_unsigned_direction`. It defines the generic type `UnsignedDirection<AngleUnit, Number>`.
-* `inner_define_signed_direction`. It defines the generic type `SignedDirection<AngleUnit, Number>`.
+For some applications, directions may also be needed, and so there is the boolean option `with_directions`, meaning "with signed or unsigned angles used to specify a point in a circumference".
 
-To implement the mixed-unit operations, like the division of a measure in coulomb by a measure in seconds, a procedural macro has been designed, named `define_units_relation`. Procedural macros must be defined in a distinct crate, and so the crate `units-relation` has been created just to define this procedural macro.
+For some applications, measures can be vectors or points in a plane, and so there is the boolean option `with_2d`, meaning "with relative (vector) measures or absolute (point) measures in a plane". Typical uses are for positions or movements, velocities, accelerations, forces, torques, electrical field, magnetic field, restricted to a plane.
+
+For some applications, measures can be vectors or points in the 3-d space, and so there is the boolean option `with_3d`, meaning "with relative (vector) measures or absolute (point) measures in the space". Typical uses are the same as of 2d-measures, but not restricted to a plane.
+
+For some applications, vector or affine transformations are needed. They can be provided by this library, keeping the correct units of measurements, by specifying the boolean option `with_transformations`. They can be useful for all 2-d or 3-d measures.
+
+The simplest and most efficient measures are exact, meaning that they specify just a single value. Though, for many applications, a measure is meant to be a normal probability distribution of values. For such measures, two value are specified, a mean and a variance.
+
+To use exact measures, there is the boolean option `exact`, meaning "with a kind of measures specifying a single value for every dimension". It is useful for any kind of measure.
+
+To use use measures laying on a normal probability distribution, there is the boolean option `with_approx`, meaning "with a kind of measures specifying also a variance (or a standard deviation) as a specification of uncertainty". It is useful for any kind of measure.
+
+When an arithmetic operation is applied to two measures, the uncertainty of the result depends on the means and variance of the two operands, but also on the statistical correlation of such distribution. The usual arithmetic operations assume the the distributions of the operands are statistical independent, i.e. their correlation is 0 (zero).
+
+Sometimes, an arithmetic operation is applied to uncertain measures whose distribution has a certain non-zero correlation. Typically, the correlation can be 1 (one), meaning that whenever an operand measure has a deviation, with respect to its mean, the other operand measure has the same relative variation, with respect to its mean. So, it may be needed to specify such correlation when performing a binary operation between measures. To be able to do that, there is the boolean option `with_correlation`, which should be `true` only if `with_approx` is also `true`.

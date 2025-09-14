@@ -1,6 +1,6 @@
-# Tutorial for the library `rs-measures`
+# Tutorial for the library `measures`
 
-This documents explains how to use in Rust software development projects the library `rs-measures`, composed by the two crates `rs-measures` and `units-relation`. To know which are the advantages of using this library, with respect to using other libraries or naked numbers, read the document [Motivation](Motivation.md).
+This documents explains how to use in Rust software development projects the library `measures`, contained in the package `measures-rs`. The the document [Motivation](Motivation.md) explains which are the advantages of using this library, with respect to using other libraries or primitive numbers.
 
 ## Creating a tutorial project
 
@@ -8,12 +8,14 @@ Create a rust project using these commands:
 ```
 cargo new measures-tut
 cd measures-tut
-cargo add rs-measures
-cargo add units-relation
+cargo add measures-rs
 ```
 
-Open the Web page https://github.com/carlomilanesi/rs-measures/blob/main/units-relation/examples/units/mod.rs.
-Copy all its contents in the clipboard.
+Now we need to define the units of measurement we want to use.
+For simplicity, let's import a large collection of definition of units of measurement.
+
+To di that, open the Web page https://github.com/carlomilanesi/measures-rs/blob/main/examples/units/mod.rs.
+Copy all its contents into the clipboard.
 Create a file named `src/units.rs`, and paste the copied contents into it. Save it.
 
 ## Creating a measure variable
@@ -47,16 +49,16 @@ The distance is 100 km.
 The distance is 100.
 ```
 
-The second printed line has no unit, because it is a naked number.
+The second printed line has no unit, because it is a primitive number.
 
 This code is valid with `distance_value` having type `f64`, because `f64` is the default value type of the generic type `Measure`.
 The statement `let distance_value: f32 = distance.value;` would have been illegal.
-Though, you can use also `f32` as value type, if you specify it explicitly, like in the following statement:
+Though, you can also use `f32` as value type, as long as you specify it explicitly, like in the following statement:
 ```rust
     let distance: f32 = Measure::<KiloMetre, f32>::new(100.).value;
 ```
 
-Currently the library supports only the value types `f32` and `f64`.
+Currently, the library supports only the value types `f32` and `f64`.
 
 ## Numeric conversions
 
@@ -75,12 +77,13 @@ There are two numeric conversion methods:
 
 ## Operations on measures
 
-Whe have already seen that the type `Measure` can be printed.
+We have already seen that the type `Measure` can be printed.
 This means it implements the trait `Display`, and it has the method `to_string()`.
+
 Printing a measure means printing its value followed by a suffix depending on its units of measurement.
 For the unit `KiloMeter`, the suffix is `" km"`, with a leading space.
 
-Measures implement also the trait `Debug`, having the same behavior of the the trait `Display`.
+Measures implement also the trait `Debug`.
 So, you can write:
 ```rust
     #[allow(dead_code)]
@@ -100,10 +103,14 @@ It will print: `TimeElapsed { hours: 3 h, minutes: 17 min }`.
 
 Here are some arithmetic operations that can be performed on one or two objects of type `Measure`, provided they have the same unit and the same value type.
 ```rust
+    // Importing the built-in unit One
+    // of the built-in property Dimensionless.
+    use measures::dimensionless::One;
+
     let mut length1 = Measure::<Metre>::new(7.);
     let length2 = Measure::<Metre>::new(5.);
     assert_eq!((-length1).value, -7.); // Negation
-    assert_eq!((length1 + length2).value, 12.); // Sum of two measures
+    assert_eq!((length1 + length2).value, 12.); // Addition of two measures
     assert_eq!((length1 - length2).value, 2.); // Subtraction between two measures
     length1 += length2; // Increment of a measure
     assert_eq!(length1.value, 12.);
@@ -116,7 +123,9 @@ Here are some arithmetic operations that can be performed on one or two objects 
     assert_eq!((length1 / 3.).value, 7.); // Division of a measure by a number
     length1 /= 3.; // Downscaling of a measure
     assert_eq!(length1.value, 7.);
-    assert_eq!(length1 / length2, 1.4); // Division between two measures of the same unit, obtaining a number
+
+    // Division between two measures of the same unit, obtaining a measure having unit One.
+    assert_eq!(length1 / length2, Measure::<One>::new(1.4));
 ```
 
 Here are some comparison operations:
@@ -129,7 +138,7 @@ Here are some comparison operations:
 
 ## Conversions between units
 
-You can convert between units of measurement of the same physical or geometrical property using the following code:
+You can convert between units of measurement of the same physical or geometrical property, using the following code:
 ```rust
     let distance1 = Measure::<KiloMetre>::new(100.);
     let distance2 = distance1.convert::<Mile>();
@@ -162,7 +171,7 @@ For some kinds of measures, to add two values of the same type or to multiply a 
 This happens because they are absolute measures, not relative measures, like the ones shown in the previous sections.
 
 Mathematically speaking, such absolute measures are *points* of an *affine space*, while the relative measures, like lengths, temperature variations, and time durations are *vectors* of a *vector space*.
-To avoid using points instead of vectors or vice versa, instead of using the generic type `Measure`, the generic type `MeasurePoint` should be used, like in the following code:
+To avoid using points instead of vectors or vice versa, the generic type `MeasurePoint` should be used, instead of using the generic type `Measure`, like in the following code:
 ```rust
     let point1 = MeasurePoint::<Celsius>::new(10.);
     let variation = Measure::<Celsius>::new(2.);
@@ -214,7 +223,7 @@ On the other hand, some operations are specific of absolute values:
 
 ## Angles
 
-With the library `rs-measures`, you can also handle angles.
+With the library `measures`, you can also handle angles.
 Consider a screw mechanism, that can be turned by several cycles (or revolutions).
 ```rust
     let mut position = MeasurePoint::<Cycle>::new(3.);
@@ -817,6 +826,56 @@ Though, regarding cross-product, the result is different.
 In a plane, the torque is always perpendicular to the plane, and so we are not interested in its X and Y components, which are always zero. Therefore, that expression returns a scalar, containing the only interesting component of the torque, Z.
 
 Instead, in 3D space, the torque is a vector which could have any direction, and so the cross-product returns a value of type `Measure3d`.
+
+## Measures with uncertainty
+
+So far, every measure was represented by as many numeric values as the dimensions of the space.
+So, there was only one number for the 1D line, a pair of numbers for the 2D plane, and a triple of numbers for the 3D space.
+Such numbers represented exact measures.
+
+Though, in many application fields, measures are probability distributions, described by their mean and variance.
+
+The library Measures allows to specify also such kind of measures, as shown by the following code:
+
+```rust
+let mass = ApproxMeasure::<KiloGram>::new(87.3, 0.04); // mean and variance
+assert_eq!(mass.value, 87.3);
+assert_eq!(mass.variance, 0.04);
+assert_eq!(mass.uncertainty(), Measure::<KiloGram>::new(0.2)); // standard deviation
+println!("{mass}, {mass:?}"); // It prints: 87.3 ± 0.2 Kg, 87.3 [σ²=0.04] Kg
+```
+
+The variable `mass` is an approximate measure, having 87.3 as mean and 0.04 as variance.
+
+The mean is accessed by the member used for exact measures, `value`.
+The unit of measurement of the mean is the same of the measure.
+So, in this example, it is `KiloGram`, although the member `value` is a primitive number.
+
+The variance is stored in a separate public field, named `variance`.
+
+In theory, the unit of measurement of the variance is the square of the unit of measurement of the measure.
+In this example, it would be `KiloGram²`.
+Though, such value is not actually needed as a measure, and so there is no need to define such a unit of measurement.
+
+The square root of the variance is used often.
+Regarding the probability distribution, it is named `standard deviation`.
+Though, regarding measurements, it is named `absolute uncertainty` or `absolute error`.
+
+Its unit of measurement is the same of the measure.
+The method `uncertainty` computes the square root of the variance, which is returned encapsulated in a Measure.
+
+Approximate measures are printed by Display with their uncertainty, and by Debug with their variance.
+
+```rust
+let mass = ApproxMeasure::<KiloGram>::new(87.3, 0.04); // mean and variance
+assert_eq!(mass_density.uncertainty(), Measure::<KiloGram>::new(0.2)); // standard deviation
+let volume = ApproxMeasure::<CubicMetre>::new(0.3, 0.000144); // mean and variance
+assert_eq!(volume.uncertainty(), Measure::<CubicMetre>::new(0.012)); // standard deviation
+let mass_density = mass / volume;
+assert_eq!(mass_density.value,
+assert_eq!(mass_density.variance,
+assert_eq!(mass_density.uncertainty(),
+```
 
 ## How units of measurement and their relationships are defined
 
