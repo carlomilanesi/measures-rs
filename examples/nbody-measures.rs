@@ -1,4 +1,4 @@
-// Conversion to use the library Rs-measures of benchmark The Computer Language Benchmarks Game
+// Conversion to use the library Measures of the benchmark "The Computer Language Benchmarks Game"
 // https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/nbody-rust-6.html
 //
 // Build with:
@@ -17,6 +17,7 @@ measures::define_measure_types! {
     with_transformations: false,
     exact: true,
     with_approx: false,
+    with_correlation: false,
     [
         Metre 3 == MetrePerSecond 3 * Second 1,
         SquareMetre 1 == Metre 1 * __ 1,

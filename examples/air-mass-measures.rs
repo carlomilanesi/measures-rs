@@ -1,4 +1,4 @@
-// Run with: cargo run --example air_mass-measures
+// Run with: cargo run --example air-mass-measures
 // Expected output:
 // Angle                          0 m              13700 m
 // ---------------------------------------------------------
@@ -30,6 +30,7 @@ measures::define_measure_types! {
     with_transformations: false,
     exact: true,
     with_approx: false,
+    with_correlation: false,
     [
         SquareMeter 1 == Meter 1 * __ 1,
     ]

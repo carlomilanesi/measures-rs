@@ -17,6 +17,7 @@ measures::define_measure_types! {
     with_transformations: false,
     exact: true,
     with_approx: true,
+    with_correlation: false,
     [
         Metre 3 == MetrePerSecond 3 * Second 1,
         SquareMetre 1 == Metre 1 * __ 1,

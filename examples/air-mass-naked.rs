@@ -1,5 +1,5 @@
 // From https://rosettacode.org/wiki/Air_mass#Rust
-// Run with: cargo run --example air_mass-naked
+// Run with: cargo run --example air-mass-naked
 // Expected output:
 // Angle     0 m              13700 m
 // ------------------------------------
