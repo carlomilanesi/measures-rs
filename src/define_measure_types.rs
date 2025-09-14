@@ -15,6 +15,7 @@ macro_rules! define_measure_types {
         with_transformations: $with_transformations:tt,
         exact: $exact:tt,
         with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
         [
             $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
         ]
@@ -79,7 +80,7 @@ macro_rules! define_measure_types {
         }
         $(
             measures::define_units_relationship! {
-                $exact $with_approx,
+                $exact $with_approx $with_correlation,
                 $unit1 $dim1 $unit2 $dim2 $op $unit3 $dim3
             }
         )*

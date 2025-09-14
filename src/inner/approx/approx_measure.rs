@@ -176,7 +176,6 @@ macro_rules! inner_define_approx_measure {
             Number: ArithmeticOps,
         {
             fn add_with_correlation(self, other: ApproxMeasure<Unit, Number>, correlation: Number) -> Self {
-                // Mul // D AB ^2 =  B^2 * DA^2 + A^2 * DB^2 + 2 * A * B * correlation * DA * DB
                 Self::new_with_variance(
                     self.value + other.value,
                     self.variance

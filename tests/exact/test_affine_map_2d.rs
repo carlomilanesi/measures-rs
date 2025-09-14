@@ -10,6 +10,7 @@ measures::define_measure_types! {
     with_transformations: true,
     exact: true,
     with_approx: false,
+    with_correlation: false,
     []
 }
 

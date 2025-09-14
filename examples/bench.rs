@@ -11,6 +11,7 @@ measures::define_measure_types! {
     with_transformations: false,
     exact: true,
     with_approx: true,
+    with_correlation: false,
     []
 }
 
@@ -70,9 +71,9 @@ fn use_naked_numbers(n_data_size: usize) {
     let mut rng: StdRng = SeedableRng::seed_from_u64(0);
 
     for _ in 0..n_data_size {
-        mp1.push(rng.gen::<f64>());
-        mp2.push(rng.gen::<f64>());
-        m1.push(rng.gen::<f64>());
+        mp1.push(rng.random::<f64>());
+        mp2.push(rng.random::<f64>());
+        m1.push(rng.random::<f64>());
     }
 
     let using_directly_f64 = || {
@@ -104,9 +105,9 @@ fn use_measures(n_data_size: usize) {
     let mut rng: StdRng = SeedableRng::seed_from_u64(0);
 
     for _ in 0..n_data_size {
-        mp1.push(MeasurePoint::<Metre>::new(rng.gen::<f64>()));
-        mp2.push(MeasurePoint::<Metre>::new(rng.gen::<f64>()));
-        m1.push(Measure::<Metre>::new(rng.gen::<f64>()));
+        mp1.push(MeasurePoint::<Metre>::new(rng.random::<f64>()));
+        mp2.push(MeasurePoint::<Metre>::new(rng.random::<f64>()));
+        m1.push(Measure::<Metre>::new(rng.random::<f64>()));
     }
 
     let using_measure = || {
@@ -161,15 +162,15 @@ fn use_approx_measures(n_data_size: usize) {
     const UNCERTAINTY: f64 = 0.001;
     for _ in 0..n_data_size {
         mp1.push(ApproxMeasurePoint::<Metre>::new_with_variance(
-            rng.gen::<f64>(),
+            rng.random::<f64>(),
             UNCERTAINTY * UNCERTAINTY,
         ));
         mp2.push(ApproxMeasurePoint::<Metre>::new_with_variance(
-            rng.gen::<f64>(),
+            rng.random::<f64>(),
             UNCERTAINTY * UNCERTAINTY,
         ));
         m1.push(ApproxMeasure::<Metre>::new_with_variance(
-            rng.gen::<f64>(),
+            rng.random::<f64>(),
             UNCERTAINTY * UNCERTAINTY,
         ));
     }

@@ -6,6 +6,7 @@ measures::define_measure_types! {
     with_transformations: false,
     exact: true,
     with_approx: false,
+    with_correlation: false,
     [
         SquareMetre 1 == Metre 1 * __ 1,
         One 1 == Siemens 1 * Ohm 1,

@@ -1,59 +1,59 @@
 #[macro_export]
 macro_rules! define_units_relationship {
-    { $exact:tt $with_approx:tt, $unit1:ident 1 $unit2:ident 1 * __ 1 } => {
-        measures::expand_1_1_same! {$exact $with_approx, $unit2 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 1 * __ 1 } => {
+        measures::expand_1_1_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 1 $unit2:ident 1 * $unit3:ident 1 } => {
-        measures::expand_1_1! {$exact $with_approx, $unit2 $unit3 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 1 * $unit3:ident 1 } => {
+        measures::expand_1_1! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 2 $unit2:ident 1 * $unit3:ident 2 } => {
-        measures::expand_1_2! {$exact $with_approx, $unit2 $unit3 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 $unit2:ident 1 * $unit3:ident 2 } => {
+        measures::expand_1_2! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 2 $unit2:ident 2 * $unit3:ident 1 } => {
-        measures::expand_1_2! {$exact $with_approx, $unit3 $unit2 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 $unit2:ident 2 * $unit3:ident 1 } => {
+        measures::expand_1_2! {$exact $with_approx $with_correlation, $unit3 $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 2 $unit2:ident 1 * $unit3:ident 2} => {
-        measures::expand_1_2! {$exact $with_approx, $unit2 $unit3 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 $unit2:ident 1 * $unit3:ident 2} => {
+        measures::expand_1_2! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 2 $unit2:ident 2 * $unit3:ident 1} => {
-        measures::expand_1_2! {$exact $with_approx, $unit3 $unit2 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 $unit2:ident 2 * $unit3:ident 1} => {
+        measures::expand_1_2! {$exact $with_approx $with_correlation, $unit3 $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 3 $unit2:ident 1 * $unit3:ident 3} => {
-        measures::expand_1_3! {$exact $with_approx, $unit2 $unit3 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 $unit2:ident 1 * $unit3:ident 3} => {
+        measures::expand_1_3! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 3 $unit2:ident 3 * $unit3:ident 1} => {
-        measures::expand_1_3! {$exact $with_approx, $unit3 $unit2 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 $unit2:ident 3 * $unit3:ident 1} => {
+        measures::expand_1_3! {$exact $with_approx $with_correlation, $unit3 $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 1 $unit2:ident 2 * __ 2} => {
-        measures::expand_2_2_same! {$exact $with_approx, $unit2 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 2 * __ 2} => {
+        measures::expand_2_2_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 1 $unit2:ident 2 * $unit3:ident 2} => {
-        measures::expand_2_2! {$exact $with_approx, $unit2 $unit3 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 2 * $unit3:ident 2} => {
+        measures::expand_2_2! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 1 $unit2:ident 3 * __ 3} => {
-        measures::expand_3_3_same! {$exact $with_approx, $unit2 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 3 * __ 3} => {
+        measures::expand_3_3_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 1 $unit2:ident 3 * $unit3:ident 3} => {
-        measures::expand_3_3! {$exact $with_approx, $unit2 $unit3 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 3 * $unit3:ident 3} => {
+        measures::expand_3_3! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 1 $unit2:ident 2 X __ 2 } => {
-        measures::expand_cross_2_same! {$exact $with_approx, $unit2 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 2 X __ 2 } => {
+        measures::expand_cross_2_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 1 $unit2:ident 2 X $unit3:ident 2 } => {
-        measures::expand_cross_2! {$exact $with_approx, $unit2 $unit3 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 2 X $unit3:ident 2 } => {
+        measures::expand_cross_2! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 3 $unit2:ident 3 X __ 3 } => {
-        measures::expand_cross_3_same! {$exact $with_approx, $unit2 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 $unit2:ident 3 X __ 3 } => {
+        measures::expand_cross_3_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt, $unit1:ident 3 $unit2:ident 3 X $unit3:ident 3 } => {
-        measures::expand_cross_3! {$exact $with_approx, $unit2 $unit3 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 $unit2:ident 3 X $unit3:ident 3 } => {
+        measures::expand_cross_3! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
 }
 
 #[macro_export]
 macro_rules! expand_1_1 {
     {
-        $exact:ident $with_approx:ident,
+        $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
         measures::if_all_true! { {$exact}
@@ -95,12 +95,9 @@ macro_rules! expand_1_1 {
             impl<Number: ArithmeticOps> Mul<ApproxMeasure<$unit2, Number>> for ApproxMeasure<$unit1, Number> {
                 type Output = ApproxMeasure<$unit3, Number>;
                 fn mul(self, other: ApproxMeasure<$unit2, Number>) -> Self::Output {
-                    let value_product = self.value * other.value;
                     Self::Output::new_with_variance(
-                        value_product,
-                        value_product *
-                            (other.value * self.variance / self.value +
-                            self.value * other.variance / other.value),
+                        self.value * other.value,
+                        other.value * other.value * self.variance + self.value * self.value * other.variance
                     )
                 }
             }
@@ -147,13 +144,25 @@ macro_rules! expand_1_1 {
                 }
             }
         }
+
+        measures::if_all_true! { {$with_correlation}
+            impl<Number: ArithmeticOps> ApproxMeasure<$unit1, Number> {
+                fn multiply_with_correlation(self, other: ApproxMeasure<$unit2, Number>, correlation: Number) -> ApproxMeasure<$unit3, Number> {
+                    let value_product = self.value * other.value;
+                    ApproxMeasure::<$unit3, Number>::new_with_variance(
+                        value_product,
+                        other.value * other.value * self.variance + self.value * self.value * other.variance + (Number::ONE + Number::ONE) * self.value * other.value * correlation * self.variance.sqrt() * other.variance.sqrt(),
+                    )
+                }
+            }
+        }
     };
 }
 
 #[macro_export]
 macro_rules! expand_1_1_same {
     {
-        $exact:ident $with_approx:ident,
+        $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit3:ident
     } => {
         measures::if_all_true! { {$exact}
@@ -246,7 +255,7 @@ macro_rules! expand_1_1_same {
 #[macro_export]
 macro_rules! expand_1_2 {
     {
-        $exact:ident $with_approx:ident,
+        $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
         // Measure<U1> * Measure2d<U2> -> Measure2d<U3>
@@ -278,7 +287,7 @@ macro_rules! expand_1_2 {
 #[macro_export]
 macro_rules! expand_1_3 {
     {
-        $exact:ident $with_approx:ident,
+        $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
         // Measure<U1> * Measure3d<U2> -> Measure3d<U3>
@@ -374,7 +383,7 @@ macro_rules! expand_1_3 {
 #[macro_export]
 macro_rules! expand_2_2 {
     {
-        $exact:ident $with_approx:ident,
+        $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
         // Measure2d<U1> * Measure2d<U2> -> Measure<U3>
@@ -401,7 +410,7 @@ macro_rules! expand_2_2 {
 #[macro_export]
 macro_rules! expand_2_2_same {
     {
-        $exact:ident $with_approx:ident,
+        $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident
     } => {
         // Measure2d<U1> * Measure2d<U1> -> Measure<U3>
@@ -427,7 +436,7 @@ macro_rules! expand_2_2_same {
 #[macro_export]
 macro_rules! expand_3_3_same {
     {
-        $exact:ident $with_approx:ident,
+        $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident
     } => {
         // Measure3d<U1> * Measure3d<U1> -> Measure<U3>
@@ -487,7 +496,7 @@ macro_rules! expand_3_3_same {
 #[macro_export]
 macro_rules! expand_3_3 {
     {
-        $exact:ident $with_approx:ident,
+        $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
         // Measure3d<U1> * Measure3d<U2> -> Measure<U3>
@@ -557,7 +566,7 @@ macro_rules! expand_3_3 {
 #[macro_export]
 macro_rules! expand_cross_2_same {
     {
-        $exact:ident $with_approx:ident,
+        $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident
     } => {
         // Measure2d<U1>.cross_product(Measure2d<U1>) -> Measure<U3>
@@ -576,7 +585,7 @@ macro_rules! expand_cross_2_same {
 #[macro_export]
 macro_rules! expand_cross_2 {
     {
-        $exact:ident $with_approx:ident,
+        $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
         // Measure2d<U1>.cross_product(Measure2d<U2>) -> Measure<U3>
@@ -603,7 +612,7 @@ macro_rules! expand_cross_2 {
 #[macro_export]
 macro_rules! expand_cross_3_same {
     {
-        $exact:ident $with_approx:ident,
+        $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident
     } => {
         // Measure3d<U1>.cross_product(Measure3d<U1>) -> Measure<U3>
@@ -626,7 +635,7 @@ macro_rules! expand_cross_3_same {
 #[macro_export]
 macro_rules! expand_cross_3 {
     {
-        $exact:ident $with_approx:ident,
+        $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
         // Measure3d<U1>.cross_product(Measure3d<U2>) -> Measure<U4>

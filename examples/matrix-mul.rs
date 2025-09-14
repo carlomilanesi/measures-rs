@@ -9,6 +9,7 @@ measures::define_measure_types! {
     with_transformations: false,
     exact: true,
     with_approx: true,
+    with_correlation: false,
     [
         Joule 1 == Newton 1 * Metre 1,
     ]

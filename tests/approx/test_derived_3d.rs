@@ -8,12 +8,13 @@ measures::define_measure_types! {
     with_transformations: false,
     exact: true,
     with_approx: false,
+    with_correlation: false,
     [
-    Metre 3 == MetrePerSecond 3 * Second 1,
-    Metre 1 == Metre 3 * __ 3,
-    Joule 1 == Newton 3 * Metre 3,
-    NewtonMetre 3 == Newton 3 X Metre 3,
-    Metre 3 == Metre 3 X __ 3,
+        Metre 3 == MetrePerSecond 3 * Second 1,
+        Metre 1 == Metre 3 * __ 3,
+        Joule 1 == Newton 3 * Metre 3,
+        NewtonMetre 3 == Newton 3 X Metre 3,
+        Metre 3 == Metre 3 X __ 3,
     ]
 }
 

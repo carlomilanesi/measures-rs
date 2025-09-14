@@ -8,6 +8,7 @@ measures::define_measure_types! {
     with_transformations: false,
     exact: true,
     with_approx: false,
+    with_correlation: false,
     [
         Metre 2 == MetrePerSecond 2 * Second 1,
         Metre 1 == Metre 2 * __ 2,
