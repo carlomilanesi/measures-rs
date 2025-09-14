@@ -13,9 +13,11 @@ publish = true
 name = "measures"
 
 [dev-dependencies]
-nalgebra = "0.32.3"
-trybuild = { version = "1.0", features = ["diff"] }
-rand = "0.8.5"
-faer = "0.17.1"
-ndarray = "0.15.6"
-num-traits = "0.2.18"
+
+[dependencies]
+faer = "0.22.6"
+nalgebra = "0.34.0"
+ndarray = "0.16.1"
+num-traits = "0.2.19"
+rand = "0.9.2"
+trybuild = "1.0.111"
