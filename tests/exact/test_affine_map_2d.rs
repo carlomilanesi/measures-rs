@@ -3,14 +3,7 @@ use std::f64::consts::TAU;
 use measures::{assert_eq_32, assert_eq_64};
 
 measures::define_measure_types! {
-    with_points: true,
-    with_directions: true,
-    with_2d: true,
-    with_3d: false,
-    with_transformations: true,
-    exact: true,
-    with_approx: false,
-    with_correlation: false,
+    with_points with_directions with_2d with_transformations exact,
     []
 }
 

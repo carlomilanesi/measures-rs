@@ -1,13 +1,6 @@
 use std::f64::consts::TAU;
 measures::define_measure_types! {
-    with_points: true,
-    with_directions: false,
-    with_2d: false,
-    with_3d: true,
-    with_transformations: true,
-    exact: true,
-    with_approx: false,
-    with_correlation: false,
+    with_points with_3d with_transformations exact,
     []
 }
 

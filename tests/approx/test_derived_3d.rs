@@ -1,14 +1,7 @@
 use measures::traits::CrossProduct;
 
 measures::define_measure_types! {
-    with_points: false,
-    with_directions: false,
-    with_2d: false,
-    with_3d: true,
-    with_transformations: false,
-    exact: true,
-    with_approx: false,
-    with_correlation: false,
+    with_3d exact,
     [
         Metre 3 == MetrePerSecond 3 * Second 1,
         Metre 1 == Metre 3 * __ 3,

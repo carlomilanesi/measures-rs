@@ -6,8 +6,10 @@ macro_rules! if_all_true {
 }
 
 #[macro_export]
-macro_rules! define_measure_types {
+macro_rules! define_measure_types_aux {
+    // Empty case
     {
+        ,
         with_points: $with_points:tt,
         with_directions: $with_directions:tt,
         with_2d: $with_2d:tt,
@@ -84,5 +86,390 @@ macro_rules! define_measure_types {
                 $unit1 $dim1 $unit2 $dim2 $op $unit3 $dim3
             }
         )*
+    };
+
+    // First option is "with_points"
+    {
+        with_points $( $flag:ident ) *,
+        with_points: false,
+        with_directions: $with_directions:tt,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        with_transformations: $with_transformations:tt,
+        exact: $exact:tt,
+        with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => { measures::define_measure_types_aux!{
+        $( $flag ) *,
+        with_points: true,
+        with_directions: $with_directions,
+        with_2d: $with_2d,
+        with_3d: $with_3d,
+        with_transformations: $with_transformations,
+        exact: $exact,
+        with_approx: $with_approx,
+        with_correlation: $with_correlation,
+        [
+            $( $unit1 $dim1 == $unit2 $dim2 $op $unit3 $dim3 ,)*
+        ]
+    }};
+    {
+        with_points $( $flag:ident ) *,
+        with_points: true,
+        with_directions: $with_directions:tt,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        with_transformations: $with_transformations:tt,
+        exact: $exact:tt,
+        with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => {
+        compile_error!("Feature `with_points` specified several times");
+    };
+
+    // First option is "with_directions"
+    {
+        with_directions $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: false,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        with_transformations: $with_transformations:tt,
+        exact: $exact:tt,
+        with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => { measures::define_measure_types_aux!{
+        $( $flag ) *,
+        with_points: $with_points,
+        with_directions: true,
+        with_2d: $with_2d,
+        with_3d: $with_3d,
+        with_transformations: $with_transformations,
+        exact: $exact,
+        with_approx: $with_approx,
+        with_correlation: $with_correlation,
+        [
+            $( $unit1 $dim1 == $unit2 $dim2 $op $unit3 $dim3 ,)*
+        ]
+    }};
+    {
+        with_directions $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: true,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        with_transformations: $with_transformations:tt,
+        exact: $exact:tt,
+        with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => {
+        compile_error!("Feature `with_directions` specified several times");
+    };
+
+    // First option is "with_2d"
+    {
+        with_2d $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: $with_directions:tt,
+        with_2d: false,
+        with_3d: $with_3d:tt,
+        with_transformations: $with_transformations:tt,
+        exact: $exact:tt,
+        with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => { measures::define_measure_types_aux!{
+        $( $flag ) *,
+        with_points: $with_points,
+        with_directions: $with_directions,
+        with_2d: true,
+        with_3d: $with_3d,
+        with_transformations: $with_transformations,
+        exact: $exact,
+        with_approx: $with_approx,
+        with_correlation: $with_correlation,
+        [
+            $( $unit1 $dim1 == $unit2 $dim2 $op $unit3 $dim3 ,)*
+        ]
+    }};
+    {
+        with_2d $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: $with_directions:tt,
+        with_2d: true,
+        with_3d: $with_3d:tt,
+        with_transformations: $with_transformations:tt,
+        exact: $exact:tt,
+        with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => {
+        compile_error!("Feature `with_2d` specified several times");
+    };
+
+    // First option is "with_3d"
+    {
+        with_3d $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: $with_directions:tt,
+        with_2d: $with_2d:tt,
+        with_3d: false,
+        with_transformations: $with_transformations:tt,
+        exact: $exact:tt,
+        with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => { measures::define_measure_types_aux!{
+        $( $flag ) *,
+        with_points: $with_points,
+        with_directions: $with_directions,
+        with_2d: $with_2d,
+        with_3d: true,
+        with_transformations: $with_transformations,
+        exact: $exact,
+        with_approx: $with_approx,
+        with_correlation: $with_correlation,
+        [
+            $( $unit1 $dim1 == $unit2 $dim2 $op $unit3 $dim3 ,)*
+        ]
+    }};
+    {
+        with_3d $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: $with_directions:tt,
+        with_2d: $with_2d:tt,
+        with_3d: true,
+        with_transformations: $with_transformations:tt,
+        exact: $exact:tt,
+        with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => {
+        compile_error!("Feature `with_3d` specified several times");
+    };
+
+    // First option is "with_transformations"
+    {
+        with_transformations $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: $with_directions:tt,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        with_transformations: false,
+        exact: $exact:tt,
+        with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => { measures::define_measure_types_aux!{
+        $( $flag ) *,
+        with_points: $with_points,
+        with_directions: $with_directions,
+        with_2d: $with_2d,
+        with_3d: $with_3d,
+        with_transformations: true,
+        exact: $exact,
+        with_approx: $with_approx,
+        with_correlation: $with_correlation,
+        [
+            $( $unit1 $dim1 == $unit2 $dim2 $op $unit3 $dim3 ,)*
+        ]
+    }};
+    {
+        with_transformations $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: $with_directions:tt,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        with_transformations: true,
+        exact: $exact:tt,
+        with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => {
+        compile_error!("Feature `with_transformations` specified several times");
+    };
+
+    // First option is "exact"
+    {
+        exact $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: $with_directions:tt,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        with_transformations: $with_transformations:tt,
+        exact: false,
+        with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => { measures::define_measure_types_aux!{
+        $( $flag ) *,
+        with_points: $with_points,
+        with_directions: $with_directions,
+        with_2d: $with_2d,
+        with_3d: $with_3d,
+        with_transformations: $with_transformations,
+        exact: true,
+        with_approx: $with_approx,
+        with_correlation: $with_correlation,
+        [
+            $( $unit1 $dim1 == $unit2 $dim2 $op $unit3 $dim3 ,)*
+        ]
+    }};
+    {
+        exact $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: $with_directions:tt,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        with_transformations: $with_transformations:tt,
+        exact: true,
+        with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => {
+        compile_error!("Feature `exact` specified several times");
+    };
+
+    // First option is "with_approx"
+    {
+        with_approx $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: $with_directions:tt,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        with_transformations: $with_transformations:tt,
+        exact: $exact:tt,
+        with_approx: false,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => { measures::define_measure_types_aux!{
+        $( $flag ) *,
+        with_points: $with_points,
+        with_directions: $with_directions,
+        with_2d: $with_2d,
+        with_3d: $with_3d,
+        with_transformations: $with_transformations,
+        exact: $exact,
+        with_approx: true,
+        with_correlation: $with_correlation,
+        [
+            $( $unit1 $dim1 == $unit2 $dim2 $op $unit3 $dim3 ,)*
+        ]
+    }};
+    {
+        with_approx $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: $with_directions:tt,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        with_transformations: $with_transformations:tt,
+        exact: $exact:tt,
+        with_approx: true,
+        with_correlation: $with_correlation:tt,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => {
+        compile_error!("Feature `with_approx` specified several times");
+    };
+
+    // First option is "with_correlation"
+    {
+        with_correlation $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: $with_directions:tt,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        with_transformations: $with_transformations:tt,
+        exact: $exact:tt,
+        with_approx: $with_approx:tt,
+        with_correlation: false,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => { measures::define_measure_types_aux!{
+        $( $flag ) *,
+        with_points: $with_points,
+        with_directions: $with_directions,
+        with_2d: $with_2d,
+        with_3d: $with_3d,
+        with_transformations: $with_transformations,
+        exact: $exact,
+        with_approx: $with_approx,
+        with_correlation: true,
+        [
+            $( $unit1 $dim1 == $unit2 $dim2 $op $unit3 $dim3 ,)*
+        ]
+    }};
+    {
+        with_correlation $( $flag:ident ) *,
+        with_points: $with_points:tt,
+        with_directions: $with_directions:tt,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        with_transformations: $with_transformations:tt,
+        exact: $exact:tt,
+        with_approx: $with_approx:tt,
+        with_correlation: true,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => {
+        compile_error!("Feature `with_correlation` specified several times");
+    };
+}
+
+#[macro_export]
+macro_rules! define_measure_types {
+    {
+        $( $flag:ident )* ,
+        [
+            $( $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt ,)*
+        ]
+    } => {
+        measures::define_measure_types_aux! {
+            $( $flag ) * ,
+            with_points: false,
+            with_directions: false,
+            with_2d: false,
+            with_3d: false,
+            with_transformations: false,
+            exact: false,
+            with_approx: false,
+            with_correlation: false,
+            [
+                $( $unit1 $dim1 == $unit2 $dim2 $op $unit3 $dim3 , )*
+            ]
+        }
     };
 }

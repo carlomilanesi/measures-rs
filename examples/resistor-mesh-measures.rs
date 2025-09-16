@@ -1,12 +1,5 @@
 measures::define_measure_types! {
-    with_points: false,
-    with_directions: false,
-    with_2d: false,
-    with_3d: false,
-    with_transformations: false,
-    exact: true,
-    with_approx: false,
-    with_correlation: false,
+    exact,
     [
         Volt 1 == Ampere 1 * Ohm 1,
         SquareAmpere 1 == Ampere 1 * __ 1,

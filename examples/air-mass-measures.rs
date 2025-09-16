@@ -23,14 +23,7 @@
 // at 90 deg (in 0°..360°)      34.32981136      34.36666557
 
 measures::define_measure_types! {
-    with_points: false,
-    with_directions: true,
-    with_2d: false,
-    with_3d: false,
-    with_transformations: false,
-    exact: true,
-    with_approx: false,
-    with_correlation: false,
+    with_directions exact,
     [
         SquareMeter 1 == Meter 1 * __ 1,
     ]

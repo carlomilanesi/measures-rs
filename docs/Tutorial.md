@@ -888,7 +888,8 @@ Let's see its contents.
 
 It begins with this statement:
 ```rust
-measures::define_1d_2d_3d! {}
+measures::define_measure_types! {
+    with_points with_directions with_2d with_3d with_transformations exact,
 ```
 
 This is a macro invocation which expands to the code which defines these types:
@@ -905,22 +906,23 @@ This is a macro invocation which expands to the code which defines these types:
 * `LinearMap3d`
 * `AffineMap3d`.
 
+Therefore, if there is the need to work in 1D, in 2D, in 3D and using angular directions, the macro `define_measure_types` with such arguments should be used. It will declare every kind of measure, directions and transformations.
 
-Therefore, if there is the need to work in 1D, in 2D, in 3D and using angular directions, the macro `define_1d_2d_3d` should be used. It will declare every kind of measure, directions and transformations.
+Though, if only some of such types are needed, you can remove some of those arguments, and so reduce the number of declared types. In this way, the resulting code is quicker to compile, and developers are not bothered by unneeded types.
 
-Though, if only some of such types are needed, you can use some other macros, with reduce the number of declared types, and so the resulting code is quicker to compile, and developers are not bothered by unneeded types.
+If points in affine spaces are not needed, remove the option `with_points`. The types `MeasurePoint`, `MeasurePoint2d`, `AffineMap2d`, `MeasurePoint3d` and `AffineMap3d` will not be generated.
 
-If only 1D and 3D measures and transformations are needed, with no angular directions, it is better to use the macro `define_1d_3d`. It will declare only 1D and 3D measures and transformations, skipping 2D measures and transformations and angular directions.
+If angular directions are not needed, remove the option `with_points`. The types `UnsignedDirections` and `SignedDirections` will not be generated.
 
-If only 1D and 2D measures and transformations are needed, possibly with angular directions, it is better to use the macro `define_1d_2d`. It will declare only 1D and 2D measures and transformations, and the angular directions, skipping 3D measures and transformation.
+If 2-dimension measures are not needed, remove the option `with_2d`. The types `Measure2d`, `MeasurePoint2d`, `LinearMap2d` and `AffineMap2d` will not be generated.
 
-If only 1D measures and angular directions are needed, it is better to use the macro `define_1d_and_directions`. It will define only 1D measures and the angular directions, skipping both 2D and 3D measures and transformations.
+If 3-dimension measures are not needed, remove the option `with_3d`. The types `Measure3d`, `MeasurePoint3d`, `LinearMap3d` and `AffineMap3d` will not be generated.
 
-And at last, if only 1D measures are needed, it is better to use the macro `define_1d`. It will define only 1D measures, skipping 2D and 3D measures and transformations, and the angular directions.
+If the linear or affine transformations in a plane or in the space are not needed, remove the option `with_transformations`. The types `LinearMap2d`, `AffineMap2d`, `LinearMap3d` and `AffineMap3d` will not be generated.
 
 Actually these definitions do not define all the units of measurement we used in our examples.
 
-The only predefined unit of measurement is `Radian` which is used for angles. Every other unit must be explicitly defined.
+The only predefined units of measurement are `Radian`, used for angles, and `One` used for dimensionless measures. Every other unit must be explicitly defined.
 
 ### Defining properties
 

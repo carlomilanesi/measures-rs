@@ -2,14 +2,7 @@
 //     cargo run --release --example matrix-mul
 
 measures::define_measure_types! {
-    with_points: false,
-    with_directions: false,
-    with_2d: false,
-    with_3d: false,
-    with_transformations: false,
-    exact: true,
-    with_approx: true,
-    with_correlation: false,
+    exact with_approx,
     [
         Joule 1 == Newton 1 * Metre 1,
     ]

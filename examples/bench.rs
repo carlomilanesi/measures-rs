@@ -4,14 +4,7 @@
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
 measures::define_measure_types! {
-    with_points: true,
-    with_directions: false,
-    with_2d: false,
-    with_3d: false,
-    with_transformations: false,
-    exact: true,
-    with_approx: true,
-    with_correlation: false,
+    with_points exact with_approx,
     []
 }
 
