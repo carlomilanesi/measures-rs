@@ -1,4 +1,4 @@
-#[macro_export]
+#[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure {
     {$with_approx:ident} => {
         pub struct Measure<Unit, Number = f64>
@@ -385,7 +385,7 @@ macro_rules! inner_define_measure {
             Number: ArithmeticOps,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-                fmt::Display::fmt(&self.0.value.to_decibel(), formatter)?;
+                fmt::Display::fmt(&self.0.value.to_decibels(), formatter)?;
                 formatter.write_str(" dB")?;
                 formatter.write_str(Unit::SUFFIX)
             }
@@ -398,7 +398,7 @@ macro_rules! inner_define_measure {
             Number: ArithmeticOps,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-                fmt::Display::fmt(&self.0.value.to_decibel(), formatter)?;
+                fmt::Display::fmt(&self.0.value.to_decibels(), formatter)?;
                 formatter.write_str(" dB")?;
                 formatter.write_str(Unit::SUFFIX)
             }

@@ -1,4 +1,4 @@
-#[macro_export]
+#[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_approx_measure_point {
     {$exact:tt} => {
         /// Approximate point measurement with static unit of measurement and value type,

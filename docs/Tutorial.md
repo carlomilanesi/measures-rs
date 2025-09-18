@@ -691,7 +691,7 @@ Here is the complete list of methods of `AffineMap3d`, which can be used to crea
 ## Mixed-unit operations
 
 So far, we have never multiplied one measure by another, nor divided two measures having different units.
-Though, using the library rs-measures, it is allowed to write:
+Though, using the crate `measures`, it is allowed to write:
 ```rust
     let length = Measure::<Metre>::new(10.);
     let time = Measure::<Second>::new(4.);
@@ -1183,32 +1183,44 @@ fn main() {
 
 ## Using decibels
 
-For some measures, it is customary to used logarithmic values, typically in form of decibels, that are tenths of the 10-base logarithm of the actual value.
+For some kinds of measures, it is customary to use logarithmic values, typically in form of decibels, that are tenths of the 10-base logarithm of the actual value.
 
-The library rs-measures supports decibels only for the type `Measure`, as show in the following code:
+For example, if we have a measure of 0.001 watts, we can compute its 10-base logarithms, obtaining -3.
+So, this measure can be said to be -30 decibels of watts, or `-30 db W`.
+
+The crate `measures` supports decibels only for the type `Measure`, as shown in the following code:
 ```rust
-    let m = Measure::<Watt>::new(measures::traits::Decibel::from_decibel(-30.));
-    let val = m.value.to_decibel();
-    print!("{:.4}, {:.1}, {:.1};", m, val, m.format_in_decibels());
+    use measures::traits::Decibel;
+    let one_milliwatt = Measure::<Watt>::new(0.001);
+    print!("{one_milliwatt:.4}"); // 0.0010 W
+    let one_milliwatt_in_db = one_milliwatt.value.to_decibels();
+    print!(", {one_milliwatt_in_db:.1}"); // -30.0
+    let one_milliwatt_value = Decibel::from_decibels(one_milliwatt_in_db);
+    print!(", {one_milliwatt_value:.4}"); // 0.0010
+    print!(", {:.4};", one_milliwatt.format_in_decibels()); // -30.0000 dB W
 ```
 
-It will print: `0.0010 W, -30.0, -30.0 dB W;`.
+It will print: `0.0010 W, -30.0, 0.0010, -30.0000 dB W;`.
 
-Actually, the `m` is a usual measure, with its inner value of `0.001` watts, i.e. one milliwatt.
+Actually, the variable `one_milliwatt` is a usual measure, with its inner value of `0.001` watts, i.e. one milliwatt.
 It is printed as `0.0010 W`.
-Though, it is initialized by using a value corresponding to `-30` decibels, obtained by calling the method `from_decibel`, implemented for `f32` and for `f64`.
 
-Then, to get the value in decibels, the method `to_decibels` is called on the numeric value, also implemented for `f32` and for `f64`.
-It is printed as `-30.0`.
+Then, its value is converted to its corresponding decibels value, by calling the method `to_decibels`.
+The result is a number, and it is printed as `-30.0`.
 
-All this has little to do with the type `Measure`.
-The only method belonging to `Measure` is `format_in_decibels`, which returns an object of type `DecibelFormattedMeasure`, which encapsulates the measure, and which implements the traits `Display` and `Debug`.
+Then, this decibels value is converted back to its corresponding linear value, by calling the function `from_decibels`.
+The result is a number, and it is printed as `0.0010`.
+
+These operations are defined in the trait `Decibel`, implemented for the types `f32` and `f64`.
+
+Then, to print the decibels corresponding to the measure `one_milliwatt`, its method `format_in_decibels` is called.
+It returns an object of type `DecibelFormattedMeasure`, which encapsulates the measure, and which implements the traits `Display` and `Debug`.
 Such implementations cause that, when this object is printed, it will show the string "` dB`" between the numeric value and the unit suffix.
 Therefore, it is printed as `-30.0 dB W`.
 
 ## The trait `Default`
 
-For any type defined by Rs-measures, i.e. `Measure`, `MeasurePoint`, `Measure2d`, `MeasurePoint2d`, `Measure3d`, `MeasurePoint3d`, `LinearMap2d`, `LinearMap3d`, `AffineMap2d`, `AffineMap3d`, `UnsignedDirection`, and `SignedDirection`, the trait `Default` is implemented.
+For any type defined by the crate `measures`, i.e. `Measure`, `MeasurePoint`, `Measure2d`, `MeasurePoint2d`, `Measure3d`, `MeasurePoint3d`, `LinearMap2d`, `LinearMap3d`, `AffineMap2d`, `AffineMap3d`, `UnsignedDirection`, and `SignedDirection`, the trait `Default` is implemented.
 
 For the four transformations types, the method `default()` returns an *identity* transformation, not a zero transformation.
 For all the other types, `default()` returns a *zero* object, i.e. an object encapsulating one or more zero numbers.

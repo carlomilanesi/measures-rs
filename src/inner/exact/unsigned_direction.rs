@@ -1,4 +1,4 @@
-#[macro_export]
+#[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_unsigned_direction {
     { $with_points:ident } => {
         pub struct UnsignedDirection<Unit, Number = f64> {

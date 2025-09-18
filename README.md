@@ -1,9 +1,9 @@
-# rs-measures
+# `measures-rs`
 
-[![Crates.io](https://img.shields.io/crates/v/rs-measures.svg)](https://crates.io/crates/rs-measures)
-[![Docs.rs](https://docs.rs/rs-measures/badge.svg)](https://docs.rs/rs-measures)
-[![CI](https://github.com/carlomilanesi/rs-measures/workflows/Continuous%20Integration/badge.svg)](https://github.com/carlomilanesi/rs-measures/actions)
-[![Coverage Status](https://coveralls.io/repos/github/carlomilanesi/rs-measures/badge.svg?branch=master)](https://coveralls.io/github/carlomilanesi/rs-measures?branch=master)
+[![Crates.io](https://img.shields.io/crates/v/measures-rs.svg)](https://crates.io/crates/measures-rs)
+[![Docs.rs](https://docs.rs/measures-rs/badge.svg)](https://docs.rs/measures-rs)
+[![CI](https://github.com/carlomilanesi/measures-rs/workflows/Continuous%20Integration/badge.svg)](https://github.com/carlomilanesi/measures-rs/actions)
+[![Coverage Status](https://coveralls.io/repos/github/carlomilanesi/measures-rs/badge.svg?branch=master)](https://coveralls.io/github/carlomilanesi/measures-rs?branch=master)
 
 ## Description
 
@@ -21,7 +21,7 @@ The documentation is in these files:
 
 There are several examples:
 * [**`full`**](units-relation/examples/full.rs): Very long print of the provided examples of units of measures, and of the results of any supported operation.
-* [**`bench`**](units-relation/examples/bench.rs), [**`bench2`**](rs-measures/examples/bench2.rs): Simple check of speed, compared with naked numbers or with the crate `nalgebra`.
+* [**`bench`**](units-relation/examples/bench.rs), [**`bench2`**](measures-rs/examples/bench2.rs): Simple check of speed, compared with naked numbers or with the crate `nalgebra`.
 * [**`base`**](units-relation/examples/base.rs), [**`mks`**](units-relation/examples/mks.rs), [**`si`**](units-relation/examples/si.rs), [**`unit`**](units-relation/examples/unit.rs): Translation for Measures of the examples included in the crate `uom` version 0.35.0.
 * [**`nbody-measures`**](units-relation/examples/nbody-measures.rs): It is put beside example [**`nbody-naked`**](units-relation/examples/nbody-naked.rs). The latter is a benchmark program not using any external libraries, nor units of measurement, taken from *The Computer Language Benchmarks Game*. The former is a translation to a version using this library. At the beginning of both files, it is explained how to use them. In a specific setting, it appears that `nbody-measures` takes 11% more time than `nbody-naked`.
 

@@ -50,12 +50,14 @@ macro_rules! define_units_relationship {
     };
 }
 
+// Generates the operator overloads to multiply and divide two 1-D measures having different units.
 #[macro_export]
 macro_rules! expand_1_1 {
     {
         $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
+        // Operations for exact measures.
         measures::if_all_true! { {$exact}
             // Measure<U1> * Measure<U2> -> Measure<U3>
             impl<Number: ArithmeticOps> Mul<Measure<$unit2, Number>> for Measure<$unit1, Number> {
@@ -90,6 +92,7 @@ macro_rules! expand_1_1 {
             }
         }
 
+        // Operations for measures with a variance.
         measures::if_all_true! { {$with_approx}
             // ApproxMeasure<U1> * ApproxMeasure<U2> -> ApproxMeasure<U3>
             impl<Number: ArithmeticOps> Mul<ApproxMeasure<$unit2, Number>> for ApproxMeasure<$unit1, Number> {
@@ -145,9 +148,41 @@ macro_rules! expand_1_1 {
             }
         }
 
+        // Operations with correlation, for measures with a variance.
         measures::if_all_true! { {$with_correlation}
+            // ApproxMeasure<U1>.multiply_with_correlation(ApproxMeasure<U2>, Number) -> ApproxMeasure<U3>
             impl<Number: ArithmeticOps> ApproxMeasure<$unit1, Number> {
                 fn multiply_with_correlation(self, other: ApproxMeasure<$unit2, Number>, correlation: Number) -> ApproxMeasure<$unit3, Number> {
+                    ApproxMeasure::<$unit3, Number>::new_with_variance(
+                        self.value * other.value,
+                        other.value * other.value * self.variance + self.value * self.value * other.variance + (Number::ONE + Number::ONE) * self.value * other.value * correlation * self.variance.sqrt() * other.variance.sqrt(),
+                    )
+                }
+            }
+
+            // ApproxMeasure<U2>.multiply_with_correlation(ApproxMeasure<U1>, Number) -> ApproxMeasure<U3>
+            impl<Number: ArithmeticOps> ApproxMeasure<$unit1, Number> {
+                fn multiply_with_correlation(self, other: ApproxMeasure<$unit2, Number>, correlation: Number) -> ApproxMeasure<$unit3, Number> {
+                    other.multiply_with_correlation(self, correlation)
+                }
+            }
+
+            // ApproxMeasure<U3>.divide_with_correlation(ApproxMeasure<U1>, Number) -> ApproxMeasure<U2>
+            impl<Number: ArithmeticOps> ApproxMeasure<$unit1, Number> {
+                fn divide_with_correlation(self, other: ApproxMeasure<$unit2, Number>, correlation: Number) -> ApproxMeasure<$unit3, Number> {
+                    //TODO: Verify this formula.
+                    let value_product = self.value * other.value;
+                    ApproxMeasure::<$unit3, Number>::new_with_variance(
+                        value_product,
+                        other.value * other.value * self.variance + self.value * self.value * other.variance + (Number::ONE + Number::ONE) * self.value * other.value * correlation * self.variance.sqrt() * other.variance.sqrt(),
+                    )
+                }
+            }
+
+            // ApproxMeasure<U3>.divide_with_correlation(ApproxMeasure<U2>, Number) -> ApproxMeasure<U1>
+            impl<Number: ArithmeticOps> ApproxMeasure<$unit1, Number> {
+                fn divide_with_correlation(self, other: ApproxMeasure<$unit2, Number>, correlation: Number) -> ApproxMeasure<$unit3, Number> {
+                    //TODO: Verify this formula.
                     let value_product = self.value * other.value;
                     ApproxMeasure::<$unit3, Number>::new_with_variance(
                         value_product,
@@ -159,6 +194,7 @@ macro_rules! expand_1_1 {
     };
 }
 
+// Generates the operator overloads to multiply and divide two 1-D measures having the same unit.
 #[macro_export]
 macro_rules! expand_1_1_same {
     {
@@ -252,6 +288,7 @@ macro_rules! expand_1_1_same {
     };
 }
 
+// Generates the operator overloads to multiply and divide a 1-D measure and a 2-D measure.
 #[macro_export]
 macro_rules! expand_1_2 {
     {
@@ -284,6 +321,7 @@ macro_rules! expand_1_2 {
     };
 }
 
+// Generates the operator overloads to multiply and divide a 1-D measure and a 3-D measure.
 #[macro_export]
 macro_rules! expand_1_3 {
     {
@@ -380,6 +418,7 @@ macro_rules! expand_1_3 {
     };
 }
 
+// Generates the operator overloads to compute the dot product (`*`) of two 2-D measures having different units.
 #[macro_export]
 macro_rules! expand_2_2 {
     {
@@ -407,6 +446,7 @@ macro_rules! expand_2_2 {
     };
 }
 
+// Generates the operator overloads to compute the dot product (`*`) of two 2-D measures having the same unit.
 #[macro_export]
 macro_rules! expand_2_2_same {
     {
@@ -433,6 +473,7 @@ macro_rules! expand_2_2_same {
     };
 }
 
+// Generates the operator overloads to compute the dot product (`*`) of two 3-D measures having the same unit.
 #[macro_export]
 macro_rules! expand_3_3_same {
     {
@@ -493,6 +534,7 @@ macro_rules! expand_3_3_same {
     };
 }
 
+// Generates the operator overloads to compute the dot product (`*`) of two 3-D measures having different units.
 #[macro_export]
 macro_rules! expand_3_3 {
     {
@@ -563,6 +605,7 @@ macro_rules! expand_3_3 {
     };
 }
 
+// Generates the function to compute the cross product of two 2-D measures having the same unit.
 #[macro_export]
 macro_rules! expand_cross_2_same {
     {
@@ -582,6 +625,7 @@ macro_rules! expand_cross_2_same {
     };
 }
 
+// Generates the functions to compute the cross product of two 2-D measures having different units.
 #[macro_export]
 macro_rules! expand_cross_2 {
     {
@@ -609,6 +653,7 @@ macro_rules! expand_cross_2 {
     };
 }
 
+// Generates the function to compute the cross product of two 3-D measures having the same unit.
 #[macro_export]
 macro_rules! expand_cross_3_same {
     {
@@ -632,6 +677,7 @@ macro_rules! expand_cross_3_same {
     };
 }
 
+// Generates the functions to compute the cross product of two 3-D measures having different units.
 #[macro_export]
 macro_rules! expand_cross_3 {
     {

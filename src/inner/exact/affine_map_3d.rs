@@ -1,4 +1,4 @@
-#[macro_export]
+#[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_affine_map_3d {
     {} => {
         pub struct AffineMap3d<Unit: MeasurementUnit, Number: ArithmeticOps = f64> {

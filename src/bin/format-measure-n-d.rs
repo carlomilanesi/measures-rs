@@ -1,3 +1,7 @@
+// It expects two arguments: an option (comment, uncomment),
+// and a pathname of a Rust source file.
+// If the first argument is "comment", it calls `comment_lines` with the pathname,
+// if it is "uncomment", it calls `uncomment_lines` with the pathname.
 fn main() {
     let mut args = std::env::args();
     args.next();

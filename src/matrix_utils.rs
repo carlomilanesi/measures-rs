@@ -1,5 +1,7 @@
 use crate::traits::ArithmeticOps;
 
+// It receives a matrix of numbers, and a string to be display as suffix unit of measurement,
+// and it string in which the matrix is formatted, with its columns aligned.
 pub fn format_matrix<const ROW_COUNT: usize, const COLUMN_COUNT: usize, Number: ArithmeticOps>(
     matrix: &[[Number; COLUMN_COUNT]; ROW_COUNT],
     unit_suffix: &str,
@@ -27,8 +29,8 @@ pub fn format_matrix<const ROW_COUNT: usize, const COLUMN_COUNT: usize, Number: 
 }
 
 // It receives a matrix of numbers, and a column index,
-// processes the numbers of the specified column,
-// and returns an array of the lined up formatted numbers.
+// and it returns an array of strings
+// displaying the lined up formatted numbers of the specified column.
 fn format_column<const ROW_COUNT: usize, const COLUMN_COUNT: usize, Number: ArithmeticOps>(
     matrix: &[[Number; COLUMN_COUNT]; ROW_COUNT],
     column_index: usize,
