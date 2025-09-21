@@ -71,13 +71,20 @@ From here on, to run the example code, just put it as the body of the function `
 
 You can convert the value type of a measure, like in these statements:
 ```rust
-    let distance = Measure::<Metre, f32>::new(100.).lossless_into::<f64>(); // From f64 to f32
-    let distance: Measure<Metre, f32> = distance.lossy_into::<f32>(); // From f32 to f32
-    let distance: Measure<Metre, f64> = distance.lossy_into::<f64>(); // From f64 to f64
+    let distance32 = Measure::<Metre, f32>::new(100.);
+    let distance64 = Measure::<Metre, f64>::new(100.);
+    distance32.into::<f32>(); // From f32 to f32, no-op
+    distance32.into::<f64>(); // From f32 to f64, no information loss
+    // distance64.into::<f32>(); // From f64 to f32, not allowed
+    distance64.into::<f64>(); // From f64 to f64, no-op
+    distance32.lossy_into::<f32>(); // From f32 to f32, no-op
+    distance32.lossy_into::<f64>(); // From f32 to f64, no information loss
+    distance64.lossy_into::<f32>(); // From f64 to f32, possible information loss
+    distance64.lossy_into::<f64>(); // From f64 to f64, no-op
 ```
 
 There are two numeric conversion methods:
-* `lossless_into`: It guarantees that no precision is lost in the conversion.
+* `into`: It guarantees that no precision is lost in the conversion.
 So, it can be used only to convert from `f32` to `f64`, in addition to the trivial conversions from `f32` to `f32` and from `f64` to `f64`.
 * `lossy_into`: It does not guarantee that any precision is lost in the conversion.
 So, it may be used for any kind of numeric conversions, including from `f64` to `f32`.

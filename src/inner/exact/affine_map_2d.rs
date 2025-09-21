@@ -259,6 +259,19 @@ macro_rules! inner_define_affine_map_2d {
             }
         }
 
+        impl<Unit> From<AffineMap2d<Unit, f32>> for AffineMap2d<Unit, f64>
+        where
+            Unit: MeasurementUnit,
+            Unit::Property: VectorProperty,
+        {
+            fn from(m: AffineMap2d<Unit, f32>) -> Self {
+                Self::new([
+                    [m.c[0][0] as f64, m.c[0][1] as f64, m.c[0][2] as f64],
+                    [m.c[1][0] as f64, m.c[1][1] as f64, m.c[1][2] as f64],
+                ])
+            }
+        }
+
         // format!("{}", AffineMap2d)
         impl<Unit, Number> fmt::Display for AffineMap2d<Unit, Number>
         where

@@ -45,17 +45,6 @@ macro_rules! inner_define_measure_2d {
             }
 
             /// measure 2d .lossy_into() -> measure 2d
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                &self,
-            ) -> Measure2d<Unit, DestNumber> {
-                Measure2d::<Unit, DestNumber> {
-                    x: DestNumber::from(self.x),
-                    y: DestNumber::from(self.y),
-                    phantom: PhantomData,
-                }
-            }
-
-            /// measure 2d .lossy_into() -> measure 2d
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> Measure2d<Unit, DestNumber> {
@@ -115,6 +104,16 @@ macro_rules! inner_define_measure_2d {
             // It returns the zero vector.
             fn default() -> Self {
                 Self::new(Number::ZERO, Number::ZERO)
+            }
+        }
+
+        impl<Unit> From<Measure2d<Unit, f32>> for Measure2d<Unit, f64>
+        where
+            Unit: MeasurementUnit,
+            Unit::Property: VectorProperty,
+        {
+            fn from(m: Measure2d<Unit, f32>) -> Self {
+                Self::new(m.x as f64, m.y as f64)
             }
         }
 

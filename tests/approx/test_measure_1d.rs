@@ -86,7 +86,8 @@ fn approx_measure_convert() {
 #[test]
 fn approx_measure_lossless_into_32_to_32() {
     let am1 = ApproxMeasure::<Metre, f32>::new_with_variance(12., 9.);
-    let am2: ApproxMeasure<Metre, f32> = am1.lossless_into::<f32>();
+    #[allow(clippy::useless_conversion)]
+    let am2: ApproxMeasure<Metre, f32> = am1.into();
     assert_eq!(am2.value, 12.);
     assert_eq!(am2.variance, 9.);
 }
@@ -94,7 +95,7 @@ fn approx_measure_lossless_into_32_to_32() {
 #[test]
 fn approx_measure_lossless_into_32_to_64() {
     let am1 = ApproxMeasure::<Metre, f32>::new_with_variance(12., 9.);
-    let am2: ApproxMeasure<Metre, f64> = am1.lossless_into::<f64>();
+    let am2: ApproxMeasure<Metre, f64> = am1.into();
     assert_eq!(am2.value, 12.);
     assert_eq!(am2.variance, 9.);
 }
@@ -102,7 +103,8 @@ fn approx_measure_lossless_into_32_to_64() {
 #[test]
 fn approx_measure_lossless_into_64_to_64() {
     let am1 = ApproxMeasure::<Metre, f64>::new_with_variance(12., 9.);
-    let am2: ApproxMeasure<Metre, f64> = am1.lossless_into::<f64>();
+    #[allow(clippy::useless_conversion)]
+    let am2: ApproxMeasure<Metre, f64> = am1.into();
     assert_eq!(am2.value, 12.);
     assert_eq!(am2.variance, 9.);
 }

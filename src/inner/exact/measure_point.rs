@@ -26,14 +26,6 @@ macro_rules! inner_define_measure_point {
                     phantom: PhantomData,
                 }
             }
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                &self,
-            ) -> MeasurePoint<Unit, DestNumber> {
-                MeasurePoint::<Unit, DestNumber> {
-                    value: DestNumber::from(self.value),
-                    phantom: PhantomData,
-                }
-            }
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> MeasurePoint<Unit, DestNumber> {
@@ -72,6 +64,15 @@ macro_rules! inner_define_measure_point {
             // It returns the origin.
             fn default() -> Self {
                 Self::new(Number::ZERO)
+            }
+        }
+
+        impl<Unit> From<MeasurePoint<Unit, f32>> for MeasurePoint<Unit, f64>
+        where
+            Unit: MeasurementUnit,
+        {
+            fn from(m: MeasurePoint<Unit, f32>) -> Self {
+                Self::new(m.value as f64)
             }
         }
 

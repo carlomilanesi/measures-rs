@@ -47,16 +47,6 @@ macro_rules! inner_define_measure_point_3d {
                     phantom: PhantomData,
                 }
             }
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                &self,
-            ) -> MeasurePoint3d<Unit, DestNumber> {
-                MeasurePoint3d::<Unit, DestNumber> {
-                    x: DestNumber::from(self.x),
-                    y: DestNumber::from(self.y),
-                    z: DestNumber::from(self.z),
-                    phantom: PhantomData,
-                }
-            }
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> MeasurePoint3d<Unit, DestNumber> {
@@ -78,6 +68,16 @@ macro_rules! inner_define_measure_point_3d {
             // It returns the origin.
             fn default() -> Self {
                 Self::new(Number::ZERO, Number::ZERO, Number::ZERO)
+            }
+        }
+
+        impl<Unit> From<MeasurePoint3d<Unit, f32>> for MeasurePoint3d<Unit, f64>
+        where
+            Unit: MeasurementUnit,
+            Unit::Property: VectorProperty,
+        {
+            fn from(m: MeasurePoint3d<Unit, f32>) -> Self {
+                Self::new(m.x as f64, m.y as f64, m.z as f64)
             }
         }
 

@@ -143,21 +143,23 @@ fn signed_direction_convert_negative() {
 #[test]
 fn signed_direction_lossless_into_32_to_32() {
     let m1 = SignedDirection::<Degree, f32>::new(12.);
-    let m2: SignedDirection<Degree, f32> = m1.lossless_into::<f32>();
+    #[allow(clippy::useless_conversion)]
+    let m2: SignedDirection<Degree, f32> = m1.into();
     assert_eq!(m2.value, 12.);
 }
 
 #[test]
 fn signed_direction_lossless_into_32_to_64() {
     let m1 = SignedDirection::<Degree, f32>::new(12.);
-    let m2: SignedDirection<Degree, f64> = m1.lossless_into::<f64>();
+    let m2: SignedDirection<Degree, f64> = m1.into();
     assert_eq!(m2.value, 12.);
 }
 
 #[test]
 fn signed_direction_lossless_into_64_to_64() {
     let m1 = SignedDirection::<Degree, f64>::new(12.);
-    let m2: SignedDirection<Degree, f64> = m1.lossless_into::<f64>();
+    #[allow(clippy::useless_conversion)]
+    let m2: SignedDirection<Degree, f64> = m1.into();
     assert_eq!(m2.value, 12.);
 }
 

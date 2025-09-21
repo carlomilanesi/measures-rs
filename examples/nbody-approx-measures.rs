@@ -1,4 +1,4 @@
-// Conversion to use the library Rs-measures of benchmark The Computer Language Benchmarks Game
+// Conversion to use the library measures-rs of benchmark The Computer Language Benchmarks Game
 // https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/nbody-rust-6.html
 //
 // Build with:

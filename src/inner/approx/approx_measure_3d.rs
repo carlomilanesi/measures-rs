@@ -74,18 +74,6 @@ macro_rules! inner_define_approx_measure_3d {
                 )
             }
 
-            /// Measure3d.lossless_into() -> Measure3d
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                &self,
-            ) -> ApproxMeasure3d<Unit, DestNumber> {
-                ApproxMeasure3d::<Unit, DestNumber>::new_with_variance(
-                    DestNumber::from(self.x),
-                    DestNumber::from(self.y),
-                    DestNumber::from(self.z),
-                    DestNumber::from(self.variance),
-                )
-            }
-
             /// measure 3d .lossy_into() -> measure 3d
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
@@ -119,6 +107,16 @@ macro_rules! inner_define_approx_measure_3d {
             // It returns the zero vector.
             fn default() -> Self {
                 Self::new_with_variance(Number::ZERO, Number::ZERO, Number::ZERO, Number::ZERO)
+            }
+        }
+
+        impl<Unit> From<ApproxMeasure3d<Unit, f32>> for ApproxMeasure3d<Unit, f64>
+        where
+            Unit: MeasurementUnit,
+            Unit::Property: VectorProperty,
+        {
+            fn from(m: ApproxMeasure3d<Unit, f32>) -> Self {
+                Self::new_with_variance(m.x as f64, m.y as f64, m.z as f64, m.variance as f64)
             }
         }
 

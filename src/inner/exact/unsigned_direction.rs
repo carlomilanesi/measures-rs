@@ -55,14 +55,6 @@ macro_rules! inner_define_unsigned_direction {
                     phantom: PhantomData,
                 }
             }
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                &self,
-            ) -> UnsignedDirection<Unit, DestNumber> {
-                UnsignedDirection::<Unit, DestNumber> {
-                    value: DestNumber::from(self.value),
-                    phantom: PhantomData,
-                }
-            }
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> UnsignedDirection<Unit, DestNumber> {
@@ -81,6 +73,15 @@ macro_rules! inner_define_unsigned_direction {
             // It returns the zero direction (eastbound).
             fn default() -> Self {
                 Self::new(Number::ZERO)
+            }
+        }
+
+        impl<Unit> From<UnsignedDirection<Unit, f32>> for UnsignedDirection<Unit, f64>
+        where
+            Unit: AngleMeasurementUnit,
+        {
+            fn from(m: UnsignedDirection<Unit, f32>) -> Self {
+                Self::new(m.value as f64)
             }
         }
 

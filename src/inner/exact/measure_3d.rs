@@ -51,18 +51,6 @@ macro_rules! inner_define_measure_3d {
                 }
             }
 
-            /// measure 3d .lossless_into() -> measure 3d
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                &self,
-            ) -> Measure3d<Unit, DestNumber> {
-                Measure3d::<Unit, DestNumber> {
-                    x: DestNumber::from(self.x),
-                    y: DestNumber::from(self.y),
-                    z: DestNumber::from(self.z),
-                    phantom: PhantomData,
-                }
-            }
-
             /// measure 3d .lossy_into() -> measure 3d
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
@@ -96,6 +84,16 @@ macro_rules! inner_define_measure_3d {
             // It returns the zero vector.
             fn default() -> Self {
                 Self::new(Number::ZERO, Number::ZERO, Number::ZERO)
+            }
+        }
+
+        impl<Unit> From<Measure3d<Unit, f32>> for Measure3d<Unit, f64>
+        where
+            Unit: MeasurementUnit,
+            Unit::Property: VectorProperty,
+        {
+            fn from(m: Measure3d<Unit, f32>) -> Self {
+                Measure3d::<Unit, f64>::new(m.x as f64, m.y as f64, m.z as f64)
             }
         }
 

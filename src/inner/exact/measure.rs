@@ -50,17 +50,6 @@ macro_rules! inner_define_measure {
                 }
             }
 
-            // Measure.lossless_into() -> Measure
-            pub fn lossless_into<DestNumber>(&self) -> Measure<Unit, DestNumber>
-            where
-                DestNumber: ArithmeticOps + From<Number>,
-            {
-                Measure::<Unit, DestNumber> {
-                    value: DestNumber::from(self.value),
-                    phantom: PhantomData,
-                }
-            }
-
             // Measure.lossy_into() -> Measure
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
@@ -114,6 +103,15 @@ macro_rules! inner_define_measure {
             // It returns the zero vector.
             fn default() -> Self {
                 Self::new(Number::ZERO)
+            }
+        }
+
+        impl<Unit> From<Measure<Unit, f32>> for Measure<Unit, f64>
+        where
+            Unit: MeasurementUnit,
+        {
+            fn from(m: Measure<Unit, f32>) -> Self {
+                Self::new(m.value as f64)
             }
         }
 

@@ -83,7 +83,8 @@ fn measure_3d_convert() {
 #[test]
 fn measure_2d_lossless_into_32_to_32() {
     let m1 = Measure3d::<Metre, f32>::new(12., 23., 34.);
-    let m2: Measure3d<Metre, f32> = m1.lossless_into::<f32>();
+    #[allow(clippy::useless_conversion)]
+    let m2: Measure3d<Metre, f32> = m1.into();
     assert_eq!(m2.x, 12.);
     assert_eq!(m2.y, 23.);
     assert_eq!(m2.z, 34.);
@@ -92,7 +93,7 @@ fn measure_2d_lossless_into_32_to_32() {
 #[test]
 fn measure_2d_lossless_into_32_to_64() {
     let m1 = Measure3d::<Metre, f32>::new(12., 23., 34.);
-    let m2: Measure3d<Metre, f64> = m1.lossless_into::<f64>();
+    let m2: Measure3d<Metre, f64> = m1.into();
     assert_eq!(m2.x, 12.);
     assert_eq!(m2.y, 23.);
     assert_eq!(m2.z, 34.);
@@ -101,7 +102,8 @@ fn measure_2d_lossless_into_32_to_64() {
 #[test]
 fn measure_3d_lossless_into_64_to_64() {
     let m1 = Measure3d::<Metre, f64>::new(12., 23., 34.);
-    let m2: Measure3d<Metre, f64> = m1.lossless_into::<f64>();
+    #[allow(clippy::useless_conversion)]
+    let m2: Measure3d<Metre, f64> = m1.into();
     assert_eq!(m2.x, 12.);
     assert_eq!(m2.y, 23.);
     assert_eq!(m2.z, 34.);

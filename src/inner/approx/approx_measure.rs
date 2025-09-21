@@ -69,16 +69,6 @@ macro_rules! inner_define_approx_measure {
                 )
             }
 
-            /// ApproxMeasure.lossless_into() -> ApproxMeasure
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                self,
-            ) -> ApproxMeasure<Unit, DestNumber> {
-                ApproxMeasure::<Unit, DestNumber>::new_with_variance(
-                    DestNumber::from(self.value),
-                    DestNumber::from(self.variance),
-                )
-            }
-
             /// ApproxMeasure.lossy_into() -> ApproxMeasure
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 self,
@@ -122,6 +112,15 @@ macro_rules! inner_define_approx_measure {
             /// It returns the zero measure.
             fn default() -> Self {
                 Self::new_with_variance(Number::ZERO, Number::ZERO)
+            }
+        }
+
+        impl<Unit> From<ApproxMeasure<Unit, f32>> for ApproxMeasure<Unit, f64>
+        where
+            Unit: MeasurementUnit,
+        {
+            fn from(m: ApproxMeasure<Unit, f32>) -> Self {
+                Self::new_with_variance(m.value as f64, m.variance as f64)
             }
         }
 

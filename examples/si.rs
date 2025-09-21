@@ -1,7 +1,7 @@
-//! Rs-measures version of the example `si.rs` of the crate `uom` version 0.35.0.
+//! measures-rs version of the example `si.rs` of the crate `uom` version 0.35.0.
 //! Example showing how to use the pre-built SI system.
 /*
-Rs-measures will print:
+measures-rs will print:
 15 m + 10 cm = 15.1 m
 15 m + 10 cm = 0.0151 km
 15 m / 50 s = 0.3 m/s

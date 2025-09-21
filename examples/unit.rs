@@ -1,4 +1,4 @@
-//! Rs-measures version of the example `unit.rs` of the crate `uom` version 0.35.0.
+//! measures-rs version of the example `unit.rs` of the crate `uom` version 0.35.0.
 //! Example showing how to add new units to existing quantities.
 mod units;
 use measures::traits::MeasurementUnit;
@@ -20,7 +20,7 @@ fn main() {
     println!("{} = {}", l2, l2.convert::<Metre>());
 }
 /*
-Rs-measures will print:
+measures-rs will print:
 15 m = 8.813161 smoot
 1 smoot = 1.702 m
 

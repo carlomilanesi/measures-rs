@@ -1,7 +1,7 @@
-//! Rs-measures version of the example `mks.rs` of the crate `uom` version 0.35.0.
+//! measures-rs version of the example `mks.rs` of the crate `uom` version 0.35.0.
 //! Example showing how to create a custom system of quantities.
 /*
-Rs-measures will print:
+measures-rs will print:
 100 m = 328.08398 ft
 
 UOM will print:

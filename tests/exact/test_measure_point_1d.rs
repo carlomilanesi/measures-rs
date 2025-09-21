@@ -53,21 +53,23 @@ fn measure_point_convert() {
 #[test]
 fn measure_point_lossless_into_32_to_32() {
     let mp1 = MeasurePoint::<Celsius, f32>::new(12.);
-    let mp2: MeasurePoint<Celsius, f32> = mp1.lossless_into::<f32>();
+    #[allow(clippy::useless_conversion)]
+    let mp2: MeasurePoint<Celsius, f32> = mp1.into();
     assert_eq!(mp2.value, 12.);
 }
 
 #[test]
 fn measure_point_lossless_into_32_to_64() {
     let mp1 = MeasurePoint::<Celsius, f32>::new(12.);
-    let mp2: MeasurePoint<Celsius, f64> = mp1.lossless_into::<f64>();
+    let mp2: MeasurePoint<Celsius, f64> = mp1.into();
     assert_eq!(mp2.value, 12.);
 }
 
 #[test]
 fn measure_point_lossless_into_64_to_64() {
     let mp1 = MeasurePoint::<Celsius, f64>::new(12.);
-    let mp2: MeasurePoint<Celsius, f64> = mp1.lossless_into::<f64>();
+    #[allow(clippy::useless_conversion)]
+    let mp2: MeasurePoint<Celsius, f64> = mp1.into();
     assert_eq!(mp2.value, 12.);
 }
 

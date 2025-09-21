@@ -195,6 +195,15 @@ macro_rules! inner_define_linear_map_2d {
             }
         }
 
+        impl From<LinearMap2d<f32>> for LinearMap2d<f64> {
+            fn from(m: LinearMap2d<f32>) -> Self {
+                Self::new([
+                    [m.c[0][0] as f64, m.c[0][1] as f64],
+                    [m.c[1][0] as f64, m.c[1][1] as f64],
+                ])
+            }
+        }
+
         // format!("{}", LinearMap2d)
         impl<Number: ArithmeticOps> fmt::Display for LinearMap2d<Number> {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
