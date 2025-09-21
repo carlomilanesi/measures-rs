@@ -33,7 +33,7 @@ impl MeasurementUnit for U3 {
     const SUFFIX: &'static str = " u3";
 }
 
-measures::define_units_relationship! { U1 == U2 * U3 }
+measures::define_units_relationship! { true false false, U1 1 == U2 1 * U3 1 }
 
 fn main() {
     let u1: Measure<U1> = Measure::<U2>::new(6.) * Measure::<U3>::new(4.);

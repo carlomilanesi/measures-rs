@@ -55,7 +55,6 @@ macro_rules! define_measure_types_aux {
         measures::if_all_true! { { $with_2d $with_points $exact }
             measures::inner_define_measure_point_2d! { $with_approx }
         }
-
         measures::if_all_true! { { $with_3d }
             measures::inner_define_measure_3d! { $with_approx }
         }
@@ -83,7 +82,7 @@ macro_rules! define_measure_types_aux {
         $(
             measures::define_units_relationship! {
                 $exact $with_approx $with_correlation,
-                $unit1 $dim1 $unit2 $dim2 $op $unit3 $dim3
+                $unit1 $dim1 == $unit2 $dim2 $op $unit3 $dim3
             }
         )*
     };

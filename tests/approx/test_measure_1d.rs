@@ -237,66 +237,59 @@ fn approx_measure_subtraction_assignment() {
 }
 
 #[test]
-#[ignore]
 fn approx_measure_scalar_multiplication_after_32() {
     let am: ApproxMeasure<Metre, f32> =
         ApproxMeasure::<Metre, f32>::new_with_variance(12., 9.) * 5.;
     assert_eq!(am.value, 12. * 5.);
-    assert_eq!(am.variance, 9. * 5.);
+    assert_eq!(am.variance, 9. * (5. * 5.));
 }
 
 #[test]
-#[ignore]
 fn approx_measure_scalar_multiplication_after_64() {
     let am: ApproxMeasure<Metre, f64> =
         ApproxMeasure::<Metre, f64>::new_with_variance(12., 9.) * 5.;
-    assert_eq!(am.value, 36.);
-    assert_eq!(am.variance, 201.);
+    assert_eq!(am.value, 12. * 5.);
+    assert_eq!(am.variance, 9. * (5. * 5.));
 }
 
 #[test]
-#[ignore]
 fn approx_measure_scalar_multiplication_before_32() {
     let am: ApproxMeasure<Metre, f32> =
         5. * ApproxMeasure::<Metre, f32>::new_with_variance(12., 9.);
-    assert_eq!(am.value, 36.);
-    assert_eq!(am.variance, 202.);
+    assert_eq!(am.value, 5. * 12.);
+    assert_eq!(am.variance, (5. * 5.) * 9.);
 }
 
 #[test]
-#[ignore]
 fn approx_measure_scalar_multiplication_before_64() {
     let am: ApproxMeasure<Metre, f64> =
         5. * ApproxMeasure::<Metre, f64>::new_with_variance(12., 9.);
-    assert_eq!(am.value, 36.);
-    assert_eq!(am.variance, 203.);
+    assert_eq!(am.value, 5. * 12.);
+    assert_eq!(am.variance, (5. * 5.) * 9.);
 }
 
 #[test]
-#[ignore]
 fn approx_measure_scalar_multiplication_assignment() {
     let mut am = ApproxMeasure::<Metre, f32>::new_with_variance(12., 9.);
     am *= 5.;
-    assert_eq!(am.value, 60.);
-    assert_eq!(am.variance, 204.);
+    assert_eq!(am.value, 12. * 5.);
+    assert_eq!(am.variance, 9. * (5. * 5.));
 }
 
 #[test]
-#[ignore]
 fn approx_measure_scalar_division() {
     let am: ApproxMeasure<Metre, f32> =
         ApproxMeasure::<Metre, f32>::new_with_variance(12., 9.) / 5.;
-    assert_eq!(am.value, 2.4);
-    assert_eq!(am.variance, 205.);
+    assert_eq!(am.value, 12. / 5.);
+    assert_eq!(am.variance, 9. / (5. * 5.));
 }
 
 #[test]
-#[ignore]
 fn approx_measure_scalar_division_assignment() {
     let mut am = ApproxMeasure::<Metre, f32>::new_with_variance(12., 9.);
     am /= 5.;
-    assert_eq!(am.value, 2.4);
-    assert_eq!(am.variance, 206.);
+    assert_eq!(am.value, 12. / 5.);
+    assert_eq!(am.variance, 9. / (5. * 5.));
 }
 
 #[test]
@@ -313,69 +306,25 @@ fn approx_measure_measure_division() {
 }
 
 #[test]
-#[ignore]
-fn approx_measure_one_division() {
-    let am1: ApproxMeasure<Metre, f32> = ApproxMeasure::<Metre, f32>::new_with_variance(12., 9.);
-    let am2: ApproxMeasure<One, f32> = ApproxMeasure::<One, f32>::new_with_variance(5., 9.);
-    let am3: ApproxMeasure<Metre, f32> = am1 / am2.value;
-    assert_eq!(am3.value, 2.4);
-    assert_eq!(am3.variance, 208.);
-}
-
-/*
-#[test]
-fn approx_one_one_multiplication() {
-    let am1: ApproxMeasure<One, f32> = ApproxMeasure::<One, f32>::new_with_variance(12., 9.);
-    let am2: ApproxMeasure<One, f32> = ApproxMeasure::<One, f32>::new_with_variance(5., 9.);
-    let am3: ApproxMeasure<One, f32> = am1 * am2;
-    assert_eq!(am3.value, 36.);
-    assert_eq!(am3.variance, 209.);
-}
-*/
-
-#[test]
-#[ignore]
-fn approx_one_one_division() {
-    let am1: ApproxMeasure<One, f32> = ApproxMeasure::<One, f32>::new_with_variance(12., 9.);
-    let am2: ApproxMeasure<One, f32> = ApproxMeasure::<One, f32>::new_with_variance(5., 9.);
-    let am3: ApproxMeasure<One, f32> = am1 / am2;
-    assert_eq!(am3.value, 2.4);
-    assert_eq!(am3.variance, 210.);
-}
-
-/*
-#[test]
-fn approx_measure_one_multiplication() {
-    let am1: ApproxMeasure<Metre, f32> = ApproxMeasure::<Metre, f32>::new_with_variance(12., 9.);
-    let am2: ApproxMeasure<One, f32> = ApproxMeasure::<One, f32>::new_with_variance(5., 9.);
-    let am3: ApproxMeasure<Metre, f32> = am1 * am2;
-    assert_eq!(am3.value, 36.);
-    assert_eq!(am3.variance, 211.);
-    let am4: ApproxMeasure<Metre, f32> = am2.value * am1;
-    assert_eq!(am4.value, 36.);
-    assert_eq!(am4.variance, 212.);
-}
-*/
-
-//TODO CONTINUE
-/*
-#[test]
-fn measure_equals() {
-    let m1 = ApproxMeasure::<Metre, f32>::new_with_variance(12., 1.);
-    let m2 = ApproxMeasure::<Metre, f32>::new_with_variance(12.6, 0.5);
-    let m3 = ApproxMeasure::<Metre, f32>::new_with_variance(14., 0.8);
+fn approx_measure_equals() {
+    let m1 = ApproxMeasure::<Metre, f32>::new_with_variance(12.6, 0.4);
+    let m2 = ApproxMeasure::<Metre, f32>::new_with_variance(12.6, 0.4);
+    let m3 = ApproxMeasure::<Metre, f32>::new_with_variance(12.6, 0.41);
     assert!(m1 == m2);
     assert!(!(m1 == m3));
 }
 
 #[test]
-fn measure_differ() {
-    let m1 = Measure::<Metre, f32>::new(12.);
-    let m2 = Measure::<Metre, f32>::new(12.);
-    let m3 = Measure::<Metre, f32>::new(13.);
+fn approx_measure_differ() {
+    let m1 = ApproxMeasure::<Metre, f32>::new_with_variance(12.6, 0.4);
+    let m2 = ApproxMeasure::<Metre, f32>::new_with_variance(12.6, 0.4);
+    let m3 = ApproxMeasure::<Metre, f32>::new_with_variance(12.6, 0.41);
     assert!(!(m1 != m2));
     assert!(m1 != m3);
 }
+
+//TODO CONTINUE
+/*
 
 #[test]
 fn measure_partial_cmp() {

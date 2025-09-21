@@ -9,7 +9,6 @@ fn compile_fail(tester: &TestCases, case: &str) {
 }
 
 #[test]
-#[ignore]
 fn tests() {
     let t = TestCases::new();
     pass(&t, "1_is_1_mul_1"); // id1 1 == id2 1 * id3 1  =>  expand_1_1(id2, id3, id1)

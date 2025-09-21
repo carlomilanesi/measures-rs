@@ -1,5 +1,5 @@
 measures::define_measure_types! {
-    with_points with_directions with_2d with_3d with_transformations exact,
+    with_points with_directions with_2d with_3d with_transformations exact with_approx,
 
     // Relationships among units
     [
@@ -879,6 +879,7 @@ impl MeasurementUnit for Mach {
 }
 
 // Property: dose equivalent
+#[allow(dead_code)]
 pub struct DoseEquivalent;
 
 #[allow(dead_code)]
@@ -962,6 +963,7 @@ impl MeasurementUnit for KiloOhm {
 }
 
 // Property: electrical resistivity
+#[allow(dead_code)]
 pub struct ElectricalResistivity;
 
 #[allow(dead_code)]
@@ -1992,6 +1994,7 @@ impl MeasurementUnit for Weber {
 }
 
 // Property: magnetic flux density
+#[allow(dead_code)]
 pub struct MagneticFluxDensity;
 impl VectorProperty for MagneticFluxDensity {}
 
@@ -2014,6 +2017,7 @@ impl MeasurementUnit for Gauss {
 }
 
 // Property: magnetic permeability
+#[allow(dead_code)]
 pub struct MagneticPermeability;
 
 #[allow(dead_code)]
@@ -2453,6 +2457,7 @@ impl MeasurementUnit for WattPerSteradian {
 }
 
 // Property: radioactive activity
+#[allow(dead_code)]
 pub struct RadioactiveActivity;
 
 #[allow(dead_code)]
@@ -2683,6 +2688,7 @@ impl MeasurementUnit for Fahrenheit {
 }
 
 // Property: thermal conductivity
+#[allow(dead_code)]
 pub struct ThermalConductivity;
 
 #[allow(dead_code)]

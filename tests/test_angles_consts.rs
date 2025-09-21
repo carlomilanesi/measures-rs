@@ -1,5 +1,6 @@
 mod angles_decl;
 
+// Test the constants defined for angle measurement units: Radian, Degree, and Cycle.
 #[test]
 fn angle_units_consts() {
     use measures::{

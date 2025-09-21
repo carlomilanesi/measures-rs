@@ -1,51 +1,51 @@
 #[macro_export]
 macro_rules! define_units_relationship {
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 1 * __ 1 } => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 1 * __ 1 } => {
         measures::expand_1_1_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 1 * $unit3:ident 1 } => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 1 * $unit3:ident 1 } => {
         measures::expand_1_1! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 $unit2:ident 1 * $unit3:ident 2 } => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 == $unit2:ident 1 * $unit3:ident 2 } => {
         measures::expand_1_2! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 $unit2:ident 2 * $unit3:ident 1 } => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 == $unit2:ident 2 * $unit3:ident 1 } => {
         measures::expand_1_2! {$exact $with_approx $with_correlation, $unit3 $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 $unit2:ident 1 * $unit3:ident 2} => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 == $unit2:ident 1 * $unit3:ident 2} => {
         measures::expand_1_2! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 $unit2:ident 2 * $unit3:ident 1} => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 == $unit2:ident 2 * $unit3:ident 1} => {
         measures::expand_1_2! {$exact $with_approx $with_correlation, $unit3 $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 $unit2:ident 1 * $unit3:ident 3} => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 == $unit2:ident 1 * $unit3:ident 3} => {
         measures::expand_1_3! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 $unit2:ident 3 * $unit3:ident 1} => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 == $unit2:ident 3 * $unit3:ident 1} => {
         measures::expand_1_3! {$exact $with_approx $with_correlation, $unit3 $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 2 * __ 2} => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 2 * __ 2} => {
         measures::expand_2_2_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 2 * $unit3:ident 2} => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 2 * $unit3:ident 2} => {
         measures::expand_2_2! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 3 * __ 3} => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 3 * __ 3} => {
         measures::expand_3_3_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 3 * $unit3:ident 3} => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 3 * $unit3:ident 3} => {
         measures::expand_3_3! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 2 X __ 2 } => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 2 X __ 2 } => {
         measures::expand_cross_2_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 $unit2:ident 2 X $unit3:ident 2 } => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 2 X $unit3:ident 2 } => {
         measures::expand_cross_2! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 $unit2:ident 3 X __ 3 } => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 == $unit2:ident 3 X __ 3 } => {
         measures::expand_cross_3_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 $unit2:ident 3 X $unit3:ident 3 } => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 == $unit2:ident 3 X $unit3:ident 3 } => {
         measures::expand_cross_3! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
 }
@@ -559,9 +559,9 @@ macro_rules! expand_3_3 {
 
         measures::if_all_true! { {$with_approx}
             // Measure3d<U1> * Measure3d<U2> -> Measure<U3>
-            impl<Number: ArithmeticOps> Mul<Measure3d<$unit2, Number>> for Measure3d<$unit1, Number> {
-                type Output = Measure<$unit3, Number>;
-                fn mul(self, other: Measure3d<$unit2, Number>) -> Self::Output {
+            impl<Number: ArithmeticOps> Mul<ApproxMeasure3d<$unit2, Number>> for ApproxMeasure3d<$unit1, Number> {
+                type Output = ApproxMeasure<$unit3, Number>;
+                fn mul(self, other: ApproxMeasure3d<$unit2, Number>) -> Self::Output {
                     let value_product_x = self.x * other.x;
                     let value_product_y = self.y * other.y;
                     let value_product_z = self.z * other.z;
@@ -581,9 +581,9 @@ macro_rules! expand_3_3 {
             }
 
             // Measure3d<U2> * Measure3d<U1> -> Measure<U3>
-            impl<Number: ArithmeticOps> Mul<Measure3d<$unit1, Number>> for Measure3d<$unit2, Number> {
-                type Output = Measure<$unit3, Number>;
-                fn mul(self, other: Measure3d<$unit1, Number>) -> Self::Output {
+            impl<Number: ArithmeticOps> Mul<ApproxMeasure3d<$unit1, Number>> for ApproxMeasure3d<$unit2, Number> {
+                type Output = ApproxMeasure<$unit3, Number>;
+                fn mul(self, other: ApproxMeasure3d<$unit1, Number>) -> Self::Output {
                     let value_product_x = self.x * other.x;
                     let value_product_y = self.y * other.y;
                     let value_product_z = self.z * other.z;

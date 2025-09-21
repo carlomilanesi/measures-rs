@@ -35,7 +35,7 @@ impl MeasurementUnit for U3 {
     const SUFFIX: &'static str = " u3";
 }
 
-measures::define_units_relationship! { U1 == U2:2 X U3:2 }
+measures::define_units_relationship! { true false false, U1 1 == U2 2 X U3 2 }
 
 fn main() {
     use measures::traits::CrossProduct;

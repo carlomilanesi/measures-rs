@@ -25,6 +25,6 @@ impl MeasurementUnit for U2 {
     const SUFFIX: &'static str = " u2";
 }
 
-measures::define_units_relationship! { U1 == 2 / U2 }
+measures::define_units_relationship! { true false false, U1 1 == 2 / U2 1 }
 
 fn main() {}
