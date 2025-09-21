@@ -2515,10 +2515,8 @@ fn print_all_single_unit_operations_for_measure_1d() {
     }
     {
         let m1 = Measure::<KiloMetrePerHour, f32>::new(1.234_567_9);
-        println!(
-            "{m1} can be lossless-converted to {m2}.",
-            m2 = m1.lossless_into::<f64>(),
-        );
+        let m2: Measure<KiloMetrePerHour, f64> = m1.into();
+        println!("{m1} can be lossless-converted to {m2}.");
     }
     {
         let m1 = Measure::<KiloMetrePerHour>::new(-12.);
@@ -2601,10 +2599,8 @@ fn print_all_single_unit_operations_for_measure_point_1d() {
     }
     {
         let mp1 = MeasurePoint::<Celsius, f32>::new(1.234_567_9);
-        println!(
-            "{mp1} can be lossless-converted to {mp2}.",
-            mp2 = mp1.lossless_into::<f64>(),
-        );
+        let mp2: MeasurePoint<Celsius, f64> = mp1.into();
+        println!("{mp1} can be lossless-converted to {mp2}.",);
     }
     {
         let mut mp1 = MeasurePoint::<Celsius>::new(12.);
@@ -2690,10 +2686,8 @@ fn print_all_single_unit_operations_for_unsigned_directions() {
     }
     {
         let ud1 = UnsignedDirection::<Degree, f32>::new(1.234_567_9);
-        println!(
-            "{ud1} can be lossless-converted to {ud2}.",
-            ud2 = ud1.lossless_into::<f64>(),
-        );
+        let ud2: UnsignedDirection<Degree, f64> = ud1.into();
+        println!("{ud1} can be lossless-converted to {ud2}.");
     }
     {
         let mut ud1 = UnsignedDirection::<Degree>::new(12.);
@@ -2764,10 +2758,8 @@ fn print_all_single_unit_operations_for_signed_directions() {
     }
     {
         let sd1 = SignedDirection::<Degree, f32>::new(1.234_567_9);
-        println!(
-            "{sd1} can be lossless-converted to {sd2}.",
-            sd2 = sd1.lossless_into::<f64>(),
-        );
+        let sd2: SignedDirection<Degree, f64> = sd1.into();
+        println!("{sd1} can be lossless-converted to {sd2}.",);
     }
     {
         let mut sd1 = SignedDirection::<Degree>::new(12.);
@@ -2825,10 +2817,8 @@ fn print_all_single_unit_operations_for_measure_2d() {
     }
     {
         let m1 = Measure2d::<KiloMetrePerHour, f32>::new(1.234_567_9, 2.345_678_8);
-        println!(
-            "{m1} can be lossless-converted to {m2}.",
-            m2 = m1.lossless_into::<f64>(),
-        );
+        let m2: Measure2d<KiloMetrePerHour, f64> = m1.into();
+        println!("{m1} can be lossless-converted to {m2}.",);
     }
     {
         let m1 = Measure2d::<KiloMetrePerHour>::new(-12., -13.);
@@ -2935,10 +2925,8 @@ fn print_all_single_unit_operations_for_measure_point_2d() {
     }
     {
         let mp1 = MeasurePoint2d::<KiloMetrePerHour, f32>::new(1.234_567_9, 2.345_678_8);
-        println!(
-            "{mp1} can be lossless-converted to {mp2}.",
-            mp2 = mp1.lossless_into::<f64>(),
-        );
+        let mp2: MeasurePoint2d<KiloMetrePerHour, f64> = mp1.into();
+        println!("{mp1} can be lossless-converted to {mp2}.",);
     }
     {
         let mut mp1 = MeasurePoint2d::<KiloMetrePerHour>::new(12., 13.);
@@ -3015,10 +3003,8 @@ fn print_all_single_unit_operations_for_measure_3d() {
     }
     {
         let m1 = Measure3d::<KiloMetrePerHour, f32>::new(1.234_567_9, 2.345_678_8, 3.456_789);
-        println!(
-            "{m1} can be lossless-converted to {m2}.",
-            m2 = m1.lossless_into::<f64>(),
-        );
+        let m2: Measure3d<KiloMetrePerHour, f64> = m1.into();
+        println!("{m1} can be lossless-converted to {m2}.",);
     }
     {
         let m1 = Measure3d::<KiloMetrePerHour>::new(-12., -13., -14.);
@@ -3107,10 +3093,8 @@ fn print_all_single_unit_operations_for_measure_point_3d() {
     }
     {
         let mp1 = MeasurePoint3d::<KiloMetrePerHour, f32>::new(1.234_567_9, 2.345_678_8, 3.456_789);
-        println!(
-            "{mp1} can be lossless-converted to {mp2}.",
-            mp2 = mp1.lossless_into::<f64>(),
-        );
+        let mp2: MeasurePoint3d<KiloMetrePerHour, f64> = mp1.into();
+        println!("{mp1} can be lossless-converted to {mp2}.",);
     }
     {
         let mut mp1 = MeasurePoint3d::<KiloMetrePerHour>::new(12., 13., 14.);
