@@ -18,8 +18,8 @@ macro_rules! inner_define_approx_measure_point {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
-            /// ApproxMeasurePoint::new_with_variance(Number, Number) -> ApproxMeasurePoint
-            pub const fn new_with_variance(value: Number, variance: Number) -> Self {
+            /// ApproxMeasurePoint::with_variance(Number, Number) -> ApproxMeasurePoint
+            pub const fn with_variance(value: Number, variance: Number) -> Self {
                 Self {
                     value,
                     variance,
@@ -28,8 +28,8 @@ macro_rules! inner_define_approx_measure_point {
             }
 
             measures::if_all_true! { {$exact}
-                /// ApproxMeasurePoint::new_with_uncertainty(Number, Measure) -> ApproxMeasurePoint
-                pub fn new_with_uncertainty(value: Number, uncertainty: Measure<Unit, Number>) -> Self {
+                /// ApproxMeasurePoint::with_uncertainty(Number, Measure) -> ApproxMeasurePoint
+                pub fn with_uncertainty(value: Number, uncertainty: Measure<Unit, Number>) -> Self {
                     Self {
                         value,
                         variance: uncertainty.value * uncertainty.value,
@@ -44,12 +44,12 @@ macro_rules! inner_define_approx_measure_point {
 
                 /// ApproxMeasurePoint::from_measure_with_variance(Measure, Number) -> ApproxMeasurePoint
                 pub fn from_measure_point_with_variance(measure_point: MeasurePoint<Unit, Number>, variance: Number) -> Self {
-                    Self::new_with_variance(measure_point.value, variance)
+                    Self::with_variance(measure_point.value, variance)
                 }
 
                 /// ApproxMeasurePoint::from_measure_with_uncertainty(Measure, Measure) -> ApproxMeasurePoint
                 pub fn from_measure_point_with_uncertainty(measure_point: MeasurePoint<Unit, Number>, uncertainty: Measure<Unit, Number>) -> Self {
-                    Self::new_with_uncertainty(measure_point.value, uncertainty)
+                    Self::with_uncertainty(measure_point.value, uncertainty)
                 }
 
                 /// ApproxMeasurePoint.to_measure_point() -> MeasurePoint
@@ -63,7 +63,7 @@ macro_rules! inner_define_approx_measure_point {
                 self,
             ) -> ApproxMeasurePoint<DestUnit, Number> {
                 let ratio = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
-                ApproxMeasurePoint::<DestUnit, Number>::new_with_variance(
+                ApproxMeasurePoint::<DestUnit, Number>::with_variance(
                     self.value * ratio
                         + Number::from_f64((Unit::OFFSET - DestUnit::OFFSET) / DestUnit::RATIO),
                     self.variance * ratio * ratio,
@@ -74,7 +74,7 @@ macro_rules! inner_define_approx_measure_point {
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 self,
             ) -> ApproxMeasurePoint<Unit, DestNumber> {
-                ApproxMeasurePoint::<Unit, DestNumber>::new_with_variance(
+                ApproxMeasurePoint::<Unit, DestNumber>::with_variance(
                     DestNumber::lossy_from(self.value),
                     DestNumber::lossy_from(self.variance),
                 )
@@ -88,7 +88,7 @@ macro_rules! inner_define_approx_measure_point {
         {
             /// It returns the origin.
             fn default() -> Self {
-                Self::new_with_variance(Number::ZERO, Number::ZERO)
+                Self::with_variance(Number::ZERO, Number::ZERO)
             }
         }
 
@@ -97,7 +97,7 @@ macro_rules! inner_define_approx_measure_point {
             Unit: MeasurementUnit,
         {
             fn from(m: ApproxMeasurePoint<Unit, f32>) -> Self {
-                Self::new_with_variance(m.value as f64, m.variance as f64)
+                Self::with_variance(m.value as f64, m.variance as f64)
             }
         }
 
@@ -112,7 +112,7 @@ macro_rules! inner_define_approx_measure_point {
         {
             type Output = Self;
             fn add(self, other: ApproxMeasure<Unit, Number>) -> Self::Output {
-                Self::new_with_variance(self.value + other.value, self.variance + other.variance)
+                Self::with_variance(self.value + other.value, self.variance + other.variance)
             }
         }
 
@@ -123,7 +123,7 @@ macro_rules! inner_define_approx_measure_point {
             Number: ArithmeticOps,
         {
             fn add_with_correlation(self, other: ApproxMeasure<Unit, Number>, correlation: Number) -> Self {
-                Self::new_with_variance(
+                Self::with_variance(
                     self.value + other.value,
                     self.variance
                         + other.variance
@@ -175,7 +175,7 @@ macro_rules! inner_define_approx_measure_point {
         {
             type Output = Self;
             fn sub(self, other: ApproxMeasure<Unit, Number>) -> Self::Output {
-                Self::new_with_variance(self.value - other.value, self.variance + other.variance)
+                Self::with_variance(self.value - other.value, self.variance + other.variance)
             }
         }
 
@@ -186,7 +186,7 @@ macro_rules! inner_define_approx_measure_point {
             Number: ArithmeticOps,
         {
             fn sub_with_correlation(self, other: ApproxMeasure<Unit, Number>, correlation: Number) -> Self {
-                Self::new_with_variance(
+                Self::with_variance(
                     self.value - other.value,
                     self.variance
                         + other.variance
@@ -239,7 +239,7 @@ macro_rules! inner_define_approx_measure_point {
         {
             type Output = ApproxMeasure<Unit, Number>;
             fn sub(self, other: ApproxMeasurePoint<Unit, Number>) -> Self::Output {
-                Self::Output::new_with_variance(self.value - other.value, self.variance + other.variance)
+                Self::Output::with_variance(self.value - other.value, self.variance + other.variance)
             }
         }
 
@@ -254,7 +254,7 @@ macro_rules! inner_define_approx_measure_point {
                 other: ApproxMeasurePoint<Unit, Number>,
                 correlation: Number,
             ) -> ApproxMeasure<Unit, Number> {
-                ApproxMeasure::new_with_variance(
+                ApproxMeasure::with_variance(
                     self.value - other.value,
                     self.variance
                         + other.variance
@@ -276,7 +276,7 @@ macro_rules! inner_define_approx_measure_point {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
-            ApproxMeasurePoint::<Unit, Number>::new_with_variance(
+            ApproxMeasurePoint::<Unit, Number>::with_variance(
                 p1.value * weight1 + p2.value * (Number::ONE - weight1),
                 p1.variance * weight1 + p2.variance * (Number::ONE - weight1),
             )
@@ -291,7 +291,7 @@ macro_rules! inner_define_approx_measure_point {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
-            ApproxMeasurePoint::<Unit, Number>::new_with_variance(
+            ApproxMeasurePoint::<Unit, Number>::with_variance(
                 (p1.value + p2.value) * Number::HALF,
                 (p1.variance + p2.variance) * Number::HALF,
             )
@@ -306,7 +306,7 @@ macro_rules! inner_define_approx_measure_point {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
-            ApproxMeasurePoint::<Unit, Number>::new_with_variance(
+            ApproxMeasurePoint::<Unit, Number>::with_variance(
                 points.iter().zip(weights).map(|(p, &w)| p.value * w).sum(),
                 points
                     .iter()

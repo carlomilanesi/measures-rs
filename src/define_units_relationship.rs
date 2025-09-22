@@ -98,7 +98,7 @@ macro_rules! expand_1_1 {
             impl<Number: ArithmeticOps> Mul<ApproxMeasure<$unit2, Number>> for ApproxMeasure<$unit1, Number> {
                 type Output = ApproxMeasure<$unit3, Number>;
                 fn mul(self, other: ApproxMeasure<$unit2, Number>) -> Self::Output {
-                    Self::Output::new_with_variance(
+                    Self::Output::with_variance(
                         self.value * other.value,
                         other.value * other.value * self.variance + self.value * self.value * other.variance
                     )
@@ -110,7 +110,7 @@ macro_rules! expand_1_1 {
                 type Output = ApproxMeasure<$unit3, Number>;
                 fn mul(self, other: ApproxMeasure<$unit1, Number>) -> Self::Output {
                     let value_product = self.value * other.value;
-                    Self::Output::new_with_variance(
+                    Self::Output::with_variance(
                         value_product,
                         value_product *
                             (other.value * self.variance / self.value +
@@ -126,7 +126,7 @@ macro_rules! expand_1_1 {
                     let self_ratio = self.variance / (self.value * self.value);
                     let other_ratio = other.variance / (other.value * other.value);
                     let value_ratio = self.value / other.value;
-                    Self::Output::new_with_variance(
+                    Self::Output::with_variance(
                         value_ratio,
                         value_ratio * value_ratio * (self_ratio + other_ratio),
                     )
@@ -140,7 +140,7 @@ macro_rules! expand_1_1 {
                     let self_ratio = self.variance / (self.value * self.value);
                     let other_ratio = other.variance / (other.value * other.value);
                     let value_ratio = self.value / other.value;
-                    Self::Output::new_with_variance(
+                    Self::Output::with_variance(
                         value_ratio,
                         value_ratio * value_ratio * (self_ratio + other_ratio),
                     )
@@ -153,7 +153,7 @@ macro_rules! expand_1_1 {
             // ApproxMeasure<U1>.multiply_with_correlation(ApproxMeasure<U2>, Number) -> ApproxMeasure<U3>
             impl<Number: ArithmeticOps> ApproxMeasure<$unit1, Number> {
                 fn multiply_with_correlation(self, other: ApproxMeasure<$unit2, Number>, correlation: Number) -> ApproxMeasure<$unit3, Number> {
-                    ApproxMeasure::<$unit3, Number>::new_with_variance(
+                    ApproxMeasure::<$unit3, Number>::with_variance(
                         self.value * other.value,
                         other.value * other.value * self.variance + self.value * self.value * other.variance + (Number::ONE + Number::ONE) * self.value * other.value * correlation * self.variance.sqrt() * other.variance.sqrt(),
                     )
@@ -172,7 +172,7 @@ macro_rules! expand_1_1 {
                 fn divide_with_correlation(self, other: ApproxMeasure<$unit2, Number>, correlation: Number) -> ApproxMeasure<$unit3, Number> {
                     //TODO: Verify this formula.
                     let value_product = self.value * other.value;
-                    ApproxMeasure::<$unit3, Number>::new_with_variance(
+                    ApproxMeasure::<$unit3, Number>::with_variance(
                         value_product,
                         other.value * other.value * self.variance + self.value * self.value * other.variance + (Number::ONE + Number::ONE) * self.value * other.value * correlation * self.variance.sqrt() * other.variance.sqrt(),
                     )
@@ -184,7 +184,7 @@ macro_rules! expand_1_1 {
                 fn divide_with_correlation(self, other: ApproxMeasure<$unit2, Number>, correlation: Number) -> ApproxMeasure<$unit3, Number> {
                     //TODO: Verify this formula.
                     let value_product = self.value * other.value;
-                    ApproxMeasure::<$unit3, Number>::new_with_variance(
+                    ApproxMeasure::<$unit3, Number>::with_variance(
                         value_product,
                         other.value * other.value * self.variance + self.value * self.value * other.variance + (Number::ONE + Number::ONE) * self.value * other.value * correlation * self.variance.sqrt() * other.variance.sqrt(),
                     )
@@ -240,7 +240,7 @@ macro_rules! expand_1_1_same {
                 type Output = ApproxMeasure<$unit3, Number>;
                 fn mul(self, other: ApproxMeasure<$unit1, Number>) -> Self::Output {
                     let value_product = self.value * other.value;
-                    Self::Output::new_with_variance(
+                    Self::Output::with_variance(
                         value_product,
                         value_product *
                             (other.value * self.variance / self.value +
@@ -256,7 +256,7 @@ macro_rules! expand_1_1_same {
                     let self_ratio = self.variance / (self.value * self.value);
                     let other_ratio = other.variance / (other.value * other.value);
                     let value_ratio = self.value / other.value;
-                    Self::Output::new_with_variance(
+                    Self::Output::with_variance(
                         value_ratio,
                         value_ratio * value_ratio * (self_ratio + other_ratio),
                     )
@@ -267,7 +267,7 @@ macro_rules! expand_1_1_same {
             impl<Number: ArithmeticOps> ApproxMeasure<$unit1, Number> {
                 fn squared(self) -> ApproxMeasure<$unit3, Number> {
                     let value_product = self.value * self.value;
-                    ApproxMeasure::<$unit3, Number>::new_with_variance(
+                    ApproxMeasure::<$unit3, Number>::with_variance(
                         value_product,
                         value_product * ((self.variance + self.variance) + (self.variance + self.variance)),
                     )
@@ -278,7 +278,7 @@ macro_rules! expand_1_1_same {
             impl<Number: ArithmeticOps> Sqrt for ApproxMeasure<$unit3, Number> {
                 type Output = ApproxMeasure<$unit1, Number>;
                 fn sqrt(self) -> Self::Output {
-                    Self::Output::new_with_variance(
+                    Self::Output::with_variance(
                         self.value.sqrt(),
                         self.variance / self.value / ((Number::ONE + Number::ONE) + (Number::ONE + Number::ONE)),
                     )
@@ -368,7 +368,7 @@ macro_rules! expand_1_3 {
                     let value_product_x = self.value * other.x;
                     let value_product_y = self.value * other.y;
                     let value_product_z = self.value * other.z;
-                    Self::Output::new_with_variance(
+                    Self::Output::with_variance(
                         value_product_x,
                         value_product_y,
                         value_product_z,
@@ -404,7 +404,7 @@ macro_rules! expand_1_3 {
                     let self_ratio_y = self.variance / (self.y * self.y);
                     let self_ratio_z = self.variance / (self.z * self.z);
                     let other_ratio = other.variance / (other.value * other.value);
-                Self::Output::new_with_variance(
+                Self::Output::with_variance(
                         value_ratio_x,
                         value_ratio_y,
                         value_ratio_z,
@@ -503,7 +503,7 @@ macro_rules! expand_3_3_same {
                     let value_product_x = self.x * other.x;
                     let value_product_y = self.y * other.y;
                     let value_product_z = self.z * other.z;
-                    Self::Output::new_with_variance(
+                    Self::Output::with_variance(
                         value_product_x +
                         value_product_y +
                         value_product_z,
@@ -524,7 +524,7 @@ macro_rules! expand_3_3_same {
             impl<Number: ArithmeticOps> ApproxMeasure3d<$unit1, Number> {
                 fn squared(self) -> ApproxMeasure<$unit2, Number> {
                     let value = self.x * self.x + self.y * self.y + self.z * self.z;
-                    ApproxMeasure::<$unit2, Number>::new_with_variance(
+                    ApproxMeasure::<$unit2, Number>::with_variance(
                         value,
                         value * (self.variance + self.variance),
                     )
@@ -565,7 +565,7 @@ macro_rules! expand_3_3 {
                     let value_product_x = self.x * other.x;
                     let value_product_y = self.y * other.y;
                     let value_product_z = self.z * other.z;
-                    Self::Output::new_with_variance(
+                    Self::Output::with_variance(
                         value_product_x + value_product_y + value_product_z,
                         value_product_x *
                             (other.x * self.variance / self.x +
@@ -587,7 +587,7 @@ macro_rules! expand_3_3 {
                     let value_product_x = self.x * other.x;
                     let value_product_y = self.y * other.y;
                     let value_product_z = self.z * other.z;
-                    Self::Output::new_with_variance(
+                    Self::Output::with_variance(
                         value_product_x + value_product_y + value_product_z,
                         value_product_x *
                             (other.x * self.variance / self.x +

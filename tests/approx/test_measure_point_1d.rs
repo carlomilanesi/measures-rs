@@ -35,7 +35,7 @@ fn approx_measure_point_default() {
 
 #[test]
 fn approx_measure_point_new() {
-    let mp = ApproxMeasurePoint::<Celsius, f32>::new_with_variance(12., 0.04);
+    let mp = ApproxMeasurePoint::<Celsius, f32>::with_variance(12., 0.04);
     assert_eq!(mp.value, 12.);
     assert_eq!(mp.variance, 0.04);
 }
@@ -43,14 +43,14 @@ fn approx_measure_point_new() {
 #[test]
 fn approx_measure_point_convert() {
     // 0 ± 0.2 °C is 32 ± 0.36 °F
-    let mp1 = ApproxMeasurePoint::<Celsius, f32>::new_with_variance(0., 0.2 * 0.2);
+    let mp1 = ApproxMeasurePoint::<Celsius, f32>::with_variance(0., 0.2 * 0.2);
     let mp2: ApproxMeasurePoint<Fahrenheit, f32> = mp1.convert::<Fahrenheit>();
     assert_eq!(mp2.value, 32.);
     assert_eq!(mp2.variance, 0.2 * 0.2 * (9. / 5.) * (9. / 5.));
     assert_eq!(mp2.variance, 0.36 * 0.36);
 
     // 68 ± 0.36 °F is 20 ± 0.2 °C
-    let mp3 = ApproxMeasurePoint::<Fahrenheit, f32>::new_with_variance(68., 0.36 * 0.36);
+    let mp3 = ApproxMeasurePoint::<Fahrenheit, f32>::with_variance(68., 0.36 * 0.36);
     let mp4: ApproxMeasurePoint<Celsius, f32> = mp3.convert::<Celsius>();
     assert_eq!(mp4.value, 20.);
     assert_eq!(mp4.variance, 0.36 * 0.36 / (9. / 5.) / (9. / 5.));

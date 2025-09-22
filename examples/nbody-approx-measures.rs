@@ -185,7 +185,7 @@ const POSITION_VARIANCE: f64 = POSITION_UNCERTAINTY * POSITION_UNCERTAINTY;
 const VELOCITY_VARIANCE: f64 = VELOCITY_UNCERTAINTY * VELOCITY_UNCERTAINTY;
 
 const SOLAR_MASS: ApproxMeasure<KiloGram> =
-    ApproxMeasure::<KiloGram>::new_with_variance(4.0 * PI * PI, MASS_VARIANCE);
+    ApproxMeasure::<KiloGram>::with_variance(4.0 * PI * PI, MASS_VARIANCE);
 const DPY: f64 = 365.24;
 
 pub struct Body {
@@ -206,13 +206,13 @@ fn bodies() -> [Body; N_BODIES] {
         },
         // jupiter:
         Body {
-            x: ApproxMeasurePoint3d::new_with_variance(
+            x: ApproxMeasurePoint3d::with_variance(
                 4.84143144246472090e+00,
                 -1.16032004402742839e+00,
                 -1.03622044471123109e-01,
                 POSITION_VARIANCE,
             ),
-            v: ApproxMeasure3d::new_with_variance(
+            v: ApproxMeasure3d::with_variance(
                 1.66007664274403694e-03 * DPY,
                 7.69901118419740425e-03 * DPY,
                 -6.90460016972063023e-05 * DPY,
@@ -222,13 +222,13 @@ fn bodies() -> [Body; N_BODIES] {
         },
         // saturn:
         Body {
-            x: ApproxMeasurePoint3d::new_with_variance(
+            x: ApproxMeasurePoint3d::with_variance(
                 8.34336671824457987e+00,
                 4.12479856412430479e+00,
                 -4.03523417114321381e-01,
                 POSITION_VARIANCE,
             ),
-            v: ApproxMeasure3d::new_with_variance(
+            v: ApproxMeasure3d::with_variance(
                 -2.76742510726862411e-03 * DPY,
                 4.99852801234917238e-03 * DPY,
                 2.30417297573763929e-05 * DPY,
@@ -238,13 +238,13 @@ fn bodies() -> [Body; N_BODIES] {
         },
         // uranus:
         Body {
-            x: ApproxMeasurePoint3d::new_with_variance(
+            x: ApproxMeasurePoint3d::with_variance(
                 1.28943695621391310e+01,
                 -1.51111514016986312e+01,
                 -2.23307578892655734e-01,
                 POSITION_VARIANCE,
             ),
-            v: ApproxMeasure3d::new_with_variance(
+            v: ApproxMeasure3d::with_variance(
                 2.96460137564761618e-03 * DPY,
                 2.37847173959480950e-03 * DPY,
                 -2.96589568540237556e-05 * DPY,
@@ -254,13 +254,13 @@ fn bodies() -> [Body; N_BODIES] {
         },
         // neptune:
         Body {
-            x: ApproxMeasurePoint3d::new_with_variance(
+            x: ApproxMeasurePoint3d::with_variance(
                 1.53796971148509165e+01,
                 -2.59193146099879641e+01,
                 1.79258772950371181e-01,
                 POSITION_VARIANCE,
             ),
-            v: ApproxMeasure3d::new_with_variance(
+            v: ApproxMeasure3d::with_variance(
                 2.68067772490389322e-03 * DPY,
                 1.62824170038242295e-03 * DPY,
                 -9.51592254519715870e-05 * DPY,
@@ -281,7 +281,7 @@ pub fn offset_momentum(bodies: &mut [Body; N_BODIES]) {
 }
 
 pub fn energy(bodies: &[Body; N_BODIES]) -> ApproxMeasure<Joule> {
-    let g = ApproxMeasure::<NewtonSquareMetrePerSquareKilogram>::new_with_variance(
+    let g = ApproxMeasure::<NewtonSquareMetrePerSquareKilogram>::with_variance(
         1.,
         GRAVITATIONAL_CONSTANT_UNCERTAINTY * GRAVITATIONAL_CONSTANT_UNCERTAINTY,
     );
@@ -318,7 +318,7 @@ pub fn advance(bodies: &mut [Body; N_BODIES], dt: ApproxMeasure<Second>) {
         mag[i] = dt / (d1 * d1.sqrt());
     }
 
-    let g = ApproxMeasure::<NewtonSquareMetrePerSquareKilogram>::new_with_variance(
+    let g = ApproxMeasure::<NewtonSquareMetrePerSquareKilogram>::with_variance(
         1.,
         GRAVITATIONAL_CONSTANT_UNCERTAINTY * GRAVITATIONAL_CONSTANT_UNCERTAINTY,
     );
@@ -344,7 +344,7 @@ fn run(n: usize) -> (ApproxMeasure<Joule>, ApproxMeasure<Joule>) {
     for _ in 0..n {
         advance(
             &mut bodies,
-            ApproxMeasure::<Second>::new_with_variance(0.01, STEP_UNCERTAINTY * STEP_UNCERTAINTY),
+            ApproxMeasure::<Second>::with_variance(0.01, STEP_UNCERTAINTY * STEP_UNCERTAINTY),
         );
     }
     let energy_after = energy(&bodies);

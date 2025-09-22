@@ -16,8 +16,8 @@ macro_rules! inner_define_approx_measure_3d {
             Number: ArithmeticOps,
             Unit::Property: VectorProperty,
         {
-            /// Measure3d::new_with_variance(number, number, number, number) -> Measure3d
-            pub const fn new_with_variance(x: Number, y: Number, z: Number, variance: Number) -> Self {
+            /// Measure3d::with_variance(number, number, number, number) -> Measure3d
+            pub const fn with_variance(x: Number, y: Number, z: Number, variance: Number) -> Self {
                 Self {
                     x,
                     y,
@@ -27,19 +27,19 @@ macro_rules! inner_define_approx_measure_3d {
                 }
             }
 
-            /// Measure3d::new_with_uncertainty(number, number, number, number) -> Measure3d
-            pub fn new_with_uncertainty(
+            /// Measure3d::with_uncertainty(number, number, number, number) -> Measure3d
+            pub fn with_uncertainty(
                 x: Number,
                 y: Number,
                 z: Number,
                 uncertainty: Measure<Unit, Number>,
             ) -> Self {
-                Self::new_with_variance(x, y, z, uncertainty.value * uncertainty.value)
+                Self::with_variance(x, y, z, uncertainty.value * uncertainty.value)
             }
 
             /// Measure3d.x() -> Measure
             pub fn x(self) -> ApproxMeasure<Unit, Number> {
-                ApproxMeasure::<Unit, Number>::new_with_variance(
+                ApproxMeasure::<Unit, Number>::with_variance(
                     self.x,
                     self.variance / (Number::ONE + Number::ONE + Number::ONE),
                 )
@@ -47,7 +47,7 @@ macro_rules! inner_define_approx_measure_3d {
 
             /// Measure3d.y() -> Measure
             pub fn y(self) -> ApproxMeasure<Unit, Number> {
-                ApproxMeasure::<Unit, Number>::new_with_variance(
+                ApproxMeasure::<Unit, Number>::with_variance(
                     self.y,
                     self.variance / (Number::ONE + Number::ONE + Number::ONE),
                 )
@@ -55,7 +55,7 @@ macro_rules! inner_define_approx_measure_3d {
 
             /// Measure3d.z() -> Measure
             pub fn z(self) -> ApproxMeasure<Unit, Number> {
-                ApproxMeasure::<Unit, Number>::new_with_variance(
+                ApproxMeasure::<Unit, Number>::with_variance(
                     self.z,
                     self.variance / (Number::ONE + Number::ONE + Number::ONE),
                 )
@@ -66,7 +66,7 @@ macro_rules! inner_define_approx_measure_3d {
                 &self,
             ) -> ApproxMeasure3d<DestUnit, Number> {
                 let ratio = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
-                ApproxMeasure3d::<DestUnit, Number>::new_with_variance(
+                ApproxMeasure3d::<DestUnit, Number>::with_variance(
                     self.x * ratio,
                     self.y * ratio,
                     self.z * ratio,
@@ -78,7 +78,7 @@ macro_rules! inner_define_approx_measure_3d {
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> ApproxMeasure3d<Unit, DestNumber> {
-                ApproxMeasure3d::<Unit, DestNumber>::new_with_variance(
+                ApproxMeasure3d::<Unit, DestNumber>::with_variance(
                     DestNumber::lossy_from(self.x),
                     DestNumber::lossy_from(self.y),
                     DestNumber::lossy_from(self.z),
@@ -94,7 +94,7 @@ macro_rules! inner_define_approx_measure_3d {
             /// measure 3d .normalized() -> number
             pub fn normalized(self) -> Self {
                 let k = Number::ONE / self.squared_norm().sqrt();
-                Self::new_with_variance(self.x * k, self.y * k, self.z * k, self.variance * k * k)
+                Self::with_variance(self.x * k, self.y * k, self.z * k, self.variance * k * k)
             }
         }
 
@@ -106,7 +106,7 @@ macro_rules! inner_define_approx_measure_3d {
         {
             // It returns the zero vector.
             fn default() -> Self {
-                Self::new_with_variance(Number::ZERO, Number::ZERO, Number::ZERO, Number::ZERO)
+                Self::with_variance(Number::ZERO, Number::ZERO, Number::ZERO, Number::ZERO)
             }
         }
 
@@ -116,7 +116,7 @@ macro_rules! inner_define_approx_measure_3d {
             Unit::Property: VectorProperty,
         {
             fn from(m: ApproxMeasure3d<Unit, f32>) -> Self {
-                Self::new_with_variance(m.x as f64, m.y as f64, m.z as f64, m.variance as f64)
+                Self::with_variance(m.x as f64, m.y as f64, m.z as f64, m.variance as f64)
             }
         }
 
@@ -129,7 +129,7 @@ macro_rules! inner_define_approx_measure_3d {
         {
             type Output = Self;
             fn neg(self) -> Self::Output {
-                Self::new_with_variance(-self.x, -self.y, -self.z, self.variance)
+                Self::with_variance(-self.x, -self.y, -self.z, self.variance)
             }
         }
 
@@ -142,7 +142,7 @@ macro_rules! inner_define_approx_measure_3d {
         {
             type Output = Self;
             fn add(self, other: ApproxMeasure3d<Unit, Number>) -> Self::Output {
-                Self::new_with_variance(
+                Self::with_variance(
                     self.x + other.x,
                     self.y + other.y,
                     self.z + other.z,
@@ -175,7 +175,7 @@ macro_rules! inner_define_approx_measure_3d {
         {
             type Output = Self;
             fn sub(self, other: ApproxMeasure3d<Unit, Number>) -> Self::Output {
-                Self::new_with_variance(
+                Self::with_variance(
                     self.x - other.x,
                     self.y - other.y,
                     self.z - other.z,
@@ -208,7 +208,7 @@ macro_rules! inner_define_approx_measure_3d {
         {
             type Output = Self;
             fn mul(self, n: Number) -> Self::Output {
-                Self::new_with_variance(self.x * n, self.y * n, self.z * n, self.variance * n * n)
+                Self::with_variance(self.x * n, self.y * n, self.z * n, self.variance * n * n)
             }
         }
 
@@ -235,7 +235,7 @@ macro_rules! inner_define_approx_measure_3d {
         {
             type Output = ApproxMeasure3d<Unit, f64>;
             fn mul(self, other: ApproxMeasure3d<Unit, f64>) -> Self::Output {
-                Self::Output::new_with_variance(
+                Self::Output::with_variance(
                     self * other.x,
                     self * other.y,
                     self * other.z,
@@ -252,7 +252,7 @@ macro_rules! inner_define_approx_measure_3d {
         {
             type Output = ApproxMeasure3d<Unit, f32>;
             fn mul(self, other: ApproxMeasure3d<Unit, f32>) -> Self::Output {
-                Self::Output::new_with_variance(
+                Self::Output::with_variance(
                     self * other.x,
                     self * other.y,
                     self * other.z,
@@ -271,7 +271,7 @@ macro_rules! inner_define_approx_measure_3d {
             type Output = Self;
             fn div(self, n: Number) -> Self::Output {
                 let factor = Number::ONE / n;
-                Self::new_with_variance(
+                Self::with_variance(
                     self.x * factor,
                     self.y * factor,
                     self.z * factor,

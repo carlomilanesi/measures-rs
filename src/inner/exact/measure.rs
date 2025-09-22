@@ -31,11 +31,11 @@ macro_rules! inner_define_measure {
 
             measures::if_all_true! { {$with_approx}
                 pub fn to_approx_measure_with_variance(self, variance: Number) -> ApproxMeasure<Unit, Number> {
-                    ApproxMeasure::<Unit, Number>::new_with_variance(self.value, variance)
+                    ApproxMeasure::<Unit, Number>::with_variance(self.value, variance)
                 }
 
                 pub fn to_approx_measure_with_uncertainty(self, uncertainty: Measure<Unit, Number>) -> ApproxMeasure<Unit, Number> {
-                    ApproxMeasure::<Unit, Number>::new_with_uncertainty(self.value, uncertainty)
+                    ApproxMeasure::<Unit, Number>::with_uncertainty(self.value, uncertainty)
                 }
             }
 

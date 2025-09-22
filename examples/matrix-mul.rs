@@ -273,9 +273,9 @@ fn array_measure_matrix_multiplication() -> Duration {
 
 #[allow(clippy::needless_range_loop)]
 fn array_approx_measure_matrix_multiplication() -> Duration {
-    let mat1 = [[ApproxMeasure::<Newton>::new_with_variance(0., 1e-8); SIZE]; SIZE];
-    let mat2 = [[ApproxMeasure::<Metre>::new_with_variance(0., 1e-8); SIZE]; SIZE];
-    let mut mat3 = [[ApproxMeasure::<Joule>::new_with_variance(0., 0.); SIZE]; SIZE];
+    let mat1 = [[ApproxMeasure::<Newton>::with_variance(0., 1e-8); SIZE]; SIZE];
+    let mat2 = [[ApproxMeasure::<Metre>::with_variance(0., 1e-8); SIZE]; SIZE];
+    let mut mat3 = [[ApproxMeasure::<Joule>::with_variance(0., 0.); SIZE]; SIZE];
     let start = Instant::now();
     for row in 0..SIZE {
         for column in 0..SIZE {
@@ -289,9 +289,9 @@ fn array_approx_measure_matrix_multiplication() -> Duration {
 
 #[allow(clippy::needless_range_loop)]
 fn array_approx_measure_values_matrix_multiplication() -> Duration {
-    let mat1 = [[ApproxMeasure::<Newton>::new_with_variance(0., 1e-8); SIZE]; SIZE];
-    let mat2 = [[ApproxMeasure::<Metre>::new_with_variance(0., 1e-8); SIZE]; SIZE];
-    let mut mat3 = [[ApproxMeasure::<Joule>::new_with_variance(0., 0.); SIZE]; SIZE];
+    let mat1 = [[ApproxMeasure::<Newton>::with_variance(0., 1e-8); SIZE]; SIZE];
+    let mat2 = [[ApproxMeasure::<Metre>::with_variance(0., 1e-8); SIZE]; SIZE];
+    let mut mat3 = [[ApproxMeasure::<Joule>::with_variance(0., 0.); SIZE]; SIZE];
     let start = Instant::now();
     for row in 0..SIZE {
         for column in 0..SIZE {

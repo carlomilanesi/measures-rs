@@ -17,7 +17,7 @@ The more complete methods are instead:
 ```
 fn add_with_correlation(&self, other: &Self, correlation: Number) -> Self {
     let h = Number::ONE - correlation * correlation * Number::HALF;
-    Self::new_with_variance(self.value + other.value, (self.variance.powf(h) + other.variance.powf(h)).powf(Number::ONE / h))
+    Self::with_variance(self.value + other.value, (self.variance.powf(h) + other.variance.powf(h)).powf(Number::ONE / h))
 }
 ```
 and

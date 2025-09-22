@@ -154,15 +154,15 @@ fn use_approx_measures(n_data_size: usize) {
 
     const UNCERTAINTY: f64 = 0.001;
     for _ in 0..n_data_size {
-        mp1.push(ApproxMeasurePoint::<Metre>::new_with_variance(
+        mp1.push(ApproxMeasurePoint::<Metre>::with_variance(
             rng.random::<f64>(),
             UNCERTAINTY * UNCERTAINTY,
         ));
-        mp2.push(ApproxMeasurePoint::<Metre>::new_with_variance(
+        mp2.push(ApproxMeasurePoint::<Metre>::with_variance(
             rng.random::<f64>(),
             UNCERTAINTY * UNCERTAINTY,
         ));
-        m1.push(ApproxMeasure::<Metre>::new_with_variance(
+        m1.push(ApproxMeasure::<Metre>::with_variance(
             rng.random::<f64>(),
             UNCERTAINTY * UNCERTAINTY,
         ));
