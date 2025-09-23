@@ -32,32 +32,38 @@ impl MeasurementUnit for NanoSecond {
 const N_ITERATIONS: usize = 1_000;
 
 fn main() {
-    const MAX_DATA_SIZE: usize = 100_000_000; // items, using 2.4 GB
-    let mut args = std::env::args();
-    args.next();
-    let mut n_data_size = 100;
-    if let Some(arg) = args.next() {
-        if let Ok(n) = arg.parse::<usize>() {
-            if n > MAX_DATA_SIZE {
-                println!("Warning: {arg} is too big as data size.");
-                n_data_size = MAX_DATA_SIZE;
-            } else {
-                n_data_size = n;
-            }
-        } else {
-            println!("Warning: {arg} is not allowed as data size.");
-        }
-    } else {
-        println!("No data size specified.");
-    }
+    let n_data_size = parse_command_line();
     println!("Using {n_data_size} items.");
 
-    use_naked_numbers(n_data_size);
+    use_primitive_numbers(n_data_size);
     use_measures(n_data_size);
     use_approx_measures(n_data_size);
 }
 
-fn use_naked_numbers(n_data_size: usize) {
+fn parse_command_line() -> usize {
+    const MAX_DATA_SIZE: usize = 100_000_000; // items, using 2.4 GB
+    const DEFAULT_DATA_SIZE: usize = 1_000; // items, using 24 KB
+    let mut args = std::env::args();
+    args.next();
+    if let Some(arg) = args.next() {
+        if let Ok(n) = arg.parse::<usize>() {
+            if n > MAX_DATA_SIZE {
+                println!("Warning: {arg} is too big as data size.");
+                MAX_DATA_SIZE
+            } else {
+                n
+            }
+        } else {
+            println!("Warning: {arg} is not allowed as data size.");
+            DEFAULT_DATA_SIZE
+        }
+    } else {
+        println!("No data size specified.");
+        DEFAULT_DATA_SIZE
+    }
+}
+
+fn use_primitive_numbers(n_data_size: usize) {
     let mut mp1 = Vec::<f64>::with_capacity(n_data_size);
     let mut mp2 = Vec::<f64>::with_capacity(n_data_size);
     let mut m1 = Vec::<f64>::with_capacity(n_data_size);

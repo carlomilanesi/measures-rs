@@ -451,7 +451,7 @@ This happens because, as argument of a call to `Rotation2::new`, `nalgebra` allo
 For example, we must be able to multiply it by itself, to compute its square root, and so on.
 This is not available for all measures, in general.
 
-Then, we can try to use a naked number for the rotation:
+Then, we can try to use a primitive number for the rotation:
 
 ```rust
 let displacement = Vector2::new(
@@ -482,7 +482,8 @@ let rotation = LinearMap2d::rotation(
 let rotated_displacement = rotation.apply_to(displacement);
 ```
 
-The above code uses the type `LinearMap2d` to transform objects of type `Measure2d`. To transform objects of type `MeasurePoint2d`, the type `AffineMap2d` should be used instead.
+The above code uses the type `LinearMap2d` to transform objects of type `Measure2d`.
+To transform objects of type `MeasurePoint2d`, the type `AffineMap2d` should be used instead.
 
 And when working in three dimensions, the types `LinearMap3d` and `AffineMap3d` should be used.
 
