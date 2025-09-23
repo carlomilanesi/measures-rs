@@ -487,6 +487,13 @@ To transform objects of type `MeasurePoint2d`, the type `AffineMap2d` should be 
 
 And when working in three dimensions, the types `LinearMap3d` and `AffineMap3d` should be used.
 
+With some programming languages, and also with old versions of Rust, a good reason to use an linear algebra package is to improve performance over naive application code.
+Though recent versions of the Rust compiler use automatically the SIMD instructions available in the target architecture, and so no optimizations are to be expected, when very small matrices are manipulated.
+
+So, when simple linear or affine transformations are needed, it is simpler to avoid including a linear algebra package in the project.
+
+However, when more complex linear or affine transformations are needed, it is possible to include also a linear algebra package in the project, and exchange data for that library and the library `measure`.
+
 ## Working with uncertainty
 
 In experimental science and in engineering, you rarely handle exact measures. Typically, every measure is affected by some _uncertainty_ (often improperly name "error"). This means that a measure is not a number, but a probability distribution.

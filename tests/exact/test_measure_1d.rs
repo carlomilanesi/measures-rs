@@ -331,23 +331,23 @@ fn measure_formatting_for_debug_in_metres_one_fractional_digit() {
 #[test]
 fn measure_formatting_in_metres_in_decibels() {
     let m = Measure::<Metre, f32>::new(12.25);
-    assert_eq!(format!("{}", m.format_in_decibels()), "10.881361 dB m");
+    assert_eq!(format!("{}", m.decibels_formatter()), "10.881361 dB m");
 }
 
 #[test]
 fn measure_formatting_in_metres_in_decibels_one_fractional_digit() {
     let m = Measure::<Metre, f32>::new(12.25);
-    assert_eq!(format!("{:.1}", m.format_in_decibels()), "10.9 dB m");
+    assert_eq!(format!("{:.1}", m.decibels_formatter()), "10.9 dB m");
 }
 
 #[test]
 fn measure_formatting_for_debug_in_metres_in_decibels() {
     let m = Measure::<Metre, f32>::new(12.25);
-    assert_eq!(format!("{:?}", m.format_in_decibels()), "10.881361 dB m");
+    assert_eq!(format!("{:?}", m.decibels_formatter()), "10.881361 dB m");
 }
 
 #[test]
 fn measure_formatting_for_debug_in_metres_in_decibels_one_fractional_digit() {
     let m = Measure::<Metre, f32>::new(12.25);
-    assert_eq!(format!("{:.1?}", m.format_in_decibels()), "10.9 dB m");
+    assert_eq!(format!("{:.1?}", m.decibels_formatter()), "10.9 dB m");
 }

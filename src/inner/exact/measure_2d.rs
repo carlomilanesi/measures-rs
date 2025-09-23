@@ -55,12 +55,17 @@ macro_rules! inner_define_measure_2d {
                 }
             }
 
-            /// measure 2d .squared_norm() -> number
+            /// Measure2d.norm() -> Measure
+            pub fn norm(self) -> Measure<Unit, Number> {
+                Measure::<Unit, Number>::new((self.x * self.x + self.y * self.y).sqrt())
+            }
+
+            /// Measure2d.squared_norm() -> number
             pub fn squared_norm(self) -> Number {
                 self.x * self.x + self.y * self.y
             }
 
-            /// measure 2d .normalized() -> number
+            /// Measure2d.normalized() -> number
             pub fn normalized(self) -> Self {
                 let k = Number::ONE / self.squared_norm().sqrt();
                 Self::new(self.x * k, self.y * k)

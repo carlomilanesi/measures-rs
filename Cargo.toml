@@ -15,7 +15,7 @@ name = "measures"
 [dev-dependencies]
 
 [dependencies]
-faer = "0.22.6"
+faer = "0.23.1"
 nalgebra = "0.34.0"
 ndarray = "0.16.1"
 num-traits = "0.2.19"

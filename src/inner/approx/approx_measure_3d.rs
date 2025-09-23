@@ -74,7 +74,7 @@ macro_rules! inner_define_approx_measure_3d {
                 )
             }
 
-            /// measure 3d .lossy_into() -> measure 3d
+            /// Measure3d.lossy_into() -> Measure3d
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> ApproxMeasure3d<Unit, DestNumber> {
@@ -86,12 +86,12 @@ macro_rules! inner_define_approx_measure_3d {
                 )
             }
 
-            /// measure 3d .squared_norm() -> number
+            /// Measure3d.squared_norm() -> number
             pub fn squared_norm(self) -> Number {
                 self.x * self.x + self.y * self.y + self.z * self.z
             }
 
-            /// measure 3d .normalized() -> number
+            /// Measure3d.normalized() -> number
             pub fn normalized(self) -> Self {
                 let k = Number::ONE / self.squared_norm().sqrt();
                 Self::with_variance(self.x * k, self.y * k, self.z * k, self.variance * k * k)

@@ -23,10 +23,21 @@
 // The time taken for the 20 multiplications after the first one (used as warm-up) is averaged and reported.
 
 measures::define_measure_types! {
-    exact with_approx,
+    exact with_approx with_3d with_transformations,
     [
         Joule 1 == Newton 1 * Metre 1,
     ]
+}
+
+pub struct Degree;
+impl MeasurementUnit for Degree {
+    type Property = Angle;
+    const RATIO: f64 = core::f64::consts::TAU / 360.;
+    const OFFSET: f64 = 0.;
+    const SUFFIX: &'static str = " deg";
+}
+impl AngleMeasurementUnit for Degree {
+    const CYCLE_FRACTION: f64 = 360.;
 }
 
 pub struct Length;
@@ -183,7 +194,8 @@ use std::time::{Duration, Instant};
 use na::{ArrayStorage, Const, Matrix};
 
 fn nalgebra_f64s_built_in<const SIZE: usize>() -> Duration {
-    type Mat<const SIZE: usize> = Matrix<f64, Const<SIZE>, Const<SIZE>, ArrayStorage<f64, SIZE, SIZE>>;
+    type Mat<const SIZE: usize> =
+        Matrix<f64, Const<SIZE>, Const<SIZE>, ArrayStorage<f64, SIZE, SIZE>>;
     let mut mat1 = Mat::zeros();
     let mut mat2 = Mat::zeros();
     let mut x = 12.34;
@@ -195,13 +207,21 @@ fn nalgebra_f64s_built_in<const SIZE: usize>() -> Duration {
             x -= 1.3;
         }
     }
+    println!("Nalgebra Mat1: {mat1}");
+    let rotation = LinearMap3d::rotation(
+        Measure::<Degree, f64>::new(25.),
+        Measure3d::<One, f64>::new(0., 0., 1.),
+    );
+    println!("Rotation:\n{rotation}");
+
     let start = Instant::now();
     let mat3: Mat<SIZE> = mat1 * mat2;
     elapsed::<SIZE>(start, mat3[(SIZE / 3, SIZE / 2)])
 }
 
 fn nalgebra_f64s_item_wise<const SIZE: usize>() -> Duration {
-    type Mat<const SIZE: usize> = Matrix<f64, Const<SIZE>, Const<SIZE>, ArrayStorage<f64, SIZE, SIZE>>;
+    type Mat<const SIZE: usize> =
+        Matrix<f64, Const<SIZE>, Const<SIZE>, ArrayStorage<f64, SIZE, SIZE>>;
     let mut mat1 = Mat::<SIZE>::zeros();
     let mut mat2 = Mat::<SIZE>::zeros();
     let mut mat3 = Mat::<SIZE>::zeros();
@@ -401,7 +421,10 @@ fn bench_matrices<const SIZE: usize>() {
     println!("**** Benchmark of matrices of side {SIZE} ****");
     println!("Native matrices of:");
     println!("    f64s: {:.3}.", bench::<SIZE>(native_f64s::<SIZE>));
-    println!("    f64 measures: {:.3}.", bench::<SIZE>(native_f64_measures::<SIZE>));
+    println!(
+        "    f64 measures: {:.3}.",
+        bench::<SIZE>(native_f64_measures::<SIZE>)
+    );
     println!(
         "    f64 approx measures: {:.3}.",
         bench::<SIZE>(native_f64_approx_measures::<SIZE>)

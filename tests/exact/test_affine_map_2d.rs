@@ -373,19 +373,22 @@ fn affine_map_2d_combined_with() {
 #[test]
 fn affine_map_2d_formatting_with_no_padding() {
     let am = AffineMap2d::<Metre, f64>::new([[1.2, 000.8, 1.2], [3.400, 1.3, 1.4]]);
-    assert_eq!(format!("{}", am), "[1.2 0.8 1.2] m\n[3.4 1.3 1.4]");
+    assert_eq!(format!("{}", am), " ⎡ 1.2 0.8 1.2 ⎤ m\n ⎣ 3.4 1.3 1.4 ⎦");
 }
 
 #[test]
 fn affine_map_2d_formatting_for_debug_with_no_padding() {
     let am = AffineMap2d::<Metre, f64>::new([[1.2, 000.8, 1.2], [3.400, 1.3, 1.4]]);
-    assert_eq!(format!("{:?}", am), "[1.2 0.8 1.2] m\n[3.4 1.3 1.4]");
+    assert_eq!(format!("{:?}", am), " ⎡ 1.2 0.8 1.2 ⎤ m\n ⎣ 3.4 1.3 1.4 ⎦");
 }
 
 #[test]
 fn affine_map_2d_formatting_with_initial_padding() {
     let am = AffineMap2d::<Metre, f64>::new([[1.2, 20.8, 2567.], [873.4, 1.3, 0.]]);
-    assert_eq!(format!("{}", am), "[  1.2 20.8 2567] m\n[873.4  1.3    0]");
+    assert_eq!(
+        format!("{}", am),
+        " ⎡   1.2 20.8 2567 ⎤ m\n ⎣ 873.4  1.3    0 ⎦"
+    );
 }
 
 #[test]
@@ -393,7 +396,7 @@ fn affine_map_2d_formatting_for_debug_with_initial_padding() {
     let am = AffineMap2d::<Metre, f64>::new([[1.2, 20.8, 2567.], [873.4, 1.3, 0.]]);
     assert_eq!(
         format!("{:?}", am),
-        "[  1.2 20.8 2567] m\n[873.4  1.3    0]"
+        " ⎡   1.2 20.8 2567 ⎤ m\n ⎣ 873.4  1.3    0 ⎦"
     );
 }
 
@@ -402,7 +405,7 @@ fn affine_map_2d_formatting_with_final_padding() {
     let am = AffineMap2d::<Metre, f64>::new([[1.254, 0.8, -0.3401], [3.4, 1.36, 45.]]);
     assert_eq!(
         format!("{}", am),
-        "[1.254 0.8  -0.3401] m\n[3.4   1.36 45     ]"
+        " ⎡ 1.254 0.8  -0.3401 ⎤ m\n ⎣ 3.4   1.36 45      ⎦"
     );
 }
 
@@ -411,7 +414,7 @@ fn affine_map_2d_formatting_for_debug_with_final_padding() {
     let am = AffineMap2d::<Metre, f64>::new([[1.254, 0.8, -0.3401], [3.4, 1.36, 45.]]);
     assert_eq!(
         format!("{:?}", am),
-        "[1.254 0.8  -0.3401] m\n[3.4   1.36 45     ]"
+        " ⎡ 1.254 0.8  -0.3401 ⎤ m\n ⎣ 3.4   1.36 45      ⎦"
     );
 }
 
@@ -420,7 +423,7 @@ fn affine_map_2d_formatting_with_both_padding() {
     let am = AffineMap2d::<Metre, f64>::new([[1.254, 650., -872.], [98763.4, 1.7658909, 5.43]]);
     assert_eq!(
         format!("{}", am),
-        "[    1.254 650         -872   ] m\n[98763.4     1.7658909    5.43]"
+        " ⎡     1.254 650         -872    ⎤ m\n ⎣ 98763.4     1.7658909    5.43 ⎦"
     );
 }
 
@@ -429,6 +432,6 @@ fn affine_map_2d_formatting_for_debug_with_both_padding() {
     let am = AffineMap2d::<Metre, f64>::new([[1.254, 650., -872.], [98763.4, 1.7658909, 5.43]]);
     assert_eq!(
         format!("{:?}", am),
-        "[    1.254 650         -872   ] m\n[98763.4     1.7658909    5.43]"
+        " ⎡     1.254 650         -872    ⎤ m\n ⎣ 98763.4     1.7658909    5.43 ⎦"
     );
 }

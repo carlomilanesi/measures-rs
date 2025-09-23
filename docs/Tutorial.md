@@ -1258,7 +1258,7 @@ The crate `measures` supports decibels only for the type `Measure`, as shown in 
     print!(", {one_milliwatt_in_db:.1}"); // -30.0
     let one_milliwatt_value = Decibel::from_decibels(one_milliwatt_in_db);
     print!(", {one_milliwatt_value:.4}"); // 0.0010
-    print!(", {:.4};", one_milliwatt.format_in_decibels()); // -30.0000 dB W
+    print!(", {:.4};", one_milliwatt.decibels_formatter()); // -30.0000 dB W
 ```
 
 It will print: `0.0010 W, -30.0, 0.0010, -30.0000 dB W;`.
@@ -1274,8 +1274,8 @@ The result is a number, and it is printed as `0.0010`.
 
 These operations are defined in the trait `Decibel`, implemented for the types `f32` and `f64`.
 
-Then, to print the decibels corresponding to the measure `one_milliwatt`, its method `format_in_decibels` is called.
-It returns an object of type `DecibelFormattedMeasure`, which encapsulates the measure, and which implements the traits `Display` and `Debug`.
+Then, to print the decibels corresponding to the measure `one_milliwatt`, its method `decibels_formatter` is called.
+It returns an object of type `DecibelsMeasureFormatter`, which encapsulates the measure, and which implements the traits `Display` and `Debug`.
 Such implementations cause that, when this object is printed, it will show the string "` dB`" between the numeric value and the unit suffix.
 Therefore, it is printed as `-30.0 dB W`.
 

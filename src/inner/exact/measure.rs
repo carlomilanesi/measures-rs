@@ -60,7 +60,12 @@ macro_rules! inner_define_measure {
                 }
             }
 
-            // Measure.squared_norm() -> Measure<One> {
+            /// Measure.norm() -> Measure
+            pub fn norm(self) -> Measure<Unit, Number> {
+                Measure::<Unit, Number>::new(self.value.abs())
+            }
+
+            /// Measure.squared_norm() -> Measure<One> {
             pub fn squared_norm(self) -> Measure<One, Number> {
                 Measure::<One, Number>::new(self.value * self.value)
             }
@@ -70,6 +75,7 @@ macro_rules! inner_define_measure {
                 Self::new(self.value.signum())
             }
 
+            /// Measure.min(Measure) -> Measure
             pub fn min(self, other: Self) -> Self {
                 if self <= other {
                     self
@@ -78,6 +84,7 @@ macro_rules! inner_define_measure {
                 }
             }
 
+            /// Measure.max(Measure) -> Measure
             pub fn max(self, other: Self) -> Self {
                 if self >= other {
                     self
@@ -86,12 +93,14 @@ macro_rules! inner_define_measure {
                 }
             }
 
+            /// Measure.clamp(Measure, Measure) -> Measure
             pub fn clamp(self, lower_bound: Self, upper_bound: Self) -> Self {
                 self.max(lower_bound).min(upper_bound)
             }
 
-            pub fn format_in_decibels(self) -> DecibelFormattedMeasure<Unit, Number> {
-                DecibelFormattedMeasure(self)
+            /// Measure.decibels_formatter() -> DecibelsMeasureFormatter
+            pub fn decibels_formatter(self) -> DecibelsMeasureFormatter<Unit, Number> {
+                DecibelsMeasureFormatter(self)
             }
         }
 
@@ -372,12 +381,12 @@ macro_rules! inner_define_measure {
             }
         }
 
-        pub struct DecibelFormattedMeasure<Unit: MeasurementUnit, Number: ArithmeticOps>(
+        pub struct DecibelsMeasureFormatter<Unit: MeasurementUnit, Number: ArithmeticOps>(
             Measure<Unit, Number>,
         );
 
-        // format!("{}", Measure.format_in_decibels())
-        impl<Unit, Number> fmt::Display for DecibelFormattedMeasure<Unit, Number>
+        // format!("{}", Measure.decibels_formatter())
+        impl<Unit, Number> fmt::Display for DecibelsMeasureFormatter<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
@@ -389,8 +398,8 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // format!("{:?}", Measure.format_in_decibels())
-        impl<Unit, Number> fmt::Debug for DecibelFormattedMeasure<Unit, Number>
+        // format!("{:?}", Measure.decibels_formatter())
+        impl<Unit, Number> fmt::Debug for DecibelsMeasureFormatter<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,

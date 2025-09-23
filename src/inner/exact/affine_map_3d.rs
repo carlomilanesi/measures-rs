@@ -408,7 +408,7 @@ macro_rules! inner_define_affine_map_3d {
                 write!(
                     formatter,
                     "{}",
-                    measures::matrix_utils::format_matrix::<3, 4, Number>(&self.c, Unit::SUFFIX)
+                    measures::matrix_utils::format_matrix::<3, 4, Number>(&self.c, Unit::SUFFIX, 1)
                 )
             }
         }
@@ -424,7 +424,7 @@ macro_rules! inner_define_affine_map_3d {
                 write!(
                     formatter,
                     "{}",
-                    measures::matrix_utils::format_matrix::<3, 4, Number>(&self.c, Unit::SUFFIX)
+                    measures::matrix_utils::format_matrix::<3, 4, Number>(&self.c, Unit::SUFFIX, 1)
                 )
             }
         }

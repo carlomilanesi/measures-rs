@@ -1,10 +1,10 @@
 use crate::traits::{MeasurementUnit, VectorProperty};
 
-// Built-in measure property.
+// A built-in vector measure property.
 pub struct Dimensionless;
 impl VectorProperty for Dimensionless {}
 
-// The only built-in measurement unit for the property Dimensionless.
+// The only built-in unit of measurement for the property Dimensionless.
 pub struct One;
 impl MeasurementUnit for One {
     type Property = Dimensionless;

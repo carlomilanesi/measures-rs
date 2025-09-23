@@ -99,8 +99,8 @@ macro_rules! inner_define_approx_measure {
                 )
             }
 
-            pub fn format_in_decibels(self) -> ApproxDecibelFormattedMeasure<Unit, Number> {
-                ApproxDecibelFormattedMeasure(self)
+            pub fn decibels_formatter(self) -> ApproxDecibelsMeasureFormatter<Unit, Number> {
+                ApproxDecibelsMeasureFormatter(self)
             }
         }
 
@@ -456,13 +456,13 @@ macro_rules! inner_define_approx_measure {
             }
         }
 
-        pub struct ApproxDecibelFormattedMeasure<Unit, Number>(ApproxMeasure<Unit, Number>)
+        pub struct ApproxDecibelsMeasureFormatter<Unit, Number>(ApproxMeasure<Unit, Number>)
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps;
 
-        // format!("{}", ApproxMeasure.format_in_decibels())
-        impl<Unit, Number> fmt::Display for ApproxDecibelFormattedMeasure<Unit, Number>
+        // format!("{}", ApproxMeasure.decibels_formatter())
+        impl<Unit, Number> fmt::Display for ApproxDecibelsMeasureFormatter<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
@@ -480,8 +480,8 @@ macro_rules! inner_define_approx_measure {
             }
         }
 
-        // format!("{:?}", ApproxMeasure.format_in_decibels())
-        impl<Unit, Number> fmt::Debug for ApproxDecibelFormattedMeasure<Unit, Number>
+        // format!("{:?}", ApproxMeasure.decibels_formatter())
+        impl<Unit, Number> fmt::Debug for ApproxDecibelsMeasureFormatter<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,

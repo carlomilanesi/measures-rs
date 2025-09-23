@@ -63,12 +63,17 @@ macro_rules! inner_define_measure_3d {
                 }
             }
 
-            /// measure 3d .squared_norm() -> number
+            /// Measure3d.norm() -> Measure
+            pub fn norm(self) -> Measure<Unit, Number> {
+                Measure::<Unit, Number>::new((self.x * self.x + self.y * self.y + self.z * self.z).sqrt())
+            }
+
+            /// Measure3d.squared_norm() -> number
             pub fn squared_norm(self) -> Number {
                 self.x * self.x + self.y * self.y + self.z * self.z
             }
 
-            /// measure 3d .normalized() -> number
+            /// Measure3d.normalized() -> number
             pub fn normalized(self) -> Self {
                 let k = Number::ONE / self.squared_norm().sqrt();
                 Self::new(self.x * k, self.y * k, self.z * k)

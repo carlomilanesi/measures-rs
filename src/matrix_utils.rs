@@ -1,10 +1,12 @@
 use crate::traits::ArithmeticOps;
 
-// It receives a matrix of numbers, and a string to be display as suffix unit of measurement,
-// and it string in which the matrix is formatted, with its columns aligned.
+// It receives a matrix of numbers, a string to be display as suffix unit of measurement,
+// and a number of spaces to be used as indentation,
+// and it returns a string in which the matrix is formatted in lines, with its columns aligned.
 pub fn format_matrix<const ROW_COUNT: usize, const COLUMN_COUNT: usize, Number: ArithmeticOps>(
     matrix: &[[Number; COLUMN_COUNT]; ROW_COUNT],
     unit_suffix: &str,
+    indent: usize,
 ) -> String {
     const EMPTY_STRING: String = String::new();
     let mut rows = [EMPTY_STRING; ROW_COUNT];
@@ -12,13 +14,24 @@ pub fn format_matrix<const ROW_COUNT: usize, const COLUMN_COUNT: usize, Number: 
         let column = format_column::<ROW_COUNT, COLUMN_COUNT, Number>(matrix, column_index);
         for row_index in 0..ROW_COUNT {
             if column_index == 0 {
-                rows[row_index] += "[";
+                rows[row_index] += &" ".repeat(indent);
+                rows[row_index] += if row_index == 0 {
+                    "⎡ "
+                } else if row_index == ROW_COUNT - 1 {
+                    "⎣ "
+                } else {
+                    "⎢ "
+                };
             }
             rows[row_index] += &column[row_index];
             rows[row_index] += if column_index < COLUMN_COUNT - 1 {
                 " "
+            } else if row_index == 0 {
+                " ⎤"
+            } else if row_index == ROW_COUNT - 1 {
+                " ⎦"
             } else {
-                "]"
+                " ⎥"
             };
             if row_index == 0 && column_index == COLUMN_COUNT - 1 {
                 rows[row_index] += unit_suffix;
