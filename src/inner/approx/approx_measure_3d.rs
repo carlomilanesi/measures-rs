@@ -91,7 +91,7 @@ macro_rules! inner_define_approx_measure_3d {
                 self.x * self.x + self.y * self.y + self.z * self.z
             }
 
-            /// Measure3d.normalized() -> number
+            /// Measure3d.normalized() -> Measure3d
             pub fn normalized(self) -> Self {
                 let k = Number::ONE / self.squared_norm().sqrt();
                 Self::with_variance(self.x * k, self.y * k, self.z * k, self.variance * k * k)

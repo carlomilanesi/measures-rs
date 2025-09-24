@@ -23,7 +23,7 @@
 // The time taken for the 20 multiplications after the first one (used as warm-up) is averaged and reported.
 
 measures::define_measure_types! {
-    exact with_approx with_3d with_transformations,
+    exact with_approx,
     [
         Joule 1 == Newton 1 * Metre 1,
     ]
@@ -207,12 +207,6 @@ fn nalgebra_f64s_built_in<const SIZE: usize>() -> Duration {
             x -= 1.3;
         }
     }
-    println!("Nalgebra Mat1: {mat1}");
-    let rotation = LinearMap3d::rotation(
-        Measure::<Degree, f64>::new(25.),
-        Measure3d::<One, f64>::new(0., 0., 1.),
-    );
-    println!("Rotation:\n{rotation}");
 
     let start = Instant::now();
     let mat3: Mat<SIZE> = mat1 * mat2;
@@ -256,9 +250,10 @@ fn nalgebra_f64_measures_item_wise<const SIZE: usize>() -> Duration {
         Matrix<Measure<Metre>, Const<SIZE>, Const<SIZE>, ArrayStorage<Measure<Metre>, SIZE, SIZE>>;
     type MatJ<const SIZE: usize> =
         Matrix<Measure<Joule>, Const<SIZE>, Const<SIZE>, ArrayStorage<Measure<Joule>, SIZE, SIZE>>;
-    let mut mat1 = MatN::<SIZE>::zeros(); //Mat::<Measure<Newton>>::zeros(SIZE, SIZE);
-    let mut mat2 = MatM::<SIZE>::zeros(); //Mat::<Measure<Metre>>::zeros(SIZE, SIZE);
-    let mut mat3 = MatJ::<SIZE>::zeros(); //Mat::<Measure<Joule>>::zeros((SIZE, SIZE).f());
+    let mut mat1 = MatN::<SIZE>::zeros();
+    let mut mat2 = MatM::<SIZE>::zeros();
+    let mut mat3 = MatJ::<SIZE>::zeros();
+
     let mut x = 12.34;
     for row in 0..SIZE {
         for column in 0..SIZE {

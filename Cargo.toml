@@ -12,11 +12,11 @@ publish = true
 [lib]
 name = "measures"
 
-[dev-dependencies]
-
 [dependencies]
-faer = "0.23.1"
-nalgebra = "0.34.0"
+
+[dev-dependencies]
+faer = "0.23.2"
+nalgebra = "0.34.1"
 ndarray = "0.16.1"
 num-traits = "0.2.19"
 rand = "0.9.2"

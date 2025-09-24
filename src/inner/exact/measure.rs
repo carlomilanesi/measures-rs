@@ -24,16 +24,17 @@ macro_rules! inner_define_measure {
             }
 
             measures::if_all_true! { {$with_approx}
+                /// Measure::from_approx_measure(ApproxMeasure) -> Measure
                 pub const fn from_approx_measure(approx_measure: ApproxMeasure<Unit, Number>) -> Self {
                     Self::new(approx_measure.value)
                 }
-            }
 
-            measures::if_all_true! { {$with_approx}
+                /// Measure.to_approx_measure_with_variance(Number) -> ApproxMeasure
                 pub fn to_approx_measure_with_variance(self, variance: Number) -> ApproxMeasure<Unit, Number> {
                     ApproxMeasure::<Unit, Number>::with_variance(self.value, variance)
                 }
 
+                /// Measure.to_approx_measure_with_uncertainty(Measure) -> ApproxMeasure
                 pub fn to_approx_measure_with_uncertainty(self, uncertainty: Measure<Unit, Number>) -> ApproxMeasure<Unit, Number> {
                     ApproxMeasure::<Unit, Number>::with_uncertainty(self.value, uncertainty)
                 }
@@ -70,7 +71,7 @@ macro_rules! inner_define_measure {
                 Measure::<One, Number>::new(self.value * self.value)
             }
 
-            /// Measure.normalized() -> Number
+            /// Measure.normalized() -> Measure
             pub fn normalized(self) -> Self {
                 Self::new(self.value.signum())
             }
