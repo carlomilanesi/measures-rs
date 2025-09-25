@@ -60,7 +60,7 @@ macro_rules! inner_define_measure_2d {
                 Measure::<Unit, Number>::new((self.x * self.x + self.y * self.y).sqrt())
             }
 
-            /// Measure2d.squared_norm() -> number
+            /// Measure2d.squared_norm() -> Number
             pub fn squared_norm(self) -> Number {
                 self.x * self.x + self.y * self.y
             }

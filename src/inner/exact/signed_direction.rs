@@ -165,7 +165,7 @@ macro_rules! inner_define_signed_direction {
                 self.convert::<Radian>().value.sin()
             }
             fn tan(self) -> Self::Output {
-                self.convert::<Radian>().value.sin()
+                self.convert::<Radian>().value.tan()
             }
             fn sin_cos(self) -> (Self::Output, Self::Output) {
                 self.convert::<Radian>().value.sin_cos()

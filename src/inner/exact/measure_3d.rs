@@ -1,12 +1,13 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_3d {
-    {$with_approx:ident} => {
+    { $with_approx:ident } => {
         pub struct Measure3d<Unit, Number: ArithmeticOps = f64> {
             pub x: Number,
             pub y: Number,
             pub z: Number,
             phantom: std::marker::PhantomData<Unit>,
         }
+
         impl<Unit, Number> Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -68,7 +69,7 @@ macro_rules! inner_define_measure_3d {
                 Measure::<Unit, Number>::new((self.x * self.x + self.y * self.y + self.z * self.z).sqrt())
             }
 
-            /// Measure3d.squared_norm() -> number
+            /// Measure3d.squared_norm() -> Number
             pub fn squared_norm(self) -> Number {
                 self.x * self.x + self.y * self.y + self.z * self.z
             }

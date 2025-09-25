@@ -97,22 +97,22 @@ fn measure_lossy_into_64_to_64() {
 #[test]
 fn measure_squared_norm_positive() {
     let m1 = Measure::<Metre, f32>::new(12.);
-    let m2: Measure<One, f32> = m1.squared_norm();
-    assert_eq!(m2.value, 12. * 12.);
+    let m2: f32 = m1.squared_norm();
+    assert_eq!(m2, 12. * 12.);
 }
 
 #[test]
 fn measure_squared_norm_negative() {
     let m1 = Measure::<Metre, f64>::new(-12.);
-    let m2: Measure<One, f64> = m1.squared_norm();
-    assert_eq!(m2.value, 12. * 12.);
+    let m2: f64 = m1.squared_norm();
+    assert_eq!(m2, 12. * 12.);
 }
 
 #[test]
 fn measure_squared_norm_zero() {
     let m1 = Measure::<Metre, f64>::new(0.);
-    let m2: Measure<One, f64> = m1.squared_norm();
-    assert_eq!(m2.value, 0.);
+    let m2: f64 = m1.squared_norm();
+    assert_eq!(m2, 0.);
 }
 
 #[test]

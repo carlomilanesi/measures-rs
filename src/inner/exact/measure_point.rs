@@ -1,6 +1,6 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_point {
-    {$with_approx:ident} => {
+    { $with_approx:ident } => {
         pub struct MeasurePoint<Unit, Number = f64> {
             pub value: Number,
             phantom: PhantomData<Unit>,
@@ -11,21 +11,44 @@ macro_rules! inner_define_measure_point {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
+            /// MeasurePoint::new(Number) -> MeasurePoint
             pub const fn new(value: Number) -> Self {
                 Self {
                     value,
                     phantom: PhantomData,
                 }
             }
-            pub fn convert<DestUnit: MeasurementUnit<Property = Unit::Property>>(
-                &self,
-            ) -> MeasurePoint<DestUnit, Number> {
+
+            measures::if_all_true! { {$with_approx}
+                /// MeasurePoint::from_approx_measure_point(ApproxMeasurePoint) -> MeasurePoint
+                pub const fn from_approx_measure_point(approx_measure_point: ApproxMeasurePoint<Unit, Number>) -> Self {
+                    Self::new(approx_measure_point.value)
+                }
+
+                /// MeasurePoint.to_approx_measure_point_with_variance(Number) -> ApproxMeasurePoint
+                pub fn to_approx_measure_point_with_variance(self, variance: Number) -> ApproxMeasurePoint<Unit, Number> {
+                    ApproxMeasurePoint::<Unit, Number>::with_variance(self.value, variance)
+                }
+
+                /// MeasurePoint.to_approx_measure_point_with_uncertainty(Measure) -> ApproxMeasurePoint
+                pub fn to_approx_measure_point_with_uncertainty(self, uncertainty: Measure<Unit, Number>) -> ApproxMeasurePoint<Unit, Number> {
+                    ApproxMeasurePoint::<Unit, Number>::with_uncertainty(self.value, uncertainty)
+                }
+            }
+
+            /// Measure.convert() -> Measure
+            pub fn convert<DestUnit>(&self) -> MeasurePoint<DestUnit, Number>
+            where
+                DestUnit: MeasurementUnit<Property = Unit::Property>,
+            {
                 MeasurePoint::<DestUnit, Number> {
                     value: self.value * Number::from_f64(Unit::RATIO / DestUnit::RATIO)
                         + Number::from_f64((Unit::OFFSET - DestUnit::OFFSET) / DestUnit::RATIO),
                     phantom: PhantomData,
                 }
             }
+
+            // Measure.lossy_into() -> Measure
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> MeasurePoint<Unit, DestNumber> {
@@ -35,6 +58,7 @@ macro_rules! inner_define_measure_point {
                 }
             }
 
+            /// MeasurePoint.min(Measure) -> MeasurePoint
             pub fn min(self, other: Self) -> Self {
                 if self <= other {
                     self
@@ -43,6 +67,7 @@ macro_rules! inner_define_measure_point {
                 }
             }
 
+            /// MeasurePoint.max(Measure) -> MeasurePoint
             pub fn max(self, other: Self) -> Self {
                 if self >= other {
                     self
@@ -51,6 +76,7 @@ macro_rules! inner_define_measure_point {
                 }
             }
 
+            /// MeasurePoint.clamp(MeasurePoint, MeasurePoint) -> MeasurePoint
             pub fn clamp(self, lower_bound: Self, upper_bound: Self) -> Self {
                 self.max(lower_bound).min(upper_bound)
             }
@@ -67,16 +93,21 @@ macro_rules! inner_define_measure_point {
             }
         }
 
+        /// The trivial conversions from `MeasurePoint<Unit, f32>` to `MeasurePoint<Unit, f32>`
+        /// and from `MeasurePoint<Unit, f64>` to `MeasurePoint<Unit, f64>` are provided by the core library.
+        /// The lossy conversion from `MeasurePoint<Unit, f64>` to `MeasurePoint<Unit, f32>`
+        /// shouldn't be provided by the trait `From`. Use `MeasurePoint.lossy_into()` instead.
+        /// This is the lossless conversion from `MeasurePoint<Unit, f32>` to `MeasurePoint<Unit, f64>`
         impl<Unit> From<MeasurePoint<Unit, f32>> for MeasurePoint<Unit, f64>
         where
             Unit: MeasurementUnit,
         {
-            fn from(m: MeasurePoint<Unit, f32>) -> Self {
-                Self::new(m.value as f64)
+            fn from(measure_point: MeasurePoint<Unit, f32>) -> Self {
+                Self::new(measure_point.value as f64)
             }
         }
 
-        // MeasurePoint + Measure -> MeasurePoint
+        /// MeasurePoint + Measure -> MeasurePoint
         impl<Unit, Number> Add<Measure<Unit, Number>> for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -88,7 +119,7 @@ macro_rules! inner_define_measure_point {
             }
         }
 
-        // MeasurePoint += Measure
+        /// MeasurePoint += Measure
         impl<Unit, Number> AddAssign<Measure<Unit, Number>> for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -99,7 +130,7 @@ macro_rules! inner_define_measure_point {
             }
         }
 
-        // MeasurePoint - Measure -> MeasurePoint
+        /// MeasurePoint - Measure -> MeasurePoint
         impl<Unit, Number> Sub<Measure<Unit, Number>> for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -111,7 +142,7 @@ macro_rules! inner_define_measure_point {
             }
         }
 
-        // MeasurePoint -= Measure
+        /// MeasurePoint -= Measure
         impl<Unit, Number> SubAssign<Measure<Unit, Number>> for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -122,7 +153,7 @@ macro_rules! inner_define_measure_point {
             }
         }
 
-        // MeasurePoint - MeasurePoint -> Measure
+        /// MeasurePoint - MeasurePoint -> Measure
         impl<Unit, Number> Sub<MeasurePoint<Unit, Number>> for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -134,28 +165,40 @@ macro_rules! inner_define_measure_point {
             }
         }
 
-        // weighted_midpoint(MeasurePoint, MeasurePoint, weight) -> MeasurePoint
-        pub fn weighted_midpoint<Unit: MeasurementUnit, Number: ArithmeticOps>(
+        /// weighted_midpoint(MeasurePoint, MeasurePoint, weight) -> MeasurePoint
+        pub fn weighted_midpoint<Unit, Number>(
             p1: MeasurePoint<Unit, Number>,
             p2: MeasurePoint<Unit, Number>,
             weight1: Number,
-        ) -> MeasurePoint<Unit, Number> {
+        ) -> MeasurePoint<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
             MeasurePoint::<Unit, Number>::new(p1.value * weight1 + p2.value * (Number::ONE - weight1))
         }
 
-        // midpoint(MeasurePoint, MeasurePoint) -> MeasurePoint
-        pub fn midpoint<Unit: MeasurementUnit, Number: ArithmeticOps>(
+        /// midpoint(MeasurePoint, MeasurePoint) -> MeasurePoint
+        pub fn midpoint<Unit, Number>(
             p1: MeasurePoint<Unit, Number>,
             p2: MeasurePoint<Unit, Number>,
-        ) -> MeasurePoint<Unit, Number> {
+        ) -> MeasurePoint<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
             MeasurePoint::<Unit, Number>::new((p1.value + p2.value) * Number::HALF)
         }
 
-        // barycentric_combination([MeasurePoint], [Number]) -> MeasurePoint
-        pub fn barycentric_combination<Unit: MeasurementUnit, Number: ArithmeticOps>(
+        /// barycentric_combination([MeasurePoint], [Number]) -> MeasurePoint
+        pub fn barycentric_combination<Unit, Number>(
             points: &[MeasurePoint<Unit, Number>],
             weights: &[Number],
-        ) -> MeasurePoint<Unit, Number> {
+        ) -> MeasurePoint<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
             MeasurePoint::<Unit, Number>::new(points.iter().zip(weights).map(|(p, &w)| p.value * w).sum())
         }
 
@@ -165,45 +208,62 @@ macro_rules! inner_define_measure_point {
             Number: ArithmeticOps,
         {
             type Output = Number;
+
+            /// MeasurePoint.cos() -> Number
             fn cos(self) -> Self::Output {
                 self.convert::<Radian>().value.cos()
             }
+
+            /// MeasurePoint.sin() -> Number
             fn sin(self) -> Self::Output {
                 self.convert::<Radian>().value.sin()
             }
+
+            /// MeasurePoint.tan() -> Number
             fn tan(self) -> Self::Output {
-                self.convert::<Radian>().value.sin()
+                self.convert::<Radian>().value.tan()
             }
+
+            /// MeasurePoint.sin_cos() -> Number
             fn sin_cos(self) -> (Self::Output, Self::Output) {
                 self.convert::<Radian>().value.sin_cos()
             }
         }
 
-        impl<Unit, Number: ArithmeticOps> PartialEq<MeasurePoint<Unit, Number>>
-            for MeasurePoint<Unit, Number>
+        /// MeasurePoint == MeasurePoint -> bool
+        impl<Unit, Number> PartialEq<MeasurePoint<Unit, Number>> for MeasurePoint<Unit, Number>
+        where
+            Number: ArithmeticOps,
         {
             fn eq(&self, other: &MeasurePoint<Unit, Number>) -> bool {
                 self.value == other.value
             }
         }
 
-        impl<Unit, Number: ArithmeticOps> PartialOrd<MeasurePoint<Unit, Number>>
-            for MeasurePoint<Unit, Number>
+        /// MeasurePoint < MeasurePoint -> bool
+        impl<Unit, Number> PartialOrd<MeasurePoint<Unit, Number>> for MeasurePoint<Unit, Number>
+        where
+            Number: ArithmeticOps,
         {
             fn partial_cmp(&self, other: &MeasurePoint<Unit, Number>) -> Option<std::cmp::Ordering> {
                 self.value.partial_cmp(&other.value)
             }
         }
 
-        impl<Unit, Number: ArithmeticOps> Clone for MeasurePoint<Unit, Number> {
+        /// MeasurePoint.clone() -> Measure
+        impl<Unit, Number> Clone for MeasurePoint<Unit, Number>
+        where
+            Number: ArithmeticOps,
+        {
             fn clone(&self) -> Self {
                 *self
             }
         }
 
-        impl<Unit, Number: ArithmeticOps> Copy for MeasurePoint<Unit, Number> {}
+        /// MeasurePoint = MeasurePoint
+        impl<Unit, Number> Copy for MeasurePoint<Unit, Number> where Number: ArithmeticOps {}
 
-        // format!("{}", MeasurePoint)
+        /// format!("{}", MeasurePoint)
         impl<Unit, Number> fmt::Display for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -216,7 +276,7 @@ macro_rules! inner_define_measure_point {
             }
         }
 
-        // format!("{:?}", MeasurePoint)
+        /// format!("{:?}", MeasurePoint)
         impl<Unit, Number> fmt::Debug for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,

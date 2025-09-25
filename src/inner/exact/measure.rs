@@ -1,11 +1,7 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure {
-    {$with_approx:ident} => {
-        pub struct Measure<Unit, Number = f64>
-        where
-            Unit: MeasurementUnit,
-            Number: ArithmeticOps,
-        {
+    { $with_approx:ident } => {
+        pub struct Measure<Unit, Number = f64> {
             pub value: Number,
             phantom: PhantomData<Unit>,
         }
@@ -19,7 +15,7 @@ macro_rules! inner_define_measure {
             pub const fn new(value: Number) -> Self {
                 Self {
                     value,
-                    phantom: PhantomData::<Unit>,
+                    phantom: PhantomData,
                 }
             }
 
@@ -66,9 +62,9 @@ macro_rules! inner_define_measure {
                 Measure::<Unit, Number>::new(self.value.abs())
             }
 
-            /// Measure.squared_norm() -> Measure<One> {
-            pub fn squared_norm(self) -> Measure<One, Number> {
-                Measure::<One, Number>::new(self.value * self.value)
+            /// Measure.squared_norm() -> Number
+            pub fn squared_norm(self) -> Number {
+                self.value * self.value
             }
 
             /// Measure.normalized() -> Measure
@@ -116,16 +112,21 @@ macro_rules! inner_define_measure {
             }
         }
 
+        /// The trivial conversions from `Measure<Unit, f32>` to `Measure<Unit, f32>`
+        /// and from `Measure<Unit, f64>` to `Measure<Unit, f64>` are provided by the core library.
+        /// The lossy conversion from `Measure<Unit, f64>` to `Measure<Unit, f32>`
+        /// shouldn't be provided by the trait `From`. Use `Measure.lossy_into()` instead.
+        /// This is the lossless conversion from `Measure<Unit, f32>` to `Measure<Unit, f64>`
         impl<Unit> From<Measure<Unit, f32>> for Measure<Unit, f64>
         where
             Unit: MeasurementUnit,
         {
-            fn from(m: Measure<Unit, f32>) -> Self {
-                Self::new(m.value as f64)
+            fn from(measure: Measure<Unit, f32>) -> Self {
+                Self::new(measure.value as f64)
             }
         }
 
-        // -Measure -> Measure
+        /// -Measure -> Measure
         impl<Unit, Number> Neg for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -137,7 +138,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure + Measure -> Measure
+        /// Measure + Measure -> Measure
         impl<Unit, Number> Add<Measure<Unit, Number>> for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -149,7 +150,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure += Measure
+        /// Measure += Measure
         impl<Unit, Number> AddAssign<Measure<Unit, Number>> for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -160,7 +161,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure - Measure -> Measure
+        /// Measure - Measure -> Measure
         impl<Unit, Number> Sub<Measure<Unit, Number>> for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -172,7 +173,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure -= Measure
+        /// Measure -= Measure
         impl<Unit, Number> SubAssign<Measure<Unit, Number>> for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -183,7 +184,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure * Number -> Measure
+        /// Measure * Number -> Measure
         impl<Unit, Number> Mul<Number> for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -195,7 +196,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure * Measure<One> -> Measure
+        /// Measure * Measure<One> -> Measure
         impl<Unit, Number> Mul<Measure<One, Number>> for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -207,7 +208,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure *= Number
+        /// Measure *= Number
         impl<Unit, Number> MulAssign<Number> for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -218,7 +219,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure *= Measure<One, Number>
+        /// Measure *= Measure<One, Number>
         impl<Unit, Number> MulAssign<Measure<One, Number>> for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -229,7 +230,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // f64 * Measure -> Measure
+        /// f64 * Measure -> Measure
         impl<Unit> Mul<Measure<Unit, f64>> for f64
         where
             Unit: MeasurementUnit,
@@ -240,7 +241,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // f32 * Measure -> Measure
+        /// f32 * Measure -> Measure
         impl<Unit> Mul<Measure<Unit, f32>> for f32
         where
             Unit: MeasurementUnit,
@@ -251,7 +252,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure / Number -> Measure
+        /// Measure / Number -> Measure
         impl<Unit, Number> Div<Number> for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -263,7 +264,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure / Measure -> Measure<One>
+        /// Measure / Measure -> Measure<One>
         impl<Unit, Number> Div<Measure<Unit, Number>> for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -275,7 +276,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure /= Number
+        /// Measure /= Number
         impl<Unit, Number> DivAssign<Number> for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -286,7 +287,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure /= Measure<One>
+        /// Measure /= Measure<One>
         impl<Unit, Number> DivAssign<Measure<One, Number>> for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -303,24 +304,31 @@ macro_rules! inner_define_measure {
             Number: ArithmeticOps,
         {
             type Output = Number;
+
+            /// Measure.cos() -> Number
             fn cos(self) -> Self::Output {
                 self.convert::<Radian>().value.cos()
             }
+
+            /// Measure.sin() -> Number
             fn sin(self) -> Self::Output {
                 self.convert::<Radian>().value.sin()
             }
+
+            /// Measure.tan() -> Number
             fn tan(self) -> Self::Output {
-                self.convert::<Radian>().value.sin()
+                self.convert::<Radian>().value.tan()
             }
+
+            /// Measure.sin_cos() -> (Number, Number)
             fn sin_cos(self) -> (Self::Output, Self::Output) {
                 self.convert::<Radian>().value.sin_cos()
             }
         }
 
-        // Measure == Measure -> bool
+        /// Measure == Measure -> bool
         impl<Unit, Number> PartialEq<Measure<Unit, Number>> for Measure<Unit, Number>
         where
-            Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
             fn eq(&self, other: &Measure<Unit, Number>) -> bool {
@@ -328,10 +336,9 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure < Measure -> bool
+        /// Measure < Measure -> bool
         impl<Unit, Number> PartialOrd<Measure<Unit, Number>> for Measure<Unit, Number>
         where
-            Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
             fn partial_cmp(&self, other: &Measure<Unit, Number>) -> Option<std::cmp::Ordering> {
@@ -339,10 +346,9 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure.clone() -> Measure
+        /// Measure.clone() -> Measure
         impl<Unit, Number> Clone for Measure<Unit, Number>
         where
-            Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
             fn clone(&self) -> Self {
@@ -350,15 +356,10 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // Measure = Measure
-        impl<Unit, Number> Copy for Measure<Unit, Number>
-        where
-            Unit: MeasurementUnit,
-            Number: ArithmeticOps,
-        {
-        }
+        /// Measure = Measure
+        impl<Unit, Number> Copy for Measure<Unit, Number> where Number: ArithmeticOps {}
 
-        // format!("{}", Measure)
+        /// format!("{}", Measure)
         impl<Unit, Number> fmt::Display for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -370,7 +371,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // format!("{:?}", Measure)
+        /// format!("{:?}", Measure)
         impl<Unit, Number> fmt::Debug for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -382,11 +383,9 @@ macro_rules! inner_define_measure {
             }
         }
 
-        pub struct DecibelsMeasureFormatter<Unit: MeasurementUnit, Number: ArithmeticOps>(
-            Measure<Unit, Number>,
-        );
+        pub struct DecibelsMeasureFormatter<Unit, Number>(Measure<Unit, Number>);
 
-        // format!("{}", Measure.decibels_formatter())
+        /// format!("{}", Measure.decibels_formatter())
         impl<Unit, Number> fmt::Display for DecibelsMeasureFormatter<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -399,7 +398,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // format!("{:?}", Measure.decibels_formatter())
+        /// format!("{:?}", Measure.decibels_formatter())
         impl<Unit, Number> fmt::Debug for DecibelsMeasureFormatter<Unit, Number>
         where
             Unit: MeasurementUnit,
