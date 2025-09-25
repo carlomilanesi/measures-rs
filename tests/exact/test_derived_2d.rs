@@ -77,23 +77,23 @@ impl MeasurementUnit for NewtonMetre {
 
 #[test]
 fn test_relationship_1_2() {
-    let metres_per_second_2d = Measure2d::<MetrePerSecond>::new(5., -3.);
+    let metres_per_second_2d = Measure2d::<MetrePerSecond>::new([5., -3.]);
     let seconds = Measure::<Second>::new(7.);
     let metres_2d: Measure2d<Metre> = metres_per_second_2d * seconds;
-    assert_eq!(metres_2d.x, 35.);
-    assert_eq!(metres_2d.y, -21.);
+    assert_eq!(metres_2d.values[0], 35.);
+    assert_eq!(metres_2d.values[1], -21.);
     let metres_2d: Measure2d<Metre> = seconds * metres_per_second_2d;
-    assert_eq!(metres_2d.x, 35.);
-    assert_eq!(metres_2d.y, -21.);
+    assert_eq!(metres_2d.values[0], 35.);
+    assert_eq!(metres_2d.values[1], -21.);
     let meters_per_second_2d: Measure2d<MetrePerSecond> = metres_2d / seconds;
-    assert_eq!(meters_per_second_2d.x, 5.);
-    assert_eq!(meters_per_second_2d.y, -3.);
+    assert_eq!(meters_per_second_2d.values[0], 5.);
+    assert_eq!(meters_per_second_2d.values[1], -3.);
 }
 
 #[test]
 fn test_relationship_2_2() {
-    let newtons_2d = Measure2d::<Newton>::new(5., -3.);
-    let metres_2d = Measure2d::<Metre>::new(7., 4.);
+    let newtons_2d = Measure2d::<Newton>::new([5., -3.]);
+    let metres_2d = Measure2d::<Metre>::new([7., 4.]);
     let joules: Measure<Joule> = newtons_2d * metres_2d;
     assert_eq!(joules.value, 23.);
     let joules: Measure<Joule> = metres_2d * newtons_2d;
@@ -102,8 +102,8 @@ fn test_relationship_2_2() {
 
 #[test]
 fn test_relationship_2_2_same() {
-    let metres_2d_1 = Measure2d::<Metre>::new(5., -3.);
-    let metres_2d_2 = Measure2d::<Metre>::new(7., 4.);
+    let metres_2d_1 = Measure2d::<Metre>::new([5., -3.]);
+    let metres_2d_2 = Measure2d::<Metre>::new([7., 4.]);
     let metres: Measure<Metre> = metres_2d_1 * metres_2d_2;
     assert_eq!(metres.value, 23.);
     let metres: Measure<Metre> = metres_2d_1.squared();
@@ -112,8 +112,8 @@ fn test_relationship_2_2_same() {
 
 #[test]
 fn test_relationship_cross_2() {
-    let newton_2d = Measure2d::<Newton>::new(5., -3.);
-    let metres_2d = Measure2d::<Metre>::new(7., 4.);
+    let newton_2d = Measure2d::<Newton>::new([5., -3.]);
+    let metres_2d = Measure2d::<Metre>::new([7., 4.]);
     let newton_metres: Measure<NewtonMetre> = newton_2d.cross_product(metres_2d);
     assert_eq!(newton_metres.value, 41.);
     let newton_metres: Measure<NewtonMetre> = metres_2d.cross_product(newton_2d);
@@ -122,8 +122,8 @@ fn test_relationship_cross_2() {
 
 #[test]
 fn test_relationship_cross_2_same() {
-    let metres_2d_1 = Measure2d::<Metre>::new(5., -3.);
-    let metres_2d_2 = Measure2d::<Metre>::new(7., 4.);
+    let metres_2d_1 = Measure2d::<Metre>::new([5., -3.]);
+    let metres_2d_2 = Measure2d::<Metre>::new([7., 4.]);
     let metres: Measure<Metre> = metres_2d_1.cross_product(metres_2d_2);
     assert_eq!(metres.value, 41.);
 }

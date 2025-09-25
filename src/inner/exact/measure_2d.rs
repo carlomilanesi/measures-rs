@@ -1,9 +1,8 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_2d {
-    { $with_points:tt $with_directions:tt } => {
+    { $with_points:tt $with_directions:tt $with_approx:ident } => {
         pub struct Measure2d<Unit, Number = f64> {
-            pub x: Number,
-            pub y: Number,
+            pub values: [Number; 2],
             phantom: std::marker::PhantomData<Unit>,
         }
 
@@ -14,22 +13,21 @@ macro_rules! inner_define_measure_2d {
             Number: ArithmeticOps,
         {
             /// measure 2d :: new(number, number) -> measure 2d
-            pub const fn new(x: Number, y: Number) -> Self {
+            pub const fn new(values: [Number; 2]) -> Self {
                 Self {
-                    x,
-                    y,
+                    values,
                     phantom: PhantomData,
                 }
             }
 
             /// measure 2d .x() -> measure
             pub const fn x(self) -> Measure<Unit, Number> {
-                Measure::<Unit, Number>::new(self.x)
+                Measure::<Unit, Number>::new(self.values[0])
             }
 
-            /// measure 2d .x() -> measure
+            /// measure 2d .y() -> measure
             pub const fn y(self) -> Measure<Unit, Number> {
-                Measure::<Unit, Number>::new(self.y)
+                Measure::<Unit, Number>::new(self.values[1])
             }
 
             /// measure 2d .convert() -> measure 2d
@@ -37,38 +35,35 @@ macro_rules! inner_define_measure_2d {
                 &self,
             ) -> Measure2d<DestUnit, Number> {
                 let factor = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
-                Measure2d::<DestUnit, Number> {
-                    x: self.x * factor,
-                    y: self.y * factor,
-                    phantom: PhantomData,
-                }
+                Measure2d::<DestUnit, Number>::new([self.values[0] * factor, self.values[1] * factor])
             }
 
             /// measure 2d .lossy_into() -> measure 2d
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> Measure2d<Unit, DestNumber> {
-                Measure2d::<Unit, DestNumber> {
-                    x: DestNumber::lossy_from(self.x),
-                    y: DestNumber::lossy_from(self.y),
-                    phantom: PhantomData,
-                }
+                Measure2d::<Unit, DestNumber>::new([
+                    DestNumber::lossy_from(self.values[0]),
+                    DestNumber::lossy_from(self.values[1]),
+                ])
             }
 
             /// Measure2d.norm() -> Measure
             pub fn norm(self) -> Measure<Unit, Number> {
-                Measure::<Unit, Number>::new((self.x * self.x + self.y * self.y).sqrt())
+                Measure::<Unit, Number>::new(
+                    (self.values[0] * self.values[0] + self.values[1] * self.values[1]).sqrt(),
+                )
             }
 
             /// Measure2d.squared_norm() -> Number
             pub fn squared_norm(self) -> Number {
-                self.x * self.x + self.y * self.y
+                self.values[0] * self.values[0] + self.values[1] * self.values[1]
             }
 
             /// Measure2d.normalized() -> Measure2d
             pub fn normalized(self) -> Self {
                 let k = Number::ONE / self.squared_norm().sqrt();
-                Self::new(self.x * k, self.y * k)
+                Self::new([self.values[0] * k, self.values[1] * k])
             }
 
             measures::if_all_true! { {$with_points}
@@ -77,7 +72,7 @@ macro_rules! inner_define_measure_2d {
                     direction: MeasurePoint<AngleUnit, Number>,
                 ) -> Self {
                     let (y, x) = direction.convert::<Radian>().value.sin_cos();
-                    Self::new(x, y)
+                    Self::new([x, y])
                 }
             }
 
@@ -86,7 +81,7 @@ macro_rules! inner_define_measure_2d {
                 pub fn signed_direction<AngleUnit: MeasurementUnit<Property = Angle>>(
                     self,
                 ) -> SignedDirection<AngleUnit, Number> {
-                    SignedDirection::<Radian, Number>::new(self.y.atan2(self.x)).convert::<AngleUnit>()
+                    SignedDirection::<Radian, Number>::new(self.values[1].atan2(self.values[0])).convert::<AngleUnit>()
                 }
             }
 
@@ -95,7 +90,7 @@ macro_rules! inner_define_measure_2d {
                 pub fn unsigned_direction<AngleUnit: MeasurementUnit<Property = Angle>>(
                     self,
                 ) -> UnsignedDirection<AngleUnit, Number> {
-                    UnsignedDirection::<Radian, Number>::new(self.y.atan2(self.x)).convert::<AngleUnit>()
+                    UnsignedDirection::<Radian, Number>::new(self.values[1].atan2(self.values[0])).convert::<AngleUnit>()
                 }
             }
         }
@@ -108,7 +103,7 @@ macro_rules! inner_define_measure_2d {
         {
             // It returns the zero vector.
             fn default() -> Self {
-                Self::new(Number::ZERO, Number::ZERO)
+                Self::new([Number::ZERO, Number::ZERO])
             }
         }
 
@@ -118,7 +113,7 @@ macro_rules! inner_define_measure_2d {
             Unit::Property: VectorProperty,
         {
             fn from(m: Measure2d<Unit, f32>) -> Self {
-                Self::new(m.x as f64, m.y as f64)
+                Self::new([m.values[0] as f64, m.values[1] as f64])
             }
         }
 
@@ -131,7 +126,7 @@ macro_rules! inner_define_measure_2d {
         {
             type Output = Self;
             fn neg(self) -> Self::Output {
-                Self::new(-self.x, -self.y)
+                Self::new([-self.values[0], -self.values[1]])
             }
         }
 
@@ -144,7 +139,10 @@ macro_rules! inner_define_measure_2d {
         {
             type Output = Self;
             fn add(self, other: Measure2d<Unit, Number>) -> Self::Output {
-                Self::new(self.x + other.x, self.y + other.y)
+                Self::new([
+                    self.values[0] + other.values[0],
+                    self.values[1] + other.values[1],
+                ])
             }
         }
 
@@ -156,8 +154,8 @@ macro_rules! inner_define_measure_2d {
             Number: ArithmeticOps,
         {
             fn add_assign(&mut self, other: Measure2d<Unit, Number>) {
-                self.x += other.x;
-                self.y += other.y;
+                self.values[0] += other.values[0];
+                self.values[1] += other.values[1];
             }
         }
 
@@ -170,7 +168,10 @@ macro_rules! inner_define_measure_2d {
         {
             type Output = Self;
             fn sub(self, other: Measure2d<Unit, Number>) -> Self::Output {
-                Self::new(self.x - other.x, self.y - other.y)
+                Self::new([
+                    self.values[0] - other.values[0],
+                    self.values[1] - other.values[1],
+                ])
             }
         }
 
@@ -182,8 +183,8 @@ macro_rules! inner_define_measure_2d {
             Unit::Property: VectorProperty,
         {
             fn sub_assign(&mut self, other: Measure2d<Unit, Number>) {
-                self.x -= other.x;
-                self.y -= other.y;
+                self.values[0] -= other.values[0];
+                self.values[1] -= other.values[1];
             }
         }
 
@@ -196,7 +197,7 @@ macro_rules! inner_define_measure_2d {
         {
             type Output = Self;
             fn mul(self, n: Number) -> Self::Output {
-                Self::new(self.x * n, self.y * n)
+                Self::new([self.values[0] * n, self.values[1] * n])
             }
         }
 
@@ -209,7 +210,7 @@ macro_rules! inner_define_measure_2d {
         {
             type Output = Self;
             fn mul(self, other: Measure<One, Number>) -> Self::Output {
-                Self::new(self.x * other.value, self.y * other.value)
+                Self::new([self.values[0] * other.value, self.values[1] * other.value])
             }
         }
 
@@ -221,8 +222,8 @@ macro_rules! inner_define_measure_2d {
             Unit::Property: VectorProperty,
         {
             fn mul_assign(&mut self, n: Number) {
-                self.x *= n;
-                self.y *= n;
+                self.values[0] *= n;
+                self.values[1] *= n;
             }
         }
 
@@ -234,8 +235,8 @@ macro_rules! inner_define_measure_2d {
             Unit::Property: VectorProperty,
         {
             fn mul_assign(&mut self, other: Measure<One, Number>) {
-                self.x *= other.value;
-                self.y *= other.value;
+                self.values[0] *= other.value;
+                self.values[1] *= other.value;
             }
         }
 
@@ -247,7 +248,7 @@ macro_rules! inner_define_measure_2d {
         {
             type Output = Measure2d<Unit, f64>;
             fn mul(self, other: Measure2d<Unit, f64>) -> Self::Output {
-                Self::Output::new(self * other.x, self * other.y)
+                Self::Output::new([self * other.values[0], self * other.values[1]])
             }
         }
 
@@ -259,7 +260,7 @@ macro_rules! inner_define_measure_2d {
         {
             type Output = Measure2d<Unit, f32>;
             fn mul(self, other: Measure2d<Unit, f32>) -> Self::Output {
-                Self::Output::new(self * other.x, self * other.y)
+                Self::Output::new([self * other.values[0], self * other.values[1]])
             }
         }
 
@@ -272,7 +273,7 @@ macro_rules! inner_define_measure_2d {
         {
             type Output = Self;
             fn div(self, n: Number) -> Self::Output {
-                Self::new(self.x / n, self.y / n)
+                Self::new([self.values[0] / n, self.values[1] / n])
             }
         }
 
@@ -284,8 +285,8 @@ macro_rules! inner_define_measure_2d {
             Unit::Property: VectorProperty,
         {
             fn div_assign(&mut self, n: Number) {
-                self.x /= n;
-                self.y /= n;
+                self.values[0] /= n;
+                self.values[1] /= n;
             }
         }
 
@@ -296,8 +297,8 @@ macro_rules! inner_define_measure_2d {
             Number: ArithmeticOps,
         {
             fn div_assign(&mut self, other: Measure<One, Number>) {
-                self.x /= other.value;
-                self.y /= other.value;
+                self.values[0] /= other.value;
+                self.values[1] /= other.value;
             }
         }
 
@@ -309,7 +310,7 @@ macro_rules! inner_define_measure_2d {
             Unit::Property: VectorProperty,
         {
             fn eq(&self, other: &Measure2d<Unit, Number>) -> bool {
-                self.x == other.x && self.y == other.y
+                self.values == other.values
             }
         }
 
@@ -343,9 +344,9 @@ macro_rules! inner_define_measure_2d {
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("(")?;
-                fmt::Display::fmt(&self.x, formatter)?;
+                fmt::Display::fmt(&self.values[0], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.y, formatter)?;
+                fmt::Display::fmt(&self.values[1], formatter)?;
                 formatter.write_str(")")?;
                 formatter.write_str(Unit::SUFFIX)
             }
@@ -360,9 +361,9 @@ macro_rules! inner_define_measure_2d {
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("(")?;
-                fmt::Display::fmt(&self.x, formatter)?;
+                fmt::Display::fmt(&self.values[0], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.y, formatter)?;
+                fmt::Display::fmt(&self.values[1], formatter)?;
                 formatter.write_str(")")?;
                 formatter.write_str(Unit::SUFFIX)
             }

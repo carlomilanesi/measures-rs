@@ -50,7 +50,7 @@ macro_rules! define_measure_types_aux {
             measures::inner_define_signed_direction! { $with_points }
         }
         measures::if_all_true! { { $with_2d }
-            measures::inner_define_measure_2d! { $with_points $with_directions }
+            measures::inner_define_measure_2d! { $with_points $with_directions $with_approx }
         }
         measures::if_all_true! { { $with_2d $with_points $exact }
             measures::inner_define_measure_point_2d! { $with_approx }

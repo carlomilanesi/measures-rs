@@ -46,7 +46,7 @@ fn affine_map_2d_default() {
     assert_eq!(am.c[1][0], 0.);
     assert_eq!(am.c[1][1], 1.);
     assert_eq!(am.c[1][2], 0.);
-    let mp = MeasurePoint2d::<Metre, f32>::new(12., 23.);
+    let mp = MeasurePoint2d::<Metre, f32>::new([12., 23.]);
     assert_eq!(am.apply_to(mp), mp);
     let am = AffineMap2d::<Metre>::default();
     assert_eq!(am.c[0][0], 1.);
@@ -55,7 +55,7 @@ fn affine_map_2d_default() {
     assert_eq!(am.c[1][0], 0.);
     assert_eq!(am.c[1][1], 1.);
     assert_eq!(am.c[1][2], 0.);
-    let mp = MeasurePoint2d::<Metre>::new(12., 23.);
+    let mp = MeasurePoint2d::<Metre>::new([12., 23.]);
     assert_eq!(am.apply_to(mp), mp);
 }
 
@@ -86,231 +86,210 @@ fn affine_map_2d_convert() {
 
 #[test]
 fn affine_map_2d_translation() {
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
     let am: AffineMap2d<Metre, f64> =
-        AffineMap2d::<Metre, f64>::translation(Measure2d::new(12., 23.));
+        AffineMap2d::<Metre, f64>::translation(Measure2d::new([12., 23.]));
     let mp2: MeasurePoint2d<Metre, f64> = am.apply_to(mp1);
-    assert_eq!(mp2.x, 8. + 12.);
-    assert_eq!(mp2.y, 5. + 23.);
+    assert_eq!(mp2.values, [8. + 12., 5. + 23.]);
 }
 
 // Rotations
 #[test]
 fn affine_map_2d_rotation_by_angle() {
-    let fixed_point = MeasurePoint2d::<Metre, f64>::new(6., 2.);
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
     let am1 = AffineMap2d::<Metre, f64>::rotation(fixed_point, Measure::<Degree, f64>::new(90.));
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 3.);
-    assert_eq_64!(mp2.y, 4.);
+    assert_eq_64!(mp2.values, [3., 4.]);
 
     let am2 = AffineMap2d::<Metre, f64>::rotation(fixed_point, Measure::<Degree, f64>::new(30.));
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 6.2320508075688785);
-    assert_eq_64!(mp3.y, 5.598076211353316);
+    assert_eq_64!(mp3.values, [6.2320508075688785, 5.598076211353316]);
 }
 
 #[test]
 fn affine_map_2d_rotation_at_right() {
-    let fixed_point = MeasurePoint2d::<Metre, f64>::new(6., 2.);
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
     let am1 = AffineMap2d::<Metre, f64>::rotation_at_right(fixed_point);
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 9.);
-    assert_eq_64!(mp2.y, 0.);
+    assert_eq_64!(mp2.values, [9., 0.]);
 }
 
 #[test]
 fn affine_map_2d_rotation_at_left() {
-    let fixed_point = MeasurePoint2d::<Metre, f64>::new(6., 2.);
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
     let am1 = AffineMap2d::<Metre, f64>::rotation_at_left(fixed_point);
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 3.);
-    assert_eq_64!(mp2.y, 4.);
+    assert_eq_64!(mp2.values, [3., 4.]);
 }
 
 // Projections
 
 #[test]
 fn affine_map_2d_projection_by_point_angle() {
-    let fixed_point = MeasurePoint2d::<Metre, f64>::new(6., 2.);
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
     let am1 = AffineMap2d::<Metre, f64>::projection_by_point_angle(
         fixed_point,
         MeasurePoint::<Degree, f64>::new(90.),
     );
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 6.);
-    assert_eq_64!(mp2.y, 5.);
+    assert_eq_64!(mp2.values, [6., 5.]);
 
     let am2 = AffineMap2d::<Metre, f64>::projection_by_point_angle(
         fixed_point,
         MeasurePoint::<Degree, f64>::new(60.),
     );
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 7.79903810567666);
-    assert_eq_64!(mp3.y, 5.116025403784439);
+    assert_eq_64!(mp3.values, [7.79903810567666, 5.116025403784439]);
 }
 
 #[test]
 fn affine_map_2d_projection_by_signed_direction() {
-    let fixed_point = MeasurePoint2d::<Metre, f64>::new(6., 2.);
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
     let am1 = AffineMap2d::<Metre, f64>::projection_by_signed_direction(
         fixed_point,
         SignedDirection::<Degree, f64>::new(90.),
     );
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 6.);
-    assert_eq_64!(mp2.y, 5.);
+    assert_eq_64!(mp2.values, [6., 5.]);
 
     let am2 = AffineMap2d::<Metre, f64>::projection_by_signed_direction(
         fixed_point,
         SignedDirection::<Degree, f64>::new(60.),
     );
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 7.79903810567666);
-    assert_eq_64!(mp3.y, 5.116025403784439);
+    assert_eq_64!(mp3.values, [7.79903810567666, 5.116025403784439]);
 }
 
 #[test]
 fn affine_map_2d_projection_by_unsigned_direction() {
-    let fixed_point = MeasurePoint2d::<Metre, f64>::new(6., 2.);
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
     let am1 = AffineMap2d::<Metre, f64>::projection_by_unsigned_direction(
         fixed_point,
         UnsignedDirection::<Degree, f64>::new(90.),
     );
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 6.);
-    assert_eq_64!(mp2.y, 5.);
+    assert_eq_64!(mp2.values, [6., 5.]);
 
     let am2 = AffineMap2d::<Metre, f64>::projection_by_unsigned_direction(
         fixed_point,
         UnsignedDirection::<Degree, f64>::new(60.),
     );
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 7.79903810567666);
-    assert_eq_64!(mp3.y, 5.116025403784439);
+    assert_eq_64!(mp3.values, [7.79903810567666, 5.116025403784439]);
 }
 
 #[test]
 fn affine_map_2d_projection_by_unit_vector() {
-    let fixed_point = MeasurePoint2d::<Metre, f64>::new(6., 2.);
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
     let am1 = AffineMap2d::<Metre, f64>::projection_by_unit_vector(
         fixed_point,
-        Measure2d::<Metre, f64>::new(0., 1.),
+        Measure2d::<Metre, f64>::new([0., 1.]),
     );
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 6.);
-    assert_eq_64!(mp2.y, 5.);
+    assert_eq_64!(mp2.values, [6., 5.]);
 
     let am2 = AffineMap2d::<Metre, f64>::projection_by_unit_vector(
         fixed_point,
-        Measure2d::<Metre, f64>::new(1., 5.).normalized(),
+        Measure2d::<Metre, f64>::new([1., 5.]).normalized(),
     );
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 6.653846153846154);
-    assert_eq_64!(mp3.y, 5.26923076923077);
+    assert_eq_64!(mp3.values, [6.653846153846154, 5.26923076923077]);
 }
 
 // Reflections
 
 #[test]
 fn affine_map_2d_reflection_by_point_angle() {
-    let fixed_point = MeasurePoint2d::<Metre, f64>::new(6., 2.);
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
     let am1 = AffineMap2d::<Metre, f64>::reflection_by_point_angle(
         fixed_point,
         MeasurePoint::<Degree, f64>::new(90.),
     );
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 4.);
-    assert_eq_64!(mp2.y, 5.);
+    assert_eq_64!(mp2.values, [4., 5.]);
 
     let am2 = AffineMap2d::<Metre, f64>::reflection_by_point_angle(
         fixed_point,
         MeasurePoint::<Degree, f64>::new(60.),
     );
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 7.598076211353319);
-    assert_eq_64!(mp3.y, 5.232050807568878);
+    assert_eq_64!(mp3.values, [7.598076211353319, 5.232050807568878]);
 }
 
 #[test]
 fn affine_map_2d_reflection_by_signed_direction() {
-    let fixed_point = MeasurePoint2d::<Metre, f64>::new(6., 2.);
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
     let am1 = AffineMap2d::<Metre, f64>::reflection_by_signed_direction(
         fixed_point,
         SignedDirection::<Degree, f64>::new(90.),
     );
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 4.);
-    assert_eq_64!(mp2.y, 5.);
+    assert_eq_64!(mp2.values, [4., 5.]);
 
     let am2 = AffineMap2d::<Metre, f64>::reflection_by_signed_direction(
         fixed_point,
         SignedDirection::<Degree, f64>::new(60.),
     );
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 7.598076211353319);
-    assert_eq_64!(mp3.y, 5.232050807568878);
+    assert_eq_64!(mp3.values, [7.598076211353319, 5.232050807568878]);
 }
 
 #[test]
 fn affine_map_2d_reflection_by_unsigned_direction() {
-    let fixed_point = MeasurePoint2d::<Metre, f64>::new(6., 2.);
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
     let am1 = AffineMap2d::<Metre, f64>::reflection_by_unsigned_direction(
         fixed_point,
         UnsignedDirection::<Degree, f64>::new(90.),
     );
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 4.);
-    assert_eq_64!(mp2.y, 5.);
+    assert_eq_64!(mp2.values, [4., 5.]);
 
     let am2 = AffineMap2d::<Metre, f64>::reflection_by_unsigned_direction(
         fixed_point,
         UnsignedDirection::<Degree, f64>::new(60.),
     );
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 7.598076211353319);
-    assert_eq_64!(mp3.y, 5.232050807568878);
+    assert_eq_64!(mp3.values, [7.598076211353319, 5.232050807568878]);
 }
 
 #[test]
 fn affine_map_2d_reflection_by_unit_vector() {
-    let fixed_point = MeasurePoint2d::<Metre, f64>::new(6., 2.);
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
     let am1 = AffineMap2d::<Metre, f64>::reflection_by_unit_vector(
         fixed_point,
-        Measure2d::<Metre, f64>::new(0., 1.),
+        Measure2d::<Metre, f64>::new([0., 1.]),
     );
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 4.);
-    assert_eq_64!(mp2.y, 5.);
+    assert_eq_64!(mp2.values, [4., 5.]);
 
     let am2 = AffineMap2d::<Metre, f64>::reflection_by_unit_vector(
         fixed_point,
-        Measure2d::<Metre, f64>::new(1., 5.).normalized(),
+        Measure2d::<Metre, f64>::new([1., 5.]).normalized(),
     );
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 5.3076923076923075);
-    assert_eq_64!(mp3.y, 5.53846153846154);
+    assert_eq_64!(mp3.values, [5.3076923076923075, 5.53846153846154]);
 }
 
 // Scaling by two factors
@@ -318,31 +297,30 @@ fn affine_map_2d_reflection_by_unit_vector() {
 //vvvv
 #[test]
 fn affine_map_2d_scaling() {
-    let fixed_point = MeasurePoint2d::<Metre, f64>::new(6., 2.);
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
     let am = AffineMap2d::<Metre, f64>::scaling(fixed_point, 3., 7.);
     let mp2 = am.apply_to(mp1);
-    assert_eq!(mp2.x, 6. + (8. - 6.) * 3.);
-    assert_eq!(mp2.y, 2. + (5. - 2.) * 7.);
+    assert_eq!(mp2.values, [6. + (8. - 6.) * 3., 2. + (5. - 2.) * 7.]);
 }
 
 // Inversion
 
 #[test]
 fn affine_map_2d_inverted() {
-    let mp = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let mp = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
     let am = AffineMap2d::<Metre, f64>::new([[1.2, 0.8, 6.], [3.4, -1.3, 2.]]);
     let inverse_of_am = am.inverted();
     let transformed = am.apply_to(mp);
     assert!(mp != transformed);
     let transformed_back = inverse_of_am.apply_to(transformed);
-    assert_eq_64!(transformed_back.x, 8.);
-    assert_eq_64!(transformed_back.y, 5.);
+    assert_eq_64!(transformed_back.values[0], 8.);
+    assert_eq_64!(transformed_back.values[1], 5.);
 }
 
 #[test]
 fn affine_map_2d_combined_with() {
-    let mp1 = MeasurePoint2d::<Metre, f64>::new(8., 5.);
+    let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
     let am1 = AffineMap2d::<Metre, f64>::new([[1.2, 0.8, 6.], [3.4, -1.3, 2.]]);
     let am2 = AffineMap2d::<Metre, f64>::new([[-0.2, 3.1, -1.], [2.7, 4.4, 3.]]);
 
@@ -357,8 +335,7 @@ fn affine_map_2d_combined_with() {
     let mp3 = am1_inverted_and_then_am2_inverted.apply_to(mp2);
 
     // The original point should be obtained.
-    assert_eq_64!(mp3.x, 8.);
-    assert_eq_64!(mp3.y, 5.);
+    assert_eq_64!(mp3.values, [8., 5.]);
 
     // If am1 and am2 are swapped, and also their inverses are swapped,
     // the same result should be obtained.
@@ -366,8 +343,7 @@ fn affine_map_2d_combined_with() {
     let mp3 = am1_and_then_am2.apply_to(mp1);
     let am2_inverted_and_then_am1_inverted = am1.inverted().combined_with(&am2.inverted());
     let mp4 = am2_inverted_and_then_am1_inverted.apply_to(mp3);
-    assert_eq_64!(mp4.x, 8.);
-    assert_eq_64!(mp4.y, 5.);
+    assert_eq_64!(mp4.values, [8., 5.]);
 }
 
 #[test]

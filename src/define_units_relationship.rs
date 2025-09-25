@@ -299,7 +299,7 @@ macro_rules! expand_1_2 {
         impl<Number: ArithmeticOps> Mul<Measure2d<$unit2, Number>> for Measure<$unit1, Number> {
             type Output = Measure2d<$unit3, Number>;
             fn mul(self, other: Measure2d<$unit2, Number>) -> Self::Output {
-                Self::Output::new(self.value * other.x, self.value * other.y)
+                Self::Output::new([self.value * other.values[0], self.value * other.values[1]])
             }
         }
 
@@ -307,7 +307,7 @@ macro_rules! expand_1_2 {
         impl<Number: ArithmeticOps> Mul<Measure<$unit1, Number>> for Measure2d<$unit2, Number> {
             type Output = Measure2d<$unit3, Number>;
             fn mul(self, other: Measure<$unit1, Number>) -> Self::Output {
-                Self::Output::new(self.x * other.value, self.y * other.value)
+                Self::Output::new([self.values[0] * other.value, self.values[1] * other.value])
             }
         }
 
@@ -315,7 +315,7 @@ macro_rules! expand_1_2 {
         impl<Number: ArithmeticOps> Div<Measure<$unit1, Number>> for Measure2d<$unit3, Number> {
             type Output = Measure2d<$unit2, Number>;
             fn div(self, other: Measure<$unit1, Number>) -> Self::Output {
-                Self::Output::new(self.x / other.value, self.y / other.value)
+                Self::Output::new([self.values[0] / other.value, self.values[1] / other.value])
             }
         }
     };
@@ -429,7 +429,7 @@ macro_rules! expand_2_2 {
         impl<Number: ArithmeticOps> Mul<Measure2d<$unit2, Number>> for Measure2d<$unit1, Number> {
             type Output = Measure<$unit3, Number>;
             fn mul(self, other: Measure2d<$unit2, Number>) -> Self::Output {
-                Self::Output::new(self.x * other.x + self.y * other.y)
+                Self::Output::new(self.values[0] * other.values[0] + self.values[1] * other.values[1])
             }
         }
 
@@ -437,7 +437,7 @@ macro_rules! expand_2_2 {
         impl<Number: ArithmeticOps> Mul<Measure2d<$unit1, Number>> for Measure2d<$unit2, Number> {
             type Output = Measure<$unit3, Number>;
             fn mul(self, other: Measure2d<$unit1, Number>) -> Self::Output {
-                Self::Output::new(self.x * other.x + self.y * other.y)
+                Self::Output::new(self.values[0] * other.values[0] + self.values[1] * other.values[1])
             }
         }
 
@@ -457,14 +457,14 @@ macro_rules! expand_2_2_same {
         impl<Number: ArithmeticOps> Mul<Measure2d<$unit1, Number>> for Measure2d<$unit1, Number> {
             type Output = Measure<$unit2, Number>;
             fn mul(self, other: Measure2d<$unit1, Number>) -> Self::Output {
-                Self::Output::new(self.x * other.x + self.y * other.y)
+                Self::Output::new(self.values[0] * other.values[0] + self.values[1] * other.values[1])
             }
         }
 
         // Measure2d<U1>.squared() -> Measure<U3>
         impl<Number: ArithmeticOps> Measure2d<$unit1, Number> {
             fn squared(self) -> Measure<$unit2, Number> {
-                Measure::<$unit2, Number>::new(self.x * self.x + self.y * self.y)
+                Measure::<$unit2, Number>::new(self.values[0] * self.values[0] + self.values[1] * self.values[1])
             }
         }
 
@@ -616,7 +616,7 @@ macro_rules! expand_cross_2_same {
         impl<Number: ArithmeticOps> measures::traits::CrossProduct<Measure2d<$unit1, Number>> for Measure2d<$unit1, Number> {
             type Output = Measure<$unit2, Number>;
             fn cross_product(self, other: Measure2d<$unit1, Number>) -> Self::Output {
-                Self::Output::new(self.x * other.y - self.y * other.x)
+                Self::Output::new(self.values[0] * other.values[1] - self.values[1] * other.values[0])
             }
         }
 
@@ -636,7 +636,7 @@ macro_rules! expand_cross_2 {
         impl<Number: ArithmeticOps> measures::traits::CrossProduct<Measure2d<$unit2, Number>> for Measure2d<$unit1, Number> {
             type Output = Measure<$unit3, Number>;
             fn cross_product(self, other: Measure2d<$unit2, Number>) -> Self::Output {
-                Self::Output::new(self.x * other.y - self.y * other.x)
+                Self::Output::new(self.values[0] * other.values[1] - self.values[1] * other.values[0])
             }
         }
 
@@ -644,7 +644,7 @@ macro_rules! expand_cross_2 {
         impl<Number: ArithmeticOps> measures::traits::CrossProduct<Measure2d<$unit1, Number>> for Measure2d<$unit2, Number> {
             type Output = Measure<$unit3, Number>;
             fn cross_product(self, other: Measure2d<$unit1, Number>) -> Self::Output {
-                Self::Output::new(self.x * other.y - self.y * other.x)
+                Self::Output::new(self.values[0] * other.values[1] - self.values[1] * other.values[0])
             }
         }
 

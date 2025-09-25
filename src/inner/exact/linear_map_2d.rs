@@ -57,7 +57,7 @@ macro_rules! inner_define_linear_map_2d {
             // Projection onto a line identified by a unit plane vector.
             // Precondition: unit_v.squared_norm().value == 1
             pub fn projection_by_unit_vector<Unit: MeasurementUnit>(v: Measure2d<Unit, Number>) -> Self {
-                Self::projection_by_cos_sin(v.x, v.y)
+                Self::projection_by_cos_sin(v.values[0], v.values[1])
             }
 
             //// Reflections
@@ -86,7 +86,7 @@ macro_rules! inner_define_linear_map_2d {
             // Reflection over a line identified by a unit plane vector.
             // Precondition: v.squared_norm() == 1
             pub fn reflection_by_unit_vector<Unit: MeasurementUnit>(v: Measure2d<Unit, Number>) -> Self {
-                Self::reflection_by_cos_sin(v.x, v.y)
+                Self::reflection_by_cos_sin(v.values[0], v.values[1])
             }
 
             //// Scaling by two factors.
@@ -141,10 +141,10 @@ macro_rules! inner_define_linear_map_2d {
             where
                 Unit::Property: VectorProperty,
             {
-                Measure2d::<Unit, Number>::new(
-                    self.c[0][0] * m.x + self.c[0][1] * m.y,
-                    self.c[1][0] * m.x + self.c[1][1] * m.y,
-                )
+                Measure2d::<Unit, Number>::new([
+                    self.c[0][0] * m.values[0] + self.c[0][1] * m.values[1],
+                    self.c[1][0] * m.values[0] + self.c[1][1] * m.values[1],
+                ])
             }
 
             fn rotation_by_radians(a: Number) -> Self {

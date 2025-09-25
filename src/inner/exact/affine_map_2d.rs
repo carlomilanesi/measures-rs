@@ -38,8 +38,8 @@ macro_rules! inner_define_affine_map_2d {
             // Translation.
             pub fn translation(v: Measure2d<Unit, Number>) -> Self {
                 Self::new([
-                    [Number::ONE, Number::ZERO, v.x],
-                    [Number::ZERO, Number::ONE, v.y],
+                    [Number::ONE, Number::ZERO, v.values[0]],
+                    [Number::ZERO, Number::ONE, v.values[1]],
                 ])
             }
 
@@ -51,19 +51,15 @@ macro_rules! inner_define_affine_map_2d {
             where
                 AngleUnit: AngleMeasurementUnit,
             {
-                Self::rotation_by_radians(
-                    fixed_point.x,
-                    fixed_point.y,
-                    angle.convert::<Radian>().value,
-                )
+                Self::rotation_by_radians(fixed_point.values, angle.convert::<Radian>().value)
             }
 
             pub fn rotation_at_right(fixed_point: MeasurePoint2d<Unit, Number>) -> Self {
-                Self::right_rotation_by_sin(fixed_point.x, fixed_point.y, -Number::ONE)
+                Self::right_rotation_by_sin(fixed_point.values, -Number::ONE)
             }
 
             pub fn rotation_at_left(fixed_point: MeasurePoint2d<Unit, Number>) -> Self {
-                Self::right_rotation_by_sin(fixed_point.x, fixed_point.y, Number::ONE)
+                Self::right_rotation_by_sin(fixed_point.values, Number::ONE)
             }
 
             // Projections
@@ -78,7 +74,7 @@ macro_rules! inner_define_affine_map_2d {
                 AngleUnit: MeasurementUnit<Property = Angle>,
             {
                 let (sin_a, cos_a) = direction.convert::<Radian>().value.sin_cos();
-                Self::projection_by_cos_sin(fixed_point.x, fixed_point.y, cos_a, sin_a)
+                Self::projection_by_cos_sin(fixed_point.values, cos_a, sin_a)
             }
 
             // Projection onto a line identified by a fixed point
@@ -91,7 +87,7 @@ macro_rules! inner_define_affine_map_2d {
                 AngleUnit: AngleMeasurementUnit,
             {
                 let (sin_a, cos_a) = direction.convert::<Radian>().value.sin_cos();
-                Self::projection_by_cos_sin(fixed_point.x, fixed_point.y, cos_a, sin_a)
+                Self::projection_by_cos_sin(fixed_point.values, cos_a, sin_a)
             }
 
             // Projection onto a line identified by a fixed point
@@ -104,7 +100,7 @@ macro_rules! inner_define_affine_map_2d {
                 AngleUnit: AngleMeasurementUnit,
             {
                 let (sin_a, cos_a) = direction.convert::<Radian>().value.sin_cos();
-                Self::projection_by_cos_sin(fixed_point.x, fixed_point.y, cos_a, sin_a)
+                Self::projection_by_cos_sin(fixed_point.values, cos_a, sin_a)
             }
 
             // Projection onto a line identified by a fixed point
@@ -114,7 +110,7 @@ macro_rules! inner_define_affine_map_2d {
                 fixed_point: MeasurePoint2d<Unit, Number>,
                 uv: Measure2d<Unit, Number>,
             ) -> Self {
-                Self::projection_by_cos_sin(fixed_point.x, fixed_point.y, uv.x, uv.y)
+                Self::projection_by_cos_sin(fixed_point.values, uv.values[0], uv.values[1])
             }
 
             // Reflections
@@ -126,7 +122,7 @@ macro_rules! inner_define_affine_map_2d {
                 direction: MeasurePoint<AngleUnit, Number>,
             ) -> Self {
                 let (sin_a, cos_a) = direction.convert::<Radian>().value.sin_cos();
-                Self::reflection_by_cos_sin(fixed_point.x, fixed_point.y, cos_a, sin_a)
+                Self::reflection_by_cos_sin(fixed_point.values, cos_a, sin_a)
             }
 
             // Reflection over a line identified by a fixed point
@@ -136,7 +132,7 @@ macro_rules! inner_define_affine_map_2d {
                 direction: SignedDirection<AngleUnit, Number>,
             ) -> Self {
                 let (sin_a, cos_a) = direction.convert::<Radian>().value.sin_cos();
-                Self::reflection_by_cos_sin(fixed_point.x, fixed_point.y, cos_a, sin_a)
+                Self::reflection_by_cos_sin(fixed_point.values, cos_a, sin_a)
             }
 
             // Reflection over a line identified by a fixed point
@@ -146,7 +142,7 @@ macro_rules! inner_define_affine_map_2d {
                 direction: UnsignedDirection<AngleUnit, Number>,
             ) -> Self {
                 let (sin_a, cos_a) = direction.convert::<Radian>().value.sin_cos();
-                Self::reflection_by_cos_sin(fixed_point.x, fixed_point.y, cos_a, sin_a)
+                Self::reflection_by_cos_sin(fixed_point.values, cos_a, sin_a)
             }
 
             // Reflection over a line identified by a fixed point
@@ -156,14 +152,14 @@ macro_rules! inner_define_affine_map_2d {
                 fixed_point: MeasurePoint2d<Unit, Number>,
                 uv: Measure2d<Unit, Number>,
             ) -> Self {
-                Self::reflection_by_cos_sin(fixed_point.x, fixed_point.y, uv.x, uv.y)
+                Self::reflection_by_cos_sin(fixed_point.values, uv.values[0], uv.values[1])
             }
 
             // Scaling by two factors from a fixed point.
             pub fn scaling(fixed_point: MeasurePoint2d<Unit, Number>, kx: Number, ky: Number) -> Self {
                 Self::new([
-                    [kx, Number::ZERO, fixed_point.x * (Number::ONE - kx)],
-                    [Number::ZERO, ky, fixed_point.y * (Number::ONE - ky)],
+                    [kx, Number::ZERO, fixed_point.values[0] * (Number::ONE - kx)],
+                    [Number::ZERO, ky, fixed_point.values[1] * (Number::ONE - ky)],
                 ])
             }
 
@@ -203,40 +199,40 @@ macro_rules! inner_define_affine_map_2d {
             }
 
             pub fn apply_to(&self, m: MeasurePoint2d<Unit, Number>) -> MeasurePoint2d<Unit, Number> {
-                MeasurePoint2d::<Unit, Number>::new(
-                    self.c[0][0] * m.x + self.c[0][1] * m.y + self.c[0][2],
-                    self.c[1][0] * m.x + self.c[1][1] * m.y + self.c[1][2],
-                )
+                MeasurePoint2d::<Unit, Number>::new([
+                    self.c[0][0] * m.values[0] + self.c[0][1] * m.values[1] + self.c[0][2],
+                    self.c[1][0] * m.values[0] + self.c[1][1] * m.values[1] + self.c[1][2],
+                ])
             }
 
-            fn rotation_by_radians(fp_x: Number, fp_y: Number, radians: Number) -> Self {
+            fn rotation_by_radians(fp: [Number; 2], radians: Number) -> Self {
                 let (sin_a, cos_a) = radians.sin_cos();
                 Self::new([
-                    [cos_a, -sin_a, fp_x - cos_a * fp_x + sin_a * fp_y],
-                    [sin_a, cos_a, fp_y - sin_a * fp_x - cos_a * fp_y],
+                    [cos_a, -sin_a, fp[0] - cos_a * fp[0] + sin_a * fp[1]],
+                    [sin_a, cos_a, fp[1] - sin_a * fp[0] - cos_a * fp[1]],
                 ])
             }
 
-            fn right_rotation_by_sin(fp_x: Number, fp_y: Number, sine: Number) -> Self {
+            fn right_rotation_by_sin(fp: [Number; 2], sine: Number) -> Self {
                 Self::new([
-                    [Number::ZERO, -sine, fp_x + sine * fp_y],
-                    [sine, Number::ZERO, fp_y - sine * fp_x],
+                    [Number::ZERO, -sine, fp[0] + sine * fp[1]],
+                    [sine, Number::ZERO, fp[1] - sine * fp[0]],
                 ])
             }
 
-            fn projection_by_cos_sin(fp_x: Number, fp_y: Number, cos_a: Number, sin_a: Number) -> Self {
+            fn projection_by_cos_sin(fp: [Number; 2], cos_a: Number, sin_a: Number) -> Self {
                 let cc = cos_a * cos_a;
                 let cs = cos_a * sin_a;
                 let ss = sin_a * sin_a;
-                let sxmcy = sin_a * fp_x - cos_a * fp_y;
+                let sxmcy = sin_a * fp[0] - cos_a * fp[1];
                 Self::new([[cc, cs, sin_a * sxmcy], [cs, ss, -cos_a * sxmcy]])
             }
 
-            fn reflection_by_cos_sin(fp_x: Number, fp_y: Number, cos_a: Number, sin_a: Number) -> Self {
+            fn reflection_by_cos_sin(fp: [Number; 2], cos_a: Number, sin_a: Number) -> Self {
                 let c2ms2 = cos_a * cos_a - sin_a * sin_a;
                 let two = Number::ONE + Number::ONE;
                 let cs_bis = two * cos_a * sin_a;
-                let sxmcy_bis = two * (sin_a * fp_x - cos_a * fp_y);
+                let sxmcy_bis = two * (sin_a * fp[0] - cos_a * fp[1]);
                 Self::new([
                     [c2ms2, cs_bis, sin_a * sxmcy_bis],
                     [cs_bis, -c2ms2, -cos_a * sxmcy_bis],
