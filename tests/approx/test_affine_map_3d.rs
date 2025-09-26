@@ -51,7 +51,7 @@ fn affine_map_3d_default() {
     assert_eq!(am.c[2][1], 0.);
     assert_eq!(am.c[2][2], 1.);
     assert_eq!(am.c[2][3], 0.);
-    let mp = MeasurePoint3d::<Metre, f32>::new(12., 23., -34.);
+    let mp = MeasurePoint3d::<Metre, f32>::new([12., 23., -34.]);
     assert_eq!(am.apply_to(mp), mp);
     let am = AffineMap3d::<Metre>::default();
     assert_eq!(am.c[0][0], 1.);
@@ -66,7 +66,7 @@ fn affine_map_3d_default() {
     assert_eq!(am.c[2][1], 0.);
     assert_eq!(am.c[2][2], 1.);
     assert_eq!(am.c[2][3], 0.);
-    let mp = MeasurePoint3d::<Metre>::new(12., 23., -34.);
+    let mp = MeasurePoint3d::<Metre>::new([12., 23., -34.]);
     assert_eq!(am.apply_to(mp), mp);
 }
 
@@ -117,154 +117,152 @@ fn affine_map_3d_convert() {
 
 #[test]
 fn affine_map_3d_translation() {
-    let mp1 = MeasurePoint3d::<Metre, f64>::new(8., 5., -2.);
+    let mp1 = MeasurePoint3d::<Metre, f64>::new([8., 5., -2.]);
     let am: AffineMap3d<Metre, f64> =
-        AffineMap3d::<Metre, f64>::translation(Measure3d::new(12., -23., 45.));
+        AffineMap3d::<Metre, f64>::translation(Measure3d::new([12., -23., 45.]));
     let mp2: MeasurePoint3d<Metre, f64> = am.apply_to(mp1);
-    assert_eq!(mp2.x, 8. + 12.);
-    assert_eq!(mp2.y, 5. - 23.);
-    assert_eq!(mp2.z, -2. + 45.);
+    assert_eq!(mp2.values, [8. + 12., 5. - 23., -2. + 45.]);
 }
 
 // Rotations
 
 #[test]
 fn affine_map_3d_rotation() {
-    let mp1 = MeasurePoint3d::<Metre, f64>::new(8., 5., -2.);
+    let mp1 = MeasurePoint3d::<Metre, f64>::new([8., 5., -2.]);
 
-    let fixed_point = MeasurePoint3d::<Metre, f64>::new(6., 2., -9.);
+    let fixed_point = MeasurePoint3d::<Metre, f64>::new([6., 2., -9.]);
     let am1 = AffineMap3d::<Metre, f64>::rotation(
         fixed_point,
-        Measure3d::<One, f64>::new(0., 0., 1.),
+        Measure3d::<One, f64>::new([0., 0., 1.]),
         Measure::<Degree, f64>::new(90.),
     );
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 3.);
-    assert_eq_64!(mp2.y, 4.);
-    assert_eq_64!(mp2.z, -2.);
+    assert_eq_64!(mp2.values, [3., 4., -2.]);
 
-    let unit_vector = Measure3d::<One, f64>::new(2., 3., 4.).normalized();
+    let unit_vector = Measure3d::<One, f64>::new([2., 3., 4.]).normalized();
     let am2 = AffineMap3d::<Metre, f64>::rotation(
         fixed_point,
         unit_vector,
         Measure::<Degree, f64>::new(30.),
     );
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 8.946504549699267);
-    assert_eq_64!(mp3.y, 4.6092272773226455);
-    assert_eq_64!(mp3.z, -2.1801727328416165);
+    assert_eq_64!(
+        mp3.values,
+        [8.946504549699267, 4.6092272773226455, -2.1801727328416165]
+    );
 }
 
 // Projections
 
 #[test]
 fn affine_map_3d_projection_onto_line() {
-    let mp1 = MeasurePoint3d::<Metre, f64>::new(8., 5., -2.);
+    let mp1 = MeasurePoint3d::<Metre, f64>::new([8., 5., -2.]);
 
-    let fixed_point = MeasurePoint3d::<Metre, f64>::new(6., 2., -9.);
+    let fixed_point = MeasurePoint3d::<Metre, f64>::new([6., 2., -9.]);
     let am1 = AffineMap3d::<Metre, f64>::projection_onto_line(
         fixed_point,
-        Measure3d::<Metre, f64>::new(0., 0., 1.),
+        Measure3d::<Metre, f64>::new([0., 0., 1.]),
     );
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 6.);
-    assert_eq_64!(mp2.y, 2.);
-    assert_eq_64!(mp2.z, -2.);
+    assert_eq_64!(mp2.values, [6., 2., -2.]);
 
-    let unit_vector = Measure3d::<One, f64>::new(2., 3., 4.).normalized();
+    let unit_vector = Measure3d::<One, f64>::new([2., 3., 4.]).normalized();
     let am2 = AffineMap3d::<Metre, f64>::projection_onto_line(fixed_point, unit_vector);
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 8.827586206896552);
-    assert_eq_64!(mp3.y, 6.241379310344827);
-    assert_eq_64!(mp3.z, -3.3448275862068955);
+    assert_eq_64!(
+        mp3.values,
+        [8.827586206896552, 6.241379310344827, -3.3448275862068955]
+    );
 }
 
 #[test]
 fn affine_map_3d_projection_onto_plane() {
-    let mp1 = MeasurePoint3d::<Metre, f64>::new(8., 5., -2.);
+    let mp1 = MeasurePoint3d::<Metre, f64>::new([8., 5., -2.]);
 
-    let fixed_point = MeasurePoint3d::<Metre, f64>::new(6., 2., -9.);
+    let fixed_point = MeasurePoint3d::<Metre, f64>::new([6., 2., -9.]);
     let am1 = AffineMap3d::<Metre, f64>::projection_onto_plane(
         fixed_point,
-        Measure3d::<Metre, f64>::new(0., 0., 1.),
+        Measure3d::<Metre, f64>::new([0., 0., 1.]),
     );
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 8.);
-    assert_eq_64!(mp2.y, 5.);
-    assert_eq_64!(mp2.z, -9.);
+    assert_eq_64!(mp2.values, [8., 5., -9.]);
 
-    let unit_vector = Measure3d::<One, f64>::new(2., 3., 4.).normalized();
+    let unit_vector = Measure3d::<One, f64>::new([2., 3., 4.]).normalized();
     let am2 = AffineMap3d::<Metre, f64>::projection_onto_plane(fixed_point, unit_vector);
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 5.172413793103448);
-    assert_eq_64!(mp3.y, 0.7586206896551726);
-    assert_eq_64!(mp3.z, -7.655172413793104);
+    assert_eq_64!(
+        mp3.values,
+        [5.172413793103448, 0.7586206896551726, -7.655172413793104]
+    );
 }
 
 // Reflections
 
 #[test]
 fn affine_map_3d_reflection_over_line() {
-    let mp1 = MeasurePoint3d::<Metre, f64>::new(8., 5., -2.);
+    let mp1 = MeasurePoint3d::<Metre, f64>::new([8., 5., -2.]);
 
-    let fixed_point = MeasurePoint3d::<Metre, f64>::new(6., 2., -9.);
+    let fixed_point = MeasurePoint3d::<Metre, f64>::new([6., 2., -9.]);
     let am1 = AffineMap3d::<Metre, f64>::reflection_over_line(
         fixed_point,
-        Measure3d::<Metre, f64>::new(0., 0., 1.),
+        Measure3d::<Metre, f64>::new([0., 0., 1.]),
     );
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 4.);
-    assert_eq_64!(mp2.y, -1.);
-    assert_eq_64!(mp2.z, -2.);
+    assert_eq_64!(mp2.values, [4., -1., -2.]);
 
-    let unit_vector = Measure3d::<One, f64>::new(2., 3., 4.).normalized();
+    let unit_vector = Measure3d::<One, f64>::new([2., 3., 4.]).normalized();
     let am2 = AffineMap3d::<Metre, f64>::reflection_over_line(fixed_point, unit_vector);
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 9.655172413793103);
-    assert_eq_64!(mp3.y, 7.482758620689655);
-    assert_eq_64!(mp3.z, -4.689655172413792);
+    assert_eq_64!(
+        mp3.values,
+        [9.655172413793103, 7.482758620689655, -4.689655172413792]
+    );
 }
 
 #[test]
 fn affine_map_3d_reflection_over_plane() {
-    let mp1 = MeasurePoint3d::<Metre, f64>::new(8., 5., -2.);
+    let mp1 = MeasurePoint3d::<Metre, f64>::new([8., 5., -2.]);
 
-    let fixed_point = MeasurePoint3d::<Metre, f64>::new(6., 2., -9.);
+    let fixed_point = MeasurePoint3d::<Metre, f64>::new([6., 2., -9.]);
     let am1 = AffineMap3d::<Metre, f64>::reflection_over_plane(
         fixed_point,
-        Measure3d::<Metre, f64>::new(0., 0., 1.),
+        Measure3d::<Metre, f64>::new([0., 0., 1.]),
     );
     let mp2 = am1.apply_to(mp1);
-    assert_eq_64!(mp2.x, 8.);
-    assert_eq_64!(mp2.y, 5.);
-    assert_eq_64!(mp2.z, -16.);
+    assert_eq_64!(mp2.values, [8., 5., -16.]);
 
-    let unit_vector = Measure3d::<One, f64>::new(2., 3., 4.).normalized();
+    let unit_vector = Measure3d::<One, f64>::new([2., 3., 4.]).normalized();
     let am2 = AffineMap3d::<Metre, f64>::reflection_over_plane(fixed_point, unit_vector);
     let mp3 = am2.apply_to(mp1);
-    assert_eq_64!(mp3.x, 2.344827586206896);
-    assert_eq_64!(mp3.y, -3.4827586206896557);
-    assert_eq_64!(mp3.z, -13.310344827586208);
+    assert_eq_64!(
+        mp3.values,
+        [2.344827586206896, -3.4827586206896557, -13.310344827586208]
+    );
 }
 
 // Scaling by two factors
 
 #[test]
 fn affine_map_3d_scaling() {
-    let fixed_point = MeasurePoint3d::<Metre, f64>::new(6., 2., -9.);
-    let mp1 = MeasurePoint3d::<Metre, f64>::new(8., 5., -2.);
-    let am = AffineMap3d::<Metre, f64>::scaling(fixed_point, 3., -7., 4.);
+    let fixed_point = MeasurePoint3d::<Metre, f64>::new([6., 2., -9.]);
+    let mp1 = MeasurePoint3d::<Metre, f64>::new([8., 5., -2.]);
+    let am = AffineMap3d::<Metre, f64>::scaling(fixed_point, [3., -7., 4.]);
     let mp2 = am.apply_to(mp1);
-    assert_eq!(mp2.x, 6. + (8. - 6.) * 3.);
-    assert_eq!(mp2.y, 2. + (5. - 2.) * -7.);
-    assert_eq!(mp2.z, -9. + (-2. - -9.) * 4.);
+    assert_eq!(
+        mp2.values,
+        [
+            6. + (8. - 6.) * 3.,
+            2. + (5. - 2.) * -7.,
+            -9. + (-2. - -9.) * 4.
+        ]
+    );
 }
 
 // Inversion
 
 #[test]
 fn affine_map_3d_inverted() {
-    let mp = MeasurePoint3d::<Metre, f64>::new(8., 5., -2.);
+    let mp = MeasurePoint3d::<Metre, f64>::new([8., 5., -2.]);
     let am = AffineMap3d::<Metre, f64>::new([
         [1.2, 0.8, 6., -1.7],
         [3.4, -1.3, 2., 0.4],
@@ -274,14 +272,12 @@ fn affine_map_3d_inverted() {
     let transformed = am.apply_to(mp);
     assert!(mp != transformed);
     let transformed_back = inverse_of_am.apply_to(transformed);
-    assert_eq_64!(transformed_back.x, 8.);
-    assert_eq_64!(transformed_back.y, 5.);
-    assert_eq_64!(transformed_back.z, -2.);
+    assert_eq_64!(transformed_back.values, [8., 5., -2.]);
 }
 
 #[test]
 fn affine_map_3d_combined_with() {
-    let mp1 = MeasurePoint3d::<Metre, f64>::new(8., 5., -2.);
+    let mp1 = MeasurePoint3d::<Metre, f64>::new([8., 5., -2.]);
     let am1 = AffineMap3d::<Metre, f64>::new([
         [1.2, 0.8, 4.7, 6.],
         [3.4, -1.3, 0.6, 2.],
@@ -305,9 +301,7 @@ fn affine_map_3d_combined_with() {
 
     // The original point should be obtained.
     //println!("{}\n{}\n{}\n{}\n{}\n{}\n{}\n", mp1, am1, am2, am2_and_then_am1, mp2);
-    assert_eq_64!(mp3.x, 8.);
-    assert_eq_64!(mp3.y, 5.);
-    assert_eq_64!(mp3.z, -2.);
+    assert_eq_64!(mp3.values, [8., 5., -2.]);
 
     // If am1 and am2 are swapped, and also their inverses are swapped,
     // the same result should be obtained.
@@ -315,9 +309,7 @@ fn affine_map_3d_combined_with() {
     let mp3 = am1_and_then_am2.apply_to(mp1);
     let am2_inverted_and_then_am1_inverted = am1.inverted().combined_with(&am2.inverted());
     let mp4 = am2_inverted_and_then_am1_inverted.apply_to(mp3);
-    assert_eq_64!(mp4.x, 8.);
-    assert_eq_64!(mp4.y, 5.);
-    assert_eq_64!(mp4.z, -2.);
+    assert_eq_64!(mp4.values, [8., 5., -2.]);
 }
 
 #[test]

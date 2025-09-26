@@ -25,9 +25,9 @@ macro_rules! inner_define_linear_map_3d {
             {
                 Self::rotation_by_radians_around_unit_vector(
                     angle.convert::<Radian>().value,
-                    unit_vector.x,
-                    unit_vector.y,
-                    unit_vector.z,
+                    unit_vector.values[0],
+                    unit_vector.values[1],
+                    unit_vector.values[2],
                 )
             }
 
@@ -41,19 +41,19 @@ macro_rules! inner_define_linear_map_3d {
                 Self {
                     c: [
                         [
-                            unit_vector.x * unit_vector.x,
-                            unit_vector.y * unit_vector.x,
-                            unit_vector.z * unit_vector.x,
+                            unit_vector.values[0] * unit_vector.values[0],
+                            unit_vector.values[1] * unit_vector.values[0],
+                            unit_vector.values[2] * unit_vector.values[0],
                         ],
                         [
-                            unit_vector.x * unit_vector.y,
-                            unit_vector.y * unit_vector.y,
-                            unit_vector.z * unit_vector.y,
+                            unit_vector.values[0] * unit_vector.values[1],
+                            unit_vector.values[1] * unit_vector.values[1],
+                            unit_vector.values[2] * unit_vector.values[1],
                         ],
                         [
-                            unit_vector.x * unit_vector.z,
-                            unit_vector.y * unit_vector.z,
-                            unit_vector.z * unit_vector.z,
+                            unit_vector.values[0] * unit_vector.values[2],
+                            unit_vector.values[1] * unit_vector.values[2],
+                            unit_vector.values[2] * unit_vector.values[2],
                         ],
                     ],
                 }
@@ -67,19 +67,19 @@ macro_rules! inner_define_linear_map_3d {
                 Self {
                     c: [
                         [
-                            Number::ONE - unit_vector.x * unit_vector.x,
-                            -unit_vector.y * unit_vector.x,
-                            -unit_vector.z * unit_vector.x,
+                            Number::ONE - unit_vector.values[0] * unit_vector.values[0],
+                            -unit_vector.values[1] * unit_vector.values[0],
+                            -unit_vector.values[2] * unit_vector.values[0],
                         ],
                         [
-                            -unit_vector.x * unit_vector.y,
-                            Number::ONE - unit_vector.y * unit_vector.y,
-                            -unit_vector.z * unit_vector.y,
+                            -unit_vector.values[0] * unit_vector.values[1],
+                            Number::ONE - unit_vector.values[1] * unit_vector.values[1],
+                            -unit_vector.values[2] * unit_vector.values[1],
                         ],
                         [
-                            -unit_vector.x * unit_vector.z,
-                            -unit_vector.y * unit_vector.z,
-                            Number::ONE - unit_vector.z * unit_vector.z,
+                            -unit_vector.values[0] * unit_vector.values[2],
+                            -unit_vector.values[1] * unit_vector.values[2],
+                            Number::ONE - unit_vector.values[2] * unit_vector.values[2],
                         ],
                     ],
                 }
@@ -96,19 +96,19 @@ macro_rules! inner_define_linear_map_3d {
                 Self {
                     c: [
                         [
-                            two * unit_vector.x * unit_vector.x - Number::ONE,
-                            two * unit_vector.y * unit_vector.x,
-                            two * unit_vector.z * unit_vector.x,
+                            two * unit_vector.values[0] * unit_vector.values[0] - Number::ONE,
+                            two * unit_vector.values[1] * unit_vector.values[0],
+                            two * unit_vector.values[2] * unit_vector.values[0],
                         ],
                         [
-                            two * unit_vector.x * unit_vector.y,
-                            two * unit_vector.y * unit_vector.y - Number::ONE,
-                            two * unit_vector.z * unit_vector.y,
+                            two * unit_vector.values[0] * unit_vector.values[1],
+                            two * unit_vector.values[1] * unit_vector.values[1] - Number::ONE,
+                            two * unit_vector.values[2] * unit_vector.values[1],
                         ],
                         [
-                            two * unit_vector.x * unit_vector.z,
-                            two * unit_vector.y * unit_vector.z,
-                            two * unit_vector.z * unit_vector.z - Number::ONE,
+                            two * unit_vector.values[0] * unit_vector.values[2],
+                            two * unit_vector.values[1] * unit_vector.values[2],
+                            two * unit_vector.values[2] * unit_vector.values[2] - Number::ONE,
                         ],
                     ],
                 }
@@ -123,19 +123,19 @@ macro_rules! inner_define_linear_map_3d {
                 Self {
                     c: [
                         [
-                            minus_two * unit_vector.x * unit_vector.x + Number::ONE,
-                            minus_two * unit_vector.y * unit_vector.x,
-                            minus_two * unit_vector.z * unit_vector.x,
+                            minus_two * unit_vector.values[0] * unit_vector.values[0] + Number::ONE,
+                            minus_two * unit_vector.values[1] * unit_vector.values[0],
+                            minus_two * unit_vector.values[2] * unit_vector.values[0],
                         ],
                         [
-                            minus_two * unit_vector.x * unit_vector.y,
-                            minus_two * unit_vector.y * unit_vector.y + Number::ONE,
-                            minus_two * unit_vector.z * unit_vector.y,
+                            minus_two * unit_vector.values[0] * unit_vector.values[1],
+                            minus_two * unit_vector.values[1] * unit_vector.values[1] + Number::ONE,
+                            minus_two * unit_vector.values[2] * unit_vector.values[1],
                         ],
                         [
-                            minus_two * unit_vector.x * unit_vector.z,
-                            minus_two * unit_vector.y * unit_vector.z,
-                            minus_two * unit_vector.z * unit_vector.z + Number::ONE,
+                            minus_two * unit_vector.values[0] * unit_vector.values[2],
+                            minus_two * unit_vector.values[1] * unit_vector.values[2],
+                            minus_two * unit_vector.values[2] * unit_vector.values[2] + Number::ONE,
                         ],
                     ],
                 }
@@ -143,12 +143,12 @@ macro_rules! inner_define_linear_map_3d {
 
             // Scaling by three factors.
 
-            pub fn scaling(kx: Number, ky: Number, kz: Number) -> Self {
+            pub fn scaling(factors: [Number; 3]) -> Self {
                 Self {
                     c: [
-                        [kx, Number::ZERO, Number::ZERO],
-                        [Number::ZERO, ky, Number::ZERO],
-                        [Number::ZERO, Number::ZERO, kz],
+                        [factors[0], Number::ZERO, Number::ZERO],
+                        [Number::ZERO, factors[1], Number::ZERO],
+                        [Number::ZERO, Number::ZERO, factors[2]],
                     ],
                 }
             }
@@ -231,11 +231,11 @@ macro_rules! inner_define_linear_map_3d {
             where
                 Unit::Property: VectorProperty,
             {
-                Measure3d::<Unit, Number>::new(
-                    self.c[0][0] * m.x + self.c[0][1] * m.y + self.c[0][2] * m.z,
-                    self.c[1][0] * m.x + self.c[1][1] * m.y + self.c[1][2] * m.z,
-                    self.c[2][0] * m.x + self.c[2][1] * m.y + self.c[2][2] * m.z,
-                )
+                Measure3d::<Unit, Number>::new([
+                    self.c[0][0] * m.values[0] + self.c[0][1] * m.values[1] + self.c[0][2] * m.values[2],
+                    self.c[1][0] * m.values[0] + self.c[1][1] * m.values[1] + self.c[1][2] * m.values[2],
+                    self.c[2][0] * m.values[0] + self.c[2][1] * m.values[1] + self.c[2][2] * m.values[2],
+                ])
             }
 
             fn rotation_by_radians_around_unit_vector(

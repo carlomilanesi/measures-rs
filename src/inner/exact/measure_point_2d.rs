@@ -12,6 +12,7 @@ macro_rules! inner_define_measure_point_2d {
             Number: ArithmeticOps,
             Unit::Property: VectorProperty,
         {
+            /// Measure2d::new([Number; 2]) -> Measure2d
             pub const fn new(values: [Number; 2]) -> Self {
                 Self {
                     values,

@@ -6,9 +6,7 @@ macro_rules! inner_define_approx_measure_point_3d {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
-            pub x: Number,
-            pub y: Number,
-            pub z: Number,
+            pub values: [Number; 3],
             pub variance: Number,
             phantom: PhantomData<Unit>,
         }
@@ -19,24 +17,17 @@ macro_rules! inner_define_approx_measure_point_3d {
             Number: ArithmeticOps,
             Unit::Property: VectorProperty,
         {
-            pub const fn with_variance(x: Number, y: Number, z: Number, variance: Number) -> Self {
+            pub const fn with_variance(values: [Number; 3], variance: Number) -> Self {
                 Self {
-                    x,
-                    y,
-                    z,
+                    values,
                     variance,
                     phantom: PhantomData,
                 }
             }
 
             /// ApproxMeasurePoint3d::with_uncertainty(Number, Number, Number, Measure) -> ApproxMeasurePoint
-            pub fn with_uncertainty(
-                x: Number,
-                y: Number,
-                z: Number,
-                uncertainty: Measure<Unit, Number>,
-            ) -> Self {
-                Self::with_variance(x, y, z, uncertainty.value * uncertainty.value)
+            pub fn with_uncertainty(values: [Number; 3], uncertainty: Measure<Unit, Number>) -> Self {
+                Self::with_variance(values, uncertainty.value * uncertainty.value)
             }
 
             pub fn uncertainty(self) -> Measure<Unit, Number> {
@@ -45,21 +36,21 @@ macro_rules! inner_define_approx_measure_point_3d {
 
             pub fn x(self) -> ApproxMeasurePoint<Unit, Number> {
                 ApproxMeasurePoint::<Unit, Number>::with_variance(
-                    self.x,
+                    self.values[0],
                     self.variance / (Number::ONE + Number::ONE + Number::ONE),
                 )
             }
 
             pub fn y(self) -> ApproxMeasurePoint<Unit, Number> {
                 ApproxMeasurePoint::<Unit, Number>::with_variance(
-                    self.y,
+                    self.values[1],
                     self.variance / (Number::ONE + Number::ONE + Number::ONE),
                 )
             }
 
             pub fn z(self) -> ApproxMeasurePoint<Unit, Number> {
                 ApproxMeasurePoint::<Unit, Number>::with_variance(
-                    self.z,
+                    self.values[02],
                     self.variance / (Number::ONE + Number::ONE + Number::ONE),
                 )
             }
@@ -70,9 +61,11 @@ macro_rules! inner_define_approx_measure_point_3d {
                 let ratio = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
                 let offset = Number::from_f64((Unit::OFFSET - DestUnit::OFFSET) / DestUnit::RATIO);
                 ApproxMeasurePoint3d::<DestUnit, Number>::with_variance(
-                    self.x * ratio + offset,
-                    self.y * ratio + offset,
-                    self.z * ratio + offset,
+                    [
+                        self.values[0] * ratio + offset,
+                        self.values[1] * ratio + offset,
+                        self.values[2] * ratio + offset,
+                    ],
                     self.variance * ratio * ratio,
                 )
             }
@@ -80,9 +73,11 @@ macro_rules! inner_define_approx_measure_point_3d {
                 &self,
             ) -> ApproxMeasurePoint3d<Unit, DestNumber> {
                 ApproxMeasurePoint3d::<Unit, DestNumber>::with_variance(
-                    DestNumber::lossy_from(self.x),
-                    DestNumber::lossy_from(self.y),
-                    DestNumber::lossy_from(self.z),
+                    [
+                        DestNumber::lossy_from(self.values[0]),
+                        DestNumber::lossy_from(self.values[1]),
+                        DestNumber::lossy_from(self.values[2]),
+                    ],
                     DestNumber::lossy_from(self.variance),
                 )
             }
@@ -96,7 +91,7 @@ macro_rules! inner_define_approx_measure_point_3d {
         {
             // It returns the origin.
             fn default() -> Self {
-                Self::with_variance(Number::ZERO, Number::ZERO, Number::ZERO, Number::ZERO)
+                Self::with_variance([Number::ZERO, Number::ZERO, Number::ZERO], Number::ZERO)
             }
         }
 
@@ -106,7 +101,10 @@ macro_rules! inner_define_approx_measure_point_3d {
             Unit::Property: VectorProperty,
         {
             fn from(m: ApproxMeasurePoint3d<Unit, f32>) -> Self {
-                Self::with_variance(m.x as f64, m.y as f64, m.z as f64, m.variance as f64)
+                Self::with_variance(
+                    [m.values[0] as f64, m.values[1] as f64, m.values[2] as f64],
+                    m.variance as f64,
+                )
             }
         }
 
@@ -120,9 +118,11 @@ macro_rules! inner_define_approx_measure_point_3d {
             type Output = Self;
             fn add(self, other: ApproxMeasure3d<Unit, Number>) -> Self::Output {
                 Self::with_variance(
-                    self.x + other.x,
-                    self.y + other.y,
-                    self.z + other.z,
+                    [
+                        self.values[0] + other.values[0],
+                        self.values[1] + other.values[1],
+                        self.values[2] + other.values[2],
+                    ],
                     self.variance + other.variance,
                 )
             }
@@ -136,9 +136,9 @@ macro_rules! inner_define_approx_measure_point_3d {
             Unit::Property: VectorProperty,
         {
             fn add_assign(&mut self, other: ApproxMeasure3d<Unit, Number>) {
-                self.x += other.x;
-                self.y += other.y;
-                self.z += other.z;
+                self.values[0] += other.values[0];
+                self.values[1] += other.values[1];
+                self.values[2] += other.values[2];
                 self.variance += other.variance;
             }
         }
@@ -153,9 +153,11 @@ macro_rules! inner_define_approx_measure_point_3d {
             type Output = Self;
             fn sub(self, other: ApproxMeasure3d<Unit, Number>) -> Self::Output {
                 Self::with_variance(
-                    self.x - other.x,
-                    self.y - other.y,
-                    self.z - other.z,
+                    [
+                        self.values[0] - other.values[0],
+                        self.values[1] - other.values[1],
+                        self.values[2] - other.values[2],
+                    ],
                     self.variance + other.variance,
                 )
             }
@@ -169,9 +171,9 @@ macro_rules! inner_define_approx_measure_point_3d {
             Unit::Property: VectorProperty,
         {
             fn sub_assign(&mut self, other: ApproxMeasure3d<Unit, Number>) {
-                self.x -= other.x;
-                self.y -= other.y;
-                self.z -= other.z;
+                self.values[0] -= other.values[0];
+                self.values[1] -= other.values[1];
+                self.values[2] -= other.values[2];
                 self.variance += other.variance;
             }
         }
@@ -186,9 +188,11 @@ macro_rules! inner_define_approx_measure_point_3d {
             type Output = ApproxMeasure3d<Unit, Number>;
             fn sub(self, other: ApproxMeasurePoint3d<Unit, Number>) -> Self::Output {
                 Self::Output::with_variance(
-                    self.x - other.x,
-                    self.y - other.y,
-                    self.z - other.z,
+                    [
+                        self.values[0] - other.values[0],
+                        self.values[1] - other.values[1],
+                        self.values[2] - other.values[2],
+                    ],
                     self.variance + other.variance,
                 )
             }
@@ -205,9 +209,11 @@ macro_rules! inner_define_approx_measure_point_3d {
         {
             let weight2 = Number::ONE - weight1;
             ApproxMeasurePoint3d::<Unit, Number>::with_variance(
-                p1.x * weight1 + p2.x * weight2,
-                p1.y * weight1 + p2.y * weight2,
-                p1.z * weight1 + p2.z * weight2,
+                [
+                    p1.values[0] * weight1 + p2.values[0] * weight2,
+                    p1.values[1] * weight1 + p2.values[1] * weight2,
+                    p1.values[2] * weight1 + p2.values[2] * weight2,
+                ],
                 p1.variance * weight1 + p2.variance * weight2,
             )
         }
@@ -221,9 +227,11 @@ macro_rules! inner_define_approx_measure_point_3d {
             Unit::Property: VectorProperty,
         {
             ApproxMeasurePoint3d::<Unit, Number>::with_variance(
-                (p1.x + p2.x) * Number::HALF,
-                (p1.y + p2.y) * Number::HALF,
-                (p1.z + p2.z) * Number::HALF,
+                [
+                    (p1.values[0] + p2.values[0]) * Number::HALF,
+                    (p1.values[1] + p2.values[1]) * Number::HALF,
+                    (p1.values[2] + p2.values[2]) * Number::HALF,
+                ],
                 (p1.variance + p2.variance) * Number::HALF,
             )
         }
@@ -237,9 +245,23 @@ macro_rules! inner_define_approx_measure_point_3d {
             Unit::Property: VectorProperty,
         {
             ApproxMeasurePoint3d::<Unit, Number>::with_variance(
-                points.iter().zip(weights).map(|(p, &w)| p.x * w).sum(),
-                points.iter().zip(weights).map(|(p, &w)| p.y * w).sum(),
-                points.iter().zip(weights).map(|(p, &w)| p.z * w).sum(),
+                [
+                    points
+                        .iter()
+                        .zip(weights)
+                        .map(|(p, &w)| p.values[0] * w)
+                        .sum(),
+                    points
+                        .iter()
+                        .zip(weights)
+                        .map(|(p, &w)| p.values[1] * w)
+                        .sum(),
+                    points
+                        .iter()
+                        .zip(weights)
+                        .map(|(p, &w)| p.values[2] * w)
+                        .sum(),
+                ],
                 points
                     .iter()
                     .zip(weights)
@@ -257,10 +279,7 @@ macro_rules! inner_define_approx_measure_point_3d {
             Unit::Property: VectorProperty,
         {
             fn eq(&self, other: &ApproxMeasurePoint3d<Unit, Number>) -> bool {
-                self.x == other.x
-                    && self.y == other.y
-                    && self.z == other.z
-                    && self.variance == other.variance
+                self.values == other.values && self.variance == other.variance
             }
         }
 
@@ -294,11 +313,11 @@ macro_rules! inner_define_approx_measure_point_3d {
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at (")?;
-                fmt::Display::fmt(&self.x, formatter)?;
+                fmt::Display::fmt(&self.values[0], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.y, formatter)?;
+                fmt::Display::fmt(&self.values[1], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.z, formatter)?;
+                fmt::Display::fmt(&self.values[2], formatter)?;
                 formatter.write_str(")\u{b1}")?;
                 fmt::Display::fmt(&self.variance.sqrt(), formatter)?;
                 formatter.write_str(Unit::SUFFIX)
@@ -314,11 +333,11 @@ macro_rules! inner_define_approx_measure_point_3d {
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at (")?;
-                fmt::Display::fmt(&self.x, formatter)?;
+                fmt::Display::fmt(&self.values[0], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.y, formatter)?;
+                fmt::Display::fmt(&self.values[1], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.z, formatter)?;
+                fmt::Display::fmt(&self.values[2], formatter)?;
                 formatter.write_str(")\u{b1}")?;
                 fmt::Display::fmt(&self.variance.sqrt(), formatter)?;
                 formatter.write_str(Unit::SUFFIX)

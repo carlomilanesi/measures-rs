@@ -172,7 +172,7 @@ fn linear_map_2d_reflection_by_unit_vector() {
 #[test]
 fn linear_map_2d_scaling() {
     let m1 = Measure2d::<Metre, f32>::new([8., 5.]);
-    let lm = LinearMap2d::<f32>::scaling(3., 7.);
+    let lm = LinearMap2d::<f32>::scaling([3., 7.]);
     let m2 = lm.apply_to(m1);
     assert_eq_32!(m2.values, [8. * 3., 5. * 7.]);
 }

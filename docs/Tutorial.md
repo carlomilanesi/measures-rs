@@ -561,7 +561,7 @@ And finally, we apply the linear transformation to the planar measure, obtaining
 
 Here is the complete list of methods of `LinearMap2d`, which can be used to create linear transformations in a plane:
 * `new(coefficients: [[Number; 2]; 2])`: It allows to construct any 2D linear transformation, if you know its 4 coefficients.
-* `scaling(kx: Number, ky: Number)`: It returns a transformation which multiplies X coordinates by `kx` and Y coordinates by `ky`. To have an isotropic scaling, `kx` must be equal to `ky`.
+* `scaling(factors: [Number; 2])`: It returns a transformation which multiplies the first coordinate by the first factor and the second coordinate by the second factor. To have an isotropic scaling, the two factors must be equal.
 * `rotation(angle: Measure)`: It returns a transformation which rotates vectors counterclockwise by the specified angle.
 * `rotation_at_left()`: It is equivalent to `rotation(Measure::<Degree>::new(90.))`. Though, it has no rounding errors, and it is more efficient.
 * `rotation_at_right()`: It is equivalent to `rotation(Measure::<Degree>::new(-90.))`. Though, it has no rounding errors, and it is more efficient.
@@ -679,7 +679,7 @@ Therefore, translation transformations are actually useful only when they are co
 Here is the complete list of methods of `AffineMap2d`, which can be used to create affine transformations in a plane:
 * `new(coefficients: [[Number; 3]; 2])`: It allows to construct any 2D affine transformation, if you know its 6 coefficients.
 * `translation(displacement: Measure2d)`: It returns a transformation which adds the specified vector to measure points.
-* `scaling(fixed_point: MeasurePoint2d, kx: Number, ky: Number)`: It returns a transformation which multiplies by the specified factors the differences with the specified fixed point.
+* `scaling(fixed_point: MeasurePoint2d, factors: [Number; 2])`: It returns a transformation which multiplies by the corresponding factors the differences with the specified fixed point.
 * `rotation(fixed_point: MeasurePoint2d, angle: Measure)`: It returns a transformation which rotates vectors counterclockwise by the specified angle, around the specified fixed point.
 * `rotation_at_left(fixed_point: MeasurePoint2d)`: It is equivalent to `rotation(fixed_point: MeasurePoint2d, Measure::<Degree>::new(90.))`. Though, it has no rounding errors, and it is more efficient.
 * `rotation_at_right(fixed_point: MeasurePoint2d)`: It is equivalent to `rotation(fixed_point: MeasurePoint2d, Measure::<Degree>::new(-90.))`. Though, it has no rounding errors, and it is more efficient.
@@ -704,7 +704,7 @@ Such planes are specified by a unit vector orthogonal to them.
 
 Here is the complete list of methods of `LinearMap3d`, which can be used to create linear transformations in the space:
 * `new(coefficients: [[Number; 3]; 3])`: It allows to construct any 3D linear transformation, if you know its 9 coefficients.
-* `scaling(kx: Number, ky: Number, kz: Number)`: It returns a transformation which multiplies X coordinates by `kx`, Y coordinates by `ky`, and Z coordinates by `kz`. To have an isotropic scaling, `kx` must be equal to `ky` and to `kz`.
+* `scaling(factors: [Number; 3])`: It returns a transformation which multiplies the first coordinate by the first factor, the second coordinate by the second factor, and the third coordinates by the third factor. To have an isotropic scaling, the factors must be equal.
 * `rotation(unit_vector: Measure3d, angle: Measure)`: It returns a transformation which rotates vectors counterclockwise by the specified angle around the axis specified by a unit vector.
 * `projection_onto_line(unit_vector: Measure3d)`: It returns a transformation which projects vectors onto the line having the direction specified by a unit vector.
 * `projection_onto_plane(unit_vector: Measure3d)`: It returns a transformation which projects vectors onto the plane specified by its orthogonal unit vector.
@@ -714,7 +714,7 @@ Here is the complete list of methods of `LinearMap3d`, which can be used to crea
 And here is the complete list of methods of `AffineMap3d`, which can be used to create affine transformations in the space:
 * `new(coefficients: [[Number; 4]; 3])`: It allows to construct any 3D affine transformation, if you know its 12 coefficients.
 * `translation(displacement: Measure3d)`: It returns a transformation which adds the specified vector to measure points.
-* `scaling(fixed_point: MeasurePoint3d, kx: Number, ky: Number, kz: Number)`: It returns a transformation which multiplies by the specified factors the differences with the specified fixed point.
+* `scaling(fixed_point: MeasurePoint3d, factors: [Number; 3])`: It returns a transformation which multiplies by the corresponding factors the differences with the specified fixed point.
 * `rotation(fixed_point: MeasurePoint3d, unit_vector: Measure3d, angle: Measure)`: It returns a transformation which rotates points counterclockwise by the specified angle, around the axis going through the specified fixed point and having the direction specified by a unit vector.
 * `projection_onto_line(fixed_point: MeasurePoint3d, unit_vector: Measure3d)`: It returns a transformation which projects points onto the line going through the specified fixed point and having the direction specified by a unit vector.
 * `projection_onto_plane(fixed_point: MeasurePoint3d, unit_vector: Measure3d)`: It returns a transformation which projects points onto the plane going through the specified fixed point and having the specified orthogonal unit vector.

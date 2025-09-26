@@ -156,10 +156,18 @@ macro_rules! inner_define_affine_map_2d {
             }
 
             // Scaling by two factors from a fixed point.
-            pub fn scaling(fixed_point: MeasurePoint2d<Unit, Number>, kx: Number, ky: Number) -> Self {
+            pub fn scaling(fixed_point: MeasurePoint2d<Unit, Number>, factors: [Number; 2]) -> Self {
                 Self::new([
-                    [kx, Number::ZERO, fixed_point.values[0] * (Number::ONE - kx)],
-                    [Number::ZERO, ky, fixed_point.values[1] * (Number::ONE - ky)],
+                    [
+                        factors[0],
+                        Number::ZERO,
+                        fixed_point.values[0] * (Number::ONE - factors[0]),
+                    ],
+                    [
+                        Number::ZERO,
+                        factors[1],
+                        fixed_point.values[1] * (Number::ONE - factors[1]),
+                    ],
                 ])
             }
 

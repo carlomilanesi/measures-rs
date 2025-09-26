@@ -2,9 +2,7 @@
 macro_rules! inner_define_measure_3d {
     { $with_approx:ident } => {
         pub struct Measure3d<Unit, Number: ArithmeticOps = f64> {
-            pub x: Number,
-            pub y: Number,
-            pub z: Number,
+            pub values: [Number; 3],
             phantom: std::marker::PhantomData<Unit>,
         }
 
@@ -14,29 +12,27 @@ macro_rules! inner_define_measure_3d {
             Number: ArithmeticOps,
             Unit::Property: VectorProperty,
         {
-            /// measure 3d :: new(number, number, number) -> measure 3d
-            pub const fn new(x: Number, y: Number, z: Number) -> Self {
+            /// Measure3d::new([Number; 3]) -> Measure3d
+            pub const fn new(values: [Number; 3]) -> Self {
                 Self {
-                    x,
-                    y,
-                    z,
+                    values,
                     phantom: PhantomData,
                 }
             }
 
             /// measure 3d .x() -> measure
             pub const fn x(self) -> Measure<Unit, Number> {
-                Measure::<Unit, Number>::new(self.x)
+                Measure::<Unit, Number>::new(self.values[0])
             }
 
             /// measure 3d .y() -> measure
             pub const fn y(self) -> Measure<Unit, Number> {
-                Measure::<Unit, Number>::new(self.y)
+                Measure::<Unit, Number>::new(self.values[1])
             }
 
             /// measure 3d .z() -> measure
             pub const fn z(self) -> Measure<Unit, Number> {
-                Measure::<Unit, Number>::new(self.z)
+                Measure::<Unit, Number>::new(self.values[2])
             }
 
             /// measure 3d .convert() -> measure 3d
@@ -44,40 +40,45 @@ macro_rules! inner_define_measure_3d {
                 &self,
             ) -> Measure3d<DestUnit, Number> {
                 let factor = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
-                Measure3d::<DestUnit, Number> {
-                    x: self.x * factor,
-                    y: self.y * factor,
-                    z: self.z * factor,
-                    phantom: PhantomData,
-                }
+                Measure3d::<DestUnit, Number>::new([
+                    self.values[0] * factor,
+                    self.values[1] * factor,
+                    self.values[2] * factor,
+                ])
             }
 
             /// measure 3d .lossy_into() -> measure 3d
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> Measure3d<Unit, DestNumber> {
-                Measure3d::<Unit, DestNumber> {
-                    x: DestNumber::lossy_from(self.x),
-                    y: DestNumber::lossy_from(self.y),
-                    z: DestNumber::lossy_from(self.z),
-                    phantom: PhantomData,
-                }
+                Measure3d::<Unit, DestNumber>::new([
+                    DestNumber::lossy_from(self.values[0]),
+                    DestNumber::lossy_from(self.values[1]),
+                    DestNumber::lossy_from(self.values[2]),
+                ])
             }
 
             /// Measure3d.norm() -> Measure
             pub fn norm(self) -> Measure<Unit, Number> {
-                Measure::<Unit, Number>::new((self.x * self.x + self.y * self.y + self.z * self.z).sqrt())
+                Measure::<Unit, Number>::new(
+                    (self.values[0] * self.values[0]
+                        + self.values[1] * self.values[1]
+                        + self.values[2] * self.values[2])
+                        .sqrt(),
+                )
             }
 
             /// Measure3d.squared_norm() -> Number
             pub fn squared_norm(self) -> Number {
-                self.x * self.x + self.y * self.y + self.z * self.z
+                self.values[0] * self.values[0]
+                    + self.values[1] * self.values[1]
+                    + self.values[2] * self.values[2]
             }
 
             /// Measure3d.normalized() -> Measure3d
             pub fn normalized(self) -> Self {
                 let k = Number::ONE / self.squared_norm().sqrt();
-                Self::new(self.x * k, self.y * k, self.z * k)
+                Self::new([self.values[0] * k, self.values[1] * k, self.values[2] * k])
             }
         }
 
@@ -89,7 +90,7 @@ macro_rules! inner_define_measure_3d {
         {
             // It returns the zero vector.
             fn default() -> Self {
-                Self::new(Number::ZERO, Number::ZERO, Number::ZERO)
+                Self::new([Number::ZERO, Number::ZERO, Number::ZERO])
             }
         }
 
@@ -99,7 +100,7 @@ macro_rules! inner_define_measure_3d {
             Unit::Property: VectorProperty,
         {
             fn from(m: Measure3d<Unit, f32>) -> Self {
-                Measure3d::<Unit, f64>::new(m.x as f64, m.y as f64, m.z as f64)
+                Measure3d::<Unit, f64>::new([m.values[0] as f64, m.values[1] as f64, m.values[2] as f64])
             }
         }
 
@@ -112,7 +113,7 @@ macro_rules! inner_define_measure_3d {
         {
             type Output = Self;
             fn neg(self) -> Self::Output {
-                Self::new(-self.x, -self.y, -self.z)
+                Self::new([-self.values[0], -self.values[1], -self.values[2]])
             }
         }
 
@@ -125,7 +126,11 @@ macro_rules! inner_define_measure_3d {
         {
             type Output = Self;
             fn add(self, other: Measure3d<Unit, Number>) -> Self::Output {
-                Self::new(self.x + other.x, self.y + other.y, self.z + other.z)
+                Self::new([
+                    self.values[0] + other.values[0],
+                    self.values[1] + other.values[1],
+                    self.values[2] + other.values[2],
+                ])
             }
         }
 
@@ -137,9 +142,9 @@ macro_rules! inner_define_measure_3d {
             Unit::Property: VectorProperty,
         {
             fn add_assign(&mut self, other: Measure3d<Unit, Number>) {
-                self.x += other.x;
-                self.y += other.y;
-                self.z += other.z;
+                self.values[0] += other.values[0];
+                self.values[1] += other.values[1];
+                self.values[2] += other.values[2];
             }
         }
 
@@ -152,7 +157,11 @@ macro_rules! inner_define_measure_3d {
         {
             type Output = Self;
             fn sub(self, other: Measure3d<Unit, Number>) -> Self::Output {
-                Self::new(self.x - other.x, self.y - other.y, self.z - other.z)
+                Self::new([
+                    self.values[0] - other.values[0],
+                    self.values[1] - other.values[1],
+                    self.values[2] - other.values[2],
+                ])
             }
         }
 
@@ -164,9 +173,9 @@ macro_rules! inner_define_measure_3d {
             Unit::Property: VectorProperty,
         {
             fn sub_assign(&mut self, other: Measure3d<Unit, Number>) {
-                self.x -= other.x;
-                self.y -= other.y;
-                self.z -= other.z;
+                self.values[0] -= other.values[0];
+                self.values[1] -= other.values[1];
+                self.values[2] -= other.values[2];
             }
         }
 
@@ -179,7 +188,7 @@ macro_rules! inner_define_measure_3d {
         {
             type Output = Self;
             fn mul(self, n: Number) -> Self::Output {
-                Self::Output::new(self.x * n, self.y * n, self.z * n)
+                Self::Output::new([self.values[0] * n, self.values[1] * n, self.values[2] * n])
             }
         }
 
@@ -192,11 +201,11 @@ macro_rules! inner_define_measure_3d {
         {
             type Output = Self;
             fn mul(self, other: Measure<One, Number>) -> Self::Output {
-                Self::Output::new(
-                    self.x * other.value,
-                    self.y * other.value,
-                    self.z * other.value,
-                )
+                Self::Output::new([
+                    self.values[0] * other.value,
+                    self.values[1] * other.value,
+                    self.values[2] * other.value,
+                ])
             }
         }
 
@@ -208,9 +217,9 @@ macro_rules! inner_define_measure_3d {
             Unit::Property: VectorProperty,
         {
             fn mul_assign(&mut self, n: Number) {
-                self.x *= n;
-                self.y *= n;
-                self.z *= n;
+                self.values[0] *= n;
+                self.values[1] *= n;
+                self.values[2] *= n;
             }
         }
 
@@ -222,9 +231,9 @@ macro_rules! inner_define_measure_3d {
             Unit::Property: VectorProperty,
         {
             fn mul_assign(&mut self, other: Measure<One, Number>) {
-                self.x *= other.value;
-                self.y *= other.value;
-                self.z *= other.value;
+                self.values[0] *= other.value;
+                self.values[1] *= other.value;
+                self.values[2] *= other.value;
             }
         }
 
@@ -236,7 +245,11 @@ macro_rules! inner_define_measure_3d {
         {
             type Output = Measure3d<Unit, f64>;
             fn mul(self, other: Measure3d<Unit, f64>) -> Self::Output {
-                Self::Output::new(self * other.x, self * other.y, self * other.z)
+                Self::Output::new([
+                    self * other.values[0],
+                    self * other.values[1],
+                    self * other.values[2],
+                ])
             }
         }
 
@@ -248,7 +261,11 @@ macro_rules! inner_define_measure_3d {
         {
             type Output = Measure3d<Unit, f32>;
             fn mul(self, other: Measure3d<Unit, f32>) -> Self::Output {
-                Self::Output::new(self * other.x, self * other.y, self * other.z)
+                Self::Output::new([
+                    self * other.values[0],
+                    self * other.values[1],
+                    self * other.values[2],
+                ])
             }
         }
 
@@ -262,7 +279,11 @@ macro_rules! inner_define_measure_3d {
             type Output = Self;
             fn div(self, n: Number) -> Self::Output {
                 let factor = Number::ONE / n;
-                Self::new(self.x * factor, self.y * factor, self.z * factor)
+                Self::new([
+                    self.values[0] * factor,
+                    self.values[1] * factor,
+                    self.values[2] * factor,
+                ])
             }
         }
 
@@ -274,9 +295,9 @@ macro_rules! inner_define_measure_3d {
             Unit::Property: VectorProperty,
         {
             fn div_assign(&mut self, n: Number) {
-                self.x /= n;
-                self.y /= n;
-                self.z /= n;
+                self.values[0] /= n;
+                self.values[1] /= n;
+                self.values[2] /= n;
             }
         }
 
@@ -287,9 +308,9 @@ macro_rules! inner_define_measure_3d {
             Number: ArithmeticOps,
         {
             fn div_assign(&mut self, other: Measure<One, Number>) {
-                self.x /= other.value;
-                self.y /= other.value;
-                self.z /= other.value;
+                self.values[0] /= other.value;
+                self.values[1] /= other.value;
+                self.values[2] /= other.value;
             }
         }
 
@@ -301,7 +322,7 @@ macro_rules! inner_define_measure_3d {
             Unit::Property: VectorProperty,
         {
             fn eq(&self, other: &Measure3d<Unit, Number>) -> bool {
-                self.x == other.x && self.y == other.y && self.z == other.z
+                self.values == other.values
             }
         }
 
@@ -335,11 +356,11 @@ macro_rules! inner_define_measure_3d {
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("(")?;
-                fmt::Display::fmt(&self.x, formatter)?;
+                fmt::Display::fmt(&self.values[0], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.y, formatter)?;
+                fmt::Display::fmt(&self.values[1], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.z, formatter)?;
+                fmt::Display::fmt(&self.values[2], formatter)?;
                 formatter.write_str(")")?;
                 formatter.write_str(Unit::SUFFIX)
             }
@@ -354,11 +375,11 @@ macro_rules! inner_define_measure_3d {
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("(")?;
-                fmt::Display::fmt(&self.x, formatter)?;
+                fmt::Display::fmt(&self.values[0], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.y, formatter)?;
+                fmt::Display::fmt(&self.values[1], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.z, formatter)?;
+                fmt::Display::fmt(&self.values[2], formatter)?;
                 formatter.write_str(")")?;
                 formatter.write_str(Unit::SUFFIX)
             }

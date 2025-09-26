@@ -91,9 +91,9 @@ macro_rules! inner_define_linear_map_2d {
 
             //// Scaling by two factors.
 
-            pub fn scaling(kx: Number, ky: Number) -> Self {
+            pub fn scaling(factors: [Number; 2]) -> Self {
                 Self {
-                    c: [[kx, Number::ZERO], [Number::ZERO, ky]],
+                    c: [[factors[0], Number::ZERO], [Number::ZERO, factors[1]]],
                 }
             }
 

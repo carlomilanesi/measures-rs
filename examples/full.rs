@@ -13,8 +13,8 @@ fn print_all_acceleration_units() {
         MeasurePoint::<MetrePerSquareSecond>::new(1.),
         Measure2d::<MetrePerSquareSecond>::new([1., 2.]),
         MeasurePoint2d::<MetrePerSquareSecond>::new([1., 2.]),
-        Measure3d::<MetrePerSquareSecond>::new(1., 2., 3.),
-        MeasurePoint3d::<MetrePerSquareSecond>::new(1., 2., 3.),
+        Measure3d::<MetrePerSquareSecond>::new([1., 2., 3.]),
+        MeasurePoint3d::<MetrePerSquareSecond>::new([1., 2., 3.]),
     );
     println!(
         "  GForce: {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {};",
@@ -26,10 +26,10 @@ fn print_all_acceleration_units() {
         Measure2d::<GForce>::new([1., 2.]).convert::<MetrePerSquareSecond>(),
         MeasurePoint2d::<GForce>::new([1., 2.]),
         MeasurePoint2d::<GForce>::new([1., 2.]).convert::<MetrePerSquareSecond>(),
-        Measure3d::<GForce>::new(1., 2., 3.),
-        Measure3d::<GForce>::new(1., 2., 3.).convert::<MetrePerSquareSecond>(),
-        MeasurePoint3d::<GForce>::new(1., 2., 3.),
-        MeasurePoint3d::<GForce>::new(1., 2., 3.).convert::<MetrePerSquareSecond>(),
+        Measure3d::<GForce>::new([1., 2., 3.]),
+        Measure3d::<GForce>::new([1., 2., 3.]).convert::<MetrePerSquareSecond>(),
+        MeasurePoint3d::<GForce>::new([1., 2., 3.]),
+        MeasurePoint3d::<GForce>::new([1., 2., 3.]).convert::<MetrePerSquareSecond>(),
     );
     println!(
         "  KiloMetrePerHourPerSecond: {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {};",
@@ -42,10 +42,10 @@ fn print_all_acceleration_units() {
         MeasurePoint2d::<KiloMetrePerHourPerSecond>::new([1., 2.]),
         MeasurePoint2d::<KiloMetrePerHourPerSecond>::new([1., 2.])
             .convert::<MetrePerSquareSecond>(),
-        Measure3d::<KiloMetrePerHourPerSecond>::new(1., 2., 3.),
-        Measure3d::<KiloMetrePerHourPerSecond>::new(1., 2., 3.).convert::<MetrePerSquareSecond>(),
-        MeasurePoint3d::<KiloMetrePerHourPerSecond>::new(1., 2., 3.),
-        MeasurePoint3d::<KiloMetrePerHourPerSecond>::new(1., 2., 3.)
+        Measure3d::<KiloMetrePerHourPerSecond>::new([1., 2., 3.]),
+        Measure3d::<KiloMetrePerHourPerSecond>::new([1., 2., 3.]).convert::<MetrePerSquareSecond>(),
+        MeasurePoint3d::<KiloMetrePerHourPerSecond>::new([1., 2., 3.]),
+        MeasurePoint3d::<KiloMetrePerHourPerSecond>::new([1., 2., 3.])
             .convert::<MetrePerSquareSecond>(),
     );
     println!();
@@ -170,8 +170,8 @@ fn print_all_angular_momentum_units() {
         MeasurePoint::<KiloGramSquareMetrePerSecond>::new(1.),
         Measure2d::<KiloGramSquareMetrePerSecond>::new([1., 2.]),
         MeasurePoint2d::<KiloGramSquareMetrePerSecond>::new([1., 2.]),
-        Measure3d::<KiloGramSquareMetrePerSecond>::new(1., 2., 3.),
-        MeasurePoint3d::<KiloGramSquareMetrePerSecond>::new(1., 2., 3.),
+        Measure3d::<KiloGramSquareMetrePerSecond>::new([1., 2., 3.]),
+        MeasurePoint3d::<KiloGramSquareMetrePerSecond>::new([1., 2., 3.]),
     );
     println!(
         "  GramSquareCentiMetrePerSecond: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -183,10 +183,10 @@ fn print_all_angular_momentum_units() {
         Measure2d::<GramSquareCentiMetrePerSecond>::new([1., 2.]).convert::<KiloGramSquareMetrePerSecond>(),
         MeasurePoint2d::<GramSquareCentiMetrePerSecond>::new([1., 2.]),
         MeasurePoint2d::<GramSquareCentiMetrePerSecond>::new([1., 2.]).convert::<KiloGramSquareMetrePerSecond>(),
-        Measure3d::<GramSquareCentiMetrePerSecond>::new(1., 2., 3.),
-        Measure3d::<GramSquareCentiMetrePerSecond>::new(1., 2., 3.).convert::<KiloGramSquareMetrePerSecond>(),
-        MeasurePoint3d::<GramSquareCentiMetrePerSecond>::new(1., 2., 3.),
-        MeasurePoint3d::<GramSquareCentiMetrePerSecond>::new(1., 2., 3.).convert::<KiloGramSquareMetrePerSecond>(),
+        Measure3d::<GramSquareCentiMetrePerSecond>::new([1., 2., 3.]),
+        Measure3d::<GramSquareCentiMetrePerSecond>::new([1., 2., 3.]).convert::<KiloGramSquareMetrePerSecond>(),
+        MeasurePoint3d::<GramSquareCentiMetrePerSecond>::new([1., 2., 3.]),
+        MeasurePoint3d::<GramSquareCentiMetrePerSecond>::new([1., 2., 3.]).convert::<KiloGramSquareMetrePerSecond>(),
     );
     println!();
 }
@@ -347,8 +347,8 @@ fn print_all_current_density_units() {
         MeasurePoint::<AmperePerSquareMetre>::new(1.),
         Measure2d::<AmperePerSquareMetre>::new([1., 2.]),
         MeasurePoint2d::<AmperePerSquareMetre>::new([1., 2.]),
-        Measure3d::<AmperePerSquareMetre>::new(1., 2., 3.),
-        MeasurePoint3d::<AmperePerSquareMetre>::new(1., 2., 3.),
+        Measure3d::<AmperePerSquareMetre>::new([1., 2., 3.]),
+        MeasurePoint3d::<AmperePerSquareMetre>::new([1., 2., 3.]),
     );
     println!();
 }
@@ -361,8 +361,8 @@ fn print_all_dimensionless_units() {
         MeasurePoint::<One>::new(1.),
         Measure2d::<One>::new([1., 2.]),
         MeasurePoint2d::<One>::new([1., 2.]),
-        Measure3d::<One>::new(1., 2., 3.),
-        MeasurePoint3d::<One>::new(1., 2., 3.)
+        Measure3d::<One>::new([1., 2., 3.]),
+        MeasurePoint3d::<One>::new([1., 2., 3.])
     );
     println!(
         "  Mach: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -374,10 +374,10 @@ fn print_all_dimensionless_units() {
         Measure2d::<Mach>::new([1., 2.]).convert::<One>(),
         MeasurePoint2d::<Mach>::new([1., 2.]),
         MeasurePoint2d::<Mach>::new([1., 2.]).convert::<One>(),
-        Measure3d::<Mach>::new(1., 2., 3.),
-        Measure3d::<Mach>::new(1., 2., 3.).convert::<One>(),
-        MeasurePoint3d::<Mach>::new(1., 2., 3.),
-        MeasurePoint3d::<Mach>::new(1., 2., 3.).convert::<One>(),
+        Measure3d::<Mach>::new([1., 2., 3.]),
+        Measure3d::<Mach>::new([1., 2., 3.]).convert::<One>(),
+        MeasurePoint3d::<Mach>::new([1., 2., 3.]),
+        MeasurePoint3d::<Mach>::new([1., 2., 3.]).convert::<One>(),
     );
     println!();
 }
@@ -553,8 +553,8 @@ fn print_all_electric_field_strength_units() {
         MeasurePoint::<VoltPerMetre>::new(1.),
         Measure2d::<VoltPerMetre>::new([1., 2.]),
         MeasurePoint2d::<VoltPerMetre>::new([1., 2.]),
-        Measure3d::<VoltPerMetre>::new(1., 2., 3.),
-        MeasurePoint3d::<VoltPerMetre>::new(1., 2., 3.),
+        Measure3d::<VoltPerMetre>::new([1., 2., 3.]),
+        MeasurePoint3d::<VoltPerMetre>::new([1., 2., 3.]),
     );
     println!();
 }
@@ -698,8 +698,8 @@ fn print_all_force_units() {
         MeasurePoint::<Newton>::new(1.),
         Measure2d::<Newton>::new([1., 2.]),
         MeasurePoint2d::<Newton>::new([1., 2.]),
-        Measure3d::<Newton>::new(1., 2., 3.),
-        MeasurePoint3d::<Newton>::new(1., 2., 3.),
+        Measure3d::<Newton>::new([1., 2., 3.]),
+        MeasurePoint3d::<Newton>::new([1., 2., 3.]),
     );
     println!(
         "  Dyne: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -711,10 +711,10 @@ fn print_all_force_units() {
         Measure2d::<Dyne>::new([1., 2.]).convert::<Newton>(),
         MeasurePoint2d::<Dyne>::new([1., 2.]),
         MeasurePoint2d::<Dyne>::new([1., 2.]).convert::<Newton>(),
-        Measure3d::<Dyne>::new(1., 2., 3.),
-        Measure3d::<Dyne>::new(1., 2., 3.).convert::<Newton>(),
-        MeasurePoint3d::<Dyne>::new(1., 2., 3.),
-        MeasurePoint3d::<Dyne>::new(1., 2., 3.).convert::<Newton>(),
+        Measure3d::<Dyne>::new([1., 2., 3.]),
+        Measure3d::<Dyne>::new([1., 2., 3.]).convert::<Newton>(),
+        MeasurePoint3d::<Dyne>::new([1., 2., 3.]),
+        MeasurePoint3d::<Dyne>::new([1., 2., 3.]).convert::<Newton>(),
     );
     println!(
         "  KiloGramForce: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -726,10 +726,10 @@ fn print_all_force_units() {
         Measure2d::<KiloGramForce>::new([1., 2.]).convert::<Newton>(),
         MeasurePoint2d::<KiloGramForce>::new([1., 2.]),
         MeasurePoint2d::<KiloGramForce>::new([1., 2.]).convert::<Newton>(),
-        Measure3d::<KiloGramForce>::new(1., 2., 3.),
-        Measure3d::<KiloGramForce>::new(1., 2., 3.).convert::<Newton>(),
-        MeasurePoint3d::<KiloGramForce>::new(1., 2., 3.),
-        MeasurePoint3d::<KiloGramForce>::new(1., 2., 3.).convert::<Newton>(),
+        Measure3d::<KiloGramForce>::new([1., 2., 3.]),
+        Measure3d::<KiloGramForce>::new([1., 2., 3.]).convert::<Newton>(),
+        MeasurePoint3d::<KiloGramForce>::new([1., 2., 3.]),
+        MeasurePoint3d::<KiloGramForce>::new([1., 2., 3.]).convert::<Newton>(),
     );
     println!(
         "  PoundForce: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -741,10 +741,10 @@ fn print_all_force_units() {
         Measure2d::<PoundForce>::new([1., 2.]).convert::<Newton>(),
         MeasurePoint2d::<PoundForce>::new([1., 2.]),
         MeasurePoint2d::<PoundForce>::new([1., 2.]).convert::<Newton>(),
-        Measure3d::<PoundForce>::new(1., 2., 3.),
-        Measure3d::<PoundForce>::new(1., 2., 3.).convert::<Newton>(),
-        MeasurePoint3d::<PoundForce>::new(1., 2., 3.),
-        MeasurePoint3d::<PoundForce>::new(1., 2., 3.).convert::<Newton>(),
+        Measure3d::<PoundForce>::new([1., 2., 3.]),
+        Measure3d::<PoundForce>::new([1., 2., 3.]).convert::<Newton>(),
+        MeasurePoint3d::<PoundForce>::new([1., 2., 3.]),
+        MeasurePoint3d::<PoundForce>::new([1., 2., 3.]).convert::<Newton>(),
     );
     println!(
         "  Poundal: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -756,10 +756,10 @@ fn print_all_force_units() {
         Measure2d::<Poundal>::new([1., 2.]).convert::<Newton>(),
         MeasurePoint2d::<Poundal>::new([1., 2.]),
         MeasurePoint2d::<Poundal>::new([1., 2.]).convert::<Newton>(),
-        Measure3d::<Poundal>::new(1., 2., 3.),
-        Measure3d::<Poundal>::new(1., 2., 3.).convert::<Newton>(),
-        MeasurePoint3d::<Poundal>::new(1., 2., 3.),
-        MeasurePoint3d::<Poundal>::new(1., 2., 3.).convert::<Newton>(),
+        Measure3d::<Poundal>::new([1., 2., 3.]),
+        Measure3d::<Poundal>::new([1., 2., 3.]).convert::<Newton>(),
+        MeasurePoint3d::<Poundal>::new([1., 2., 3.]),
+        MeasurePoint3d::<Poundal>::new([1., 2., 3.]).convert::<Newton>(),
     );
     println!();
 }
@@ -1147,8 +1147,8 @@ fn print_all_length_units() {
         MeasurePoint::<Metre>::new(1.),
         Measure2d::<Metre>::new([1., 2.]),
         MeasurePoint2d::<Metre>::new([1., 2.]),
-        Measure3d::<Metre>::new(1., 2., 3.),
-        MeasurePoint3d::<Metre>::new(1., 2., 3.),
+        Measure3d::<Metre>::new([1., 2., 3.]),
+        MeasurePoint3d::<Metre>::new([1., 2., 3.]),
     );
     println!(
         "  AstronomicalUnit: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1160,10 +1160,10 @@ fn print_all_length_units() {
         Measure2d::<AstronomicalUnit>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<AstronomicalUnit>::new([1., 2.]),
         MeasurePoint2d::<AstronomicalUnit>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<AstronomicalUnit>::new(1., 2., 3.),
-        Measure3d::<AstronomicalUnit>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<AstronomicalUnit>::new(1., 2., 3.),
-        MeasurePoint3d::<AstronomicalUnit>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<AstronomicalUnit>::new([1., 2., 3.]),
+        Measure3d::<AstronomicalUnit>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<AstronomicalUnit>::new([1., 2., 3.]),
+        MeasurePoint3d::<AstronomicalUnit>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  Parsec: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1175,10 +1175,10 @@ fn print_all_length_units() {
         Measure2d::<Parsec>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<Parsec>::new([1., 2.]),
         MeasurePoint2d::<Parsec>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<Parsec>::new(1., 2., 3.),
-        Measure3d::<Parsec>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<Parsec>::new(1., 2., 3.),
-        MeasurePoint3d::<Parsec>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<Parsec>::new([1., 2., 3.]),
+        Measure3d::<Parsec>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<Parsec>::new([1., 2., 3.]),
+        MeasurePoint3d::<Parsec>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  LightYear: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1190,10 +1190,10 @@ fn print_all_length_units() {
         Measure2d::<LightYear>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<LightYear>::new([1., 2.]),
         MeasurePoint2d::<LightYear>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<LightYear>::new(1., 2., 3.),
-        Measure3d::<LightYear>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<LightYear>::new(1., 2., 3.),
-        MeasurePoint3d::<LightYear>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<LightYear>::new([1., 2., 3.]),
+        Measure3d::<LightYear>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<LightYear>::new([1., 2., 3.]),
+        MeasurePoint3d::<LightYear>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  KiloMetre: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1205,10 +1205,10 @@ fn print_all_length_units() {
         Measure2d::<KiloMetre>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<KiloMetre>::new([1., 2.]),
         MeasurePoint2d::<KiloMetre>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<KiloMetre>::new(1., 2., 3.),
-        Measure3d::<KiloMetre>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<KiloMetre>::new(1., 2., 3.),
-        MeasurePoint3d::<KiloMetre>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<KiloMetre>::new([1., 2., 3.]),
+        Measure3d::<KiloMetre>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<KiloMetre>::new([1., 2., 3.]),
+        MeasurePoint3d::<KiloMetre>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  HectoMetre: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1220,10 +1220,10 @@ fn print_all_length_units() {
         Measure2d::<HectoMetre>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<HectoMetre>::new([1., 2.]),
         MeasurePoint2d::<HectoMetre>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<HectoMetre>::new(1., 2., 3.),
-        Measure3d::<HectoMetre>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<HectoMetre>::new(1., 2., 3.),
-        MeasurePoint3d::<HectoMetre>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<HectoMetre>::new([1., 2., 3.]),
+        Measure3d::<HectoMetre>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<HectoMetre>::new([1., 2., 3.]),
+        MeasurePoint3d::<HectoMetre>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  DecaMetre: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1235,10 +1235,10 @@ fn print_all_length_units() {
         Measure2d::<DecaMetre>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<DecaMetre>::new([1., 2.]),
         MeasurePoint2d::<DecaMetre>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<DecaMetre>::new(1., 2., 3.),
-        Measure3d::<DecaMetre>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<DecaMetre>::new(1., 2., 3.),
-        MeasurePoint3d::<DecaMetre>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<DecaMetre>::new([1., 2., 3.]),
+        Measure3d::<DecaMetre>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<DecaMetre>::new([1., 2., 3.]),
+        MeasurePoint3d::<DecaMetre>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  DeciMetre: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1250,10 +1250,10 @@ fn print_all_length_units() {
         Measure2d::<DeciMetre>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<DeciMetre>::new([1., 2.]),
         MeasurePoint2d::<DeciMetre>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<DeciMetre>::new(1., 2., 3.),
-        Measure3d::<DeciMetre>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<DeciMetre>::new(1., 2., 3.),
-        MeasurePoint3d::<DeciMetre>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<DeciMetre>::new([1., 2., 3.]),
+        Measure3d::<DeciMetre>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<DeciMetre>::new([1., 2., 3.]),
+        MeasurePoint3d::<DeciMetre>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  CentiMetre: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1265,10 +1265,10 @@ fn print_all_length_units() {
         Measure2d::<CentiMetre>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<CentiMetre>::new([1., 2.]),
         MeasurePoint2d::<CentiMetre>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<CentiMetre>::new(1., 2., 3.),
-        Measure3d::<CentiMetre>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<CentiMetre>::new(1., 2., 3.),
-        MeasurePoint3d::<CentiMetre>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<CentiMetre>::new([1., 2., 3.]),
+        Measure3d::<CentiMetre>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<CentiMetre>::new([1., 2., 3.]),
+        MeasurePoint3d::<CentiMetre>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  MilliMetre: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1280,10 +1280,10 @@ fn print_all_length_units() {
         Measure2d::<MilliMetre>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<MilliMetre>::new([1., 2.]),
         MeasurePoint2d::<MilliMetre>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<MilliMetre>::new(1., 2., 3.),
-        Measure3d::<MilliMetre>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<MilliMetre>::new(1., 2., 3.),
-        MeasurePoint3d::<MilliMetre>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<MilliMetre>::new([1., 2., 3.]),
+        Measure3d::<MilliMetre>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<MilliMetre>::new([1., 2., 3.]),
+        MeasurePoint3d::<MilliMetre>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  MicroMetre: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1295,10 +1295,10 @@ fn print_all_length_units() {
         Measure2d::<MicroMetre>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<MicroMetre>::new([1., 2.]),
         MeasurePoint2d::<MicroMetre>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<MicroMetre>::new(1., 2., 3.),
-        Measure3d::<MicroMetre>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<MicroMetre>::new(1., 2., 3.),
-        MeasurePoint3d::<MicroMetre>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<MicroMetre>::new([1., 2., 3.]),
+        Measure3d::<MicroMetre>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<MicroMetre>::new([1., 2., 3.]),
+        MeasurePoint3d::<MicroMetre>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  NanoMetre: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1310,10 +1310,10 @@ fn print_all_length_units() {
         Measure2d::<NanoMetre>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<NanoMetre>::new([1., 2.]),
         MeasurePoint2d::<NanoMetre>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<NanoMetre>::new(1., 2., 3.),
-        Measure3d::<NanoMetre>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<NanoMetre>::new(1., 2., 3.),
-        MeasurePoint3d::<NanoMetre>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<NanoMetre>::new([1., 2., 3.]),
+        Measure3d::<NanoMetre>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<NanoMetre>::new([1., 2., 3.]),
+        MeasurePoint3d::<NanoMetre>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  Angstrom: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1325,10 +1325,10 @@ fn print_all_length_units() {
         Measure2d::<Angstrom>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<Angstrom>::new([1., 2.]),
         MeasurePoint2d::<Angstrom>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<Angstrom>::new(1., 2., 3.),
-        Measure3d::<Angstrom>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<Angstrom>::new(1., 2., 3.),
-        MeasurePoint3d::<Angstrom>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<Angstrom>::new([1., 2., 3.]),
+        Measure3d::<Angstrom>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<Angstrom>::new([1., 2., 3.]),
+        MeasurePoint3d::<Angstrom>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  Inch: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1340,10 +1340,10 @@ fn print_all_length_units() {
         Measure2d::<Inch>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<Inch>::new([1., 2.]),
         MeasurePoint2d::<Inch>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<Inch>::new(1., 2., 3.),
-        Measure3d::<Inch>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<Inch>::new(1., 2., 3.),
-        MeasurePoint3d::<Inch>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<Inch>::new([1., 2., 3.]),
+        Measure3d::<Inch>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<Inch>::new([1., 2., 3.]),
+        MeasurePoint3d::<Inch>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  Foot: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1355,10 +1355,10 @@ fn print_all_length_units() {
         Measure2d::<Foot>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<Foot>::new([1., 2.]),
         MeasurePoint2d::<Foot>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<Foot>::new(1., 2., 3.),
-        Measure3d::<Foot>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<Foot>::new(1., 2., 3.),
-        MeasurePoint3d::<Foot>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<Foot>::new([1., 2., 3.]),
+        Measure3d::<Foot>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<Foot>::new([1., 2., 3.]),
+        MeasurePoint3d::<Foot>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  Yard: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1370,10 +1370,10 @@ fn print_all_length_units() {
         Measure2d::<Yard>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<Yard>::new([1., 2.]),
         MeasurePoint2d::<Yard>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<Yard>::new(1., 2., 3.),
-        Measure3d::<Yard>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<Yard>::new(1., 2., 3.),
-        MeasurePoint3d::<Yard>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<Yard>::new([1., 2., 3.]),
+        Measure3d::<Yard>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<Yard>::new([1., 2., 3.]),
+        MeasurePoint3d::<Yard>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  Mile: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1385,10 +1385,10 @@ fn print_all_length_units() {
         Measure2d::<Mile>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<Mile>::new([1., 2.]),
         MeasurePoint2d::<Mile>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<Mile>::new(1., 2., 3.),
-        Measure3d::<Mile>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<Mile>::new(1., 2., 3.),
-        MeasurePoint3d::<Mile>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<Mile>::new([1., 2., 3.]),
+        Measure3d::<Mile>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<Mile>::new([1., 2., 3.]),
+        MeasurePoint3d::<Mile>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!(
         "  NauticalMile: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1400,10 +1400,10 @@ fn print_all_length_units() {
         Measure2d::<NauticalMile>::new([1., 2.]).convert::<Metre>(),
         MeasurePoint2d::<NauticalMile>::new([1., 2.]),
         MeasurePoint2d::<NauticalMile>::new([1., 2.]).convert::<Metre>(),
-        Measure3d::<NauticalMile>::new(1., 2., 3.),
-        Measure3d::<NauticalMile>::new(1., 2., 3.).convert::<Metre>(),
-        MeasurePoint3d::<NauticalMile>::new(1., 2., 3.),
-        MeasurePoint3d::<NauticalMile>::new(1., 2., 3.).convert::<Metre>(),
+        Measure3d::<NauticalMile>::new([1., 2., 3.]),
+        Measure3d::<NauticalMile>::new([1., 2., 3.]).convert::<Metre>(),
+        MeasurePoint3d::<NauticalMile>::new([1., 2., 3.]),
+        MeasurePoint3d::<NauticalMile>::new([1., 2., 3.]).convert::<Metre>(),
     );
     println!();
 }
@@ -1453,8 +1453,8 @@ fn print_all_luminous_flux_units() {
         MeasurePoint::<Lumen>::new(1.),
         Measure2d::<Lumen>::new([1., 2.]),
         MeasurePoint2d::<Lumen>::new([1., 2.]),
-        Measure3d::<Lumen>::new(1., 2., 3.),
-        MeasurePoint3d::<Lumen>::new(1., 2., 3.),
+        Measure3d::<Lumen>::new([1., 2., 3.]),
+        MeasurePoint3d::<Lumen>::new([1., 2., 3.]),
     );
     println!();
 }
@@ -1477,8 +1477,8 @@ fn print_all_magnetic_field_strength_units() {
         MeasurePoint::<AmperePerMetre>::new(1.),
         Measure2d::<AmperePerMetre>::new([1., 2.]),
         MeasurePoint2d::<AmperePerMetre>::new([1., 2.]),
-        Measure3d::<AmperePerMetre>::new(1., 2., 3.),
-        MeasurePoint3d::<AmperePerMetre>::new(1., 2., 3.),
+        Measure3d::<AmperePerMetre>::new([1., 2., 3.]),
+        MeasurePoint3d::<AmperePerMetre>::new([1., 2., 3.]),
     );
     println!();
 }
@@ -1501,8 +1501,8 @@ fn print_all_magnetic_flux_density_units() {
         MeasurePoint::<Tesla>::new(1.),
         Measure2d::<Tesla>::new([1., 2.]),
         MeasurePoint2d::<Tesla>::new([1., 2.]),
-        Measure3d::<Tesla>::new(1., 2., 3.),
-        MeasurePoint3d::<Tesla>::new(1., 2., 3.),
+        Measure3d::<Tesla>::new([1., 2., 3.]),
+        MeasurePoint3d::<Tesla>::new([1., 2., 3.]),
     );
     println!(
         "  Gauss: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1514,10 +1514,10 @@ fn print_all_magnetic_flux_density_units() {
         Measure2d::<Gauss>::new([1., 2.]).convert::<Tesla>(),
         MeasurePoint2d::<Gauss>::new([1., 2.]),
         MeasurePoint2d::<Gauss>::new([1., 2.]).convert::<Tesla>(),
-        Measure3d::<Gauss>::new(1., 2., 3.),
-        Measure3d::<Gauss>::new(1., 2., 3.).convert::<Tesla>(),
-        MeasurePoint3d::<Gauss>::new(1., 2., 3.),
-        MeasurePoint3d::<Gauss>::new(1., 2., 3.).convert::<Tesla>(),
+        Measure3d::<Gauss>::new([1., 2., 3.]),
+        Measure3d::<Gauss>::new([1., 2., 3.]).convert::<Tesla>(),
+        MeasurePoint3d::<Gauss>::new([1., 2., 3.]),
+        MeasurePoint3d::<Gauss>::new([1., 2., 3.]).convert::<Tesla>(),
     );
     println!();
 }
@@ -1736,8 +1736,8 @@ fn print_all_momentum_units() {
         MeasurePoint::<NewtonSecond>::new(1.),
         Measure2d::<NewtonSecond>::new([1., 2.]),
         MeasurePoint2d::<NewtonSecond>::new([1., 2.]),
-        Measure3d::<NewtonSecond>::new(1., 2., 3.),
-        MeasurePoint3d::<NewtonSecond>::new(1., 2., 3.),
+        Measure3d::<NewtonSecond>::new([1., 2., 3.]),
+        MeasurePoint3d::<NewtonSecond>::new([1., 2., 3.]),
     );
     println!(
         "  KiloGramMetrePerSecond: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1749,10 +1749,10 @@ fn print_all_momentum_units() {
         Measure2d::<KiloGramMetrePerSecond>::new([1., 2.]).convert::<NewtonSecond>(),
         MeasurePoint2d::<KiloGramMetrePerSecond>::new([1., 2.]),
         MeasurePoint2d::<KiloGramMetrePerSecond>::new([1., 2.]).convert::<NewtonSecond>(),
-        Measure3d::<KiloGramMetrePerSecond>::new(1., 2., 3.),
-        Measure3d::<KiloGramMetrePerSecond>::new(1., 2., 3.).convert::<NewtonSecond>(),
-        MeasurePoint3d::<KiloGramMetrePerSecond>::new(1., 2., 3.),
-        MeasurePoint3d::<KiloGramMetrePerSecond>::new(1., 2., 3.).convert::<NewtonSecond>(),
+        Measure3d::<KiloGramMetrePerSecond>::new([1., 2., 3.]),
+        Measure3d::<KiloGramMetrePerSecond>::new([1., 2., 3.]).convert::<NewtonSecond>(),
+        MeasurePoint3d::<KiloGramMetrePerSecond>::new([1., 2., 3.]),
+        MeasurePoint3d::<KiloGramMetrePerSecond>::new([1., 2., 3.]).convert::<NewtonSecond>(),
     );
     println!(
         "  DynSecond: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1764,10 +1764,10 @@ fn print_all_momentum_units() {
         Measure2d::<DyneSecond>::new([1., 2.]).convert::<NewtonSecond>(),
         MeasurePoint2d::<DyneSecond>::new([1., 2.]),
         MeasurePoint2d::<DyneSecond>::new([1., 2.]).convert::<NewtonSecond>(),
-        Measure3d::<DyneSecond>::new(1., 2., 3.),
-        Measure3d::<DyneSecond>::new(1., 2., 3.).convert::<NewtonSecond>(),
-        MeasurePoint3d::<DyneSecond>::new(1., 2., 3.),
-        MeasurePoint3d::<DyneSecond>::new(1., 2., 3.).convert::<NewtonSecond>(),
+        Measure3d::<DyneSecond>::new([1., 2., 3.]),
+        Measure3d::<DyneSecond>::new([1., 2., 3.]).convert::<NewtonSecond>(),
+        MeasurePoint3d::<DyneSecond>::new([1., 2., 3.]),
+        MeasurePoint3d::<DyneSecond>::new([1., 2., 3.]).convert::<NewtonSecond>(),
     );
     println!(
         "  GramCentiMetrePerSecond: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -1779,10 +1779,10 @@ fn print_all_momentum_units() {
         Measure2d::<GramCentiMetrePerSecond>::new([1., 2.]).convert::<NewtonSecond>(),
         MeasurePoint2d::<GramCentiMetrePerSecond>::new([1., 2.]),
         MeasurePoint2d::<GramCentiMetrePerSecond>::new([1., 2.]).convert::<NewtonSecond>(),
-        Measure3d::<GramCentiMetrePerSecond>::new(1., 2., 3.),
-        Measure3d::<GramCentiMetrePerSecond>::new(1., 2., 3.).convert::<NewtonSecond>(),
-        MeasurePoint3d::<GramCentiMetrePerSecond>::new(1., 2., 3.),
-        MeasurePoint3d::<GramCentiMetrePerSecond>::new(1., 2., 3.).convert::<NewtonSecond>(),
+        Measure3d::<GramCentiMetrePerSecond>::new([1., 2., 3.]),
+        Measure3d::<GramCentiMetrePerSecond>::new([1., 2., 3.]).convert::<NewtonSecond>(),
+        MeasurePoint3d::<GramCentiMetrePerSecond>::new([1., 2., 3.]),
+        MeasurePoint3d::<GramCentiMetrePerSecond>::new([1., 2., 3.]).convert::<NewtonSecond>(),
     );
     println!();
 }
@@ -2209,8 +2209,8 @@ fn print_all_torque_units() {
         MeasurePoint::<NewtonMetre>::new(1.),
         Measure2d::<NewtonMetre>::new([1., 2.]),
         MeasurePoint2d::<NewtonMetre>::new([1., 2.]),
-        Measure3d::<NewtonMetre>::new(1., 2., 3.),
-        MeasurePoint3d::<NewtonMetre>::new(1., 2., 3.),
+        Measure3d::<NewtonMetre>::new([1., 2., 3.]),
+        MeasurePoint3d::<NewtonMetre>::new([1., 2., 3.]),
     );
     println!();
 }
@@ -2223,8 +2223,8 @@ fn print_all_velocity_units() {
         MeasurePoint::<MetrePerSecond>::new(1.),
         Measure2d::<MetrePerSecond>::new([1., 2.]),
         MeasurePoint2d::<MetrePerSecond>::new([1., 2.]),
-        Measure3d::<MetrePerSecond>::new(1., 2., 3.),
-        MeasurePoint3d::<MetrePerSecond>::new(1., 2., 3.),
+        Measure3d::<MetrePerSecond>::new([1., 2., 3.]),
+        MeasurePoint3d::<MetrePerSecond>::new([1., 2., 3.]),
     );
     println!(
         "  Knot: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -2236,10 +2236,10 @@ fn print_all_velocity_units() {
         Measure2d::<Knot>::new([1., 2.]).convert::<MetrePerSecond>(),
         MeasurePoint2d::<Knot>::new([1., 2.]),
         MeasurePoint2d::<Knot>::new([1., 2.]).convert::<MetrePerSecond>(),
-        Measure3d::<Knot>::new(1., 2., 3.),
-        Measure3d::<Knot>::new(1., 2., 3.).convert::<MetrePerSecond>(),
-        MeasurePoint3d::<Knot>::new(1., 2., 3.),
-        MeasurePoint3d::<Knot>::new(1., 2., 3.).convert::<MetrePerSecond>(),
+        Measure3d::<Knot>::new([1., 2., 3.]),
+        Measure3d::<Knot>::new([1., 2., 3.]).convert::<MetrePerSecond>(),
+        MeasurePoint3d::<Knot>::new([1., 2., 3.]),
+        MeasurePoint3d::<Knot>::new([1., 2., 3.]).convert::<MetrePerSecond>(),
     );
     println!(
         "  KiloMetrePerHour: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -2251,10 +2251,10 @@ fn print_all_velocity_units() {
         Measure2d::<KiloMetrePerHour>::new([1., 2.]).convert::<MetrePerSecond>(),
         MeasurePoint2d::<KiloMetrePerHour>::new([1., 2.]),
         MeasurePoint2d::<KiloMetrePerHour>::new([1., 2.]).convert::<MetrePerSecond>(),
-        Measure3d::<KiloMetrePerHour>::new(1., 2., 3.),
-        Measure3d::<KiloMetrePerHour>::new(1., 2., 3.).convert::<MetrePerSecond>(),
-        MeasurePoint3d::<KiloMetrePerHour>::new(1., 2., 3.),
-        MeasurePoint3d::<KiloMetrePerHour>::new(1., 2., 3.).convert::<MetrePerSecond>(),
+        Measure3d::<KiloMetrePerHour>::new([1., 2., 3.]),
+        Measure3d::<KiloMetrePerHour>::new([1., 2., 3.]).convert::<MetrePerSecond>(),
+        MeasurePoint3d::<KiloMetrePerHour>::new([1., 2., 3.]),
+        MeasurePoint3d::<KiloMetrePerHour>::new([1., 2., 3.]).convert::<MetrePerSecond>(),
     );
     println!(
         "  MilePerHour: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -2266,10 +2266,10 @@ fn print_all_velocity_units() {
         Measure2d::<MilePerHour>::new([1., 2.]).convert::<MetrePerSecond>(),
         MeasurePoint2d::<MilePerHour>::new([1., 2.]),
         MeasurePoint2d::<MilePerHour>::new([1., 2.]).convert::<MetrePerSecond>(),
-        Measure3d::<MilePerHour>::new(1., 2., 3.),
-        Measure3d::<MilePerHour>::new(1., 2., 3.).convert::<MetrePerSecond>(),
-        MeasurePoint3d::<MilePerHour>::new(1., 2., 3.),
-        MeasurePoint3d::<MilePerHour>::new(1., 2., 3.).convert::<MetrePerSecond>(),
+        Measure3d::<MilePerHour>::new([1., 2., 3.]),
+        Measure3d::<MilePerHour>::new([1., 2., 3.]).convert::<MetrePerSecond>(),
+        MeasurePoint3d::<MilePerHour>::new([1., 2., 3.]),
+        MeasurePoint3d::<MilePerHour>::new([1., 2., 3.]).convert::<MetrePerSecond>(),
     );
     println!(
         "  CentiMetrePerSecond: {} == {}, {} == {}, {} == {}, {} == {}, {} == {}, {} == {};",
@@ -2281,10 +2281,10 @@ fn print_all_velocity_units() {
         Measure2d::<CentiMetrePerSecond>::new([1., 2.]).convert::<MetrePerSecond>(),
         MeasurePoint2d::<CentiMetrePerSecond>::new([1., 2.]),
         MeasurePoint2d::<CentiMetrePerSecond>::new([1., 2.]).convert::<MetrePerSecond>(),
-        Measure3d::<CentiMetrePerSecond>::new(1., 2., 3.),
-        Measure3d::<CentiMetrePerSecond>::new(1., 2., 3.).convert::<MetrePerSecond>(),
-        MeasurePoint3d::<CentiMetrePerSecond>::new(1., 2., 3.),
-        MeasurePoint3d::<CentiMetrePerSecond>::new(1., 2., 3.).convert::<MetrePerSecond>(),
+        Measure3d::<CentiMetrePerSecond>::new([1., 2., 3.]),
+        Measure3d::<CentiMetrePerSecond>::new([1., 2., 3.]).convert::<MetrePerSecond>(),
+        MeasurePoint3d::<CentiMetrePerSecond>::new([1., 2., 3.]),
+        MeasurePoint3d::<CentiMetrePerSecond>::new([1., 2., 3.]).convert::<MetrePerSecond>(),
     );
     println!();
 }
@@ -2979,7 +2979,7 @@ fn print_all_single_unit_operations_for_measure_point_2d() {
 fn print_all_single_unit_operations_for_measure_3d() {
     println!("* Single unit operations for measure 3d");
     {
-        let m1 = Measure3d::<KiloMetrePerHour>::new(12., 13., 14.);
+        let m1 = Measure3d::<KiloMetrePerHour>::new([12., 13., 14.]);
         println!(
             "{m1} has components X={m2}, Y={m3}, and Z={m4}.",
             m2 = m1.x(),
@@ -2988,58 +2988,58 @@ fn print_all_single_unit_operations_for_measure_3d() {
         );
     }
     {
-        let m1 = Measure3d::<KiloMetrePerHour>::new(12., 13., 14.);
+        let m1 = Measure3d::<KiloMetrePerHour>::new([12., 13., 14.]);
         println!(
             "{m1} can be converted to {m2}.",
             m2 = m1.convert::<MilePerHour>()
         );
     }
     {
-        let m1 = Measure3d::<KiloMetrePerHour>::new(
+        let m1 = Measure3d::<KiloMetrePerHour>::new([
             1.234_567_890_123_456_7,
             2.345_678_901_234_568,
             3.456_789_012_345_679,
-        );
+        ]);
         println!(
             "{m1} can be lossy-converted to {m2}.",
             m2 = m1.lossy_into::<f32>()
         );
     }
     {
-        let m1 = Measure3d::<KiloMetrePerHour, f32>::new(1.234_567_9, 2.345_678_8, 3.456_789);
+        let m1 = Measure3d::<KiloMetrePerHour, f32>::new([1.234_567_9, 2.345_678_8, 3.456_789]);
         let m2: Measure3d<KiloMetrePerHour, f64> = m1.into();
         println!("{m1} can be lossless-converted to {m2}.",);
     }
     {
-        let m1 = Measure3d::<KiloMetrePerHour>::new(-12., -13., -14.);
+        let m1 = Measure3d::<KiloMetrePerHour>::new([-12., -13., -14.]);
         println!("The squared norm of {m1} is {n}.", n = m1.squared_norm());
     }
     {
-        let m1 = Measure3d::<KiloMetrePerHour>::new(-12., -13., -14.);
+        let m1 = Measure3d::<KiloMetrePerHour>::new([-12., -13., -14.]);
         println!("{m1} normalized is {n}.", n = m1.normalized());
     }
     {
-        let m1 = Measure3d::<KiloMetrePerHour>::new(12., -13., -14.);
+        let m1 = Measure3d::<KiloMetrePerHour>::new([12., -13., -14.]);
         println!("The opposite of {m1} is {m2}.", m2 = -m1);
     }
     {
-        let mut m1 = Measure3d::<KiloMetrePerHour>::new(12., 13., 14.);
-        let m2 = Measure3d::<KiloMetrePerHour>::new(15., 19., 26.);
+        let mut m1 = Measure3d::<KiloMetrePerHour>::new([12., 13., 14.]);
+        let m2 = Measure3d::<KiloMetrePerHour>::new([15., 19., 26.]);
         print!("{m1} plus {m2} is {m3},", m3 = m1 + m2);
 
         m1 += m2;
         println!(" and if incremented by {m2}, it becomes {m1}.");
     }
     {
-        let mut m1 = Measure3d::<KiloMetrePerHour>::new(12., 13., 14.);
-        let m2 = Measure3d::<KiloMetrePerHour>::new(15., 19., 26.);
+        let mut m1 = Measure3d::<KiloMetrePerHour>::new([12., 13., 14.]);
+        let m2 = Measure3d::<KiloMetrePerHour>::new([15., 19., 26.]);
         print!("{m1} minus {m2} is {m3},", m3 = m1 - m2);
 
         m1 -= m2;
         println!(" and if decremented by {m2}, it becomes {m1}.");
     }
     {
-        let mut m1 = Measure3d::<KiloMetrePerHour>::new(12., 13., 14.);
+        let mut m1 = Measure3d::<KiloMetrePerHour>::new([12., 13., 14.]);
         let multiplier = 2.;
         print!("{m1} times {multiplier} is {m2},", m2 = m1 * multiplier);
 
@@ -3047,12 +3047,12 @@ fn print_all_single_unit_operations_for_measure_3d() {
         println!(" and if multiplied by {multiplier}, it becomes {m1}.");
     }
     {
-        let m1 = Measure3d::<KiloMetrePerHour>::new(12., 13., 14.);
+        let m1 = Measure3d::<KiloMetrePerHour>::new([12., 13., 14.]);
         let multiplier = 2.;
         println!("{multiplier} times {m1} is {m2}.", m2 = multiplier * m1);
     }
     {
-        let mut m1 = Measure3d::<KiloMetrePerHour>::new(12., 13., 14.);
+        let mut m1 = Measure3d::<KiloMetrePerHour>::new([12., 13., 14.]);
         let divisor = 2.;
         print!("{m1} divided by {divisor} is {m2},", m2 = m1 / divisor);
 
@@ -3060,7 +3060,7 @@ fn print_all_single_unit_operations_for_measure_3d() {
         println!(" and if divided by {divisor}, it becomes {m1}.");
     }
     {
-        let m1 = Measure3d::<KiloMetrePerHour>::new(12., 13., 14.);
+        let m1 = Measure3d::<KiloMetrePerHour>::new([12., 13., 14.]);
         let m2 = m1;
         println!("{m1} == {m1} is {result}.", result = m1 == m2);
     }
@@ -3070,7 +3070,7 @@ fn print_all_single_unit_operations_for_measure_3d() {
 fn print_all_single_unit_operations_for_measure_point_3d() {
     println!("* Single unit operations for measure point 3d");
     {
-        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new(12., 13., 14.);
+        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new([12., 13., 14.]);
         println!(
             "{mp1} has components X={mp2} and Y={mp3}.",
             mp2 = mp1.x(),
@@ -3078,52 +3078,53 @@ fn print_all_single_unit_operations_for_measure_point_3d() {
         );
     }
     {
-        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new(12., 13., 14.);
+        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new([12., 13., 14.]);
         println!(
             "{mp1} can be converted to {mp2}.",
             mp2 = mp1.convert::<MilePerHour>()
         );
     }
     {
-        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new(
+        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new([
             1.234_567_890_123_456_7,
             2.345_678_901_234_568,
             3.456_789_012_345_679,
-        );
+        ]);
         println!(
             "{mp1} can be lossy-converted to {mp2}.",
             mp2 = mp1.lossy_into::<f32>()
         );
     }
     {
-        let mp1 = MeasurePoint3d::<KiloMetrePerHour, f32>::new(1.234_567_9, 2.345_678_8, 3.456_789);
+        let mp1 =
+            MeasurePoint3d::<KiloMetrePerHour, f32>::new([1.234_567_9, 2.345_678_8, 3.456_789]);
         let mp2: MeasurePoint3d<KiloMetrePerHour, f64> = mp1.into();
         println!("{mp1} can be lossless-converted to {mp2}.",);
     }
     {
-        let mut mp1 = MeasurePoint3d::<KiloMetrePerHour>::new(12., 13., 14.);
-        let m2 = Measure3d::<KiloMetrePerHour>::new(15., 19., 26.);
+        let mut mp1 = MeasurePoint3d::<KiloMetrePerHour>::new([12., 13., 14.]);
+        let m2 = Measure3d::<KiloMetrePerHour>::new([15., 19., 26.]);
         print!("{mp1} plus {m2} is {mp3},", mp3 = mp1 + m2);
 
         mp1 += m2;
         println!(" and if incremented by {m2}, it becomes {mp1}.");
     }
     {
-        let mut mp1 = MeasurePoint3d::<KiloMetrePerHour>::new(12., 13., 14.);
-        let m2 = Measure3d::<KiloMetrePerHour>::new(15., 19., 26.);
+        let mut mp1 = MeasurePoint3d::<KiloMetrePerHour>::new([12., 13., 14.]);
+        let m2 = Measure3d::<KiloMetrePerHour>::new([15., 19., 26.]);
         print!("{mp1} minus {m2} is {mp3},", mp3 = mp1 - m2);
 
         mp1 -= m2;
         println!(" and if decremented by {m2}, it becomes {mp1}.");
     }
     {
-        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new(12., 13., 14.);
-        let mp2 = MeasurePoint3d::<KiloMetrePerHour>::new(15., 19., 26.);
+        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new([12., 13., 14.]);
+        let mp2 = MeasurePoint3d::<KiloMetrePerHour>::new([15., 19., 26.]);
         println!("{mp1} minus {mp2} is {m3},", m3 = mp1 - mp2);
     }
     {
-        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new(10., -100., 40.);
-        let mp2 = MeasurePoint3d::<KiloMetrePerHour>::new(20., -200., 80.);
+        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new([10., -100., 40.]);
+        let mp2 = MeasurePoint3d::<KiloMetrePerHour>::new([20., -200., 80.]);
         println!("The weighted midpoint between {mp1} (with weight 40%) and {mp2} (with weight 60%) is {mp3}.", mp3 = weighted_midpoint_3d(mp1, mp2, 0.4));
         println!(
             "The midpoint between {mp1} and {mp2} is {mp3}.",
@@ -3131,13 +3132,13 @@ fn print_all_single_unit_operations_for_measure_point_3d() {
         );
     }
     {
-        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new(10., -100., 40.);
-        let mp2 = MeasurePoint3d::<KiloMetrePerHour>::new(20., -200., 80.);
-        let mp3 = MeasurePoint3d::<KiloMetrePerHour>::new(40., -400., 160.);
+        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new([10., -100., 40.]);
+        let mp2 = MeasurePoint3d::<KiloMetrePerHour>::new([20., -200., 80.]);
+        let mp3 = MeasurePoint3d::<KiloMetrePerHour>::new([40., -400., 160.]);
         println!("The barycentric combination among {mp1} (with weight 10%), {mp2} (with weight 20%), and {mp3} (with weight 70%) is {mp4}.", mp4 = barycentric_combination_3d(&[mp1, mp2, mp3], &[0.1, 0.2, 0.7]));
     }
     {
-        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new(12., 13., 14.);
+        let mp1 = MeasurePoint3d::<KiloMetrePerHour>::new([12., 13., 14.]);
         let mp2 = mp1;
         println!("{mp1} == {mp1} is {result}.", result = mp1 == mp2);
     }
@@ -3467,7 +3468,7 @@ fn print_all_kinematics_mixed_operations() {
         println!("If an object in a plane changes its velocity of {velocity} in a time interval of {time}, it has an average acceleration of {acceleration}.")
     }
     {
-        let velocity = Measure3d::<MetrePerSecond>::new(6., 20., 36.);
+        let velocity = Measure3d::<MetrePerSecond>::new([6., 20., 36.]);
         let time = Measure::<Second>::new(2.);
         let acceleration: Measure3d<MetrePerSquareSecond> = velocity / time;
         println!("If an object in the space changes its velocity of {velocity} in a time interval of {time}, it has an average acceleration of {acceleration}.")
@@ -3485,7 +3486,7 @@ fn print_all_kinematics_mixed_operations() {
         println!("If an object in a plane changes its velocity of {velocity} in a time interval of {time}, it has an average acceleration of {acceleration}.")
     }
     {
-        let velocity = Measure3d::<CentiMetrePerSecond>::new(6., 20., 36.);
+        let velocity = Measure3d::<CentiMetrePerSecond>::new([6., 20., 36.]);
         let time = Measure::<Second>::new(2.);
         let acceleration: Measure3d<CentiMetrePerSquareSecond> = velocity / time;
         println!("If an object in the space changes its velocity of {velocity} in a time interval of {time}, it has an average acceleration of {acceleration}.")
@@ -3503,7 +3504,7 @@ fn print_all_kinematics_mixed_operations() {
         println!("If an object in a plane changes its velocity of {velocity} in a time interval of {time}, it has an average acceleration of {acceleration}.")
     }
     {
-        let velocity = Measure3d::<KiloMetrePerHour>::new(6., 20., 36.);
+        let velocity = Measure3d::<KiloMetrePerHour>::new([6., 20., 36.]);
         let time = Measure::<Second>::new(2.);
         let acceleration: Measure3d<KiloMetrePerHourPerSecond> = velocity / time;
         println!("If an object in the space changes its velocity of {velocity} in a time interval of {time}, it has an average acceleration of {acceleration}.")
@@ -3521,7 +3522,7 @@ fn print_all_kinematics_mixed_operations() {
         println!("If an object moves in a plane by a distance of {length} in a time interval of {time}, it has an average velocity of {velocity}.")
     }
     {
-        let length = Measure3d::<Metre>::new(6., 20., 36.);
+        let length = Measure3d::<Metre>::new([6., 20., 36.]);
         let time = Measure::<Second>::new(2.);
         let velocity: Measure3d<MetrePerSecond> = length / time;
         println!("If an object moves in the space by a distance of {length} in a time interval of {time}, it has an average velocity of {velocity}.")
@@ -3539,7 +3540,7 @@ fn print_all_kinematics_mixed_operations() {
         println!("If an object moves in a plane by a distance of {length} in a time interval of {time}, it has an average velocity of {velocity}.")
     }
     {
-        let length = Measure3d::<NauticalMile>::new(6., 20., 36.);
+        let length = Measure3d::<NauticalMile>::new([6., 20., 36.]);
         let time = Measure::<Hour>::new(2.);
         let velocity: Measure3d<Knot> = length / time;
         println!("If an object moves in the space by a distance of {length} in a time interval of {time}, it has an average velocity of {velocity}.")
@@ -3557,7 +3558,7 @@ fn print_all_kinematics_mixed_operations() {
         println!("If an object moves in a plane by a distance of {length} in a time interval of {time}, it has an average velocity of {velocity}.")
     }
     {
-        let length = Measure3d::<KiloMetre>::new(6., 20., 36.);
+        let length = Measure3d::<KiloMetre>::new([6., 20., 36.]);
         let time = Measure::<Hour>::new(2.);
         let velocity: Measure3d<KiloMetrePerHour> = length / time;
         println!("If an object moves in the space by a distance of {length} in a time interval of {time}, it has an average velocity of {velocity}.")
@@ -3575,7 +3576,7 @@ fn print_all_kinematics_mixed_operations() {
         println!("If an object moves in a plane by a distance of {length} in a time interval of {time}, it has an average velocity of {velocity}.")
     }
     {
-        let length = Measure3d::<Mile>::new(6., 20., 36.);
+        let length = Measure3d::<Mile>::new([6., 20., 36.]);
         let time = Measure::<Hour>::new(2.);
         let velocity: Measure3d<MilePerHour> = length / time;
         println!("If an object moves in the space by a distance of {length} in a time interval of {time}, it has an average velocity of {velocity}.")
@@ -3593,7 +3594,7 @@ fn print_all_kinematics_mixed_operations() {
         println!("If an object moves in a plane by a distance of {length} in a time interval of {time}, it has an average velocity of {velocity}.")
     }
     {
-        let length = Measure3d::<CentiMetre>::new(6., 20., 36.);
+        let length = Measure3d::<CentiMetre>::new([6., 20., 36.]);
         let time = Measure::<Second>::new(2.);
         let velocity: Measure3d<CentiMetrePerSecond> = length / time;
         println!("If an object moves in the space by a distance of {length} in a time interval of {time}, it has an average velocity of {velocity}.")
@@ -3662,8 +3663,8 @@ fn print_all_dynamics_mixed_operations() {
         println!("If some object constrained to rotate around an axis receives an impulse of {impulse} laying in the plane orthogonal to the axis, applied at a position from the rotation axis of {arm}, that causes a variation of the angular momentum by {angular_momentum}.")
     }
     {
-        let impulse = Measure3d::<KiloGramMetrePerSecond>::new(6., 2., -3.);
-        let arm = Measure3d::<Metre>::new(1., 4., 6.);
+        let impulse = Measure3d::<KiloGramMetrePerSecond>::new([6., 2., -3.]);
+        let arm = Measure3d::<Metre>::new([1., 4., 6.]);
         let angular_momentum: Measure3d<KiloGramSquareMetrePerSecond> = impulse.cross_product(arm);
         println!("If some object constrained to rotate around a point receives an impulse of {impulse}, applied at a position from the rotation point of {arm}, that causes a variation of the angular momentum by {angular_momentum}.")
     }
@@ -3682,8 +3683,8 @@ fn print_all_dynamics_mixed_operations() {
         println!("If a planar force of {force} is applied to an object while it moves in the same plane by {movement}, that force gives to that object an energy of {work}.")
     }
     {
-        let force = Measure3d::<Newton>::new(6., -3., 5.);
-        let movement = Measure3d::<Metre>::new(2., 5., 7.);
+        let force = Measure3d::<Newton>::new([6., -3., 5.]);
+        let movement = Measure3d::<Metre>::new([2., 5., 7.]);
         let work: Measure<Joule> = force * movement;
         println!("If a force of {force} is applied to an object while it moves in space by {movement}, that force gives to that object an energy of {work}.")
     }
@@ -3700,8 +3701,8 @@ fn print_all_dynamics_mixed_operations() {
         println!("If a planar force of {force} is applied to an object while it moves in the same plane by {movement}, that force gives to that object an energy of {work}.")
     }
     {
-        let force = Measure3d::<Dyne>::new(6., -3., 5.);
-        let movement = Measure3d::<CentiMetre>::new(2., 5., 7.);
+        let force = Measure3d::<Dyne>::new([6., -3., 5.]);
+        let movement = Measure3d::<CentiMetre>::new([2., 5., 7.]);
         let work: Measure<Erg> = force * movement;
         println!("If a force of {force} is applied to an object while it moves in space by {movement}, that force gives to that object an energy of {work}.")
     }
@@ -3728,7 +3729,7 @@ fn print_all_dynamics_mixed_operations() {
         println!("If a force of {force} is applied in a plane to an object having mass {mass}, that object is accelerated in that plane by {acceleration}.")
     }
     {
-        let force = Measure3d::<Newton>::new(6., -3., 5.);
+        let force = Measure3d::<Newton>::new([6., -3., 5.]);
         let mass = Measure::<KiloGram>::new(2.);
         let acceleration: Measure3d<MetrePerSquareSecond> = force / mass;
         println!("If a force of {force} is applied in space to an object having mass {mass}, that object is accelerated by {acceleration}.")
@@ -3746,7 +3747,7 @@ fn print_all_dynamics_mixed_operations() {
         println!("If a force of {force} is applied in a plane to an object having mass {mass}, that object is accelerated in that plane by {acceleration}.")
     }
     {
-        let force = Measure3d::<Dyne>::new(6., -3., 5.);
+        let force = Measure3d::<Dyne>::new([6., -3., 5.]);
         let mass = Measure::<Gram>::new(2.);
         let acceleration: Measure3d<CentiMetrePerSquareSecond> = force / mass;
         println!("If a force of {force} is applied in space to an object having mass {mass}, that object is accelerated by {acceleration}.")
@@ -3764,7 +3765,7 @@ fn print_all_dynamics_mixed_operations() {
         println!("If a force of {force} is applied in a plane to an object having mass {mass}, that object is accelerated in that plane by {acceleration}.")
     }
     {
-        let force = Measure3d::<KiloGramForce>::new(6., -3., 5.);
+        let force = Measure3d::<KiloGramForce>::new([6., -3., 5.]);
         let mass = Measure::<KiloGram>::new(2.);
         let acceleration: Measure3d<GForce> = force / mass;
         println!("If a force of {force} is applied in space to an object having mass {mass}, that object is accelerated by {acceleration}.")
@@ -3822,7 +3823,7 @@ fn print_all_dynamics_mixed_operations() {
     }
     {
         let mass = Measure::<KiloGram>::new(6.);
-        let velocity = Measure3d::<MetrePerSecond>::new(2., 5., -3.);
+        let velocity = Measure3d::<MetrePerSecond>::new([2., 5., -3.]);
         let momentum: Measure3d<NewtonSecond> = mass * velocity;
         println!("A mass of {mass} having a velocity in space of {velocity} has a momentum of {momentum}.")
     }
@@ -3840,7 +3841,7 @@ fn print_all_dynamics_mixed_operations() {
     }
     {
         let mass = Measure::<Gram>::new(6.);
-        let velocity = Measure3d::<CentiMetrePerSecond>::new(2., 5., -3.);
+        let velocity = Measure3d::<CentiMetrePerSecond>::new([2., 5., -3.]);
         let momentum: Measure3d<DyneSecond> = mass * velocity;
         println!("A mass of {mass} having a velocity in space of {velocity} has a momentum of {momentum}.")
     }
@@ -3923,8 +3924,8 @@ fn print_all_dynamics_mixed_operations() {
         println!("If some object constrained to rotate around an axis receives a force of {force} laying in the plane orthogonal to the axis, applied at a position from the rotation axis of {arm}, that causes a torque (a.k.a. moment of force) of {torque}.")
     }
     {
-        let force = Measure3d::<Newton>::new(6., 2., -3.);
-        let arm = Measure3d::<Metre>::new(1., 4., 6.);
+        let force = Measure3d::<Newton>::new([6., 2., -3.]);
+        let arm = Measure3d::<Metre>::new([1., 4., 6.]);
         let torque: Measure3d<NewtonMetre> = force.cross_product(arm);
         println!("If some object constrained to rotate around a point receives a force of {force}, applied at a position from the rotation point of {arm}, that causes a torque (a.k.a. moment of force) of {torque}.")
     }
@@ -3936,8 +3937,8 @@ fn print_all_dynamics_mixed_operations() {
         println!("If some object constrained to rotate around an axis receives a force of {force} laying in the plane orthogonal to the axis, applied at a position from the rotation axis of {arm}, that causes a torque (a.k.a. moment of force) of {torque}.")
     }
     {
-        let force = Measure3d::<PoundForce>::new(6., 2., -3.);
-        let arm = Measure3d::<Foot>::new(1., 4., 6.);
+        let force = Measure3d::<PoundForce>::new([6., 2., -3.]);
+        let arm = Measure3d::<Foot>::new([1., 4., 6.]);
         let torque: Measure3d<PoundFoot> = force.cross_product(arm);
         println!("If some object constrained to rotate around a point receives a force of {force}, applied at a position from the rotation point of {arm}, that causes a torque (a.k.a. moment of force) of {torque}.")
     }
@@ -3949,8 +3950,8 @@ fn print_all_dynamics_mixed_operations() {
         println!("If some object constrained to rotate around an axis receives a force of {force} laying in the plane orthogonal to the axis, applied at a position from the rotation axis of {arm}, that causes a torque (a.k.a. moment of force) of {torque}.")
     }
     {
-        let force = Measure3d::<PoundForce>::new(6., 2., -3.);
-        let arm = Measure3d::<Inch>::new(1., 4., 6.);
+        let force = Measure3d::<PoundForce>::new([6., 2., -3.]);
+        let arm = Measure3d::<Inch>::new([1., 4., 6.]);
         let torque: Measure3d<PoundInch> = force.cross_product(arm);
         println!("If some object constrained to rotate around a point receives a force of {force}, applied at a position from the rotation point of {arm}, that causes a torque (a.k.a. moment of force) of {torque}.")
     }

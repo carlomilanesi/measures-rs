@@ -2,9 +2,7 @@
 macro_rules! inner_define_measure_point_3d {
     {$with_approx:ident} => {
         pub struct MeasurePoint3d<Unit, Number = f64> {
-            pub x: Number,
-            pub y: Number,
-            pub z: Number,
+            pub values: [Number; 3],
             phantom: PhantomData<Unit>,
         }
 
@@ -14,25 +12,24 @@ macro_rules! inner_define_measure_point_3d {
             Number: ArithmeticOps,
             Unit::Property: VectorProperty,
         {
-            pub const fn new(x: Number, y: Number, z: Number) -> Self {
+            /// MeasurePoint3d::new([Number; 3]) -> MeasurePoint3d
+            pub const fn new(values: [Number; 3]) -> Self {
                 Self {
-                    x,
-                    y,
-                    z,
+                    values,
                     phantom: PhantomData,
                 }
             }
 
             pub const fn x(self) -> MeasurePoint<Unit, Number> {
-                MeasurePoint::<Unit, Number>::new(self.x)
+                MeasurePoint::<Unit, Number>::new(self.values[0])
             }
 
             pub const fn y(self) -> MeasurePoint<Unit, Number> {
-                MeasurePoint::<Unit, Number>::new(self.y)
+                MeasurePoint::<Unit, Number>::new(self.values[1])
             }
 
             pub const fn z(self) -> MeasurePoint<Unit, Number> {
-                MeasurePoint::<Unit, Number>::new(self.z)
+                MeasurePoint::<Unit, Number>::new(self.values[2])
             }
 
             pub fn convert<DestUnit: MeasurementUnit<Property = Unit::Property>>(
@@ -40,22 +37,20 @@ macro_rules! inner_define_measure_point_3d {
             ) -> MeasurePoint3d<DestUnit, Number> {
                 let factor = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
                 let offset = Number::from_f64((Unit::OFFSET - DestUnit::OFFSET) / DestUnit::RATIO);
-                MeasurePoint3d::<DestUnit, Number> {
-                    x: self.x * factor + offset,
-                    y: self.y * factor + offset,
-                    z: self.z * factor + offset,
-                    phantom: PhantomData,
-                }
+                MeasurePoint3d::<DestUnit, Number>::new([
+                    self.values[0] * factor + offset,
+                    self.values[1] * factor + offset,
+                    self.values[2] * factor + offset,
+                ])
             }
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> MeasurePoint3d<Unit, DestNumber> {
-                MeasurePoint3d::<Unit, DestNumber> {
-                    x: DestNumber::lossy_from(self.x),
-                    y: DestNumber::lossy_from(self.y),
-                    z: DestNumber::lossy_from(self.z),
-                    phantom: PhantomData,
-                }
+                MeasurePoint3d::<Unit, DestNumber>::new([
+                    DestNumber::lossy_from(self.values[0]),
+                    DestNumber::lossy_from(self.values[1]),
+                    DestNumber::lossy_from(self.values[2]),
+                ])
             }
         }
 
@@ -67,7 +62,7 @@ macro_rules! inner_define_measure_point_3d {
         {
             // It returns the origin.
             fn default() -> Self {
-                Self::new(Number::ZERO, Number::ZERO, Number::ZERO)
+                Self::new([Number::ZERO, Number::ZERO, Number::ZERO])
             }
         }
 
@@ -77,7 +72,7 @@ macro_rules! inner_define_measure_point_3d {
             Unit::Property: VectorProperty,
         {
             fn from(m: MeasurePoint3d<Unit, f32>) -> Self {
-                Self::new(m.x as f64, m.y as f64, m.z as f64)
+                Self::new([m.values[0] as f64, m.values[1] as f64, m.values[2] as f64])
             }
         }
 
@@ -90,7 +85,11 @@ macro_rules! inner_define_measure_point_3d {
         {
             type Output = Self;
             fn add(self, other: Measure3d<Unit, Number>) -> Self::Output {
-                Self::new(self.x + other.x, self.y + other.y, self.z + other.z)
+                Self::new([
+                    self.values[0] + other.values[0],
+                    self.values[1] + other.values[1],
+                    self.values[2] + other.values[2],
+                ])
             }
         }
 
@@ -102,9 +101,9 @@ macro_rules! inner_define_measure_point_3d {
             Unit::Property: VectorProperty,
         {
             fn add_assign(&mut self, other: Measure3d<Unit, Number>) {
-                self.x += other.x;
-                self.y += other.y;
-                self.z += other.z;
+                self.values[0] += other.values[0];
+                self.values[1] += other.values[1];
+                self.values[2] += other.values[2];
             }
         }
 
@@ -117,7 +116,11 @@ macro_rules! inner_define_measure_point_3d {
         {
             type Output = Self;
             fn sub(self, other: Measure3d<Unit, Number>) -> Self::Output {
-                Self::new(self.x - other.x, self.y - other.y, self.z - other.z)
+                Self::new([
+                    self.values[0] - other.values[0],
+                    self.values[1] - other.values[1],
+                    self.values[2] - other.values[2],
+                ])
             }
         }
 
@@ -129,9 +132,9 @@ macro_rules! inner_define_measure_point_3d {
             Unit::Property: VectorProperty,
         {
             fn sub_assign(&mut self, other: Measure3d<Unit, Number>) {
-                self.x -= other.x;
-                self.y -= other.y;
-                self.z -= other.z;
+                self.values[0] -= other.values[0];
+                self.values[1] -= other.values[1];
+                self.values[2] -= other.values[2];
             }
         }
 
@@ -144,7 +147,11 @@ macro_rules! inner_define_measure_point_3d {
         {
             type Output = Measure3d<Unit, Number>;
             fn sub(self, other: MeasurePoint3d<Unit, Number>) -> Self::Output {
-                Self::Output::new(self.x - other.x, self.y - other.y, self.z - other.z)
+                Self::Output::new([
+                    self.values[0] - other.values[0],
+                    self.values[1] - other.values[1],
+                    self.values[2] - other.values[2],
+                ])
             }
         }
 
@@ -158,11 +165,11 @@ macro_rules! inner_define_measure_point_3d {
             Unit::Property: VectorProperty,
         {
             let weight2 = Number::ONE - weight1;
-            MeasurePoint3d::<Unit, Number>::new(
-                p1.x * weight1 + p2.x * weight2,
-                p1.y * weight1 + p2.y * weight2,
-                p1.z * weight1 + p2.z * weight2,
-            )
+            MeasurePoint3d::<Unit, Number>::new([
+                p1.values[0] * weight1 + p2.values[0] * weight2,
+                p1.values[1] * weight1 + p2.values[1] * weight2,
+                p1.values[2] * weight1 + p2.values[2] * weight2,
+            ])
         }
 
         /// midpoint_3d(measure point 3d, measure point 3d) -> measure point 3d
@@ -173,11 +180,11 @@ macro_rules! inner_define_measure_point_3d {
         where
             Unit::Property: VectorProperty,
         {
-            MeasurePoint3d::<Unit, Number>::new(
-                (p1.x + p2.x) * Number::HALF,
-                (p1.y + p2.y) * Number::HALF,
-                (p1.z + p2.z) * Number::HALF,
-            )
+            MeasurePoint3d::<Unit, Number>::new([
+                (p1.values[0] + p2.values[0]) * Number::HALF,
+                (p1.values[1] + p2.values[1]) * Number::HALF,
+                (p1.values[2] + p2.values[2]) * Number::HALF,
+            ])
         }
 
         /// barycentric_combination_3d(array of 3d measure points, array of weights) -> 3d measure point
@@ -188,11 +195,23 @@ macro_rules! inner_define_measure_point_3d {
         where
             Unit::Property: VectorProperty,
         {
-            MeasurePoint3d::<Unit, Number>::new(
-                points.iter().zip(weights).map(|(p, &w)| p.x * w).sum(),
-                points.iter().zip(weights).map(|(p, &w)| p.y * w).sum(),
-                points.iter().zip(weights).map(|(p, &w)| p.z * w).sum(),
-            )
+            MeasurePoint3d::<Unit, Number>::new([
+                points
+                    .iter()
+                    .zip(weights)
+                    .map(|(p, &w)| p.values[0] * w)
+                    .sum(),
+                points
+                    .iter()
+                    .zip(weights)
+                    .map(|(p, &w)| p.values[1] * w)
+                    .sum(),
+                points
+                    .iter()
+                    .zip(weights)
+                    .map(|(p, &w)| p.values[2] * w)
+                    .sum(),
+            ])
         }
 
         // MeasurePoint3d == MeasurePoint3d -> bool
@@ -203,7 +222,7 @@ macro_rules! inner_define_measure_point_3d {
             Unit::Property: VectorProperty,
         {
             fn eq(&self, other: &MeasurePoint3d<Unit, Number>) -> bool {
-                self.x == other.x && self.y == other.y && self.z == other.z
+                self.values == other.values
             }
         }
 
@@ -237,11 +256,11 @@ macro_rules! inner_define_measure_point_3d {
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at (")?;
-                fmt::Display::fmt(&self.x, formatter)?;
+                fmt::Display::fmt(&self.values[0], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.y, formatter)?;
+                fmt::Display::fmt(&self.values[1], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.z, formatter)?;
+                fmt::Display::fmt(&self.values[2], formatter)?;
                 formatter.write_str(")")?;
                 formatter.write_str(Unit::SUFFIX)
             }
@@ -256,11 +275,11 @@ macro_rules! inner_define_measure_point_3d {
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at (")?;
-                fmt::Display::fmt(&self.x, formatter)?;
+                fmt::Display::fmt(&self.values[0], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.y, formatter)?;
+                fmt::Display::fmt(&self.values[1], formatter)?;
                 formatter.write_str(", ")?;
-                fmt::Display::fmt(&self.z, formatter)?;
+                fmt::Display::fmt(&self.values[2], formatter)?;
                 formatter.write_str(")")?;
                 formatter.write_str(Unit::SUFFIX)
             }

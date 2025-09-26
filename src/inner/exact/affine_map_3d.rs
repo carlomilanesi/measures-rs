@@ -50,9 +50,9 @@ macro_rules! inner_define_affine_map_3d {
 
             pub fn translation(v: Measure3d<Unit, Number>) -> Self {
                 Self::new([
-                    [Number::ONE, Number::ZERO, Number::ZERO, v.x],
-                    [Number::ZERO, Number::ONE, Number::ZERO, v.y],
-                    [Number::ZERO, Number::ZERO, Number::ONE, v.z],
+                    [Number::ONE, Number::ZERO, Number::ZERO, v.values[0]],
+                    [Number::ZERO, Number::ONE, Number::ZERO, v.values[1]],
+                    [Number::ZERO, Number::ZERO, Number::ONE, v.values[2]],
                 ])
             }
 
@@ -69,12 +69,12 @@ macro_rules! inner_define_affine_map_3d {
             where
                 AxisUnit::Property: VectorProperty,
             {
-                let fpx = fixed_point.x;
-                let fpy = fixed_point.y;
-                let fpz = fixed_point.z;
-                let ux = unit_vector.x;
-                let uy = unit_vector.y;
-                let uz = unit_vector.z;
+                let fpx = fixed_point.values[0];
+                let fpy = fixed_point.values[1];
+                let fpz = fixed_point.values[2];
+                let ux = unit_vector.values[0];
+                let uy = unit_vector.values[1];
+                let uz = unit_vector.values[2];
                 let a = angle.convert::<Radian>().value;
                 let (sin_a, cos_a) = a.sin_cos();
                 let one_minus_cos_a = Number::ONE - cos_a;
@@ -103,12 +103,12 @@ macro_rules! inner_define_affine_map_3d {
                 fixed_point: MeasurePoint3d<Unit, Number>,
                 unit_vector: Measure3d<AxisUnit, Number>,
             ) -> Self {
-                let fpx = fixed_point.x;
-                let fpy = fixed_point.y;
-                let fpz = fixed_point.z;
-                let ux = unit_vector.x;
-                let uy = unit_vector.y;
-                let uz = unit_vector.z;
+                let fpx = fixed_point.values[0];
+                let fpy = fixed_point.values[1];
+                let fpz = fixed_point.values[2];
+                let ux = unit_vector.values[0];
+                let uy = unit_vector.values[1];
+                let uz = unit_vector.values[2];
                 Self::new([
                     [
                         ux * ux,
@@ -138,21 +138,21 @@ macro_rules! inner_define_affine_map_3d {
                 fixed_point: MeasurePoint3d<Unit, Number>,
                 unit_vector: Measure3d<AxisUnit, Number>,
             ) -> Self {
-                let fpx = fixed_point.x;
-                let fpy = fixed_point.y;
-                let fpz = fixed_point.z;
-                let ux = unit_vector.x;
-                let uy = unit_vector.y;
-                let uz = unit_vector.z;
-                let c00 = Number::ONE - unit_vector.x * unit_vector.x;
-                let c01 = -unit_vector.y * unit_vector.x;
-                let c02 = -unit_vector.z * unit_vector.x;
-                let c10 = -unit_vector.x * unit_vector.y;
-                let c11 = Number::ONE - unit_vector.y * unit_vector.y;
-                let c12 = -unit_vector.z * unit_vector.y;
-                let c20 = -unit_vector.x * unit_vector.z;
-                let c21 = -unit_vector.y * unit_vector.z;
-                let c22 = Number::ONE - unit_vector.z * unit_vector.z;
+                let fpx = fixed_point.values[0];
+                let fpy = fixed_point.values[1];
+                let fpz = fixed_point.values[2];
+                let ux = unit_vector.values[0];
+                let uy = unit_vector.values[1];
+                let uz = unit_vector.values[2];
+                let c00 = Number::ONE - unit_vector.values[0] * unit_vector.values[0];
+                let c01 = -unit_vector.values[1] * unit_vector.values[0];
+                let c02 = -unit_vector.values[2] * unit_vector.values[0];
+                let c10 = -unit_vector.values[0] * unit_vector.values[1];
+                let c11 = Number::ONE - unit_vector.values[1] * unit_vector.values[1];
+                let c12 = -unit_vector.values[2] * unit_vector.values[1];
+                let c20 = -unit_vector.values[0] * unit_vector.values[2];
+                let c21 = -unit_vector.values[1] * unit_vector.values[2];
+                let c22 = Number::ONE - unit_vector.values[2] * unit_vector.values[2];
                 Self::new([
                     [c00, c01, c02, fpx - fpx * c00 - fpy * c01 - fpz * c02],
                     [c10, c11, c12, fpy - fpx * c10 - fpy * c11 - fpz * c12],
@@ -170,12 +170,12 @@ macro_rules! inner_define_affine_map_3d {
                 unit_vector: Measure3d<AxisUnit, Number>,
             ) -> Self {
                 let two = Number::ONE + Number::ONE;
-                let fpx = fixed_point.x;
-                let fpy = fixed_point.y;
-                let fpz = fixed_point.z;
-                let ux = unit_vector.x;
-                let uy = unit_vector.y;
-                let uz = unit_vector.z;
+                let fpx = fixed_point.values[0];
+                let fpy = fixed_point.values[1];
+                let fpz = fixed_point.values[2];
+                let ux = unit_vector.values[0];
+                let uy = unit_vector.values[1];
+                let uz = unit_vector.values[2];
                 let c00 = two * ux * ux - Number::ONE;
                 let c01 = two * uy * ux;
                 let c02 = two * uz * ux;
@@ -200,21 +200,21 @@ macro_rules! inner_define_affine_map_3d {
                 unit_vector: Measure3d<AxisUnit, Number>,
             ) -> Self {
                 let minus_two = -(Number::ONE + Number::ONE);
-                let fpx = fixed_point.x;
-                let fpy = fixed_point.y;
-                let fpz = fixed_point.z;
-                let ux = unit_vector.x;
-                let uy = unit_vector.y;
-                let uz = unit_vector.z;
-                let c00 = minus_two * unit_vector.x * unit_vector.x + Number::ONE;
-                let c01 = minus_two * unit_vector.y * unit_vector.x;
-                let c02 = minus_two * unit_vector.z * unit_vector.x;
-                let c10 = minus_two * unit_vector.x * unit_vector.y;
-                let c11 = minus_two * unit_vector.y * unit_vector.y + Number::ONE;
-                let c12 = minus_two * unit_vector.z * unit_vector.y;
-                let c20 = minus_two * unit_vector.x * unit_vector.z;
-                let c21 = minus_two * unit_vector.y * unit_vector.z;
-                let c22 = minus_two * unit_vector.z * unit_vector.z + Number::ONE;
+                let fpx = fixed_point.values[0];
+                let fpy = fixed_point.values[1];
+                let fpz = fixed_point.values[2];
+                let ux = unit_vector.values[0];
+                let uy = unit_vector.values[1];
+                let uz = unit_vector.values[2];
+                let c00 = minus_two * unit_vector.values[0] * unit_vector.values[0] + Number::ONE;
+                let c01 = minus_two * unit_vector.values[1] * unit_vector.values[0];
+                let c02 = minus_two * unit_vector.values[2] * unit_vector.values[0];
+                let c10 = minus_two * unit_vector.values[0] * unit_vector.values[1];
+                let c11 = minus_two * unit_vector.values[1] * unit_vector.values[1] + Number::ONE;
+                let c12 = minus_two * unit_vector.values[2] * unit_vector.values[1];
+                let c20 = minus_two * unit_vector.values[0] * unit_vector.values[2];
+                let c21 = minus_two * unit_vector.values[1] * unit_vector.values[2];
+                let c22 = minus_two * unit_vector.values[2] * unit_vector.values[2] + Number::ONE;
                 Self::new([
                     [c00, c01, c02, fpx - fpx * c00 - fpy * c01 - fpz * c02],
                     [c10, c11, c12, fpy - fpx * c10 - fpy * c11 - fpz * c12],
@@ -224,30 +224,25 @@ macro_rules! inner_define_affine_map_3d {
 
             // Scaling by three factors from a point.
 
-            pub fn scaling(
-                fixed_point: MeasurePoint3d<Unit, Number>,
-                kx: Number,
-                ky: Number,
-                kz: Number,
-            ) -> Self {
+            pub fn scaling(fixed_point: MeasurePoint3d<Unit, Number>, factors: [Number; 3]) -> Self {
                 Self::new([
                     [
-                        kx,
+                        factors[0],
                         Number::ZERO,
                         Number::ZERO,
-                        fixed_point.x * (Number::ONE - kx),
+                        fixed_point.values[0] * (Number::ONE - factors[0]),
                     ],
                     [
                         Number::ZERO,
-                        ky,
+                        factors[1],
                         Number::ZERO,
-                        fixed_point.y * (Number::ONE - ky),
+                        fixed_point.values[1] * (Number::ONE - factors[1]),
                     ],
                     [
                         Number::ZERO,
                         Number::ZERO,
-                        kz,
-                        fixed_point.z * (Number::ONE - kz),
+                        factors[2],
+                        fixed_point.values[2] * (Number::ONE - factors[2]),
                     ],
                 ])
             }
@@ -344,11 +339,20 @@ macro_rules! inner_define_affine_map_3d {
             }
 
             pub fn apply_to(&self, m: MeasurePoint3d<Unit, Number>) -> MeasurePoint3d<Unit, Number> {
-                MeasurePoint3d::<Unit, Number>::new(
-                    self.c[0][0] * m.x + self.c[0][1] * m.y + self.c[0][2] * m.z + self.c[0][3],
-                    self.c[1][0] * m.x + self.c[1][1] * m.y + self.c[1][2] * m.z + self.c[1][3],
-                    self.c[2][0] * m.x + self.c[2][1] * m.y + self.c[2][2] * m.z + self.c[2][3],
-                )
+                MeasurePoint3d::<Unit, Number>::new([
+                    self.c[0][0] * m.values[0]
+                        + self.c[0][1] * m.values[1]
+                        + self.c[0][2] * m.values[2]
+                        + self.c[0][3],
+                    self.c[1][0] * m.values[0]
+                        + self.c[1][1] * m.values[1]
+                        + self.c[1][2] * m.values[2]
+                        + self.c[1][3],
+                    self.c[2][0] * m.values[0]
+                        + self.c[2][1] * m.values[1]
+                        + self.c[2][2] * m.values[2]
+                        + self.c[2][3],
+                ])
             }
         }
 

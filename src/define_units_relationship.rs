@@ -332,11 +332,11 @@ macro_rules! expand_1_3 {
         impl<Number: ArithmeticOps> Mul<Measure3d<$unit2, Number>> for Measure<$unit1, Number> {
             type Output = Measure3d<$unit3, Number>;
             fn mul(self, other: Measure3d<$unit2, Number>) -> Self::Output {
-                Self::Output::new(
-                    self.value * other.x,
-                    self.value * other.y,
-                    self.value * other.z,
-                )
+                Self::Output::new([
+                    self.value * other.values[0],
+                    self.value * other.values[1],
+                    self.value * other.values[2],
+                ])
             }
         }
 
@@ -352,11 +352,11 @@ macro_rules! expand_1_3 {
         impl<Number: ArithmeticOps> Div<Measure<$unit1, Number>> for Measure3d<$unit3, Number> {
             type Output = Measure3d<$unit2, Number>;
             fn div(self, other: Measure<$unit1, Number>) -> Self::Output {
-                Self::Output::new(
-                    self.x / other.value,
-                    self.y / other.value,
-                    self.z / other.value,
-                )
+                Self::Output::new([
+                    self.values[0] / other.value,
+                    self.values[1] / other.value,
+                    self.values[2] / other.value,
+                ])
             }
         }
 
@@ -365,22 +365,24 @@ macro_rules! expand_1_3 {
             impl<Number: ArithmeticOps> Mul<ApproxMeasure3d<$unit2, Number>> for ApproxMeasure<$unit1, Number> {
                 type Output = ApproxMeasure3d<$unit3, Number>;
                 fn mul(self, other: ApproxMeasure3d<$unit2, Number>) -> Self::Output {
-                    let value_product_x = self.value * other.x;
-                    let value_product_y = self.value * other.y;
-                    let value_product_z = self.value * other.z;
+                    let value_product_x = self.value * other.values[0];
+                    let value_product_y = self.value * other.values[1];
+                    let value_product_z = self.value * other.values[2];
                     Self::Output::with_variance(
-                        value_product_x,
-                        value_product_y,
-                        value_product_z,
+                        [
+                            value_product_x,
+                            value_product_y,
+                            value_product_z,
+                        ],
                         value_product_x *
-                            (other.x * self.variance / self.value +
-                            self.value * other.variance / other.x) +
+                            (other.values[0] * self.variance / self.value +
+                            self.value * other.variance / other.values[0]) +
                         value_product_y *
-                            (other.y * self.variance / self.value +
-                            self.value * other.variance / other.y) +
+                            (other.values[1] * self.variance / self.value +
+                            self.value * other.variance / other.values[1]) +
                         value_product_z *
-                            (other.z * self.variance / self.value +
-                            self.value * other.variance / other.z),
+                            (other.values[2] * self.variance / self.value +
+                            self.value * other.variance / other.values[2]),
                     )
                 }
             }
@@ -397,17 +399,19 @@ macro_rules! expand_1_3 {
             impl<Number: ArithmeticOps> Div<ApproxMeasure<$unit1, Number>> for ApproxMeasure3d<$unit3, Number> {
                 type Output = ApproxMeasure3d<$unit2, Number>;
                 fn div(self, other: ApproxMeasure<$unit1, Number>) -> Self::Output {
-                    let value_ratio_x = self.x / other.value;
-                    let value_ratio_y = self.y / other.value;
-                    let value_ratio_z = self.z / other.value;
-                    let self_ratio_x = self.variance / (self.x * self.x);
-                    let self_ratio_y = self.variance / (self.y * self.y);
-                    let self_ratio_z = self.variance / (self.z * self.z);
+                    let value_ratio_x = self.values[0] / other.value;
+                    let value_ratio_y = self.values[1] / other.value;
+                    let value_ratio_z = self.values[2] / other.value;
+                    let self_ratio_x = self.variance / (self.values[0] * self.values[0]);
+                    let self_ratio_y = self.variance / (self.values[1] * self.values[1]);
+                    let self_ratio_z = self.variance / (self.values[2] * self.values[2]);
                     let other_ratio = other.variance / (other.value * other.value);
-                Self::Output::with_variance(
-                        value_ratio_x,
-                        value_ratio_y,
-                        value_ratio_z,
+                    Self::Output::with_variance(
+                        [
+                            value_ratio_x,
+                            value_ratio_y,
+                            value_ratio_z,
+                        ],
                         value_ratio_x * value_ratio_x * (self_ratio_x + other_ratio) +
                         value_ratio_y * value_ratio_y * (self_ratio_y + other_ratio) +
                         value_ratio_z * value_ratio_z * (self_ratio_z + other_ratio)
@@ -484,14 +488,14 @@ macro_rules! expand_3_3_same {
         impl<Number: ArithmeticOps> Mul<Measure3d<$unit1, Number>> for Measure3d<$unit1, Number> {
             type Output = Measure<$unit2, Number>;
             fn mul(self, other: Measure3d<$unit1, Number>) -> Self::Output {
-                Self::Output::new(self.x * other.x + self.y * other.y + self.z * other.z)
+                Self::Output::new(self.values[0] * other.values[0] + self.values[1] * other.values[1] + self.values[2] * other.values[2])
             }
         }
 
         // Measure3d<U1>.squared() -> Measure<U3>
         impl<Number: ArithmeticOps> Measure3d<$unit1, Number> {
             fn squared(self) -> Measure<$unit2, Number> {
-                Measure::<$unit2, Number>::new(self.x * self.x + self.y * self.y + self.z * self.z)
+                Measure::<$unit2, Number>::new(self.values[0] * self.values[0] + self.values[1] * self.values[1] + self.values[2] * self.values[2])
             }
         }
 
@@ -500,22 +504,22 @@ macro_rules! expand_3_3_same {
             impl<Number: ArithmeticOps> Mul<ApproxMeasure3d<$unit1, Number>> for ApproxMeasure3d<$unit1, Number> {
                 type Output = ApproxMeasure<$unit2, Number>;
                 fn mul(self, other: ApproxMeasure3d<$unit1, Number>) -> Self::Output {
-                    let value_product_x = self.x * other.x;
-                    let value_product_y = self.y * other.y;
-                    let value_product_z = self.z * other.z;
+                    let value_product_x = self.values[0] * other.values[0];
+                    let value_product_y = self.values[1] * other.values[1];
+                    let value_product_z = self.values[2] * other.values[2];
                     Self::Output::with_variance(
                         value_product_x +
                         value_product_y +
                         value_product_z,
                         value_product_x *
-                            (other.x * self.variance / self.x +
-                            self.x * other.variance / other.x) +
+                            (other.values[0] * self.variance / self.values[0] +
+                            self.values[0] * other.variance / other.values[0]) +
                         value_product_y *
-                            (other.y * self.variance / self.y +
-                            self.y * other.variance / other.y) +
+                            (other.values[1] * self.variance / self.values[1] +
+                            self.values[1] * other.variance / other.values[1]) +
                         value_product_z *
-                            (other.z * self.variance / self.z +
-                            self.z * other.variance / other.z),
+                            (other.values[2] * self.variance / self.values[2] +
+                            self.values[2] * other.variance / other.values[2]),
                     )
                 }
             }
@@ -523,7 +527,7 @@ macro_rules! expand_3_3_same {
             // ApproxMeasure3d<U1>.squared() -> ApproxMeasure<U3>
             impl<Number: ArithmeticOps> ApproxMeasure3d<$unit1, Number> {
                 fn squared(self) -> ApproxMeasure<$unit2, Number> {
-                    let value = self.x * self.x + self.y * self.y + self.z * self.z;
+                    let value = self.values[0] * self.values[0] + self.values[1] * self.values[1] + self.values[2] * self.values[2];
                     ApproxMeasure::<$unit2, Number>::with_variance(
                         value,
                         value * (self.variance + self.variance),
@@ -545,7 +549,7 @@ macro_rules! expand_3_3 {
         impl<Number: ArithmeticOps> Mul<Measure3d<$unit2, Number>> for Measure3d<$unit1, Number> {
             type Output = Measure<$unit3, Number>;
             fn mul(self, other: Measure3d<$unit2, Number>) -> Self::Output {
-                Self::Output::new(self.x * other.x + self.y * other.y + self.z * other.z)
+                Self::Output::new(self.values[0] * other.values[0] + self.values[1] * other.values[1] + self.values[2] * other.values[2])
             }
         }
 
@@ -553,7 +557,7 @@ macro_rules! expand_3_3 {
         impl<Number: ArithmeticOps> Mul<Measure3d<$unit1, Number>> for Measure3d<$unit2, Number> {
             type Output = Measure<$unit3, Number>;
             fn mul(self, other: Measure3d<$unit1, Number>) -> Self::Output {
-                Self::Output::new(self.x * other.x + self.y * other.y + self.z * other.z)
+                Self::Output::new(self.values[0] * other.values[0] + self.values[1] * other.values[1] + self.values[2] * other.values[2])
             }
         }
 
@@ -562,20 +566,20 @@ macro_rules! expand_3_3 {
             impl<Number: ArithmeticOps> Mul<ApproxMeasure3d<$unit2, Number>> for ApproxMeasure3d<$unit1, Number> {
                 type Output = ApproxMeasure<$unit3, Number>;
                 fn mul(self, other: ApproxMeasure3d<$unit2, Number>) -> Self::Output {
-                    let value_product_x = self.x * other.x;
-                    let value_product_y = self.y * other.y;
-                    let value_product_z = self.z * other.z;
+                    let value_product_x = self.values[0] * other.values[0];
+                    let value_product_y = self.values[1] * other.values[1];
+                    let value_product_z = self.values[2] * other.values[2];
                     Self::Output::with_variance(
                         value_product_x + value_product_y + value_product_z,
                         value_product_x *
-                            (other.x * self.variance / self.x +
-                            self.x * other.variance / other.x) +
+                            (other.values[0] * self.variance / self.values[0] +
+                            self.values[0] * other.variance / other.values[0]) +
                         value_product_y *
-                            (other.y * self.variance / self.y +
-                            self.y * other.variance / other.y) +
+                            (other.values[1] * self.variance / self.values[1] +
+                            self.values[1] * other.variance / other.values[1]) +
                         value_product_z *
-                            (other.z * self.variance / self.z +
-                            self.z * other.variance / other.z),
+                            (other.values[2] * self.variance / self.values[2] +
+                            self.values[2] * other.variance / other.values[2]),
                     )
                 }
             }
@@ -584,20 +588,20 @@ macro_rules! expand_3_3 {
             impl<Number: ArithmeticOps> Mul<ApproxMeasure3d<$unit1, Number>> for ApproxMeasure3d<$unit2, Number> {
                 type Output = ApproxMeasure<$unit3, Number>;
                 fn mul(self, other: ApproxMeasure3d<$unit1, Number>) -> Self::Output {
-                    let value_product_x = self.x * other.x;
-                    let value_product_y = self.y * other.y;
-                    let value_product_z = self.z * other.z;
+                    let value_product_x = self.values[0] * other.values[0];
+                    let value_product_y = self.values[1] * other.values[1];
+                    let value_product_z = self.values[2] * other.values[2];
                     Self::Output::with_variance(
                         value_product_x + value_product_y + value_product_z,
                         value_product_x *
-                            (other.x * self.variance / self.x +
-                            self.x * other.variance / other.x) +
+                            (other.values[0] * self.variance / self.values[0] +
+                            self.values[0] * other.variance / other.values[0]) +
                         value_product_y *
-                            (other.y * self.variance / self.y +
-                            self.y * other.variance / other.y) +
+                            (other.values[1] * self.variance / self.values[1] +
+                            self.values[1] * other.variance / other.values[1]) +
                         value_product_z *
-                            (other.z * self.variance / self.z +
-                            self.z * other.variance / other.z),
+                            (other.values[2] * self.variance / self.values[2] +
+                            self.values[2] * other.variance / other.values[2]),
                     )
                 }
             }
@@ -665,9 +669,11 @@ macro_rules! expand_cross_3_same {
             type Output = Measure3d<$unit2, Number>;
             fn cross_product(self, other: Measure3d<$unit1, Number>) -> Self::Output {
                 Self::Output::new(
-                    self.y * other.z - self.z * other.y,
-                    self.z * other.x - self.x * other.z,
-                    self.x * other.y - self.y * other.x,
+                    [
+                        self.values[1] * other.values[2] - self.values[2] * other.values[1],
+                        self.values[2] * other.values[0] - self.values[0] * other.values[2],
+                        self.values[0] * other.values[1] - self.values[1] * other.values[0],
+                    ]
                 )
             }
         }
@@ -688,11 +694,11 @@ macro_rules! expand_cross_3 {
         impl<Number: ArithmeticOps> measures::traits::CrossProduct<Measure3d<$unit2, Number>> for Measure3d<$unit1, Number> {
             type Output = Measure3d<$unit3, Number>;
             fn cross_product(self, other: Measure3d<$unit2, Number>) -> Self::Output {
-                Self::Output::new(
-                    self.y * other.z - self.z * other.y,
-                    self.z * other.x - self.x * other.z,
-                    self.x * other.y - self.y * other.x,
-                )
+                Self::Output::new([
+                    self.values[1] * other.values[2] - self.values[2] * other.values[1],
+                    self.values[2] * other.values[0] - self.values[0] * other.values[2],
+                    self.values[0] * other.values[1] - self.values[1] * other.values[0],
+                ])
             }
         }
 
@@ -700,11 +706,11 @@ macro_rules! expand_cross_3 {
         impl<Number: ArithmeticOps> measures::traits::CrossProduct<Measure3d<$unit1, Number>> for Measure3d<$unit2, Number> {
             type Output = Measure3d<$unit3, Number>;
             fn cross_product(self, other: Measure3d<$unit1, Number>) -> Self::Output {
-                Self::Output::new(
-                    self.y * other.z - self.z * other.y,
-                    self.z * other.x - self.x * other.z,
-                    self.x * other.y - self.y * other.x,
-                )
+                Self::Output::new([
+                    self.values[1] * other.values[2] - self.values[2] * other.values[1],
+                    self.values[2] * other.values[0] - self.values[0] * other.values[2],
+                    self.values[0] * other.values[1] - self.values[1] * other.values[0],
+                ])
             }
         }
 

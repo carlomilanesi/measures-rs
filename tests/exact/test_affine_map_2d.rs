@@ -299,7 +299,7 @@ fn affine_map_2d_reflection_by_unit_vector() {
 fn affine_map_2d_scaling() {
     let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
     let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
-    let am = AffineMap2d::<Metre, f64>::scaling(fixed_point, 3., 7.);
+    let am = AffineMap2d::<Metre, f64>::scaling(fixed_point, [3., 7.]);
     let mp2 = am.apply_to(mp1);
     assert_eq!(mp2.values, [6. + (8. - 6.) * 3., 2. + (5. - 2.) * 7.]);
 }
