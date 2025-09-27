@@ -226,8 +226,25 @@ macro_rules! expand_1_1_same {
             }
 
             // Measure<U3>.sqrt() -> Measure<U1>
-            impl<Number: ArithmeticOps> Sqrt for Measure<$unit3, Number> {
-                type Output = Measure<$unit1, Number>;
+            // This generic implementation causes performance issues is some cases,
+            // and so it is replaced by the following implementations, specific,
+            // respectively, for f64 and f32.
+            // impl<Number: ArithmeticOps> Sqrt for Measure<$unit3, Number> {
+            //     type Output = Measure<$unit1, Number>;
+            //     fn sqrt(self) -> Self::Output {
+            //         Self::Output::new(self.value.sqrt())
+            //     }
+            // }
+
+            impl Sqrt for Measure<$unit3, f64> {
+                type Output = Measure<$unit1, f64>;
+                fn sqrt(self) -> Self::Output {
+                    Self::Output::new(self.value.sqrt())
+                }
+            }
+
+            impl Sqrt for Measure<$unit3, f32> {
+                type Output = Measure<$unit1, f32>;
                 fn sqrt(self) -> Self::Output {
                     Self::Output::new(self.value.sqrt())
                 }
