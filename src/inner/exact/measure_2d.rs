@@ -3,7 +3,7 @@ macro_rules! inner_define_measure_2d {
     { $with_points:tt $with_directions:tt $with_approx:ident } => {
         pub struct Measure2d<Unit, Number = f64> {
             pub values: [Number; 2],
-            phantom: std::marker::PhantomData<Unit>,
+            phantom: PhantomData<Unit>,
         }
 
         impl<Unit, Number> Measure2d<Unit, Number>
@@ -12,7 +12,7 @@ macro_rules! inner_define_measure_2d {
             Unit::Property: VectorProperty,
             Number: ArithmeticOps,
         {
-            /// measure 2d :: new(number, number) -> measure 2d
+            /// Measure2d::new([Number; 2]) -> Measure2d
             pub const fn new(values: [Number; 2]) -> Self {
                 Self {
                     values,
@@ -20,25 +20,45 @@ macro_rules! inner_define_measure_2d {
                 }
             }
 
-            /// measure 2d .x() -> measure
+            /// Measure2d.x() -> Measure
             pub const fn x(self) -> Measure<Unit, Number> {
                 Measure::<Unit, Number>::new(self.values[0])
             }
 
-            /// measure 2d .y() -> measure
+            /// Measure2d.y() -> Measure
             pub const fn y(self) -> Measure<Unit, Number> {
                 Measure::<Unit, Number>::new(self.values[1])
             }
 
-            /// measure 2d .convert() -> measure 2d
-            pub fn convert<DestUnit: MeasurementUnit<Property = Unit::Property>>(
-                &self,
-            ) -> Measure2d<DestUnit, Number> {
+            measures::if_all_true! { {$with_approx}
+                /*TODO
+                /// Measure2d::from_approx_measure(ApproxMeasure2d) -> Measure2d
+                pub const fn from_approx_measure(approx_measure: ApproxMeasure2d<Unit, Number>) -> Self {
+                    Self::new(approx_measure.values)
+                }
+
+                /// Measure2d.to_approx_measure_with_variance(Number) -> ApproxMeasure2d
+                pub fn to_approx_measure_with_variance(self, variance: Number) -> ApproxMeasure2d<Unit, Number> {
+                    ApproxMeasure2d::<Unit, Number>::with_variance(self.value, variance)
+                }
+
+                /// Measure2d.to_approx_measure_with_uncertainty(Measure) -> ApproxMeasure2d
+                pub fn to_approx_measure_with_uncertainty(self, uncertainty: Measure<Unit, Number>) -> ApproxMeasure2d<Unit, Number> {
+                    ApproxMeasure2d::<Unit, Number>::with_uncertainty(self.value, uncertainty)
+                }
+                */
+            }
+
+            /// Measure2d.convert() -> Measure2d
+            pub fn convert<DestUnit>(&self) -> Measure2d<DestUnit, Number>
+            where
+                DestUnit: MeasurementUnit<Property = Unit::Property>,
+            {
                 let factor = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
                 Measure2d::<DestUnit, Number>::new([self.values[0] * factor, self.values[1] * factor])
             }
 
-            /// measure 2d .lossy_into() -> measure 2d
+            /// Measure2d.lossy_into() -> Measure2d
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> Measure2d<Unit, DestNumber> {
@@ -67,25 +87,55 @@ macro_rules! inner_define_measure_2d {
             }
 
             measures::if_all_true! { {$with_points}
-                /// Measure2d::from_direction(AnglePoint) -> Measure2d
-                pub fn from_direction<AngleUnit: AngleMeasurementUnit>(
+                /// Measure2d::from_direction_measure(AnglePoint) -> Measure2d
+                pub fn from_direction<AngleUnit>(
                     direction: MeasurePoint<AngleUnit, Number>,
-                ) -> Self {
-                    let (y, x) = direction.convert::<Radian>().value.sin_cos();
+                ) -> Self
+                where
+                AngleUnit: AngleMeasurementUnit,
+                {
+                    let (y, x) = direction.convert::<Radian>().sin_cos();
                     Self::new([x, y])
+                }
+
+                /// Measure2d.direction_measure() -> MeasurePoint
+                pub fn direction_measure<AngleUnit: MeasurementUnit<Property = Angle>>(
+                    self,
+                ) -> MeasurePoint<AngleUnit, Number> {
+                    MeasurePoint::<Radian, Number>::new(self.values[1].atan2(self.values[0])).convert::<AngleUnit>()
                 }
             }
 
             measures::if_all_true! { {$with_directions}
+                /// Measure2d::from_signed_direction(SignedDirection) -> Measure2d
+                pub fn from_signed_direction<AngleUnit>(
+                    direction: SignedDirection<AngleUnit, Number>,
+                ) -> Self
+                where
+                AngleUnit: AngleMeasurementUnit,
+                {
+                    let (y, x) = direction.convert::<Radian>().sin_cos();
+                    Self::new([x, y])
+                }
+
+                /// Measure2d::from_unsigned_direction(UnsignedDirection) -> Measure2d
+                pub fn from_unsigned_direction<AngleUnit>(
+                    direction: UnsignedDirection<AngleUnit, Number>,
+                ) -> Self
+                where
+                AngleUnit: AngleMeasurementUnit,
+                {
+                    let (y, x) = direction.convert::<Radian>().sin_cos();
+                    Self::new([x, y])
+                }
+
                 /// Measure2d.signed_direction() -> SignedDirection
                 pub fn signed_direction<AngleUnit: MeasurementUnit<Property = Angle>>(
                     self,
                 ) -> SignedDirection<AngleUnit, Number> {
                     SignedDirection::<Radian, Number>::new(self.values[1].atan2(self.values[0])).convert::<AngleUnit>()
                 }
-            }
 
-            measures::if_all_true! { {$with_directions}
                 /// Measure2d.unsigned_direction() -> UnsignedDirection
                 pub fn unsigned_direction<AngleUnit: MeasurementUnit<Property = Angle>>(
                     self,
@@ -112,8 +162,8 @@ macro_rules! inner_define_measure_2d {
             Unit: MeasurementUnit,
             Unit::Property: VectorProperty,
         {
-            fn from(m: Measure2d<Unit, f32>) -> Self {
-                Self::new([m.values[0] as f64, m.values[1] as f64])
+            fn from(measure: Measure2d<Unit, f32>) -> Self {
+                Self::new([measure.values[0] as f64, measure.values[1] as f64])
             }
         }
 

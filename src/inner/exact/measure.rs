@@ -41,20 +41,16 @@ macro_rules! inner_define_measure {
             where
                 DestUnit: MeasurementUnit<Property = Unit::Property>,
             {
-                Measure::<DestUnit, Number> {
-                    value: self.value * Number::from_f64(Unit::RATIO / DestUnit::RATIO),
-                    phantom: PhantomData,
-                }
+                Measure::<DestUnit, Number>::new(
+                    self.value * Number::from_f64(Unit::RATIO / DestUnit::RATIO),
+                )
             }
 
-            // Measure.lossy_into() -> Measure
+            /// Measure.lossy_into() -> Measure
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> Measure<Unit, DestNumber> {
-                Measure::<Unit, DestNumber> {
-                    value: DestNumber::lossy_from(self.value),
-                    phantom: PhantomData,
-                }
+                Measure::<Unit, DestNumber>::new(DestNumber::lossy_from(self.value))
             }
 
             /// Measure.norm() -> Measure
