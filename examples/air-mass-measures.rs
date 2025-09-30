@@ -29,35 +29,26 @@ measures::define_measure_types! {
     ]
 }
 
-pub struct Length;
+measures::measurement_vector_property! { Length }
 
-pub struct Meter;
-impl MeasurementUnit for Meter {
-    type Property = Length;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m";
+measures::measurement_unit! {
+    name: Meter,
+    property: Length,
+    suffix: " m",
 }
 
-pub struct Area;
+measures::measurement_scalar_property! { Area }
 
-pub struct SquareMeter;
-impl MeasurementUnit for SquareMeter {
-    type Property = Area;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m\u{b2}";
+measures::measurement_unit! {
+    name: SquareMeter,
+    property: Area,
+    suffix: " m\u{b2}",
 }
 
-pub struct Degree;
-impl MeasurementUnit for Degree {
-    type Property = Angle;
-    const RATIO: f64 = core::f64::consts::TAU / 360.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " deg";
-}
-impl AngleMeasurementUnit for Degree {
-    const CYCLE_FRACTION: f64 = 360.;
+measures::angle_measurement_unit! {
+    name: Degree,
+    suffix: " deg",
+    cycle_fraction: 360.,
 }
 
 const RE: Measure<Meter> = Measure::<Meter>::new(6371000.0); // Earth radius in meters

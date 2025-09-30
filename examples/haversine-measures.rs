@@ -6,33 +6,25 @@ measures::define_measure_types! {
     []
 }
 
-pub struct Degree;
-impl MeasurementUnit for Degree {
-    type Property = Angle;
-    const RATIO: f64 = core::f64::consts::TAU / 360.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " deg";
-}
-impl AngleMeasurementUnit for Degree {
-    const CYCLE_FRACTION: f64 = 360.;
+measures::angle_measurement_unit! {
+    name: Degree,
+    suffix: " deg",
+    cycle_fraction: 360.,
 }
 
-pub struct Length;
+measures::measurement_vector_property! { Length }
 
-pub struct KiloMetre;
-impl MeasurementUnit for KiloMetre {
-    type Property = Length;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " km";
+measures::measurement_unit! {
+    name: KiloMetre,
+    property: Length,
+    suffix: " km",
 }
 
-pub struct Mile;
-impl MeasurementUnit for Mile {
-    type Property = Length;
-    const RATIO: f64 = 1.609344;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " mi";
+measures::measurement_unit! {
+    name: Mile,
+    property: Length,
+    ratio: 1.609344,
+    suffix: " mi",
 }
 
 struct Point {

@@ -1,5 +1,5 @@
 // Build and run with (where 10000000 is the size of the data set; the default is 100):
-//     cargo run --release --example bench2 10000000
+//     cargo run --release --example bench 10000000
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
@@ -8,25 +8,21 @@ measures::define_measure_types! {
     []
 }
 
-pub struct Length;
-impl VectorProperty for Length {}
+measures::measurement_vector_property! { Length }
 
-pub struct Metre;
-impl MeasurementUnit for Metre {
-    type Property = Length;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m";
+measures::measurement_unit! {
+    name: Metre,
+    property: Length,
+    suffix: " m",
 }
 
-pub struct Time;
+measures::measurement_scalar_property! { Time }
 
-pub struct NanoSecond;
-impl MeasurementUnit for NanoSecond {
-    type Property = Time;
-    const RATIO: f64 = 1.0e-9;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " ns";
+measures::measurement_unit! {
+    name: NanoSecond,
+    property: Time,
+    ratio: 1e-9,
+    suffix: " ns",
 }
 
 const N_ITERATIONS: usize = 1_000;
@@ -42,7 +38,7 @@ fn main() {
 
 fn parse_command_line() -> usize {
     const MAX_DATA_SIZE: usize = 100_000_000; // items, using 2.4 GB
-    const DEFAULT_DATA_SIZE: usize = 1_000; // items, using 24 KB
+    const DEFAULT_DATA_SIZE: usize = 10_000; // items, using 240 KB
     let mut args = std::env::args();
     args.next();
     if let Some(arg) = args.next() {

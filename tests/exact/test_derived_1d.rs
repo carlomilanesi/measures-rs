@@ -23,8 +23,7 @@ measures::define_measure_types! {
     measures::expand_cross_3! {$exact $with_approx, $unit2 $unit3 $unit1}
 */
 
-struct Length;
-impl VectorProperty for Length {}
+measures::measurement_vector_property! { Length }
 
 struct Metre;
 impl MeasurementUnit for Metre {
@@ -34,7 +33,7 @@ impl MeasurementUnit for Metre {
     const SUFFIX: &'static str = " m";
 }
 
-struct Area;
+measures::measurement_scalar_property! { Area }
 
 struct SquareMetre;
 impl MeasurementUnit for SquareMetre {
@@ -44,7 +43,7 @@ impl MeasurementUnit for SquareMetre {
     const SUFFIX: &'static str = " m\u{b2}";
 }
 
-struct ElectricalConductance;
+measures::measurement_scalar_property! { ElectricalConductance }
 
 struct Siemens;
 impl MeasurementUnit for Siemens {
@@ -54,7 +53,7 @@ impl MeasurementUnit for Siemens {
     const SUFFIX: &'static str = " S";
 }
 
-struct ElectricalResistance;
+measures::measurement_scalar_property! { ElectricalResistance }
 
 struct Ohm;
 impl MeasurementUnit for Ohm {

@@ -3,8 +3,7 @@ measures::define_measure_types! {
     []
 }
 
-pub struct P1;
-impl VectorProperty for P1 {}
+measures::measurement_vector_property! { P1 }
 
 pub struct U1;
 impl MeasurementUnit for U1 {
@@ -14,8 +13,7 @@ impl MeasurementUnit for U1 {
     const SUFFIX: &'static str = " u1";
 }
 
-pub struct P2;
-impl VectorProperty for P2 {}
+measures::measurement_vector_property! { P2 }
 
 pub struct U2;
 impl MeasurementUnit for U2 {

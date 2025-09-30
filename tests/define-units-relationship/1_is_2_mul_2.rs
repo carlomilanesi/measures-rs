@@ -13,8 +13,7 @@ impl MeasurementUnit for U1 {
     const SUFFIX: &'static str = " u1";
 }
 
-pub struct P2;
-impl VectorProperty for P2 {}
+measures::measurement_vector_property! { P2 }
 
 pub struct U2;
 impl MeasurementUnit for U2 {
@@ -24,8 +23,7 @@ impl MeasurementUnit for U2 {
     const SUFFIX: &'static str = " u2";
 }
 
-pub struct P3;
-impl VectorProperty for P3 {}
+measures::measurement_vector_property! { P3 }
 
 pub struct U3;
 impl MeasurementUnit for U3 {

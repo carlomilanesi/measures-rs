@@ -1,23 +1,23 @@
 //! measures-rs version of the example `unit.rs` of the crate `uom` version 0.35.0.
 //! Example showing how to add new units to existing quantities.
 mod units;
-use measures::traits::MeasurementUnit;
-use units::{Length, Measure, Metre};
+use units::Length;
+use units::Measure;
 
-pub struct Smoot;
-impl MeasurementUnit for Smoot {
-    type Property = Length;
-    const RATIO: f64 = 1.702;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " smoot";
+measures::measurement_unit! {
+    name: Smoot,
+    property: Length,
+    ratio: 1.702,
+    offset: 0.,
+    suffix: " smoot",
 }
 
 fn main() {
-    let l1 = Measure::<Metre, f32>::new(15.);
+    let l1 = Measure::<units::Metre, f32>::new(15.);
     let l2 = Measure::<Smoot, f32>::new(1.);
 
     println!("{} = {}", l1, l1.convert::<Smoot>());
-    println!("{} = {}", l2, l2.convert::<Metre>());
+    println!("{} = {}", l2, l2.convert::<units::Metre>());
 }
 /*
 measures-rs will print:

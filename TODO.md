@@ -1,3 +1,13 @@
+## Mixed-unit operations with unit `One`
+
+Currently, the compilation of the following code allows the first three lines, but on the fourth it emits ``error[E0277]: cannot multiply `Measure<One>` by `Measure<CentiMetre>`` and then ``no implementation for `Measure<One> * Measure<CentiMetre>``:
+```
+    let mo = Measure::<measures::dimensionless::One>::new(2.3);
+    let m = Measure::<CentiMetre>::new(3.6);
+    let r1 = m * mo;
+    let r2 = mo * m;
+```
+
 ## Uncertainty
 
 Let `m1` and `m2` be measures with absolute uncertainties `d1` and `d2`, and with correlation between such uncertainties `c`.

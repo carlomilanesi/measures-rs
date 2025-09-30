@@ -18,20 +18,17 @@ fn main() {
     println!("{} = {}", l1, l1.convert::<Foot>());
 }
 
-pub struct Length;
+measures::measurement_vector_property! { Length }
 
-pub struct Metre;
-impl MeasurementUnit for Metre {
-    type Property = Length;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m";
+measures::measurement_unit! {
+    name: Metre,
+    property: Length,
+    suffix: " m",
 }
 
-pub struct Foot;
-impl MeasurementUnit for Foot {
-    type Property = Length;
-    const RATIO: f64 = 0.3048;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " ft";
+measures::measurement_unit! {
+    name: Foot,
+    property: Length,
+    ratio: 0.3048,
+    suffix: " ft",
 }

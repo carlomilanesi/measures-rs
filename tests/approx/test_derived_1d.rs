@@ -23,45 +23,36 @@ measures::define_measure_types! {
     measures::expand_cross_3! {$exact $with_approx, $unit2 $unit3 $unit1}
 */
 
-struct Length;
-impl VectorProperty for Length {}
+measures::measurement_vector_property! { Length }
 
-struct Metre;
-impl MeasurementUnit for Metre {
-    type Property = Length;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m";
+measures::measurement_unit! {
+    name: Metre,
+    property: Length,
+    suffix: " m",
 }
 
-struct Area;
+measures::measurement_scalar_property! { Area }
 
-struct SquareMetre;
-impl MeasurementUnit for SquareMetre {
-    type Property = Area;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m\u{b2}";
+measures::measurement_unit! {
+    name: SquareMetre,
+    property: Area,
+    suffix: " m\u{b2}",
 }
 
-struct ElectricalConductance;
+measures::measurement_scalar_property! { ElectricalConductance }
 
-struct Siemens;
-impl MeasurementUnit for Siemens {
-    type Property = ElectricalConductance;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " S";
+measures::measurement_unit! {
+    name: Siemens,
+    property: ElectricalConductance,
+    suffix: " S",
 }
 
-struct ElectricalResistance;
+measures::measurement_scalar_property! { ElectricalResistance }
 
-struct Ohm;
-impl MeasurementUnit for Ohm {
-    type Property = ElectricalResistance;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " \u{3a9}";
+measures::measurement_unit! {
+    name: Ohm,
+    property: ElectricalResistance,
+    suffix: " \u{3a9}",
 }
 
 #[test]

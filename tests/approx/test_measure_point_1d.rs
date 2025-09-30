@@ -3,9 +3,7 @@ measures::define_measure_types! {
     []
 }
 
-//use measures::assert_eq_32;
-
-pub struct Temperature;
+measures::measurement_scalar_property! { Temperature }
 
 pub struct Celsius;
 impl MeasurementUnit for Celsius {

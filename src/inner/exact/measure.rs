@@ -192,6 +192,7 @@ macro_rules! inner_define_measure {
             }
         }
 
+        // /*
         /// Measure * Measure<One> -> Measure
         impl<Unit, Number> Mul<Measure<One, Number>> for Measure<Unit, Number>
         where
@@ -203,6 +204,20 @@ macro_rules! inner_define_measure {
                 Self::new(self.value * other.value)
             }
         }
+
+        /*
+        /// Measure<One> * Measure -> Measure
+        impl<Unit, Number> Mul<Measure<Unit, Number>> for Measure<One, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
+            type Output = Self;
+            fn mul(self, other: Measure<Unit, Number>) -> Self::Output {
+                Self::new(self.value * other.value)
+            }
+        }
+        */
 
         /// Measure *= Number
         impl<Unit, Number> MulAssign<Number> for Measure<Unit, Number>

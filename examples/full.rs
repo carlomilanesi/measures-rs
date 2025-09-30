@@ -2129,13 +2129,6 @@ fn print_all_time_units() {
         MeasurePoint::<Year>::new(1.).convert::<Second>(),
     );
     println!(
-        "  Month: {} == {}, {} == {};",
-        Measure::<Month>::new(1.),
-        Measure::<Month>::new(1.).convert::<Second>(),
-        MeasurePoint::<Month>::new(1.),
-        MeasurePoint::<Month>::new(1.).convert::<Second>(),
-    );
-    println!(
         "  Week: {} == {}, {} == {};",
         Measure::<Week>::new(1.),
         Measure::<Week>::new(1.).convert::<Second>(),

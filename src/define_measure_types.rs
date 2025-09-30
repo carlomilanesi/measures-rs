@@ -472,3 +472,127 @@ macro_rules! define_measure_types {
         }
     };
 }
+
+#[macro_export]
+macro_rules! measurement_scalar_property {
+    ($name:ident) => {
+        #[allow(dead_code)]
+        pub struct $name;
+        impl $crate::traits::MeasurementProperty for $name {}
+        impl $crate::traits::ScalarProperty for $name {}
+    };
+}
+
+#[macro_export]
+macro_rules! measurement_vector_property {
+    ($name:ident) => {
+        #[allow(dead_code)]
+        pub struct $name;
+        impl $crate::traits::MeasurementProperty for $name {}
+        impl $crate::traits::VectorProperty for $name {}
+    };
+}
+
+#[macro_export]
+macro_rules! angle_measurement_unit {
+    {
+        name: $name:ident,
+        suffix: $suffix:expr,
+        cycle_fraction: $cycle_fraction:expr,
+    } => {
+        //measures::angle_measurement_unit! { // OK
+        //crate::angle_measurement_unit! { // ERROR HERE
+        //crate::measures::angle_measurement_unit! { // ERROR HERE
+        $crate::angle_measurement_unit! { // OK
+        //$crate::measures::angle_measurement_unit! { // 108 ERRORS ELSEWHERE
+            name: $name,
+            offset: 0.,
+            suffix: $suffix,
+            cycle_fraction: $cycle_fraction,
+        }
+    };
+    {
+        name: $name:ident,
+        offset: $offset:expr,
+        suffix: $suffix:expr,
+        cycle_fraction: $cycle_fraction:expr,
+    } => {
+        pub struct $name;
+        impl MeasurementUnit for $name {
+            type Property = $crate::angle::Angle;
+            const RATIO: f64 = core::f64::consts::TAU / ($cycle_fraction);
+            const OFFSET: f64 = $offset;
+            const SUFFIX: &'static str = $suffix;
+        }
+
+        impl AngleMeasurementUnit for $name {
+            const CYCLE_FRACTION: f64 = $cycle_fraction;
+        }
+
+        impl<Number> Mul<Measure<$name, Number>> for Measure<One, Number>
+        where
+            Number: ArithmeticOps,
+        {
+            type Output = Self;
+            fn mul(self, other: Measure<$name, Number>) -> Self::Output {
+                Self::new(self.value * other.value)
+            }
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! measurement_unit {
+    {
+        name: $name:ident,
+        property: $property:ident,
+        suffix: $suffix:expr,
+    } => {
+        $crate::measurement_unit! {
+            name: $name,
+            property: $property,
+            ratio: 1.,
+            offset: 0.,
+            suffix: $suffix,
+        }
+    };
+    {
+        name: $name:ident,
+        property: $property:ident,
+        ratio: $ratio:expr,
+        suffix: $suffix:expr,
+    } => {
+        $crate::measurement_unit! {
+            name: $name,
+            property: $property,
+            ratio: $ratio,
+            offset: 0.,
+            suffix: $suffix,
+        }
+    };
+    {
+        name: $name:ident,
+        property: $property:ident,
+        ratio: $ratio:expr,
+        offset: $offset:expr,
+        suffix: $suffix:expr,
+    } => {
+        pub struct $name;
+        impl measures::traits::MeasurementUnit for $name {
+            type Property = $property;
+            const RATIO: f64 = $ratio;
+            const OFFSET: f64 = $offset;
+            const SUFFIX: &'static str = $suffix;
+        }
+
+        impl<Number> std::ops::Mul<Measure<$name, Number>> for Measure<measures::dimensionless::One, Number>
+        where
+            Number: measures::traits::ArithmeticOps,
+        {
+            type Output = Self;
+            fn mul(self, other: Measure<$name, Number>) -> Self::Output {
+                Self::new(self.value * other.value)
+            }
+        }
+    };
+}

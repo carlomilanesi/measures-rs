@@ -3,26 +3,16 @@ measures::define_measure_types! {
     []
 }
 
-pub struct Degree;
-impl MeasurementUnit for Degree {
-    type Property = Angle;
-    const RATIO: f64 = core::f64::consts::TAU / 360.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " deg";
-}
-impl AngleMeasurementUnit for Degree {
-    const CYCLE_FRACTION: f64 = 360.;
+measures::angle_measurement_unit! {
+    name: Degree,
+    suffix: " deg",
+    cycle_fraction: 360.,
 }
 
-pub struct Cycle;
-impl MeasurementUnit for Cycle {
-    type Property = Angle;
-    const RATIO: f64 = core::f64::consts::TAU;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " rev";
-}
-impl AngleMeasurementUnit for Cycle {
-    const CYCLE_FRACTION: f64 = 1.;
+measures::angle_measurement_unit! {
+    name: Cycle,
+    suffix: " rev",
+    cycle_fraction: 1.,
 }
 
 #[test]

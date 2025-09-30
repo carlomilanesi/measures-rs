@@ -28,148 +28,116 @@ measures::define_measure_types! {
     ]
 }
 
-pub struct Length;
-impl VectorProperty for Length {}
+measures::measurement_vector_property! { Length }
 
-pub struct Metre;
-impl MeasurementUnit for Metre {
-    type Property = Length;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m";
+measures::measurement_unit! {
+    name: Metre,
+    property: Length,
+    suffix: " m",
 }
 
-pub struct Area;
+measures::measurement_scalar_property! { Area }
 
-pub struct SquareMetre;
-impl MeasurementUnit for SquareMetre {
-    type Property = Area;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m2";
+measures::measurement_unit! {
+    name: SquareMetre,
+    property: Area,
+    suffix: " m2",
 }
 
-pub struct Volume;
+measures::measurement_scalar_property! { Volume }
 
-pub struct CubicMetre;
-impl MeasurementUnit for CubicMetre {
-    type Property = Volume;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m3";
+measures::measurement_unit! {
+    name: CubicMetre,
+    property: Volume,
+    suffix: " m3",
 }
 
-pub struct TimePerVolume;
+measures::measurement_scalar_property! { TimePerVolume }
 
-pub struct SecondPerCubicMetre;
-impl MeasurementUnit for SecondPerCubicMetre {
-    type Property = TimePerVolume;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " s/m3";
+measures::measurement_unit! {
+    name: SecondPerCubicMetre,
+    property: TimePerVolume,
+    suffix: " s/m3",
 }
 
-pub struct Time;
+measures::measurement_scalar_property! { Time }
 
-pub struct Second;
-impl MeasurementUnit for Second {
-    type Property = Time;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " s";
+measures::measurement_unit! {
+    name: Second,
+    property: Time,
+    suffix: " s",
 }
 
-pub struct Velocity;
-impl VectorProperty for Velocity {}
+measures::measurement_vector_property! { Velocity }
 
-pub struct MetrePerSecond;
-impl MeasurementUnit for MetrePerSecond {
-    type Property = Velocity;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m/s";
+measures::measurement_unit! {
+    name: MetrePerSecond,
+    property: Velocity,
+    suffix: " m/s",
 }
 
-pub struct Energy;
+measures::measurement_scalar_property! { Energy }
 
-pub struct Joule;
-impl MeasurementUnit for Joule {
-    type Property = Energy;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " J";
+measures::measurement_unit! {
+    name: Joule,
+    property: Energy,
+    suffix: " J",
 }
 
-pub struct Mass;
+measures::measurement_scalar_property! { Mass }
 
-pub struct KiloGram;
-impl MeasurementUnit for KiloGram {
-    type Property = Mass;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " kg";
+measures::measurement_unit! {
+    name: KiloGram,
+    property: Mass,
+    suffix: " kg",
 }
 
-pub struct GravitationalConstant;
+measures::measurement_scalar_property! { GravitationalConstant }
 
-pub struct NewtonSquareMetrePerSquareKilogram;
-impl MeasurementUnit for NewtonSquareMetrePerSquareKilogram {
-    type Property = GravitationalConstant;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " G";
+measures::measurement_unit! {
+    name: NewtonSquareMetrePerSquareKilogram,
+    property: GravitationalConstant,
+    suffix: " G",
 }
 
-pub struct SquareVelocity;
+measures::measurement_scalar_property! { SquareVelocity }
 
-pub struct SquareMetrePerSquareSecond;
-impl MeasurementUnit for SquareMetrePerSquareSecond {
-    type Property = SquareVelocity;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m2/s2";
+measures::measurement_unit! {
+    name: SquareMetrePerSquareSecond,
+    property: SquareVelocity,
+    suffix: " m2/s2",
 }
 
-pub struct SquareMass;
+measures::measurement_scalar_property! { SquareMass }
 
-pub struct SquareKiloGram;
-impl MeasurementUnit for SquareKiloGram {
-    type Property = SquareMass;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " kg2";
+measures::measurement_unit! {
+    name: SquareKiloGram,
+    property: SquareMass,
+    suffix: " kg2",
 }
 
-pub struct SquareMassPerLength;
+measures::measurement_scalar_property! { SquareMassPerLength }
 
-pub struct SquareKiloGramPerMetre;
-impl MeasurementUnit for SquareKiloGramPerMetre {
-    type Property = SquareMassPerLength;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " km2/m";
+measures::measurement_unit! {
+    name: SquareKiloGramPerMetre,
+    property: SquareMassPerLength,
+    suffix: " km2/m",
 }
 
-pub struct TimePerArea;
-impl VectorProperty for TimePerArea {}
+measures::measurement_vector_property! { TimePerArea }
 
-pub struct SecondPerSquareMetre;
-impl MeasurementUnit for SecondPerSquareMetre {
-    type Property = TimePerArea;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " s/m2";
+measures::measurement_unit! {
+    name: SecondPerSquareMetre,
+    property: TimePerArea,
+    suffix: " s/m2",
 }
 
-pub struct MassTimePerArea;
-impl VectorProperty for MassTimePerArea {}
+measures::measurement_vector_property! { MassTimePerArea }
 
-pub struct KiloGramSecondPerSquareMetre;
-impl MeasurementUnit for KiloGramSecondPerSquareMetre {
-    type Property = MassTimePerArea;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " kg s/m2";
+measures::measurement_unit! {
+    name: KiloGramSecondPerSquareMetre,
+    property: MassTimePerArea,
+    suffix: " kg s/m2",
 }
 
 use std::f64::consts::PI;

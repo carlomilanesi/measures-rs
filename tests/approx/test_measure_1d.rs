@@ -3,7 +3,7 @@ measures::define_measure_types! {
     []
 }
 
-struct Length;
+measures::measurement_vector_property! { Length }
 
 struct Metre;
 impl MeasurementUnit for Metre {

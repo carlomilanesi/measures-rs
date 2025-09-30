@@ -1,7 +1,9 @@
+use crate::measurement_scalar_property;
 use crate::traits::{AngleMeasurementUnit, MeasurementUnit};
 
 // A built-in scalar measure property.
-pub struct Angle;
+
+measurement_scalar_property! { Angle }
 
 // The only built-in unit of measurement for the property Angle.
 pub struct Radian;

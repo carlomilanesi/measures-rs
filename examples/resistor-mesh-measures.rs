@@ -6,44 +6,36 @@ measures::define_measure_types! {
     ]
 }
 
-pub struct ElectricPotential;
+measures::measurement_scalar_property! { ElectricPotential }
 
-pub struct Volt;
-impl MeasurementUnit for Volt {
-    type Property = ElectricPotential;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " V";
+measures::measurement_unit! {
+    name: Volt,
+    property: ElectricPotential,
+    suffix: " V",
 }
 
-pub struct SquareElectricCurrent;
+measures::measurement_scalar_property! { SquareElectricCurrent }
 
-pub struct SquareAmpere;
-impl MeasurementUnit for SquareAmpere {
-    type Property = SquareElectricCurrent;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " A\u{b2}";
+measures::measurement_unit! {
+    name: SquareAmpere,
+    property: SquareElectricCurrent,
+    suffix: " A\u{b2}",
 }
 
-pub struct ElectricCurrent;
+measures::measurement_scalar_property! { ElectricCurrent }
 
-pub struct Ampere;
-impl MeasurementUnit for Ampere {
-    type Property = ElectricCurrent;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " A";
+measures::measurement_unit! {
+    name: Ampere,
+    property: ElectricCurrent,
+    suffix: " A",
 }
 
-pub struct ElectricalResistance;
+measures::measurement_scalar_property! { ElectricalResistance }
 
-pub struct Ohm;
-impl MeasurementUnit for Ohm {
-    type Property = ElectricalResistance;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " \u{3a9}";
+measures::measurement_unit! {
+    name: Ohm,
+    property: ElectricalResistance,
+    suffix: " \u{3a9}",
 }
 
 #[derive(Clone, Copy, PartialEq)]

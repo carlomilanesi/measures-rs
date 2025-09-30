@@ -1,4 +1,3 @@
-use std::f64::consts::TAU;
 measures::define_measure_types! {
     with_points with_directions with_2d with_transformations exact,
     []
@@ -6,8 +5,7 @@ measures::define_measure_types! {
 
 use measures::{assert_eq_32, assert_eq_64};
 
-struct Length;
-impl VectorProperty for Length {}
+measures::measurement_vector_property! { Length }
 
 struct Metre;
 impl MeasurementUnit for Metre {
@@ -17,15 +15,10 @@ impl MeasurementUnit for Metre {
     const SUFFIX: &'static str = " m";
 }
 
-struct Degree;
-impl MeasurementUnit for Degree {
-    type Property = Angle;
-    const RATIO: f64 = TAU / 360.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " deg";
-}
-impl AngleMeasurementUnit for Degree {
-    const CYCLE_FRACTION: f64 = 360.;
+measures::angle_measurement_unit! {
+    name: Degree,
+    suffix: " deg",
+    cycle_fraction: 360.,
 }
 
 #[test]

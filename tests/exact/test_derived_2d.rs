@@ -11,68 +11,52 @@ measures::define_measure_types! {
     ]
 }
 
-struct Length;
-impl VectorProperty for Length {}
+measures::measurement_vector_property! { Length }
 
-struct Metre;
-impl MeasurementUnit for Metre {
-    type Property = Length;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m";
+measures::measurement_unit! {
+    name: Metre,
+    property: Length,
+    suffix: " m",
 }
 
-struct Time;
+measures::measurement_scalar_property! { Time }
 
-struct Second;
-impl MeasurementUnit for Second {
-    type Property = Time;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " s";
+measures::measurement_unit! {
+    name: Second,
+    property: Time,
+    suffix: " s",
 }
 
-pub struct Velocity;
-impl VectorProperty for Velocity {}
+measures::measurement_vector_property! { Velocity }
 
-pub struct MetrePerSecond;
-impl MeasurementUnit for MetrePerSecond {
-    type Property = Velocity;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m/s";
+measures::measurement_unit! {
+    name: MetrePerSecond,
+    property: Velocity,
+    suffix: " m/s",
 }
 
-pub struct Force;
-impl VectorProperty for Force {}
+measures::measurement_vector_property! { Force }
 
-pub struct Newton;
-impl MeasurementUnit for Newton {
-    type Property = Force;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " N";
+measures::measurement_unit! {
+    name: Newton,
+    property: Force,
+    suffix: " N",
 }
 
-pub struct Energy;
+measures::measurement_scalar_property! { Energy }
 
-pub struct Joule;
-impl MeasurementUnit for Joule {
-    type Property = Energy;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " J";
+measures::measurement_unit! {
+    name: Joule,
+    property: Energy,
+    suffix: " J",
 }
 
-pub struct Torque;
-impl VectorProperty for Torque {}
+measures::measurement_vector_property! { Torque }
 
-pub struct NewtonMetre;
-impl MeasurementUnit for NewtonMetre {
-    type Property = Torque;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " N\u{b7}m";
+measures::measurement_unit! {
+    name: NewtonMetre,
+    property: Torque,
+    suffix: " N\u{b7}m",
 }
 
 #[test]

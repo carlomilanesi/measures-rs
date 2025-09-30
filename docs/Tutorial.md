@@ -989,8 +989,7 @@ Every other unit must be explicitly defined.
 
 Actually, if you go on reading the file `units.rs`, you will see at lines 4 and 5:
 ```rust
-pub struct Acceleration;
-impl VectorProperty for Acceleration {}
+measures::measurement_vector_property! { Acceleration }
 ```
 
 It defines a *property*. A (physical or geometrical) property is something you want to measure, and, for such a purpose, it needs one or more units of measurement.
@@ -1001,7 +1000,7 @@ For example, `Mile`, `Inch`, `NanoMetre` and `KiloMetre` are all units of the pr
 For some properties, it makes sense to have a 2D measure or 3D measure, and for others it does make no sense. For example, length, velocity, force, torque, electric field strength, and magnetic field strength are *vector properties*. Instead mass, temperature, time, and electric charge are *scalar properties*.
 
 It is useful to forbid creating vectors for scalar properties.
-To such a purpose, the statement `impl VectorProperty for Acceleration {}` just marks the property `Acceleration` as a vector property.
+To such a purpose, the statement `measures::measurement_vector_property! { Acceleration }` just marks the property `Acceleration` as a vector property.
 Later, any attempt to create a 2D or 3D measure with a unit of this property will be allowed.
 For example, this is allowed: `Measure3d<MetrePerSquareSecond>`.
 

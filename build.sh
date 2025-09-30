@@ -3,5 +3,5 @@ set -e
 clear
 ./format_measures.sh
 cargo clippy --all-targets -- -D warnings
-cargo test
+cargo test --quiet
 echo OK

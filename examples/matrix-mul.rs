@@ -29,47 +29,34 @@ measures::define_measure_types! {
     ]
 }
 
-pub struct Degree;
-impl MeasurementUnit for Degree {
-    type Property = Angle;
-    const RATIO: f64 = core::f64::consts::TAU / 360.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " deg";
-}
-impl AngleMeasurementUnit for Degree {
-    const CYCLE_FRACTION: f64 = 360.;
+measures::angle_measurement_unit! {
+    name: Degree,
+    suffix: " deg",
+    cycle_fraction: 360.,
 }
 
-pub struct Length;
-impl VectorProperty for Length {}
+measures::measurement_vector_property! { Length }
 
-pub struct Metre;
-impl MeasurementUnit for Metre {
-    type Property = Length;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m";
+measures::measurement_unit! {
+    name: Metre,
+    property: Length,
+    suffix: " m",
 }
 
-pub struct Force;
-impl VectorProperty for Force {}
+measures::measurement_vector_property! { Force }
 
-pub struct Newton;
-impl MeasurementUnit for Newton {
-    type Property = Force;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " N";
+measures::measurement_unit! {
+    name: Newton,
+    property: Force,
+    suffix: " N",
 }
 
-pub struct Energy;
+measures::measurement_scalar_property! { Energy }
 
-pub struct Joule;
-impl MeasurementUnit for Joule {
-    type Property = Energy;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " J";
+measures::measurement_unit! {
+    name: Joule,
+    property: Energy,
+    suffix: " J",
 }
 
 fn elapsed<const SIZE: usize>(start: Instant, x: f64) -> Duration {

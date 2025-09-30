@@ -322,7 +322,7 @@ pub trait CrossProduct<Rhs = Self> {
 }
 
 pub trait MeasurementUnit {
-    type Property;
+    type Property: MeasurementProperty;
     const RATIO: f64;
     const OFFSET: f64;
     const SUFFIX: &'static str;
@@ -332,4 +332,8 @@ pub trait AngleMeasurementUnit: MeasurementUnit<Property = crate::angle::Angle> 
     const CYCLE_FRACTION: f64;
 }
 
-pub trait VectorProperty {}
+pub trait MeasurementProperty {}
+
+pub trait ScalarProperty: MeasurementProperty {}
+
+pub trait VectorProperty: MeasurementProperty {}

@@ -3,22 +3,19 @@ measures::define_measure_types! {
     []
 }
 
-struct Length;
+measures::measurement_vector_property! { Length }
 
-struct Metre;
-impl MeasurementUnit for Metre {
-    type Property = Length;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m";
+measures::measurement_unit! {
+    name: Metre,
+    property: Length,
+    suffix: " m",
 }
 
-struct MilliMetre;
-impl MeasurementUnit for MilliMetre {
-    type Property = Length;
-    const RATIO: f64 = 0.001;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " mm";
+measures::measurement_unit! {
+    name: MilliMetre,
+    property: Length,
+    ratio: 1e-3,
+    suffix: " mm",
 }
 
 #[test]
