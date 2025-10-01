@@ -54,6 +54,14 @@ macro_rules! inner_define_signed_direction {
                     phantom: PhantomData,
                 }
             }
+
+            /// SignedDirection.lossless_into() -> SignedDirection
+            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
+                self,
+            ) -> SignedDirection<Unit, DestNumber> {
+                SignedDirection::<Unit, DestNumber>::new(DestNumber::from(self.value))
+            }
+
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> SignedDirection<Unit, DestNumber> {
