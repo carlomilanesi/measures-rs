@@ -529,9 +529,9 @@ macro_rules! angle_measurement_unit {
         where
             Number: measures::traits::ArithmeticOps,
         {
-            type Output = Self;
-            fn mul(self, other: Measure<$name, Number>) -> Self::Output {
-                Self::new(self.value * other.value)
+            type Output = Measure<$name, Number>;
+            fn mul(self, other: Measure<$name, Number>) -> Measure<$name, Number> {
+                Measure::<$name, Number>::new(self.value * other.value)
             }
         }
     };
@@ -585,9 +585,9 @@ macro_rules! measurement_unit {
         where
             Number: measures::traits::ArithmeticOps,
         {
-            type Output = Self;
-            fn mul(self, other: Measure<$name, Number>) -> Self::Output {
-                Self::new(self.value * other.value)
+            type Output = Measure<$name, Number>;
+            fn mul(self, other: Measure<$name, Number>) -> Measure<$name, Number> {
+                Measure::<$name, Number>::new(self.value * other.value)
             }
         }
     };
