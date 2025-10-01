@@ -48,6 +48,13 @@ macro_rules! inner_define_measure_point {
                 }
             }
 
+            /// MeasurePoint.lossless_into() -> MeasurePoint
+            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
+                self,
+            ) -> MeasurePoint<Unit, DestNumber> {
+                MeasurePoint::<Unit, DestNumber>::new(DestNumber::from(self.value))
+            }
+
             // Measure.lossy_into() -> Measure
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,

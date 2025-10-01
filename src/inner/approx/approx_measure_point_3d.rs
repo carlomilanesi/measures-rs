@@ -69,6 +69,20 @@ macro_rules! inner_define_approx_measure_point_3d {
                     self.variance * ratio * ratio,
                 )
             }
+
+            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
+                &self,
+            ) -> ApproxMeasurePoint3d<Unit, DestNumber> {
+                ApproxMeasurePoint3d::<Unit, DestNumber>::with_variance(
+                    [
+                        DestNumber::from(self.values[0]),
+                        DestNumber::from(self.values[1]),
+                        DestNumber::from(self.values[2]),
+                    ],
+                    DestNumber::from(self.variance),
+                )
+            }
+
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> ApproxMeasurePoint3d<Unit, DestNumber> {

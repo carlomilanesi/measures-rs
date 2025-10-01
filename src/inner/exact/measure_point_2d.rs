@@ -38,8 +38,18 @@ macro_rules! inner_define_measure_point_2d {
                     self.values[1] * factor + offset,
                 ])
             }
+
+            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
+                self,
+            ) -> MeasurePoint2d<Unit, DestNumber> {
+                MeasurePoint2d::<Unit, DestNumber>::new([
+                    DestNumber::from(self.values[0]),
+                    DestNumber::from(self.values[1]),
+                ])
+            }
+
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
-                &self,
+                self,
             ) -> MeasurePoint2d<Unit, DestNumber> {
                 MeasurePoint2d::<Unit, DestNumber>::new([
                     DestNumber::lossy_from(self.values[0]),

@@ -43,6 +43,18 @@ macro_rules! inner_define_measure_point_3d {
                     self.values[2] * factor + offset,
                 ])
             }
+
+            /// MeasurePoint3d.lossless_into() -> MeasurePoint3d
+            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
+                self,
+            ) -> MeasurePoint3d<Unit, DestNumber> {
+                MeasurePoint3d::<Unit, DestNumber>::new([
+                    DestNumber::from(self.values[0]),
+                    DestNumber::from(self.values[1]),
+                    DestNumber::from(self.values[2]),
+                ])
+            }
+
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> MeasurePoint3d<Unit, DestNumber> {

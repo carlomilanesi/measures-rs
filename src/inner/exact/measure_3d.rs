@@ -47,6 +47,17 @@ macro_rules! inner_define_measure_3d {
                 ])
             }
 
+            /// Measure3d.lossless_into() -> Measure3d
+            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
+                self,
+            ) -> Measure3d<Unit, DestNumber> {
+                Measure3d::<Unit, DestNumber>::new([
+                    DestNumber::from(self.values[0]),
+                    DestNumber::from(self.values[1]),
+                    DestNumber::from(self.values[2]),
+                ])
+            }
+
             /// measure 3d .lossy_into() -> measure 3d
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,

@@ -70,6 +70,15 @@ macro_rules! inner_define_approx_measure_point {
                 )
             }
 
+            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
+                self,
+            ) -> ApproxMeasurePoint<Unit, DestNumber> {
+                ApproxMeasurePoint::<Unit, DestNumber>::with_variance(
+                    DestNumber::from(self.value),
+                    DestNumber::from(self.variance),
+                )
+            }
+
             /// ApproxMeasurePoint.lossy_into() -> ApproxMeasurePoint
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 self,

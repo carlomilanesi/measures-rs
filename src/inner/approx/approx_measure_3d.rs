@@ -67,7 +67,21 @@ macro_rules! inner_define_approx_measure_3d {
                 )
             }
 
-            /// Measure3d.lossy_into() -> Measure3d
+            /// ApproxMeasure3d.lossless_into() -> ApproxMeasure3d
+            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
+                self,
+            ) -> ApproxMeasure3d<Unit, DestNumber> {
+                ApproxMeasure3d::<Unit, DestNumber>::with_variance(
+                    [
+                        DestNumber::from(self.values[0]),
+                        DestNumber::from(self.values[1]),
+                        DestNumber::from(self.values[2]),
+                    ],
+                    DestNumber::from(self.variance),
+                )
+            }
+
+            /// ApproxMeasure3d.lossy_into() -> ApproxMeasure3d
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> ApproxMeasure3d<Unit, DestNumber> {

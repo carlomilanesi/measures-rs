@@ -46,6 +46,13 @@ macro_rules! inner_define_measure {
                 )
             }
 
+            /// Measure.lossless_into() -> Measure
+            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
+                self,
+            ) -> Measure<Unit, DestNumber> {
+                Measure::<Unit, DestNumber>::new(DestNumber::from(self.value))
+            }
+
             /// Measure.lossy_into() -> Measure
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
@@ -192,7 +199,6 @@ macro_rules! inner_define_measure {
             }
         }
 
-        // /*
         /// Measure * Measure<One> -> Measure
         impl<Unit, Number> Mul<Measure<One, Number>> for Measure<Unit, Number>
         where
@@ -204,20 +210,6 @@ macro_rules! inner_define_measure {
                 Self::new(self.value * other.value)
             }
         }
-
-        /*
-        /// Measure<One> * Measure -> Measure
-        impl<Unit, Number> Mul<Measure<Unit, Number>> for Measure<One, Number>
-        where
-            Unit: MeasurementUnit,
-            Number: ArithmeticOps,
-        {
-            type Output = Self;
-            fn mul(self, other: Measure<Unit, Number>) -> Self::Output {
-                Self::new(self.value * other.value)
-            }
-        }
-        */
 
         /// Measure *= Number
         impl<Unit, Number> MulAssign<Number> for Measure<Unit, Number>
