@@ -1,6 +1,6 @@
 # Tutorial for the library `measures`
 
-This documents explains how to use, in Rust software development projects, the library `measures`, contained in the package `measures-rs`.
+This documents explains how to use, in Rust software development projects, the library (or _crate_) `measures`, contained in the package `measures-rs`.
 The document [Motivation](Motivation.md) explains which are the advantages of using this library, with respect to using other libraries or to primitive numbers.
 
 ## Creating a tutorial project
@@ -36,13 +36,14 @@ Run your project.
 It should print: `The distance is 100 km`.
 Notice that the characters "` km`" are not part of your code.
 They are printed because of the type of the variable `distance`.
+The type of such a variable is `Measure::<KiloMetre>`, meaning _"a measure whose unit of measurement is kilometres (or kilometers)"_.
 
 Such a variable encapsulates an `f64` number, whose value is `100`.
 
 The unit of measurement is not stored in memory.
 It is just in the type of the variable.
 
-You can access the value of a measure by adding these two statements to your function `main`:
+You can access the value of a measure by adding these two statements at the end of your function `main`:
 ```rust
     let distance_value: f64 = distance.value;
     println!("The distance is {distance_value}.");
@@ -69,32 +70,55 @@ Currently, the library supports only the value types `f32` and `f64`.
 
 From here on, to run the example code, just put it as the body of the function `main`.
 
-You can convert the value type of a measure, like in these statements:
+You can convert the value type of a measure, by using the standard `from`and like in these statements:
 ```rust
     let distance32 = Measure::<Metre, f32>::new(100.);
     let distance64 = Measure::<Metre, f64>::new(100.);
-    distance32.into::<f32>(); // From f32 to f32, no-op
-    distance32.into::<f64>(); // From f32 to f64, no information loss
-    // distance64.into::<f32>(); // From f64 to f32, not allowed
-    distance64.into::<f64>(); // From f64 to f64, no-op
-    distance32.lossy_into::<f32>(); // From f32 to f32, no-op
-    distance32.lossy_into::<f64>(); // From f32 to f64, no information loss
-    distance64.lossy_into::<f32>(); // From f64 to f32, possible information loss
-    distance64.lossy_into::<f64>(); // From f64 to f64, no-op
+
+    _ = Measure::<_, f32>::from(distance32); // From f32 to f32, just a copy
+    _ = Measure::<_, f64>::from(distance32); // From f32 to f64, numeric conversion with no information loss
+    // _ = Measure::<_, f32>::from(distance64); // From f64 to f32, not allowed
+    _ = Measure::<_, f64>::from(distance64); // From f64 to f64, just a copy
+
+    let _: Measure::<_, f32> = distance32.into(); // From f32 to f32, just a copy
+    let _: Measure::<_, f64> = distance32.into(); // From f32 to f64, numeric conversion with 
+    // let _: Measure::<_, f32> = distance64.into(); // From f64 to f32, not allowed
+    let _: Measure::<_, f64> = distance64.into(); // From f64 to f64, just a copy
 ```
 
-There are two numeric conversion methods:
-* `into`: It guarantees that no precision is lost in the conversion.
-So, it can be used only to convert from `f32` to `f64`, in addition to the trivial conversions from `f32` to `f32` and from `f64` to `f64`.
-* `lossy_into`: It does not guarantee that any precision is lost in the conversion.
-So, it may be used for any kind of numeric conversions, including from `f64` to `f32`.
+You can convert a measure using an `f32` value to a measure using the same unit but an `f64` version.
+You can also trivially convert a measure to an identical measure, having te same unit, same numeric type and same numeric value.
 
-## Operations on measures
+But you cannot use such functions to convert a measure which uses an `f64` value to a measure which uses the same unit but an `f32` version, because such conversion could lose significant digits, or be even impossible.
+
+To perform numeric conversions of measures even when information could be lost, there is the method `lossy_into`:
+```rust
+    let distance32 = Measure::<Metre, f32>::new(100.);
+    let distance64 = Measure::<Metre, f64>::new(100.);
+
+    _ = distance32.lossy_into::<f32>(); // From f32 to f32, just a copy
+    _ = distance32.lossy_into::<f64>(); // From f32 to f64, numeric conversion with no information loss
+    _ = distance64.lossy_into::<f32>(); // From f32 to f64, numeric conversion with possible information loss
+    _ = distance64.lossy_into::<f64>(); // From f64 to f64, just a copy
+```
+
+At last, the lossy conversions performed by the functions `from` and `into` shown above are a bit verbose. There is also the equivalent shorter method `lossless_into`:
+```rust
+    let distance32 = Measure::<Metre, f32>::new(100.);
+    let distance64 = Measure::<Metre, f64>::new(100.);
+
+    _ = distance32.lossless_into::<f32>(); // From f32 to f32, just a copy
+    _ = distance32.lossless_into::<f64>(); // From f32 to f64, numeric conversion with no information loss
+    // _ = distance64.lossless_into::<f32>(); // From f64 to f32, not allowed
+    _ = distance64.lossless_into::<f64>(); // From f64 to f64, just a copy
+```
+
+## Arithmetic operations on measures
 
 We have already seen that the type `Measure` can be printed.
 This means it implements the trait `Display`, and it has the method `to_string()`.
 
-Printing a measure means printing its value followed by a suffix depending on its units of measurement.
+Printing a measure means printing its value followed by a suffix depending on its unit of measurement.
 For the unit `KiloMeter`, the suffix is `" km"`, with a leading space.
 
 Measures implement also the trait `Debug`.
@@ -115,7 +139,9 @@ So, you can write:
 
 It will print: `TimeElapsed { hours: 3 h, minutes: 17 min }`.
 
-Here are some arithmetic operations that can be performed on one or two objects of type `Measure`, provided they have the same unit (here, `Metre`) and the same value type (here, `f64`):
+Here are some arithmetic operations that can be performed on one or two objects of type `Measure`, provided they have the same unit (here, `Metre`) and the same value type (here, `f64`).
+
+You can add or subtract measures:
 ```rust
     let mut length1 = Measure::<Metre>::new(7.);
     let length2 = Measure::<Metre>::new(5.);
@@ -126,6 +152,11 @@ Here are some arithmetic operations that can be performed on one or two objects 
     assert_eq!(length1.value, 12.);
     length1 -= length2; // Decrement of a measure
     assert_eq!(length1.value, 7.);
+```
+
+You can multiply or divide measures by a number:
+```rust
+    let mut length1 = Measure::<Metre>::new(7.);
     assert_eq!((length1 * 3.).value, 21.); // Multiplication of a measure by a number
     assert_eq!((3. * length1).value, 21.); // Multiplication of a number by a measure
     length1 *= 3.; // Upscaling of a measure
@@ -133,24 +164,40 @@ Here are some arithmetic operations that can be performed on one or two objects 
     assert_eq!((length1 / 3.).value, 7.); // Division of a measure by a number
     length1 /= 3.; // Downscaling of a measure
     assert_eq!(length1.value, 7.);
-
-    // Division between two measures of the same unit,
-    // obtaining a measure having unit of measurement `One`,
-    // of the built-in property `Dimensionless`.
-    assert_eq!(length1 / length2,
-        Measure::<measures::dimensionless::One>::new(1.4));
 ```
 
-Here are some comparison operations:
+You can also compute the division between two measures of the same unit, obtaining a dimensionless number, which is represented by a measure having, as unit of measurement, the built-in unit `One`, of the built-in property `Dimensionless`.
+Any measure can be multiplied or divided by such dimensionless measures:
 ```rust
-    let length1 = Measure::<Metre>::new(7.);
+    let mut length1 = Measure::<Metre>::new(7.);
     let length2 = Measure::<Metre>::new(5.);
-    assert!(length1 == length1); // Equality
-    assert!(length1 > length2); // Ordering
+    let ratio: Measure<measures::dimensionless::One> = length1 / length2;
+    assert_eq!(ratio.value, 1.4);
+    let length3: Measure<Metre> = ratio * length2;
+    assert_eq!(length3.value, 7.);
+    let length4: Measure<Metre> = length2 * ratio;
+    assert_eq!(length4.value, 7.);
+    length1 /= ratio;
+    assert_eq!(length1.value, 5.);
+    length1 *= ratio;
+    assert_eq!(length1.value, 7.);
+```
+
+Measures can also be compared, using the comparison operators:
+```rust
+    let length1 = Measure::<Metre>::new(5.);
+    let length2 = Measure::<Metre>::new(7.);
+    assert!(length1 == length1);
+    assert!(length1 != length2);
+    assert!(length1 < length2);
+    assert!(length1 <= length2);
+    assert!(length2 > length1);
+    assert!(length2 >= length1);
 ```
 
 ## Conversions between units
 
+One of the main advantages of encapsulating measures is the simplification and added safety of unit conversions.
 You can convert between units of measurement of the same physical or geometrical property, using the following code:
 ```rust
     let distance1 = Measure::<KiloMetre>::new(100.);
@@ -167,11 +214,17 @@ The distances 100 km and 62.15040397762586 mi are equivalent.
 The time spans 2 h and 120 min are equivalent.
 ```
 
-You cannot convert between units of measurement representing different physical or geometrical properties:
+Of course, it makes no sense to convert between units of measurement representing different physical or geometrical properties, and so such operations cause compilation errors:
 ```rust
-    let _ = Measure::<KiloMetre>::new(100.).convert::<Hour>(); // ILLEGAL
-    let _ = Measure::<Mile>::new(100.).convert::<SquareMile>(); // ILLEGAL
+    _ = Measure::<KiloMetre>::new(100.).convert::<Hour>(); // ILLEGAL
+    _ = Measure::<Mile>::new(100.).convert::<SquareMile>(); // ILLEGAL
 ```
+
+For the first of the above statements, the compilation will emit the error message:
+```
+type mismatch resolving `<Hour as MeasurementUnit>::Property == Length`
+```
+because the property of `KiloMetre` is `Length`, but the property of `Hour` is `Time`.
 
 ## Absolute values
 
@@ -184,7 +237,8 @@ For some kinds of measures, to add two values of the same type or to multiply a 
 This happens because they are absolute measures, not relative measures, like the ones shown in the previous sections.
 
 Mathematically speaking, such absolute measures are *points* of an *affine space*, while the relative measures, like lengths, temperature variations, and time durations are *vectors* of a *vector space*.
-To avoid using points instead of vectors or vice versa, the generic type `MeasurePoint` should be used, instead of using the generic type `Measure`, like in the following code:
+
+To avoid using points instead of vectors or vice versa, the generic type `MeasurePoint` should be used, instead of using the generic type `Measure`, like shown in the following code:
 ```rust
     let point1 = MeasurePoint::<Celsius>::new(10.);
     let variation = Measure::<Celsius>::new(2.);
@@ -203,31 +257,46 @@ With absolute values, the following operations are forbidden:
 ```rust
     let point1 = MeasurePoint::<Celsius>::new(10.);
     let point2 = MeasurePoint::<Celsius>::new(2.);
-    let _ = point1 + point2; // ILLEGAL: you cannot sum two points
-    let _ = point1 * 3.; // ILLEGAL: you cannot multiply a point by a number
+    _ = point1 + point2; // ILLEGAL: you cannot sum two points
+    _ = point1 * 3.; // ILLEGAL: you cannot multiply a point by a number
 ```
 
-On the other hand, some operations are specific of absolute values:
+On the other hand, some operations are specific of absolute values.
+The difference between two points is the vector from the second point to the first one:
 ```rust
     let point1 = MeasurePoint::<Celsius>::new(10.);
     let point2 = MeasurePoint::<Celsius>::new(2.);
     let variation = point2 - point1; // Variation from point1 to point2.
     assert_eq!(variation.value, -8.);
+```
 
-    // We can compute the average between two points.
+We can also compute the average between two points.
+The simplest way is by calling the function `midpoint`:
+```rust
+    let point1 = MeasurePoint::<Celsius>::new(10.);
+    let point2 = MeasurePoint::<Celsius>::new(2.);
     assert_eq!(midpoint(point1, point2).value, 6.);
+```
 
-    // We can compute a weighted average between two points,
-    // when the first point has a weight of 25% (equivalent to 0.25),
-    // and consequently the second point has a weight of 75% (equivalent to 0.75).
-    // This is a generalization of the function `midpoint`,
-    // which is equivalent to `weighted_midpoint` with a weight of `0.5`.
+The function `midpoint` assumes that the two points have the same weight.
+In case the points have different weight, you can call the function `weighted_midpoint`:
+```rust
+    let point1 = MeasurePoint::<Celsius>::new(10.);
+    let point2 = MeasurePoint::<Celsius>::new(2.);
     assert_eq!(weighted_midpoint(point1, point2, 0.25).value, 4.);
+```
 
-    // Having a slice of several points, each with its own weight,
-    // we can compute the weighted average of all of them,
-    // named *barycentric combination*.
-    // To make sense, the sum of all the weights (0.1 + 0.4 + 0.5) must be 1.
+The third argument of this function is the weight of the first point, normalized to one.
+In this example, it is `0.25`, or 25%, meaning that the second point has weight 75%.
+
+Calling `midpoint` is equivalent to calling `weighted_midpoint` with a weight of `0.5`.
+
+Having a slice of several points, each with its own weight, the weighted average of all of them, named *barycentric combination*, can be computed.
+To make sense, the sum of all the weights must be 1.
+Here is an example, with three points:
+```rust
+    let point1 = MeasurePoint::<Celsius>::new(10.);
+    let point2 = MeasurePoint::<Celsius>::new(2.);
     let point3 = MeasurePoint::<Celsius>::new(-6.);
     let center: MeasurePoint<Celsius> =
         barycentric_combination(&[point1, point2, point3], &[0.1, 0.4, 0.5]);
@@ -237,6 +306,7 @@ On the other hand, some operations are specific of absolute values:
 ## Angles
 
 With the library `measures`, you can also handle angles.
+
 Consider a screw mechanism, that can be turned by several cycles (or revolutions).
 ```rust
     let mut position = MeasurePoint::<Cycle>::new(3.);
@@ -249,10 +319,10 @@ The initial position of the screw is 3 cycles. We turn it by 90 degrees, that is
 
 For some applications, such unconstrained angular positions and rotations are useful.
 Though, for some other applications, angles are used just to indicate a direction, or a spherical coordinate.
-For such cases, when a full cycle is completed, we reach the same position than before.
+For such cases, when a full cycle is completed, we reach the same position than before the turn.
 It is a kind of *modulo* arithmetics.
 
-This is supported by this library, as shown in this code:
+This is supported by this library, using the type `UnsignedDirection` or the type `SignedDirection`, as shown in this code:
 ```rust
     let mut direction = UnsignedDirection::<Degree>::new(350.);
     let rotation = Measure::<Degree>::new(30.);
@@ -260,13 +330,14 @@ This is supported by this library, as shown in this code:
     assert_eq!(direction.value, 20.);
 ```
 
-When 30 is added to 350, you get 380, but because we want to restrict our angles in the range 0 to 360 degrees, that value becomes 20 degrees.
+When 30 degrees is added to 350 degrees, you get 380 degrees, but because we want to restrict our angles in the range from 0 to 360 degrees, that value becomes 20 degrees.
 
-The name `UnsignedDirection` contains the word `Direction` because it is meant to represent directions in the plane, not positions of a screw.
+The name `UnsignedDirection` contains the word `Direction`, because it is meant to represent directions in the plane, not positions of a screw.
 
 And it contains the word `Unsigned` because its values are constrained to be non-negative numbers.
 
-Another common convention to represent directions is to use the range from -180 to 180 degrees. For example, it is the one used to represent geographical coordinates.
+Another common convention to represent directions is to use the range from -180 to +180 degrees.
+For example, it is the one used to represent geographical coordinates.
 
 Here is an example using such a type:
 ```rust
@@ -276,11 +347,11 @@ Here is an example using such a type:
     assert_eq!(direction.value, -170.);
 ```
 
-In this case, we used the type `SignedDirection`, and so when its value is incremented from 160 to 190 degrees, that value becomes -170 degrees.
+In this case, we used the type `SignedDirection`, and so, when its value is incremented from 160 to 190 degrees, that value becomes -170 degrees.
 
 So, we have seen that there are three types of directions: `MeasurePoint<Unit>`, where `Unit` is an angular unit of measurement, `UnsignedDirection`, and `SignedDirection`.
 
-One obvious way to convert between them is to pass through the naked angle number, by accessing their field `value`.
+One obvious way to convert between them is to pass through the numeric value of the angle, by accessing their field `value`.
 Though, there are also some functions that allow a direct conversion:
 ```rust
     let angle_measure_point = MeasurePoint::<Degree>::new(-362.);
@@ -319,10 +390,11 @@ If you are not interested in them, you can jump to the section [Mixed-unit opera
 If our measures represent vectors or points in a plane, they must be represented by two numbers, which may be its norm and direction or its X and Y components.
 The `measures` library uses the latter representation, like this example shows:
 ```rust
-    let position1 = MeasurePoint2d::<Metre>::new(4., 7.);
-    let displacement = Measure2d::<Metre>::new(2., -12.);
+    let position1 = MeasurePoint2d::<Metre>::new([4., 7.]);
+    let displacement = Measure2d::<Metre>::new([2., -12.]);
     let position2 = position1 + displacement;
-    println!("After I moved from position {position1} in the plane by {displacement}, my position had become {position2}.");
+    println!("After I moved from position {position1} in the plane \
+    by {displacement}, my position had become {position2}.");
 ```
 
 It will print:
@@ -330,16 +402,17 @@ It will print:
 After I moved from position at (4, 7) m in the plane by (2, -12) m, my position had become at (6, -5) m.
 ```
 
-Notice that relative 2D-measures are encapsulated in the type `Measure2d`, and absolute 2D-measures in the type `MeasurePoint2d`.
+Notice that relative 2D-measures are encapsulated in the type `Measure2d`, and absolute 2D-measures are encapsulated in the type `MeasurePoint2d`.
 
 They are printed as a tuple of numbers, followed by a single unit symbol.
 Absolute measures are precede by "`at `".
 
-Actually, such objects contain just two numbers. You can access them as shown in this code:
+Actually, such objects contain just ann array of two numbers.
+You can access them as shown in this code:
 ```rust
-    let position = Measure2d::<Metre>::new(4., 7.);
-    let x_value: f64 = position.x;
-    let y_value: f64 = position.y;
+    let position = Measure2d::<Metre>::new([4., 7.]);
+    let x_value: f64 = position.values[0];
+    let y_value: f64 = position.values[1];
     println!("The numeric components of {position} are {x_value} and {y_value}.");
 ```
 
@@ -351,7 +424,7 @@ The numeric components of (4, 7) m are 4 and 7.
 The components can be accessed also by the methods `x()` and `y()`, which returns measures, instead of primitive numbers.
 
 ```rust
-    let position = Measure2d::<Metre>::new(4., 7.);
+    let position = Measure2d::<Metre>::new([4., 7.]);
     let x_measure: Measure::<Metre> = position.x();
     let y_measure: Measure::<Metre> = position.y();
     println!("The measure components of {position} are {x_measure} and {y_measure}.");
@@ -365,124 +438,123 @@ The measure components of (4, 7) m are 4 m and 7 m.
 Many operations available for 1D-measures are also available for 2D-measures, with some reasonable changes.
 Here are some examples:
 ```rust
-    let m = Measure2d::<Metre>::new(3., 4.);
+    let m = Measure2d::<Metre>::new([3., 4.]);
     let squared_norm = m.squared_norm();
-    let norm = squared_norm.sqrt();
+    let norm = m.norm();
     println!("The squared norm of {m} is {squared_norm}; its norm is {norm}.");
 ```
 
 It will print:
 ```
-The squared norm of (3, 4) m is 25; its norm is 5.
+The squared norm of (3, 4) m is 25; its norm is 5 m.
 ```
 
 The method `m.squared_norm()` returns the value of the formula `m.x * m.x + m.y * m.y`.
 According with the Pythagorean theorem, this value is the square of the length of the vector.
-Such a value can be useful by itself, or it can be used to compute the length of the vector, a.k.a. its *norm*, by computing its square root.
 
+The method `m.norm()` returns the one-dimensional measure representing the length of the vector. Its value is the square root of the value returned by `squared_norm`.
+
+The method `normalized` returns a vector having the same direction of the original vector, but with norm one.
 ```rust
-    let m = Measure2d::<Metre>::new(3., 4.);
+    let m = Measure2d::<Metre>::new([3., 4.]);
     let normalized = m.normalized();
-    let norm_of_normalized = normalized.squared_norm().sqrt();
+    let norm_of_normalized = normalized.norm();
     println!("The norm of {normalized} is {norm_of_normalized}.");
 ```
 
 It will print:
 ```
-The norm of (0.6000000000000001, 0.8) m is 1.
+The norm of (0.6000000000000001, 0.8) m is 1 m.
 ```
-
-The method `normalized` returns a vector having the same direction of the original vector, but with norm 1.
 
 The vector whose all components are zero, is known as the *zero vector*.
 It cannot really be normalized:
 ```rust
 fn main() {
-    let zero_vector = Measure2d::<Metre>::new(0., 0.);
-    let norm_of_zero_vector = zero_vector.squared_norm().sqrt();
+    let zero_vector = Measure2d::<Metre>::new([0., 0.]);
+    let norm_of_zero_vector = zero_vector.norm();
     let normalized_zero_vector = zero_vector.normalized();
-    println!("The norm of {zero_vector} is {norm_of_zero_vector}; by normalizing it, we get {normalized_zero_vector}.");
+    println!("The norm of {zero_vector} is {norm_of_zero_vector}; \
+    by normalizing it, we get {normalized_zero_vector}.");
 }
 ```
 
 It will print:
 ```
-The norm of (0, 0) m is 0; by normalizing it, we get (NaN, NaN) m.
+The norm of (0, 0) m is 0 m; by normalizing it, we get (NaN, NaN) m.
 ```
 
 Its norm is zero, and if we try to normalize it, we obtain a vector whose components are `NaN` (not-a-number).
 
 2D measures can be compared for equality, but not for order:
 ```rust
-    let m1 = Measure2d::<Metre>::new(3., 4.);
-    let m2 = Measure2d::<Metre>::new(4., 3.);
+    let m1 = Measure2d::<Metre>::new([3., 4.]);
+    let m2 = Measure2d::<Metre>::new([4., 3.]);
     assert!(m1 != m2);
 
     // binary operation `<` cannot be applied to type `units::Measure2d<units::Metre>`
-    // assert!(m1 < m2);
+    // assert!(m1 < m2); // ILLEGAL
 ```
 
 ## Converting a direction to a `Measure2d` and conversely
 
-As we said before, a 2D measure is associated to a direction in a plane; though, also the types `MeasurePoint` of an angle unit, `UnsignedDirection` and `SignedDirection` are associated to a direction in a plane.
+As we said before, a 2D measure is associated to a vector in a planne, and it has a direction in that plane; though, also the types `MeasurePoint` of an angle unit, `UnsignedDirection` and `SignedDirection` are associated to a direction in a plane.
 
 Therefore we can, in a way, make conversions between them:
 ```rust
     let downward = MeasurePoint::<Degree>::new(-90.);
-    println!("The direction downward (that is {downward}) can be used to construct");
-    println!("a 2D measure having any unit and norm 1.");
+    println!("The direction downward (that is {downward}) can be used to construct \
+    a 2D measure having any unit and norm 1.");
     let m = Measure2d::<MilePerHour>::from_direction(downward);
     println!("Using miles per hour, we get {m}.");
 ```
 
 It will print:
 ```
-The direction downward (that is at -90 deg) can be used to construct
-a 2D measure having any unit and norm 1.
+The direction downward (that is at -90 deg) can be used to construct a 2D measure having any unit and norm 1.
 Using miles per hour, we get (0.00000000000000006123233995736766, -1) mi/h.
 ```
 
-So, the function `from_direction` gets a `MeasurePoint` having an angle as its unit, and constructs a `Measure2d` of norm 1.
+So, the function `from_direction` gets a `MeasurePoint` having an angle unit, and constructs a `Measure2d` of norm one.
 Because any measure must have a unit, the unit of the constructed 2D vector must be specified or inferred from the statement in which this function is used.
 
 Conversely, any object of type Measure2d can be converted to an `UnsignedDirection` by its method `unsigned_direction`, and it can be converted to a `SignedDirection` by its method `signed_direction`.
 Also in this case, the unit of the destination angle must be specified or inferred:
 ```rust
-    let m = Measure2d::<MilePerHour>::new(0., -10.);
+    let m = Measure2d::<MilePerHour>::new([0., -10.]);
     let signed_direction = m.signed_direction::<Degree>();
-    println!("A 2D measure can be used to construct its signed direction {signed_direction}");
+    print!("A 2D measure can be used to construct its signed direction {signed_direction} ");
     let unsigned_direction = m.unsigned_direction::<Degree>();
     println!("or its unsigned direction {unsigned_direction}.");
 ```
 
 It will print:
 ```
-A 2D measure can be used to construct its signed direction at -90 deg (in -180°..180°)
-or its unsigned direction at 270 deg (in 0°..360°).
+A 2D measure can be used to construct its signed direction at -90 deg (in -180°..180°) or its unsigned direction at 270 deg (in 0°..360°).
 ```
 
 ## Working in the 3D space
 
 Similarly to 2D measures, 3D measures are supported:
 ```rust
-    let position1 = MeasurePoint3d::<Metre>::new(4., 7., -3.);
-    let displacement = Measure3d::<Metre>::new(2., -12., -2.);
+    let position1 = MeasurePoint3d::<Metre>::new([4., 7., -3.]);
+    let displacement = Measure3d::<Metre>::new([2., -12., -2.]);
     let position2 = position1 + displacement;
-    println!("After I moved from position {position1} in the space");
-    println!("by {displacement}, my position had become {position2}.");
+    println!("After I moved from position {position1} in the space \
+    by {displacement}, my position had become {position2}.");
 ```
 
 It will print:
 ```
-After I moved from position at (4, 7, -3) m in the space
-by (2, -12, -2) m, my position was at (6, -5, -5) m.
+After I moved from position in the space at (4, 7, -3) m by (2, -12, -2) m, my position had become at (6, -5, -5) m.
 ```
 
 Notice that _relative_ 3D-measures are encapsulated in the type `Measure3d`, and _absolute_ 3D-measures in the type `MeasurePoint3d`.
 
-Of course, the member `z` and the method `z()` have been added.
+Of course, the member `value` is now a three-number array, and the method `z()` has been added.
 
 The operations available for 3D measures are very similar to the ones for 2D measures, excluding the conversions from and to directions.
+
 
 ## Linear transformations in a plane
 
@@ -490,28 +562,27 @@ When working with vectors or points, some geometrical operations are quite commo
 
 First, let's see how a rotation of a vector in a plane can be performed:
 ```rust
-    let m1 = Measure2d::<Metre>::new(3., 1.);
+    let m1 = Measure2d::<Metre>::new([3., 1.]);
     let angle = Measure::<Degree>::new(20.);
     let rotation = LinearMap2d::rotation(angle);
     let m2 = rotation.apply_to(m1);
-    println!("If measure {m1} is rotated counterclockwise by {angle},");
-    println!("measure {m2} is obtained.");
+    println!("If measure {m1} is rotated counterclockwise by {angle}, \
+    measure {m2} is obtained.");
 ```
 
 It will print:
 ```
-If measure (3, 1) m is rotated counterclockwise by 20 deg,
-measure (2.4770577190320564, 1.9657530507629146) m is obtained.
+If measure (3, 1) m is rotated counterclockwise by 20 deg, measure (2.4770577190320564, 1.9657530507629146) m is obtained.
 ```
 
-To rotate a vector by an angle, we don't use a method of the vector, nor a method of the angle.
-Instead, we create an object specialized in performing a 2D linear transformation, whose type is `LinearMap2d`.
+To rotate a vector by an angle, we didn't use a method of the vector, nor a method of the angle.
+Instead, we created an object specialized in performing a 2D linear transformation, whose type is `LinearMap2d`.
 Rotations of vectors in a plane happen to be 2D linear transformations, and so we use such an object.
 
-To create a specific linear transformation representing a rotation, the method `rotation` is used.
+To create a specific linear transformation representing a rotation, the method `rotation` was used.
 It receives an angle, and creates an object capable of rotating any vector by that angle.
 
-To rotate a vector using a linear transformation, the method `apply_to` is called, and the vector is specified to it.
+To rotate a vector using a linear transformation, the method `apply_to` was called, and the vector is specified in such a call.
 
 How is implemented a 2D linear transformation?
 It is just a 2x2 matrix of numbers:
@@ -524,40 +595,37 @@ It is just a 2x2 matrix of numbers:
 It will print:
 ```
 A rotation by 20 deg is this matrix:
-[0.9396926207859084 -0.3420201433256687]
-[0.3420201433256687  0.9396926207859084].
+ ⎡ 0.9396926207859084 -0.3420201433256687 ⎤
+ ⎣ 0.3420201433256687  0.9396926207859084 ⎦.
 ```
 
-Linear transformation do not depend on units of measurement.
+Linear transformations do not depend on units of measurement.
 
 There are linear transformation objects to perform other kinds of transformations:
 ```rust
-    let line_vector = Measure2d::<measures::dimensionless::One>::new(3., 1.);
+    let line_vector = Measure2d::<measures::dimensionless::One>::new([3., 1.]);
     let unit_vector = line_vector.normalized();
     let projection = LinearMap2d::projection_by_unit_vector(unit_vector);
-    let m1 = Measure2d::<MilePerHour>::new(2., 5.);
+    let m1 = Measure2d::<MilePerHour>::new([2., 5.]);
     let m2 = projection.apply_to(m1);
-    println!("If vector {m1} is projected onto the line whose direction");
-    println!("is that of the vector {line_vector},");
-    println!("the vector {m2} is obtained.");
+    println!("If vector {m1} is projected onto the line whose direction is \
+    that of the vector {line_vector}, the vector {m2} is obtained.");
 ```
 
 It will print:
 ```
-If vector (2, 5) mi/h is projected onto the line whose direction
-is that of the vector (3, 1),
-the vector (3.3, 1.1) mi/h is obtained.
+If vector (2, 5) mi/h is projected onto the line whose direction is that of the vector (3, 1), the vector (3.3, 1.1) mi/h is obtained.
 ```
 
-We have a planar measure used to specify a direction. Its unit is `measures::dimensionless::One`; it is a kind of dummy built-in unit, to use when we don't have a real unit of measurement.
+We had a planar measure used to specify a direction. Its unit is `measures::dimensionless::One`; it is a kind of dummy built-in unit, to use when we don't have a real unit of measurement.
 
-Then, we need to normalize it, otherwise the result will make no sense.
+Then, we needed to normalize it, otherwise the result would make no sense.
 
-Then, we create a linear transformation using that unit vector, by calling the method `projection_by_unit_vector`.
+Then, we created a linear transformation using that unit vector, by calling the method `projection_by_unit_vector`.
 
-Then, we create the planar measure that we want to project.
+Then, we created the planar measure that we want to project.
 
-And finally, we apply the linear transformation to the planar measure, obtaining another measure having the same unit.
+And finally, we applied the linear transformation to the planar measure, obtaining another measure having the same unit.
 
 Here is the complete list of methods of `LinearMap2d`, which can be used to create linear transformations in a plane:
 * `new(coefficients: [[Number; 2]; 2])`: It allows to construct any 2D linear transformation, if you know its 4 coefficients.
@@ -565,21 +633,21 @@ Here is the complete list of methods of `LinearMap2d`, which can be used to crea
 * `rotation(angle: Measure)`: It returns a transformation which rotates vectors counterclockwise by the specified angle.
 * `rotation_at_left()`: It is equivalent to `rotation(Measure::<Degree>::new(90.))`. Though, it has no rounding errors, and it is more efficient.
 * `rotation_at_right()`: It is equivalent to `rotation(Measure::<Degree>::new(-90.))`. Though, it has no rounding errors, and it is more efficient.
-* `projection_by_point_angle(direction: MeasurePoint)`: It returns a transformation which projects vectors onto the line having the direction specified by an absolute angle.
+* `projection_by_point_angle(direction: MeasurePoint)`: It returns a transformation which projects vectors onto the line which has the direction specified by an absolute angle.
 * `projection_by_unsigned_direction(direction: UnsignedDirection)`: Similar to `projection_by_point_angle`, but using an `UnsignedDirection`.
 * `projection_by_signed_direction(direction: SignedDirection)`: Similar to `projection_by_point_angle`, but using a `SignedDirection`.
-* `projection_by_unit_vector(unit_vector: Measure2d)`: Similar to `projection_by_point_angle`, but using a `Measure2d` of any unit, but having norm one.
-* `reflection_by_point_angle(direction: MeasurePoint)`: It returns a transformation which reflects (a.k.a. *mirrors*) over the line having the direction specified by an absolute angle.
+* `projection_by_unit_vector(unit_vector: Measure2d)`: Similar to `projection_by_point_angle`, but using a `Measure2d` of any unit, and having norm one.
+* `reflection_by_point_angle(direction: MeasurePoint)`: It returns a transformation which reflects (a.k.a. *mirrors*) over the line which has the direction specified by an absolute angle.
 * `reflection_by_unsigned_direction(direction: UnsignedDirection)`: Similar to `reflection_by_point_angle`, but using an `UnsignedDirection`.
 * `reflection_by_signed_direction(direction: SignedDirection)`: Similar to `reflection_by_point_angle`, but using a `SignedDirection`.
-* `reflection_by_unit_vector(unit_vector: Measure2d)`: Similar to `reflection_by_point_angle`, but using a `Measure2d` of any unit, but having norm one.
+* `reflection_by_unit_vector(unit_vector: Measure2d)`: Similar to `reflection_by_point_angle`, but using a `Measure2d` of any unit, and having norm one.
 
 ## Manipulating transformations
 
 As we have seen, when you have a transformation object, you can use it by calling its method `apply_to`.
 Tough, you can also do other operations on a transformation object:
 * `inverted()`: It returns a 2d linear transformation which has the opposite effect of the original transformation. For example, the inverse of a clockwise rotation is a counterclockwise rotation; and the inverse of a scaling which doubles the size is a scaling which halves the size.
-* `combined_with(map: &LinearMap2d)`: It returns a 2D linear transformation which is equivalent to applying first the argument `map` of the call, and then the transformation on which this function is called. Notice that transformations are non commutative, and so `lm1.combined_with(&lm2)` generally is not equal to `lm2.combined_with(&lm1)`.
+* `combined_with(map: &LinearMap2d)`: It returns a 2D linear transformation which is equivalent to applying first the argument `map` of the call, and then the transformation on which this function is called. Notice that transformations are non-commutative, and so `lm1.combined_with(&lm2)` generally is not equal to `lm2.combined_with(&lm1)`.
 
 ## Affine transformations in a plane
 
@@ -588,26 +656,25 @@ Though, you may need to transform some points in a plane.
 Here is how to rotate a point in a plane around another specified point:
 
 ```rust
-    let mp1 = MeasurePoint2d::<Metre>::new(3., 1.);
+    let mp1 = MeasurePoint2d::<Metre>::new([3., 1.]);
     let angle = Measure::<Degree>::new(20.);
-    println!("If measure point {mp1} is rotated counterclockwise by {angle}");
+    print!("If measure point {mp1} is rotated counterclockwise by {angle} ");
 
-    let fixed_point = MeasurePoint2d::<Metre>::new(1., 2.);
+    let fixed_point = MeasurePoint2d::<Metre>::new([1., 2.]);
+    print!("around measure point {fixed_point}, ");
+
     let rotation = AffineMap2d::rotation(fixed_point, angle);
-    println!("around measure point {fixed_point},");
-
     let mp2 = rotation.apply_to(mp1);
     println!("measure point {mp2} is obtained.");
 ```
 
 It will print:
 ```
-If measure point at (3, 1) m is rotated counterclockwise by 20 deg
-around measure point at (1, 2) m,
-measure point at (3.2214053848974853, 1.744347665865429) m is obtained.
+If measure point at (3, 1) m is rotated counterclockwise by 20 deg around measure point at (1, 2) m, measure point at (3.2214053848974853, 1.744347665865429) m is obtained.
 ```
 
-The first thing to notice is that the type `AffineMap2d` is used, instead of the type `LinearMap2d`. This is because, to transform a point measure, an affine transformation is needed.
+The first thing to notice is that the type `AffineMap2d` is used, instead of the type `LinearMap2d`.
+This is because, to transform a point measure, an affine transformation is needed.
 
 For many affine transformations, it is needed to specify a fixed point in the transformation.
 Such a point must have the same unit of measurement of the point we want to transform, and so also the objects of type `AffineMap2d` will be characterized by that unit.
@@ -615,32 +682,30 @@ You cannot use an `AffineMap2d<KiloMetre>` to transform a `MeasurePoint2d<Mile>`
 
 This introduces the need to change the unit of an affine transformation, like this code does:
 ```rust
-    let fixed_point = MeasurePoint2d::<Metre, f32>::new(2., 3.);
+    let fixed_point = MeasurePoint2d::<Metre, f32>::new([2., 3.]);
     let angle = Measure::<Degree, f32>::new(20.);
     let rotation_in_metres = AffineMap2d::rotation(fixed_point, angle);
-    println!("The rotation matrix in metres is:");
-    println!("{rotation_in_metres}");
+    println!("The rotation matrix in metres is:\n{rotation_in_metres}");
 
     let rotation_in_yards = AffineMap2d::rotation(fixed_point.convert::<Yard>(), angle);
-    println!("The rotation matrix in yards is:");
-    println!("{rotation_in_yards}");
+    println!("The rotation matrix in yards is:\n{rotation_in_yards}");
 
     let rotation_converted_from_yards_to_metres = rotation_in_yards.convert::<Metre>();
-    println!("The rotation matrix converted from yards to metres is:");
-    println!("{rotation_converted_from_yards_to_metres}");
+    println!("The rotation matrix converted from yards to metres is:\n\
+    {rotation_converted_from_yards_to_metres}");
 ```
 
 It will print:
 ```
 The rotation matrix in metres is:
-[0.9396926  -0.34202012  1.1466751] m
-[0.34202012  0.9396926  -0.5031183]
+ ⎡ 0.9396926  -0.34202012  1.1466751 ⎤ m
+ ⎣ 0.34202012  0.9396926  -0.5031183 ⎦
 The rotation matrix in yards is:
-[0.9396926  -0.34202012  1.254019 ] yd
-[0.34202012  0.9396926  -0.5502167]
+ ⎡ 0.9396926  -0.34202012  1.254019  ⎤ yd
+ ⎣ 0.34202012  0.9396926  -0.5502167 ⎦
 The rotation matrix converted from yards to metres is:
-[0.9396926  -0.34202012  1.146675 ] m
-[0.34202012  0.9396926  -0.5031181]
+ ⎡ 0.9396926  -0.34202012  1.146675  ⎤ m
+ ⎣ 0.34202012  0.9396926  -0.5031181 ⎦
 ```
 
 Here you can see that affine matrices are 2x3 matrices of numbers, and they have a unit of measurement.
@@ -652,49 +717,47 @@ With respect to linear transformations, there is an additional affine transforma
 Translations have no sense for linear transformations.
 Here is an example of it:
 ```rust
-    let mp1 = MeasurePoint2d::<Metre>::new(3., 1.);
-    let displacement = Measure2d::<Metre>::new(7., -12.);
-    println!("If measure point {mp1} is translated by {displacement},");
+    let mp1 = MeasurePoint2d::<Metre>::new([3., 1.]);
+    let displacement = Measure2d::<Metre>::new([7., -12.]);
+    print!("If measure point {mp1} is translated by {displacement}, ");
 
     let translation = AffineMap2d::translation(displacement);
     let mp2 = translation.apply_to(mp1);
     println!("measure point {mp2} is obtained.");
 
     let mp3 = mp1 + displacement;
-    println!("If such displacement is just added to the measure point,");
-    println!("measure point {mp3} is obtained.");
+    println!("If such displacement is just added to the measure point, \
+    measure point {mp3} is obtained.");
 ```
 
 It will print:
 ```
-If measure point at (3, 1) m is translated by (7, -12) m,
-measure point at (10, -11) m is obtained.
-If such displacement is just added to the measure point,
-measure point at (10, -11) m is obtained.
+If measure point at (3, 1) m is translated by (7, -12) m, measure point at (10, -11) m is obtained.
+If such displacement is just added to the measure point, measure point at (10, -11) m is obtained.
 ```
 
 As you can see, applying a translation transformation to a point is equivalent to adding the displacement vector to that point.
-Therefore, translation transformations are actually useful only when they are combined with other affine transformations.
+Therefore, translation transformations are actually needed only when they are combined with other affine transformations.
 
 Here is the complete list of methods of `AffineMap2d`, which can be used to create affine transformations in a plane:
 * `new(coefficients: [[Number; 3]; 2])`: It allows to construct any 2D affine transformation, if you know its 6 coefficients.
 * `translation(displacement: Measure2d)`: It returns a transformation which adds the specified vector to measure points.
-* `scaling(fixed_point: MeasurePoint2d, factors: [Number; 2])`: It returns a transformation which multiplies by the corresponding factors the differences with the specified fixed point.
+* `scaling(fixed_point: MeasurePoint2d, factors: [Number; 2])`: It returns a transformation which multiplies by the corresponding factors the differences with the specified fixed point coordinates.
 * `rotation(fixed_point: MeasurePoint2d, angle: Measure)`: It returns a transformation which rotates vectors counterclockwise by the specified angle, around the specified fixed point.
 * `rotation_at_left(fixed_point: MeasurePoint2d)`: It is equivalent to `rotation(fixed_point: MeasurePoint2d, Measure::<Degree>::new(90.))`. Though, it has no rounding errors, and it is more efficient.
 * `rotation_at_right(fixed_point: MeasurePoint2d)`: It is equivalent to `rotation(fixed_point: MeasurePoint2d, Measure::<Degree>::new(-90.))`. Though, it has no rounding errors, and it is more efficient.
 * `projection_by_point_angle(fixed_point: MeasurePoint2d, direction: MeasurePoint)`: It returns a transformation which projects vectors onto the line going through the specified fixed point and having the direction specified by an absolute angle.
 * `projection_by_unsigned_direction(fixed_point: MeasurePoint2d, direction: UnsignedDirection)`: Similar to `projection_by_point_angle`, but using an `UnsignedDirection`.
 * `projection_by_signed_direction(fixed_point: MeasurePoint2d, direction: SignedDirection)`: Similar to `projection_by_point_angle`, but using a `SignedDirection`.
-* `projection_by_unit_vector(fixed_point: MeasurePoint2d, unit_vector: Measure2d)`: Similar to `projection_by_point_angle`, but using a `Measure2d` of any unit, but having norm one.
+* `projection_by_unit_vector(fixed_point: MeasurePoint2d, unit_vector: Measure2d)`: Similar to `projection_by_point_angle`, but using a `Measure2d` of any unit, and having norm one.
 * `reflection_by_point_angle(fixed_point: MeasurePoint2d, direction: MeasurePoint)`: It returns a transformation which reflects (a.k.a. *mirrors*) over the line going through the specified fixed point and having the direction specified by an absolute angle.
 * `reflection_by_unsigned_direction(fixed_point: MeasurePoint2d, direction: UnsignedDirection)`: Similar to `reflection_by_point_angle`, but using an `UnsignedDirection`.
 * `reflection_by_signed_direction(fixed_point: MeasurePoint2d, direction: SignedDirection)`: Similar to `reflection_by_point_angle`, but using a `SignedDirection`.
-* `reflection_by_unit_vector(fixed_point: MeasurePoint2d, unit_vector: Measure2d)`: Similar to `reflection_by_point_angle`, but using a `Measure2d` of any unit, but having norm one.
+* `reflection_by_unit_vector(fixed_point: MeasurePoint2d, unit_vector: Measure2d)`: Similar to `reflection_by_point_angle`, but using a `Measure2d` of any unit, and having norm one.
 
 ## Transformations in 3d space
 
-Regarding linear transformations of `Measure3d` objects and affine transformations of `MeasurePoint3d` objects, little is to be explained, because they are quite similar to the corresponding planar transformation, replacing `2d` with `3d`, and specifying the additional Z component when required.
+Regarding linear transformations of `Measure3d` objects and affine transformations of `MeasurePoint3d` objects, not much is to be explained, because they are quite similar to the corresponding planar transformations, just replacing `2d` with `3d`, and specifying the additional Z component when required.
 
 The differences to take into account are these:
 * There are no specific rotation at right nor rotation at left.
@@ -704,7 +767,7 @@ Such planes are specified by a unit vector orthogonal to them.
 
 Here is the complete list of methods of `LinearMap3d`, which can be used to create linear transformations in the space:
 * `new(coefficients: [[Number; 3]; 3])`: It allows to construct any 3D linear transformation, if you know its 9 coefficients.
-* `scaling(factors: [Number; 3])`: It returns a transformation which multiplies the first coordinate by the first factor, the second coordinate by the second factor, and the third coordinates by the third factor. To have an isotropic scaling, the factors must be equal.
+* `scaling(factors: [Number; 3])`: It returns a transformation which multiplies the first coordinate by the first factor, the second coordinate by the second factor, and the third coordinate by the third factor. To have an isotropic scaling, the factors must be equal.
 * `rotation(unit_vector: Measure3d, angle: Measure)`: It returns a transformation which rotates vectors counterclockwise by the specified angle around the axis specified by a unit vector.
 * `projection_onto_line(unit_vector: Measure3d)`: It returns a transformation which projects vectors onto the line having the direction specified by a unit vector.
 * `projection_onto_plane(unit_vector: Measure3d)`: It returns a transformation which projects vectors onto the plane specified by its orthogonal unit vector.
@@ -714,7 +777,7 @@ Here is the complete list of methods of `LinearMap3d`, which can be used to crea
 And here is the complete list of methods of `AffineMap3d`, which can be used to create affine transformations in the space:
 * `new(coefficients: [[Number; 4]; 3])`: It allows to construct any 3D affine transformation, if you know its 12 coefficients.
 * `translation(displacement: Measure3d)`: It returns a transformation which adds the specified vector to measure points.
-* `scaling(fixed_point: MeasurePoint3d, factors: [Number; 3])`: It returns a transformation which multiplies by the corresponding factors the differences with the specified fixed point.
+* `scaling(fixed_point: MeasurePoint3d, factors: [Number; 3])`: It returns a transformation which multiplies by the corresponding factors the differences with the specified fixed point coordinates.
 * `rotation(fixed_point: MeasurePoint3d, unit_vector: Measure3d, angle: Measure)`: It returns a transformation which rotates points counterclockwise by the specified angle, around the axis going through the specified fixed point and having the direction specified by a unit vector.
 * `projection_onto_line(fixed_point: MeasurePoint3d, unit_vector: Measure3d)`: It returns a transformation which projects points onto the line going through the specified fixed point and having the direction specified by a unit vector.
 * `projection_onto_plane(fixed_point: MeasurePoint3d, unit_vector: Measure3d)`: It returns a transformation which projects points onto the plane going through the specified fixed point and having the specified orthogonal unit vector.
@@ -728,26 +791,25 @@ Though, using the crate `measures`, it is allowed to write this:
 ```rust
     let length = Measure::<Metre>::new(10.);
     let time = Measure::<Second>::new(4.);
-    println!("If I move by a distance of {length} in a time span of {time},");
+    print!("If I move by a distance of {length} in a time span of {time}, ");
 
     let velocity: Measure<MetrePerSecond> = length / time;
-    println!("I have an average speed of {velocity}.");
+    println!("then I have an average speed of {velocity}.");
 ```
 
 It will print:
 ```
-If I move by a distance of 10 m in a time span of 4 s,
-I have an average speed of 2.5 m/s.
+If I move by a distance of 10 m in a time span of 4 s, then I have an average speed of 2.5 m/s.
 ```
 
 When a measure having unit `Metre` is divided by a measure having unit `Second`, the result is a measure having unit `MetrePerSecond`.
 
-Also square roots are supported:
+Even square roots are supported:
 ```rust
     use measures::traits::Sqrt;
     let length = Measure::<Metre>::new(10.);
     let width = Measure::<Metre>::new(4.);
-    println!("If a rectangle has length {length} and width {width},");
+    print!("If a rectangle has length {length} and width {width}, ");
 
     let area: Measure<SquareMetre> = length * width;
     println!("its area is {area}.");
@@ -758,8 +820,7 @@ Also square roots are supported:
 
 It will print:
 ```
-If a rectangle has length 10 m and width 4 m,
-its area is 40 m².
+If a rectangle has length 10 m and width 4 m, its area is 40 m².
 If a square had that area, its side would be 6.324555320336759 m.
 ```
 
@@ -768,68 +829,62 @@ And when the square root is extracted from a measure having unit `SquareMetre`, 
 
 Such operations are available also in two or three dimensions:
 ```rust
-    let distance = Measure3d::<Metre>::new(10., 20., 40.);
+    let distance = Measure3d::<Metre>::new([10., 20., 40.]);
     let time = Measure::<Second>::new(4.);
-    println!("If I move by a distance of {distance} in a time span of {time},");
+    print!("If I move by a distance of {distance} in a time span of {time}, ");
 
     let velocity: Measure3d<MetrePerSecond> = distance / time;
-    println!("I have an average speed of {velocity}.");
+    println!("then I have an average speed of {velocity}.");
 ```
 
 It will print:
 ```
-If I move by a distance of (10, 20, 40) m in a time span of 4 s,
-I have an average speed of (2.5, 5, 10) m/s.
+If I move by a distance of (10, 20, 40) m in a time span of 4 s, then I have an average speed of (2.5, 5, 10) m/s.
 ```
 
 ## Dot products and cross products
 
-For some units of measurement, several kinds of multiplication are possible, depending on the dimension of the space.
-For example, using force and displacement, in one dimension, we can have just a simple multiplication.
+In one dimension, there is only one kind of multiplication between measures, but in a plane and in space there are two kinds of multiplication: the *dot product* and the *cross product*.
+
+For example, using force and displacement, in one dimension, we have just a simple multiplication:
 ```rust
     let force = Measure::<Newton>::new(10.);
-    println!("If a force of {force} is applied to an object,");
+    print!("If a force of {force} is applied to an object, ");
 
     let distance = Measure::<Metre>::new(4.);
-    println!("while it moves in the same direction by {distance},");
+    print!("while it moves in the same direction by {distance}, ");
 
     let work: Measure<Joule> = force * distance;
-    println!("a work of {work} is performed.");
+    println!("then a work of {work} is performed.");
 ```
 
 It will print:
 ```
-If a force of 10 N is applied to an object,
-while it moves in the same direction by 4 m,
-a work of 40 J is performed.
+If a force of 10 N is applied to an object, while it moves in the same direction by 4 m, then a work of 40 J is performed.
 ```
 
-But in a plane, we can have two kinds of multiplication: that are the *dot product* and the *cross product*:
+But in a plane, we can have two kinds of multiplication: the *dot product* and the *cross product*:
 ```rust
     use measures::traits::CrossProduct;
-    let force = Measure2d::<Newton>::new(10., 20.);
-    println!("If, in a plane, a force of {force} is applied to an object,");
+    let force = Measure2d::<Newton>::new([10., 20.]);
+    print!("If, in a plane, a force of {force} is applied to an object, ");
 
-    let distance = Measure2d::<Metre>::new(4., 3.);
-    println!("while it moves in that plane by {distance},");
+    let distance = Measure2d::<Metre>::new([4., 3.]);
+    print!("while it moves in that plane by {distance}, ");
 
     let work: Measure<Joule> = force * distance;
-    println!("a work of {work} is performed.");
+    println!("then a work of {work} is performed.");
 
     let torque: Measure<NewtonMetre> = force.cross_product(distance);
-    println!("If that force is applied to a point");
-    println!("which is detached from a pivot by an arm of {distance},");
-    println!("that force causes a torque of {torque}.");
+    println!("If that force is applied to a point \
+    which is detached from a pivot by an arm of {distance}, \
+    then that force causes a torque of {torque}.");
 ```
 
 It will print:
 ```
-If, in a plane, a force of (10, 20) N is applied to an object,
-while it moves in that plane by (4, 3) m,
-a work of 100 J is performed.
-If that force is applied to a point
-which is detached from a pivot by an arm of (4, 3) m,
-that force causes a torque of -50 N·m.
+If, in a plane, a force of (10, 20) N is applied to an object, while it moves in that plane by (4, 3) m, then a work of 100 J is performed.
+If that force is applied to a point which is detached from a pivot by an arm of (4, 3) m, then that force causes a torque of -50 N·m.
 ```
 
 Notice that the operator `*`, when applied to two 2D vectors, computes the dot product between them.
@@ -838,34 +893,31 @@ Instead, to compute the cross product, the method `cross_product` is called. It 
     use measures::traits::CrossProduct;
 ```
 
-In physics, while the dot product between a force and a displacement represents a work (or energy), and so that expression returns a measure in `Joule`, a cross product between a force and a displacement represents a torque (or moment of force), and so such an expression returns a measure in `NewtonMetre`; it is a another unit of measurement, incompatible with `Joule`.
+In physics, while the dot product between a force and a displacement represents a work (or energy), and so that expression returns a measure in `Joule`, a cross product between a force and a displacement represents a torque (or moment of force), and so such an expression returns a measure in `NewtonMetre`. The property of `Joule` is `Energy`, while the property of `NewtonMetre` is `Torque`.
 
 In 3D space we have this:
 ```rust
     use measures::traits::CrossProduct;
-    let force = Measure3d::<Newton>::new(10., 20., 0.4);
-    println!("In space, if a force of {force} is applied to an object,");
+    let force = Measure3d::<Newton>::new([10., 20., 0.4]);
+    print!("In space, if a force of {force} is applied to an object, ");
 
-    let distance = Measure3d::<Metre>::new(4., 3., -5.);
-    println!("while it moves by {distance},");
+    let distance = Measure3d::<Metre>::new([4., 3., -5.]);
+    println!("while it moves by {distance}, ");
 
     let work: Measure<Joule> = force * distance;
-    println!("a work of {work} is performed.");
+    println!("then a work of {work} is performed.");
 
     let torque: Measure3d<NewtonMetre> = force.cross_product(distance);
-    println!("If that force is applied to a point");
-    println!("which is detached from a pivot by an arm of {distance},");
-    println!("that force causes a torque of {torque}.");
+    println!("If that force is applied to a point \
+    which is detached from a pivot by an arm of {distance}, \
+    that force causes a torque of {torque}.");
 ```
 
 It will print:
 ```
-In space, if a force of (10, 20, 0.4) N is applied to an object,
-while it moves by (4, 3, -5) m,
-a work of 98 J is performed.
-If that force is applied to a point
-which is detached from a pivot by an arm of (4, 3, -5) m,
-that force causes a torque of (-101.2, 51.6, -50) N·m.
+In space, if a force of (10, 20, 0.4) N is applied to an object, while it moves by (4, 3, -5) m, 
+then a work of 98 J is performed.
+If that force is applied to a point which is detached from a pivot by an arm of (4, 3, -5) m, that force causes a torque of (-101.2, 51.6, -50) N·m.
 ```
 
 Even in this case, the dot product returns a scalar, having type `Measure<Joule>`.
@@ -878,6 +930,7 @@ Therefore, cross products in a plane expression return a scalar, containing the 
 Instead, in 3D space, the torque is a vector which could have any direction, and so the cross product returns a value of type `Measure3d`.
 
 ## Measures with uncertainty
+CONTINUE
 
 So far, every measure was represented by as many numeric values as the dimensions of the space.
 
@@ -942,71 +995,106 @@ Let's see its contents.
 It begins with this statement:
 ```rust
 measures::define_measure_types! {
-    with_points with_directions with_2d with_3d with_transformations exact,
+    with_points with_directions with_2d with_3d with_transformations exact with_approx,
 ```
 
 This is a macro invocation which expands to the code which defines these types:
-* `Measure`
-* `MeasurePoint`
-* `UnsignedDirections`
-* `SignedDirections`.
-* `Measure2d`
-* `MeasurePoint2d`
-* `LinearMap2d`
-* `AffineMap2d`.
-* `Measure3d`
-* `MeasurePoint3d`
-* `LinearMap3d`
-* `AffineMap3d`.
+* `Measure`: 1D relative measure.
+* `MeasurePoint`: 1D absolute measure.
+* `Measure2d`: 2D relative measure.
+* `MeasurePoint2d`: 2D absolute measure.
+* `Measure3d`: 3D relative measure.
+* `MeasurePoint3d`: 3D absolute measure.
+* `LinearMap2d`: Linear transformation of objects of type `Measure2d`.
+* `AffineMap2d`: Affine transformation of objects of type `MeasurePoint2d`.
+* `LinearMap3d`: Linear transformation of objects of type `Measure3d`.
+* `AffineMap3d`: Affine transformation of objects of type `MeasurePoint3d`.
+* `UnsignedDirections`: Directional angle between 0 and 360 degrees.
+* `SignedDirections`: Directional angle between -180 and +180 degrees.
+* `DecibelsMeasureFormatter`: Object to print measures as decibels.
+* `ApproxMeasure`: 1D relative measure with uncertainty variance.
+* `ApproxMeasurePoint`: 1D absolute measure with uncertainty variance.
+* `ApproxMeasure2d`: 2D relative measure with uncertainty variances.
+* `ApproxMeasurePoint2d`: 2D absolute measure with uncertainty variances.
+* `ApproxMeasure3d`: 3D relative measure with uncertainty variances.
+* `ApproxMeasurePoint3d`: 3D absolute measure with uncertainty variances.
+* `ApproxDecibelsMeasureFormatter`: Object to print measures as decibels with uncertainty variance.
+* `ApproxLinearMap2d`: Linear transformation of objects of type `Measure2d` with uncertainty variances.
+* `ApproxAffineMap2d`: Affine transformation of objects of type `MeasurePoint2d` with uncertainty variances.
+* `ApproxLinearMap3d`: Linear transformation of objects of type `Measure3d` with uncertainty variances.
+* `ApproxAffineMap3d`: Affine transformation of objects of type `MeasurePoint3d` with uncertainty variances.
+* `Dimensionless`: Property of dimensionless units.
+* `One`: The only built-in unit having the property `Dimensionless`.
+* `Angle`: Property of angle units.
+* `Radian`: The only built-in unit having the property `Angle`.
 
-Therefore, if there is the need to work in 1D, in 2D, in 3D and using angular directions, the macro `define_measure_types` with such arguments should be used.
-It will declare every kind of measure, directions and transformations.
+Therefore, if there is the need to work using relative and absolute measures, using angular directions, in 1D, in 2D, in 3D, using transformation objects, with exact measures and measures with uncertainty, the macro `define_measure_types` with such arguments should be used.
+It will declare every kind of measures, directions and transformations.
 
 Though, if only some of such types are needed, you can remove some of those arguments, and so reduce the number of declared types.
- In this way, the resulting code is quicker to compile, and developers are not bothered by unneeded types.
+In this way, the resulting code would be quicker to compile, and developers would not be not bothered by unneeded types.
 
-If points in affine spaces are not needed, remove the option `with_points`.
-The types `MeasurePoint`, `MeasurePoint2d`, `AffineMap2d`, `MeasurePoint3d` and `AffineMap3d` will not be generated.
+Relative measures cannot be removed, but if absolute measures, i.e. points in affine spaces, are not needed, you can remove the option `with_points` from the macro invocation.
+The following types will not be generated: `MeasurePoint`, `MeasurePoint2d`, `MeasurePoint3d`, `AffineMap2d`, and `AffineMap3d`.
 
-If angular directions are not needed, remove the option `with_directions`.
+If angular directions are not needed, you can remove the option `with_directions`.
 The types `UnsignedDirections` and `SignedDirections` will not be generated.
 
-If 2-dimension measures are not needed, remove the option `with_2d`.
-The types `Measure2d`, `MeasurePoint2d`, `LinearMap2d` and `AffineMap2d` will not be generated.
+1-dimension measures cannot be removed, but if 2-dimension measures are not needed, you can remove the option `with_2d`.
+The following types will not be generated: `Measure2d`, `MeasurePoint2d`, `LinearMap2d` and `AffineMap2d`.
 
-If 3-dimension measures are not needed, remove the option `with_3d`.
-The types `Measure3d`, `MeasurePoint3d`, `LinearMap3d` and `AffineMap3d` will not be generated.
+If 3-dimension measures are not needed, you can remove the option `with_3d`.
+The following types will not be generated: `Measure3d`, `MeasurePoint3d`, `LinearMap3d` and `AffineMap3d`.
 
-If the linear or affine transformations in a plane or in the space are not needed, remove the option `with_transformations`.
-The types `LinearMap2d`, `AffineMap2d`, `LinearMap3d` and `AffineMap3d` will not be generated.
+If the linear or affine transformations in a plane or in the space are not needed, you can remove the option `with_transformations`.
+The following types will not be generated: `LinearMap2d`, `AffineMap2d`, `LinearMap3d` and `AffineMap3d`.
 
-Actually, these definitions do not define all the units of measurement we used in our examples.
+If exact measures are not needed, because you are going to use only measures with uncertainty, you can remove the option `exact`.
+The following types will not be generated: `Measure`, `MeasurePoint`, `Measure2d`, `MeasurePoint2d`, `Measure3d`, `MeasurePoint3d`, `LinearMap2d`, `AffineMap2d`, `LinearMap3d`, `AffineMap3d`, `MeasurePoint3d`, `UnsignedDirections`,`SignedDirections`, `DecibelsMeasureFormatter`.
 
-The only predefined units of measurement are `Radian`, used for angles, and `One` used for dimensionless measures.
-Every other unit must be explicitly defined.
+Conversely, if measures with uncertainty are not needed, because you are going to use only exact measures, you can remove the option `with_approx`.
+The following types will not be generated: `ApproxMeasure`, `ApproxMeasurePoint`, `ApproxMeasure2d`, `ApproxMeasurePoint2d`, `ApproxMeasure3d`, `ApproxMeasurePoint3d`, `ApproxLinearMap2d`, `ApproxAffineMap2d`, `ApproxLinearMap3d`, `ApproxAffineMap3d`, `ApproxMeasurePoint3d`, `ApproxUnsignedDirections`,`ApproxSignedDirections`, `ApproxDecibelsMeasureFormatter`.
+
+Notice that it makes no sense to remove both the options `exact` and `with_approx`.
+
+Actually, these definitions do not define all the properties and all the units of measurement we used in our examples.
+
+The only predefined properties are `Dimensionless` and `Angle`, and the only predefined units of measurement are `Radian`, used for angles, and `One` used for dimensionless measures.
+
+Every other property and every other unit must be explicitly defined.
 
 ### Defining properties
 
-Actually, if you go on reading the file `units.rs`, you will see at lines 4 and 5:
+Actually, if you go on reading the file `units.rs`, you will see at line 520:
 ```rust
 measures::measurement_vector_property! { Acceleration }
 ```
 
-It defines a *property*. A (physical or geometrical) property is something you want to measure, and, for such a purpose, it needs one or more units of measurement.
+This macro invocation defines the *property* `Acceleration`.
+A (physical or geometrical) property is something you want to measure, and, for such a purpose, it needs one or more units of measurement.
 
 Its main purpose is to avoid unit conversions which do not make sense.
 For example, `Mile`, `Inch`, `NanoMetre` and `KiloMetre` are all units of the property `Length` and so it will be allowed to convert between two of them. Instead, `MetrePerSquareSecond` is a unit of the property `Acceleration`, and so it will be forbidden to convert from `Mile` or `MetrePerSquareSecond` or conversely.
 
-For some properties, it makes sense to have a 2D measure or 3D measure, and for others it does make no sense. For example, length, velocity, force, torque, electric field strength, and magnetic field strength are *vector properties*. Instead mass, temperature, time, and electric charge are *scalar properties*.
+Can you have a 2-dimension mass, or a 3-dimension time? No.
+Instead you have a 2-dimension velocity, or a 3-dimension electric field strength.
+
+Actually, for some properties, it makes sense to have a 2D measure or 3D measure.
+They are called *vector properties*.
+Example of vector properties are: length, velocity, force, torque, electric field strength, magnetic field strength, and dimensionless.
+
+Instead, for other properties it make sense only to have 1D measures.
+They are called *scalar properties*. 
+Example of scalar properties are: mass, temperature, time, electric charge, information, and angle.
 
 It is useful to forbid creating vectors for scalar properties.
 To such a purpose, the statement `measures::measurement_vector_property! { Acceleration }` just marks the property `Acceleration` as a vector property.
 Later, any attempt to create a 2D or 3D measure with a unit of this property will be allowed.
 For example, this is allowed: `Measure3d<MetrePerSquareSecond>`.
 
-Instead, the declaration of time should simply be this, without any `impl` statement:
+Instead, the declaration of the time property should be this:
 ```rust
-pub struct Time;
+measures::measurement_scalar_property! { Time }
 ```
 
 Later, any attempt to create a 2D or 3D measure with a unit of this property will generate a compilation error.
@@ -1014,25 +1102,21 @@ For example, this is not allowed: `Measure3d<Second>`.
 
 ### Defining units of measurement
 
-At line 7 of file `units.rs` there is:
+From line 522 of the file `units.rs` there is:
 ```rust
-pub struct MetrePerSquareSecond;
-```
-
-It defines a unit of measurement.
-
-The struct by itself has no content, because it is used just for its type, not for its value.
-Its type is decorated in the following lines:
-```rust
-impl MeasurementUnit for MetrePerSquareSecond {
-    type Property = Acceleration;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m/s\u{b2}";
+measures::measurement_unit! {
+    name: MetrePerSquareSecond,
+    property: Acceleration,
+    suffix: " m/s\u{b2}", // m/s²
 }
 ```
 
-The field `Property` asserts the property of this unit.
+This macro call defines a unit of measurement.
+
+The field `name` specify the name of the unit of measurement we are defining.
+
+The field `property` specify the property of this unit.
+
 As we said, we mean `MetrePerSquareSecond` to be an `Acceleration`.
 
 For every property, there should be in your mind a base unit.
@@ -1252,12 +1336,12 @@ The crate `measures` supports decibels only for the type `Measure`, as shown in 
 ```rust
     use measures::traits::Decibel;
     let one_milliwatt = Measure::<Watt>::new(0.001);
-    print!("{one_milliwatt:.4}"); // 0.0010 W
+    print!("{one_milliwatt:.4} "); // 0.0010 W
     let one_milliwatt_in_db = one_milliwatt.value.to_decibels();
-    print!(", {one_milliwatt_in_db:.1}"); // -30.0
+    print!(",{one_milliwatt_in_db:.1}, "); // -30.0
     let one_milliwatt_value = Decibel::from_decibels(one_milliwatt_in_db);
-    print!(", {one_milliwatt_value:.4}"); // 0.0010
-    print!(", {:.4};", one_milliwatt.decibels_formatter()); // -30.0000 dB W
+    print!("{one_milliwatt_value:.4}, "); // 0.0010
+    print!("{:.4};", one_milliwatt.decibels_formatter()); // -30.0000 dB W
 ```
 
 It will print: `0.0010 W, -30.0, 0.0010, -30.0000 dB W;`.
