@@ -7,12 +7,10 @@ use measures::{assert_eq_32, assert_eq_64};
 
 measures::measurement_vector_property! { Length }
 
-struct Metre;
-impl MeasurementUnit for Metre {
-    type Property = Length;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " m";
+measures::measurement_unit! {
+    name: Metre,
+    property: Length,
+    suffix: " m",
 }
 
 measures::angle_measurement_unit! {

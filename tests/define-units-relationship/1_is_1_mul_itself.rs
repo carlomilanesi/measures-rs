@@ -3,24 +3,20 @@ measures::define_measure_types! {
     []
 }
 
-pub struct P1;
+measures::measurement_vector_property! { P1 }
 
-pub struct U1;
-impl MeasurementUnit for U1 {
-    type Property = P1;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " u1";
+measures::measurement_unit! {
+    name: U1,
+    property: P1,
+    suffix: " u1",
 }
 
-pub struct P2;
+measures::measurement_vector_property! { P2 }
 
-pub struct U2;
-impl MeasurementUnit for U2 {
-    type Property = P2;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " u2";
+measures::measurement_unit! {
+    name: U2,
+    property: P2,
+    suffix: " u2",
 }
 
 measures::define_units_relationship! { true false false, U1 1 == U2 1 * __ 1 }

@@ -5,20 +5,21 @@ measures::define_measure_types! {
 
 measures::measurement_scalar_property! { Temperature }
 
-pub struct Celsius;
-impl MeasurementUnit for Celsius {
-    type Property = Temperature;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 273.15;
-    const SUFFIX: &'static str = " \u{B0}C";
-}
+measures::measurement_unit! {
+    name: Celsius,
+    property: Temperature,
+    ratio: 1.,
+    offset: 273.15,
+    suffix: " \u{B0}C",
 
-pub struct Fahrenheit;
-impl MeasurementUnit for Fahrenheit {
-    type Property = Temperature;
-    const RATIO: f64 = 5. / 9.;
-    const OFFSET: f64 = 273.15 - 32. * 5. / 9.;
-    const SUFFIX: &'static str = " \u{B0}F";
+}
+measures::measurement_unit! {
+    name: Fahrenheit,
+    property: Temperature,
+    ratio: 5. / 9.,
+    offset: 273.15 - 32. * 5. / 9.,
+    suffix: " \u{B0}F",
+
 }
 
 #[test]

@@ -500,11 +500,7 @@ macro_rules! angle_measurement_unit {
         suffix: $suffix:expr,
         cycle_fraction: $cycle_fraction:expr,
     } => {
-        //measures::angle_measurement_unit! { // OK
-        //crate::angle_measurement_unit! { // ERROR HERE
-        //crate::measures::angle_measurement_unit! { // ERROR HERE
-        $crate::angle_measurement_unit! { // OK
-        //$crate::measures::angle_measurement_unit! { // 108 ERRORS ELSEWHERE
+        $crate::angle_measurement_unit! {
             name: $name,
             offset: 0.,
             suffix: $suffix,
@@ -518,20 +514,20 @@ macro_rules! angle_measurement_unit {
         cycle_fraction: $cycle_fraction:expr,
     } => {
         pub struct $name;
-        impl MeasurementUnit for $name {
+        impl measures::traits::MeasurementUnit for $name {
             type Property = $crate::angle::Angle;
             const RATIO: f64 = core::f64::consts::TAU / ($cycle_fraction);
             const OFFSET: f64 = $offset;
             const SUFFIX: &'static str = $suffix;
         }
 
-        impl AngleMeasurementUnit for $name {
+        impl measures::traits::AngleMeasurementUnit for $name {
             const CYCLE_FRACTION: f64 = $cycle_fraction;
         }
 
-        impl<Number> Mul<Measure<$name, Number>> for Measure<One, Number>
+        impl<Number> std::ops::Mul<Measure<$name, Number>> for Measure<measures::dimensionless::One, Number>
         where
-            Number: ArithmeticOps,
+            Number: measures::traits::ArithmeticOps,
         {
             type Output = Self;
             fn mul(self, other: Measure<$name, Number>) -> Self::Output {
