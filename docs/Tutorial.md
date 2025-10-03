@@ -183,6 +183,8 @@ Any measure can be multiplied or divided by such dimensionless measures:
     assert_eq!(length1.value, 7.);
 ```
 
+## Comparisons between measures
+
 Measures can also be compared, using the comparison operators:
 ```rust
     let length1 = Measure::<Metre>::new(5.);
@@ -193,6 +195,26 @@ Measures can also be compared, using the comparison operators:
     assert!(length1 <= length2);
     assert!(length2 > length1);
     assert!(length2 >= length1);
+```
+
+For the type `Measure` the following methods have also been implemented:
+* `min`: It returns the lesser of two measures.
+* `max`: It returns the greater of two measures.
+* `clamp`: It forces the receiver to be between the specified bounds.
+
+Here is an example:
+```rust
+    let m1 = Measure::<Celsius>::new(17.);
+    let m2 = Measure::<Celsius>::new(27.);
+    let m3 = Measure::<Celsius>::new(37.);
+    println!("{}, {};", m1.min(m2), m1.max(m2));
+    println!("{};", m1.clamp(m2, m3));
+```
+
+It will print:
+```text
+17 °C, 27 °C;
+27 °C;
 ```
 
 ## Conversions between units
@@ -932,9 +954,8 @@ Instead, in 3D space, the torque is a vector which could have any direction, and
 ## Measures with uncertainty
 CONTINUE
 
-So far, every measure was represented by as many numeric values as the dimensions of the space.
-
-So, there was only one number for the 1D line, a pair of numbers for the 2D plane, and a triple of numbers for the 3D space.
+So far, every 1-dimension measure encapsulated just one number, every 2-dimension measure encapsulated two numbers, and every 3-dimension measure encapsulated three numbers.
+So, every measure was represented by as many numeric values as the dimensions of the space.
 Such numbers represented exact measures.
 
 Though, in many application fields, measures are probability distributions, described by their mean and variance.
@@ -942,14 +963,15 @@ Though, in many application fields, measures are probability distributions, desc
 The library `measures` allows to specify also such kind of measures, as shown by the following code:
 
 ```rust
-let mass = ApproxMeasure::<KiloGram>::new(87.3, 0.04); // mean and variance
-assert_eq!(mass.value, 87.3);
-assert_eq!(mass.variance, 0.04);
-assert_eq!(mass.uncertainty(), Measure::<KiloGram>::new(0.2)); // standard deviation
-println!("{mass}, {mass:?}"); // It prints: 87.3 ± 0.2 Kg, 87.3 [σ²=0.04] Kg
+    let mass = ApproxMeasure::<KiloGram>::with_variance(87.3, 0.04); // mean and variance
+    assert_eq!(mass.value, 87.3);
+    assert_eq!(mass.variance, 0.04);
+    assert_eq!(mass.uncertainty(), Measure::<KiloGram>::new(0.2)); // standard deviation
+    println!("{mass}, {mass:?}"); // It prints: 87.3 ± 0.2 Kg, 87.3 [σ²=0.04] Kg
 ```
 
-The variable `mass` is an approximate measure, having 87.3 as mean and 0.04 as variance.
+The variable `mass` is an approximate measure, having 87.3 as mean and 0.04 as variance of its probability distribution.
+It is create by the function `with_variance`, which requires to specify also the variance, in addition to the mean.
 
 The mean is accessed by the member used for exact measures, `value`.
 The unit of measurement of the mean is the same of the measure.
@@ -962,25 +984,58 @@ In this example, it would be `KiloGram²`.
 Though, such a value is not actually needed as a measure, and so there is no need to define such a unit of measurement.
 
 The square root of the variance is used often.
-Regarding the probability distribution, it is named `standard deviation`.
-Though, regarding measurements, it is usually named `absolute uncertainty` or `absolute error`.
+Regarding probability distributions, it is named `standard deviation`.
+Though, regarding measurements, it is usually named, inappropriately, `absolute error` or, better, `absolute uncertainty`.
 
 Its unit of measurement is the same of the measure.
-The method `uncertainty` computes the square root of the variance, which is returned encapsulated in a Measure.
+The method `uncertainty` computes the square root of the variance, which is returned encapsulated in a `Measure` object.
 
-When an approximate measures is printed or converted to a string, also their uncertainty is printed.
-Instead, when an approximate measures is printed for debug, their variance is printed.
+When an approximate measure is printed or converted to a string, also its uncertainty is printed.
+Instead, when an approximate measure is printed for debug, its variance is printed.
+Here are some examples:
 
 ```rust
-let mass = ApproxMeasure::<KiloGram>::new(87.3, 0.04); // mean and variance
-assert_eq!(mass.uncertainty(), Measure::<KiloGram>::new(0.2)); // standard deviation
-let volume = ApproxMeasure::<CubicMetre>::new(0.3, 0.000144); // mean and variance
-assert_eq!(volume.uncertainty(), Measure::<CubicMetre>::new(0.012)); // standard deviation
-let mass_density = mass / volume;
-assert_eq!(mass_density.value, TODO);
-assert_eq!(mass_density.variance, TODO);
-assert_eq!(mass_density.uncertainty(), TODO);
+    let mass = ApproxMeasure::<KiloGram>::with_variance(87.3, 0.04); // mean and variance
+    assert_eq!(mass.uncertainty(), Measure::<KiloGram>::new(0.2)); // standard deviation
+    assert_eq!(format!("{mass}, {mass:?}"), "87.3±0.2 kg, [µ=87.3 σ²=0.04] kg");
 ```
+
+The variable `mass` represents an approximate measure of a mass in kilograms.
+Its probability distribution has mean 87.3 and variance 0.04, and so the standard deviation of the distribution, or absolute uncertainty of the measure, is 0.2 kilograms.
+
+When operations are applied to approximate measures, their variances must be appropriately propagated.
+The library `measures` makes the following assumptions:
+* The uncertainty is much smaller than the measure value, and so only first-degree effects can be taken into account.
+* In case of binary operations between measures (sum, subtraction, multiplication, division), the two measures participating in the operation are statistically independent, or uncorrelated.
+
+Such assumptions allow to keep simple the library API and rather efficient the implementation.
+Here are some examples:
+
+```rust
+    let mass1 = ApproxMeasure::<KiloGram>::with_variance(87.3, 0.04);
+    assert_eq!((mass1 * 3.).uncertainty(), Measure::<KiloGram>::new(0.6));
+    let mass2 = ApproxMeasure::<KiloGram>::with_variance(100., 0.09);
+    assert_eq!((mass1 + mass2).variance, 0.13);
+    assert_eq!((mass1 - mass2).variance, 0.13);
+```
+
+The above example shows that:
+* When a measure is multiplied by a number, its variance is also multiplied by that number.
+* When two measures are added or subtracted, their variances are added.
+
+Here are examples involving multiplication and division:
+```rust
+    let mass1 = ApproxMeasure::<KiloGram>::with_variance(87.3, 0.04);
+    let mass2 = ApproxMeasure::<KiloGram>::with_variance(100., 0.09);
+    let computed_variance = (0.04 / 87.3 / 87.3 + 0.09 / 100. / 100.) * (87.3 / 100.) * (87.3 / 100.);
+    assert_eq!((mass1 / mass2).variance, computed_variance);
+    let velocity = ApproxMeasure::<MetrePerSecond>::with_variance(2.3, 0.000144); // mean and variance
+    let computed_variance = (0.04 / 87.3 / 87.3 + 0.000144 / 2.3 / 2.3) * (87.3 * 2.3) * (87.3 * 2.3);
+    assert_eq!((mass1 * velocity).variance, computed_variance);
+```
+
+The above example shows that when two measures are multiplied or divided, their relative variances are added.
+The relative variance is the ratio between the variance and the square of the mean.
 
 ## How units of measurement and their relationships are defined
 
@@ -1065,7 +1120,7 @@ Every other property and every other unit must be explicitly defined.
 
 ### Defining properties
 
-Actually, if you go on reading the file `units.rs`, you will see at line 520:
+Actually, if you search the file `units.rs` for the first occurrence of the closed brace character (`}`), you will see the following statement after it:
 ```rust
 measures::measurement_vector_property! { Acceleration }
 ```
@@ -1102,7 +1157,7 @@ For example, this is not allowed: `Measure3d<Second>`.
 
 ### Defining units of measurement
 
-From line 522 of the file `units.rs` there is:
+In the file `units.rs`, after the definition of the property `Acceleration`, there is:
 ```rust
 measures::measurement_unit! {
     name: MetrePerSquareSecond,
@@ -1111,68 +1166,76 @@ measures::measurement_unit! {
 }
 ```
 
-This macro call defines a unit of measurement.
+This macro call defines a unit of measurement, by specifying some attributes.
 
-The field `name` specify the name of the unit of measurement we are defining.
+The attribute `name` specifies the name of the unit of measurement we are defining.
 
-The field `property` specify the property of this unit.
+The attribute `property` specifies the property of this unit.
+We mean `MetrePerSquareSecond` to be an `Acceleration`, and so its attribute `property` specifies such value.
 
-As we said, we mean `MetrePerSquareSecond` to be an `Acceleration`.
+The attribute `suffix` specifies what should be printed after the numeric value of the measure, when a measure is printed or converted to a string.
 
-For every property, there should be in your mind a base unit.
-Let's assume `MetrePerSquareSecond` is the base unit for acceleration, according with the SI international standard.
-The field `RATIO` specifies how many base units for its property are contained in this unit.
-Being this the base unit, its `RATIO` is `1.`.
+The conversion between measures having different unit needs two pieces of information:
+* The ratio between the sizes of the two units. For example, to convert a mass from grams to ounces, it must be taken into account that one ounce corresponds to 28.34952 grams.
+* The offset between the origins of the two units. For example, to convert from a temperature point from  Celsius degrees to Fahrenheit degrees, it must be taken into account that the temperature point of 0 Celsius degrees corresponds to 32 Fahrenheit degrees.
 
-It is not required that the base unit is actually defined.
-For example, we could have defined just this unit for acceleration:
+The solution of the library `measures` is that for every property, a base unit should be defined.
+In the file `units.rs`, `MetrePerSquareSecond` is taken as the base unit for acceleration.
+By the way, this is in accordance with the SI international standard.
+
+Then, every unit of measurement of that property should specify the ratio between itself and the base unit, and it should specify the offset between its origin and the origin of the base unit.
+Of course, for the base unit, such ratio is 1, and such origin is 0.
+
+The general form to define a unit is like the one used in `units.rs` to define the Fahrenheit degree:
 ```rust
-impl MeasurementUnit for CentiMetrePerSquareSecond {
-    type Property = Acceleration;
-    const RATIO: f64 = 1e-2;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " cm/s\u{b2}";
+measures::measurement_unit! {
+    name: Fahrenheit,
+    property: Temperature,
+    ratio: 5. / 9.,
+    offset: 273.15 - 32. * 5. / 9.,
+    suffix: " \u{b0}F", // °F
 }
 ```
 
-For the unit `CentiMetrePerSquareSecond`, `RATIO` is `1e-2`, meaning that one hundredth of metre per square second is equivalent to one centimetre per square second.
-For the unit `Mile`, `RATIO` is `1609.`, meaning that 1609 metres is equivalent to one mile.
+For temperatures, the base unit is the Kelvin degree.
+In the above definition, the attribute `ratio` specifies that each Fahrenheit degree is `5. / 9.` of a Kelvin degree.
+And the attribute `offset` specifies specifies that the origin of the Fahrenheit scale is at a point corresponding to `273.15 - 32. * 5. / 9.` Kelvin degrees.
 
-The field `OFFSET` is needed for units having an origin different from the origin of the base unit.
-It has almost always a zero value, because almost all units have the same origin that their base unit.
-In `units.rs`, it has different values only for temperature degrees.
-Actually, it represents the displacement from the origin of the base unit, represented in units of the base unit, to reach the origin of the current unit.
+The attribute `offset` can be omitted, having a default value of 0.
+So, for most measurement units, it is actually omitted.
 
-For example, for the unit `Fahrenheit`, it is `273.15 - 32. * 5. / 9.`.
-The base unit for temperature is `Kelvin`.
-Starting from the origin of the Kelvin scale, if we add `273.15` Kelvin degrees (reaching the origin of the Celsius scale), and then we subtract `32. * 5. / 9.` Kelvin degrees, we reach the origin of the `Fahrenheit` scale.
+The only sensible uses of the attribute `offset` are for temperature (every temperature scale has a distinct origin) or for time (every calendar has a distinct origin or epoch).
 
-Another possible use of `OFFSET` is for calendars, because different ways to represent times can have different origins.
-
-Instead, it shouldn't be used for vector units, like `Length`, because it makes no sense to define the same `OFFSET` for all components of a vector.
-
-The field `SUFFIX` is a string which is printed after the numeric value, whenever a measure is printed or converted to string.
+Also the attribute `ratio` can be omitted, having a default value of 1.
+So, for every measurement unit which is not a base unit, it is actually omitted.
+Notice that `ratio` can be omitted only is `offset` is also omitted.
 
 ### Defining units of angles
 
 Angles are a particular property.
 
-The property `Angle` is the only predefined property.
-The unit `Radian` is its base unit and, as we said, it is the only predefined unit.
+The property `Angle` is predefined.
+The unit `Radian` is the only predefined unit of `Angle`, and its ratio is 1, i.e. it is the base unit of angles.
 
-You can define other angle units, but, to allow their use as directions, there declaration must be a bit different than the declaration of other units.
-Whenever an angle unit is defined, also a definition like this is required:
+Other angle units can be defined, but using a different macro, like shown here:
 ```rust
-impl AngleMeasurementUnit for Degree {
-    const CYCLE_FRACTION: f64 = 360.;
+measures::angle_measurement_unit! {
+    name: Degree,
+    suffix: " deg",
+    cycle_fraction: 360.,
 }
 ```
 
-First of all, it declares that `Degree` is a kind of angle, but in addition it specifies how many units of this kind are contained in a cycle.
+The macro `angle_measurement_unit` has only three attributes:
+* `name` is the name of the angular unit of measurement, similarly to other units;
+* `suffix` is the string printed after the number, when the measure is printed, similarly to other units;
+* `cycle_fraction` is ratio between the full cycle and the current unit.
 
-For the unit `Cycle`, `CYCLE_FRACTION` is `1.`, and for `Radian` it is `std::f64::consts::TAU` (which is approximately 6.28);
+The attribute `offset` is not allowed, because it is restricted to be 0.
 
-### Defining relationships among units
+The attribute `ratio` is not allowed, because it is automatically computed as `2 * PI / cycle_fraction`.
+
+## Defining relationships among units
 
 With the above declarations you can define measures, points, directions, and transformations, you can make conversions between units of the same property, you can compute additions, subtractions and divisions between measures of the same unit, and you can multiply or divide a measure by a number.
 
@@ -1180,59 +1243,46 @@ Though, you still cannot compute multiplications or divisions involving measures
 
 To do that, you need to teach it to your application.
 
-How to do this is shown in the file `units.rs` after line 2490.
+How to do this is shown in the initial part of the file `units.rs`, after the open square bracket.
 
-For example, statement at line 2677 is this:
+For example, there is a line with this content:
 ```rust
-define_units_relation! {Joule == Newton * Metre}
+        Joule 1 == Newton 1 * Metre 1,
 ```
 
-It is a call to the procedural macro defined in the create `units-relation`.
+This is a rule which, conceptually, means: "A 1D measure in Joule can be obtained by multiplying 1D measure in Newton by a 1D measure in Metre".
 
-It expands to four functions:
-* One function allows you to multiply a `Measure<Newton>` by a `Measure<Meter>` getting a `Measure<Joule>`.
-* One function allows you to multiply a `Measure<Meter>` by a `Measure<Newton>` getting a `Measure<Joule>`.
-* One function allows you to divide a `Measure<Joule>` by a `Measure<Meter>` getting a `Measure<Newton>`.
-* One function allows you to multiply a `Measure<Joule>` by a `Measure<Newton>` getting a `Measure<Meter>`.
+Actually, such line causes the generation of 4 methods:
+* An implementation of the operator "`*`" to multiply a `Measure<Newton>` by a `Measure<Metre>` getting a `Measure<Joule>`.
+* An implementation of the operator "`*`" to multiply a `Measure<Metre>` by a `Measure<Newton>` getting a `Measure<Joule>`.
+* An implementation of the operator "`/`" to divide a `Measure<Joule>` by a `Measure<Metre>` getting a `Measure<Newton>`.
+* An implementation of the operator "`/`" to divide a `Measure<Joule>` by a `Measure<Newton>` getting a `Measure<Metre>`.
 
-It is followed, in file `units.rs`, by these statements:
-```rust
-define_units_relation! {Joule == Newton:2 * Metre:2}
-define_units_relation! {Joule == Newton:3 * Metre:3}
-```
+That file contains hundreds of similar rules.
 
-They allow the same operations, but, respectively, in a plane or in the 3D space.
+Such rules have one of the following allowed formats:
+* `U1 1 == U2 1 * U3 1`: A 1D measure in unit U1 can be obtained by multiplying a 1D measure in unit U2 by a 1D measure in a a different unit U3.
+* `U1 1 == U2 1 * __ 1`: A 1D measure in unit U1 can be obtained by multiplying a 1D measure in unit U2 by a 1D measure in the same unit U2.
+* `U1 2 == U2 1 * U3 2`: A 2D measure in unit U1 can be obtained by multiplying a 1D measure in unit U2 by a 2D measure in unit U3.
+* `U1 2 == U2 2 * U3 1`: A 2D measure in unit U1 can be obtained by multiplying a 2D measure in unit U2 by a 1D measure in unit U3.
+But, because multiplication between scalars and vectors is commutative, this rule is equivalent to the previous one.
+* `U1 3 == U2 1 * U3 3`: A 3D measure in unit U1 can be obtained by multiplying a 1D measure in unit U2 by a 3D measure in unit U3.
+* `U1 3 == U2 3 * U3 1`: A 3D measure in unit U1 can be obtained by multiplying a 3D measure in unit U2 by a 1D measure in unit U3.
+But, because multiplication between scalars and vectors is commutative, this rule is equivalent to the previous one.
+* `U1 1 == U2 2 * __ 2`: A 1D measure in unit U1 can be obtained by multiplying a 2D measure in unit U2 by a 2D measure in the same unit U2.
+This one is the dot product in a plane.
+* `U1 1 == U2 2 * U3 2`: A 1D measure in unit U1 can be obtained by multiplying a 2D measure in unit U2 by a 2D measure in a different unit U3.
+Also this one is the dot product in a plane.
+* `U1 1 == U2 3 * __ 3`: A 1D measure in unit U1 can be obtained by multiplying a 3D measure in unit U2 by a 3D measure in the same unit U2.
+This one is the dot product in the space.
+* `U1 1 == U2 3 * U3 3`: A 1D measure in unit U1 can be obtained by multiplying a 3D measure in unit U2 by a 3D measure in a different unit U3.
+Also this one is the dot product in the space.
+* `U1 1 == U2 2 X __ 2`: A 1D measure in unit U1 can be obtained by computing the cross product of a 2D measure in unit U2 and a 2D measure in the same unit U2.
+* `U1 1 == U2 2 X U3 2`: A 1D measure in unit U1 can be obtained by computing the cross product of a 2D measure in unit U2 and a 2D measure in a different unit U3.
+* `U1 3 == U2 3 X __ 3`: A 3D measure in unit U1 can be obtained by computing the cross product of a 3D measure in unit U2 and a 3D measure in the same unit U2.
+* `U1 3 == U2 3 X U3 3`: A 3D measure in unit U1 can be obtained by computing the cross product of a 3D measure in unit U2 and a 3D measure in a different unit U3.
 
-To specify the need to compute the cross product, you can write:
-```rust
-define_units_relation! {NewtonMetre == Newton:2 X Metre:2}
-```
-
-It allows the operations `Measure2d<Newton>.cross_product(Measure2d<Metre>)` and `Measure2d<Metre>.cross_product(Measure2d<Newton>)`, both returning a `Measure<NewtonMetre>`. Notice that the return value type is a scalar.
-
-The following expression is similar, but for 3D space.
-```rust
-define_units_relation! {NewtonMetre:3 == Newton:3 X Metre:3}
-```
-
-It allows the operations `Measure3d<Newton>.cross_product(Measure3d<Metre>)` and `Measure3d<Metre>.cross_product(Measure3d<Newton>)`, both returning a `Measure3d<NewtonMetre>`. Notice that the return value type is a 3D vector.
-
-You can also write an expression like this one:
-```rust
-define_units_relation! {Watt == Joule / Second}
-```
-
-It is equivalent to the following one, but it may appear more intuitive:
-```rust
-define_units_relation! {Joule == Watt * Second}
-```
-
-In a couple of cases, you need just to specify that a unit is the opposite of another one. In such a case, you can write something like this:
-```rust
-define_units_relation! {Siemens == 1 / Ohm}
-```
-
-Only the value `1` is allowed here.
+Each of these rules causes the generation of a handful of trait implementations.
 
 ## Creating a custom file `units.ts`
 
@@ -1240,106 +1290,103 @@ The file `units.ts` is quite useful for learning, for experimenting, and for cop
 Though, it is not recommended for production use, for the following reasons:
 * Such large file increases your code base.
 * Such large file increases compilation time.
-* Such file uses words or output suffix you may dislike. For example, if you prefer, you could replace `Length` with `Space`, or `Metre` with `Meter`, or `" m"` with `" [m]"`.
+* Such file uses words or output suffix you may dislike.
+For example, if you prefer, you could replace `Length` with `Space`, or `Metre` with `Meter`, or `" m"` with `" [m]"`.
 * Such files have names which conflicts with some names already used in your project.
 * Such files miss some properties or units or relations you may need.
 
 Therefore, the suggested procedure for production code is the following one:
-* Create your own file `units.rs` for your project.
-* Add as its first statement `measures::define_1d! {}`, possibly replacing `1d` with `1d_and_directions`, `1d_2d`, `1d_3d`, or `1d_2d_3d`, in case you need the types defined by such macros.
-* Search the provided example file for the properties, the units, and the relations you need, or the ones most similar to what you need. Copy and paste them into your own file.
-* Edit your file according to your needs.
-
-To create a property means simply to define an empty `struct` with the desired name. For example: `pub struct Information;`.
-If you need to define 2D or 3D measures having units of such a property, specify that it is a vector property, by implementing the empty trait `VectorProperty`.
-
-To create a unit for a property, first you should decide, in case there will several units for that property, which of them is the base unit. For example, if you want to create the units `Bit` and `Byte` for property `Information`, you must decide which of them will be the base unit for you project, and which the derived one.
-
-And then use the macro `define_units_relation!` to define possible relationship between units, preceded by this statement:
+* Create your own file `units.rs` for your project, with this contents:
 ```rust
-use units_relation::define_units_relation;
+measures::define_measure_types! {
+    with_points with_directions with_2d with_3d with_transformations exact with_approx,
+    [
+    ]
+}
 ```
+* Remove from the second line of the file the features you don't need.
+* Search the provided example file for the rules, the property definitions, and the unit definitions you need, or the ones most similar to what you need.
+Copy and paste them into your own file.
+* Edit your file according to your needs.
 
 Here is an example of contents for a file `units.ts`;
 ```rust
-measures::define_1d! {}
-
-pub struct Information;
-pub struct Bit;
-impl MeasurementUnit for Bit {
-    type Property = Information;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " b";
+measures::define_measure_types! {
+    exact,
+    [
+        Bit 1 == BitPerSecond 1 * Second 1,
+        Byte 1 == BytePerSecond 1 * Second 1,
+    ]
 }
 
-pub struct Byte;
-impl MeasurementUnit for Byte {
-    type Property = Information;
-    const RATIO: f64 = 8.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " B";
+measures::measurement_scalar_property! { Information }
+measures::measurement_scalar_property! { Time }
+measures::measurement_scalar_property! { InformationRate }
+
+measures::measurement_unit! {
+    name: Bit,
+    property: Information,
+    suffix: " b",
 }
 
-pub struct Time;
-
-pub struct Second;
-impl MeasurementUnit for Second {
-    type Property = Time;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " s";
+measures::measurement_unit! {
+    name: Byte,
+    property: Information,
+    ratio: 8.,
+    suffix: " B",
 }
 
-pub struct InformationRate;
-
-pub struct BitPerSecond;
-impl MeasurementUnit for BitPerSecond {
-    type Property = InformationRate;
-    const RATIO: f64 = 1.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " b/s";
+measures::measurement_unit! {
+    name: Second,
+    property: Time,
+    suffix: " s",
 }
 
-pub struct BytePerSecond;
-impl MeasurementUnit for BytePerSecond {
-    type Property = InformationRate;
-    const RATIO: f64 = 8.;
-    const OFFSET: f64 = 0.;
-    const SUFFIX: &'static str = " B/s";
+measures::measurement_unit! {
+    name: BitPerSecond,
+    property: InformationRate,
+    suffix: " b/s",
 }
 
-use units_relation::define_units_relation;
-define_units_relation! {BitPerSecond == Bit / Second}
-define_units_relation! {BytePerSecond == Byte / Second}
+measures::measurement_unit! {
+    name: BytePerSecond,
+    property: InformationRate,
+    ratio: 8.,
+    suffix: " B/s",
+}
 ```
 
-Then, you can write a file `main.rs`, having this contents:
+Then, you should be able to write and compile a file `main.rs`, having this contents:
 ```rust
 mod units;
 use units::{Bit, Byte, Measure, Second};
 fn main() {
     let info_size = Measure::<Byte>::new(2700.);
     let time = Measure::<Second>::new(5.1);
-    println!("The transmission rate is {}", info_size.convert::<Bit>() / time);
+    println!("The transmission rate is {:.2}.", info_size.convert::<Bit>() / time);
 }
+```
+
+It should print:
+```
+The transmission rate is 4235.29 b/s.
 ```
 
 ## Using decibels
 
-For some kinds of measures, it is customary to use logarithmic values, typically in form of decibels, that are tenths of the 10-base logarithm of the actual value.
+For some kinds of measures, it is customary to use logarithmic values, typically in the form of decibels, that are tenths of the 10-base logarithm of the actual value.
 
 For example, if we have a measure of 0.001 watts, we can compute its 10-base logarithms, obtaining -3.
 So, this measure can be said to be -30 decibels of watts, or `-30 db W`.
 
-The crate `measures` supports decibels only for the type `Measure`, as shown in the following code:
+The crate `measures` supports decibels only for the types `Measure` and `ApproxMeasure`, as shown in the following code:
 ```rust
     use measures::traits::Decibel;
     let one_milliwatt = Measure::<Watt>::new(0.001);
     print!("{one_milliwatt:.4} "); // 0.0010 W
     let one_milliwatt_in_db = one_milliwatt.value.to_decibels();
     print!(",{one_milliwatt_in_db:.1}, "); // -30.0
-    let one_milliwatt_value = Decibel::from_decibels(one_milliwatt_in_db);
+    let one_milliwatt_value = one_milliwatt_in_db.from_decibels();
     print!("{one_milliwatt_value:.4}, "); // 0.0010
     print!("{:.4};", one_milliwatt.decibels_formatter()); // -30.0000 dB W
 ```
@@ -1352,7 +1399,7 @@ It is printed as `0.0010 W`.
 Then, its value is converted to its corresponding decibels value, by calling the method `to_decibels`.
 The result is a number, and it is printed as `-30.0`.
 
-Then, this decibels value is converted back to its corresponding linear value, by calling the function `from_decibels`.
+Then, this decibels value is converted back to its corresponding linear value, by calling the method `from_decibels`.
 The result is a number, and it is printed as `0.0010`.
 
 These operations are defined in the trait `Decibel`, implemented for the types `f32` and `f64`.
@@ -1364,15 +1411,15 @@ Therefore, it is printed as `-30.0 dB W`.
 
 ## The trait `Default`
 
-For any type defined by the crate `measures`, i.e. `Measure`, `MeasurePoint`, `Measure2d`, `MeasurePoint2d`, `Measure3d`, `MeasurePoint3d`, `LinearMap2d`, `LinearMap3d`, `AffineMap2d`, `AffineMap3d`, `UnsignedDirection`, and `SignedDirection`, the trait `Default` is implemented.
+For any measure type, the trait `Default` is implemented.
 
-For the four transformations types, the method `default()` returns an *identity* transformation, not a zero transformation.
+For the transformations types, the method `default()` returns an *identity* transformation, not a zero transformation.
 For all the other types, `default()` returns a *zero* object, i.e. an object encapsulating one or more zero numbers.
 
 Here is an example:
 ```rust
     println!("{}", Measure3d::<Newton>::default());
-    let m = Measure3d::<Newton>::new(7., -3., 1.2);
+    let m = Measure3d::<Newton>::new([7., -3., 1.2]);
     println!("{m}");
     let map = LinearMap3d::default();
     println!("{map}");
@@ -1383,85 +1430,32 @@ It will print:
 ```text
 (0, 0, 0) N
 (7, -3, 1.2) N
-[1 0 0]
-[0 1 0]
-[0 0 1]
+ ⎡ 1 0 0 ⎤
+ ⎢ 0 1 0 ⎥
+ ⎣ 0 0 1 ⎦
 (7, -3, 1.2) N
-```
-
-## The methods `squared_norm` and `normalized`
-
-The types `Measure`, `Measure2d`, and `Measure3d` have the instance methods:
-* `squared_norm`: It computes the square of the norm of the value of the measure, considered as a mathematical vector. To compute the norm of the measure, it is enough to call the function `sqrt` on the obtained numeric value.
-* `normalized`: It returns a measure having norm 1. This measure has the same unit of measurement, inner numeric type and direction of the receiving object.
-
-Here is an example:
-```rust
-    let length = Measure2d::<Metre>::new(-30., 40.);
-    println!("{}", length.squared_norm());
-    println!("{}", length.normalized());
-```
-
-It will print:
-```rust
-2500
-(-0.6, 0.8) m
-```
-
-## The methods `min`, `max`, and `clamp`
-
-For the types `Measure` and `MeasurePoint`, the following methods have bbe implemented:
-* `min`: It returns the lesser of two relative or absolute measures.
-* `max`: It returns the greater of two relative or absolute measures.
-* `clamp`: It forces the receiver to be between the specified bounds.
-
-Here is an example:
-```rust
-    let m1 = Measure::<Celsius>::new(17.);
-    let m2 = Measure::<Celsius>::new(27.);
-    let m3 = Measure::<Celsius>::new(37.);
-    let mp1 = MeasurePoint::<Celsius>::new(17.);
-    let mp2 = MeasurePoint::<Celsius>::new(27.);
-    let mp3 = MeasurePoint::<Celsius>::new(37.);
-    println!("{}, {};", m1.min(m2), m1.max(m2));
-    println!("{}, {};", mp1.min(mp2), mp1.max(mp2));
-    println!("{};", m1.clamp(m2, m3));
-    println!("{};", mp1.clamp(mp2, mp3));
-```
-
-It will print:
-```text
-17 °C, 27 °C;
-at 17 °C, at 27 °C;
-27 °C;
-at 27 °C;
 ```
 
 ## Abbreviations
 
 You may think this library is somewhat verbose.
-Actually, in some other libraries, you can specify a mass of 2 kilograms by writing `2. * Mass` or `2. * kg`.
+Actually, in some other libraries, you can specify a mass of 2 kilograms by writing simply `2. * Mass` or `2. * kg`.
 
 The design principle of this library is to avoid very short names, because they could too easily collide with other names.
 In addition, in this library there is not just one kind of measures, and so it is useful to specify which is meant.
 
-However, if you prefer to be more concise, it is quite easy to do, using some small definitions:
+However, if you prefer to be more concise, it is quite easy to do so, by using some small definitions:
 ```rust
-type M = Measure<Metre>;
-fn m(value: f64) -> M {
-    M::new(value)
-}
-
-type KG = Measure<KiloGram>;
-fn km(value: f64) -> S {
-    KG::new(value)
-}
+#[allow(non_upper_case_globals)]
+const m: Measure<Metre> = Measure::<Metre>::new(1.);
+#[allow(non_upper_case_globals)]
+const kg: Measure<KiloGram> = Measure::<KiloGram>::new(1.);
 ```
 
 After the previous definitions, you can write this code:
 ```rust
-let length: M = m(2.);
-let mass: KG = kg(2.);
+let _length = 2. * m;
+let _mass = 2. * kg;
 ```
 
 ---
