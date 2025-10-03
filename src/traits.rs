@@ -134,22 +134,22 @@ impl InverseTrigonometry for f64 {
 
 pub trait Decibel {
     fn to_decibels(self) -> Self;
-    fn from_decibels(decibel_value: Self) -> Self;
+    fn from_decibels(self) -> Self;
 }
 impl Decibel for f32 {
     fn to_decibels(self) -> Self {
         self.log10() * 10.
     }
-    fn from_decibels(decibel_value: Self) -> Self {
-        10_f32.powf(decibel_value * 0.1)
+    fn from_decibels(self) -> Self {
+        10_f32.powf(self * 0.1)
     }
 }
 impl Decibel for f64 {
     fn to_decibels(self) -> Self {
         self.log10() * 10.
     }
-    fn from_decibels(decibel_value: Self) -> Self {
-        10_f64.powf(decibel_value * 0.1)
+    fn from_decibels(self) -> Self {
+        10_f64.powf(self * 0.1)
     }
 }
 
