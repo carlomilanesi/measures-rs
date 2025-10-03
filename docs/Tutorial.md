@@ -952,7 +952,6 @@ Therefore, cross products in a plane expression return a scalar, containing the 
 Instead, in 3D space, the torque is a vector which could have any direction, and so the cross product returns a value of type `Measure3d`.
 
 ## Measures with uncertainty
-CONTINUE
 
 So far, every 1-dimension measure encapsulated just one number, every 2-dimension measure encapsulated two numbers, and every 3-dimension measure encapsulated three numbers.
 So, every measure was represented by as many numeric values as the dimensions of the space.
@@ -1386,7 +1385,7 @@ The crate `measures` supports decibels only for the types `Measure` and `ApproxM
     print!("{one_milliwatt:.4} "); // 0.0010 W
     let one_milliwatt_in_db = one_milliwatt.value.to_decibels();
     print!(",{one_milliwatt_in_db:.1}, "); // -30.0
-    let one_milliwatt_value = one_milliwatt_in_db.from_decibels();
+    let one_milliwatt_value = one_milliwatt_in_db.decibels_to_value();
     print!("{one_milliwatt_value:.4}, "); // 0.0010
     print!("{:.4};", one_milliwatt.decibels_formatter()); // -30.0000 dB W
 ```
@@ -1399,7 +1398,7 @@ It is printed as `0.0010 W`.
 Then, its value is converted to its corresponding decibels value, by calling the method `to_decibels`.
 The result is a number, and it is printed as `-30.0`.
 
-Then, this decibels value is converted back to its corresponding linear value, by calling the method `from_decibels`.
+Then, this decibels value is converted back to its corresponding linear value, by calling the method `decibels_to_value`.
 The result is a number, and it is printed as `0.0010`.
 
 These operations are defined in the trait `Decibel`, implemented for the types `f32` and `f64`.
