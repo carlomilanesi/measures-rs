@@ -459,9 +459,11 @@ macro_rules! inner_define_approx_measure {
             Number: ArithmeticOps,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+                formatter.write_str("[\u{b5}=")?;
                 fmt::Display::fmt(&self.value, formatter)?;
-                formatter.write_str("\u{b1}")?;
-                fmt::Display::fmt(&self.variance.sqrt(), formatter)?;
+                formatter.write_str(" \u{3c3}\u{b2}=")?;
+                fmt::Display::fmt(&self.variance, formatter)?;
+                formatter.write_str("]")?;
                 formatter.write_str(Unit::SUFFIX)
             }
         }
