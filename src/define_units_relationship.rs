@@ -12,28 +12,22 @@ macro_rules! define_units_relationship {
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 == $unit2:ident 2 * $unit3:ident 1 } => {
         measures::expand_1_2! {$exact $with_approx $with_correlation, $unit3 $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 == $unit2:ident 1 * $unit3:ident 2} => {
-        measures::expand_1_2! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
-    };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 == $unit2:ident 2 * $unit3:ident 1} => {
-        measures::expand_1_2! {$exact $with_approx $with_correlation, $unit3 $unit2 $unit1}
-    };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 == $unit2:ident 1 * $unit3:ident 3} => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 == $unit2:ident 1 * $unit3:ident 3 } => {
         measures::expand_1_3! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 == $unit2:ident 3 * $unit3:ident 1} => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 == $unit2:ident 3 * $unit3:ident 1 } => {
         measures::expand_1_3! {$exact $with_approx $with_correlation, $unit3 $unit2 $unit1}
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 2 * __ 2} => {
         measures::expand_2_2_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 2 * $unit3:ident 2} => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 2 * $unit3:ident 2 } => {
         measures::expand_2_2! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 3 * __ 3} => {
         measures::expand_3_3_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 3 * $unit3:ident 3} => {
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 3 * $unit3:ident 3 } => {
         measures::expand_3_3! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 2 X __ 2 } => {
