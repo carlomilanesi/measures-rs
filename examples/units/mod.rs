@@ -204,6 +204,7 @@ measures::define_measure_types! {
             }
             MicroVolt {
                 suffix: " \u{b5}V", // µV
+                ratio: 1e-6,
             }
         ]
         Energy [
@@ -269,7 +270,7 @@ measures::define_measure_types! {
             Hertz {
                 suffix: " Hz",
             }
-            CyclePerSecond {
+            CyclePerSecond { // Equivalent to Hertz, but with different suffix.
                 suffix: " c/s",
             }
             KiloHertz {
@@ -494,7 +495,7 @@ measures::define_measure_types! {
             CandelaPerSquareMetre {
                 suffix: " cd/m\u{b2}", // cd/m²
             }
-            Nit {
+            Nit { // Equivalent to CandelaPerSquareMetre, but with different suffix.
                 suffix: " nt",
             }
             Stilb {

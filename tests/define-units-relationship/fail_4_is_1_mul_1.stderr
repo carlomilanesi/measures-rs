@@ -1,8 +1,8 @@
 error: no rules expected `4`
-  --> tests/define-units-relationship/fail_4_is_1_mul_1.rs:39:61
+  --> tests/define-units-relationship/fail_4_is_1_mul_1.rs:24:12
    |
-39 | measures::define_units_relationship! { true false false, U1 4 == U2 1 * U3 1 }
-   |                                                             ^ no rules expected this token in macro call
+24 |         U1 4 == U2 1 * U3 1,
+   |            ^ no rules expected this token in macro call
    |
 note: while trying to match `1`
   --> src/define_units_relationship.rs

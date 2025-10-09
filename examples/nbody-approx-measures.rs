@@ -11,10 +11,82 @@
 
 measures::define_measure_types! {
     with_points with_3d exact with_approx,
-    scalar_properties               [ ]
-    vector_properties               [ ]
+    scalar_properties [
+        Area [
+            SquareMetre {
+                suffix: " m2",
+            }
+        ]
+        Volume [
+            CubicMetre {
+                suffix: " m3",
+            }
+        ]
+        TimePerVolume [
+            SecondPerCubicMetre {
+                suffix: " s/m3",
+            }
+        ]
+        Time [
+            Second {
+                suffix: " s",
+            }
+        ]
+        Energy [
+            Joule {
+                suffix: " J",
+            }
+        ]
+        Mass [
+            KiloGram {
+                suffix: " kg",
+            }
+        ]
+        GravitationalConstant [
+            NewtonSquareMetrePerSquareKilogram {
+                suffix: " G",
+            }
+        ]
+        SquareVelocity [
+            SquareMetrePerSquareSecond {
+                suffix: " m2/s2",
+            }
+        ]
+        SquareMass [
+            SquareKiloGram {
+                suffix: " kg2",
+            }
+        ]
+        SquareMassPerLength [
+            SquareKiloGramPerMetre {
+                suffix: " km2/m",
+            }
+        ]
+    ]
+    vector_properties [
+        Length [
+            Metre {
+                suffix: " m",
+            }
+        ]
+        Velocity [
+            MetrePerSecond {
+                suffix: " m/s",
+            }
+        ]
+        TimePerArea [
+            SecondPerSquareMetre {
+                suffix: " s/m2",
+            }
+        ]
+        MassTimePerArea [
+            KiloGramSecondPerSquareMetre {
+                suffix: " kg s/m2",
+            }
+        ]
+    ]
     dimensionless_measurement_units [ ]
-    angle_measurement_units         [ ]
+    angle_measurement_units [ ]
     relationships [
         Metre 3 == MetrePerSecond 3 * Second 1,
         SquareMetre 1 == Metre 1 * __ 1,
@@ -30,118 +102,6 @@ measures::define_measure_types! {
         KiloGramSecondPerSquareMetre 3 == SecondPerSquareMetre 3 * KiloGram 1,
         MetrePerSecond 3 == KiloGramSecondPerSquareMetre 3 * NewtonSquareMetrePerSquareKilogram 1,
     ]
-}
-
-measures::measurement_vector_property! { Length }
-
-measures::measurement_unit! {
-    name: Metre,
-    property: Length,
-    suffix: " m",
-}
-
-measures::measurement_scalar_property! { Area }
-
-measures::measurement_unit! {
-    name: SquareMetre,
-    property: Area,
-    suffix: " m2",
-}
-
-measures::measurement_scalar_property! { Volume }
-
-measures::measurement_unit! {
-    name: CubicMetre,
-    property: Volume,
-    suffix: " m3",
-}
-
-measures::measurement_scalar_property! { TimePerVolume }
-
-measures::measurement_unit! {
-    name: SecondPerCubicMetre,
-    property: TimePerVolume,
-    suffix: " s/m3",
-}
-
-measures::measurement_scalar_property! { Time }
-
-measures::measurement_unit! {
-    name: Second,
-    property: Time,
-    suffix: " s",
-}
-
-measures::measurement_vector_property! { Velocity }
-
-measures::measurement_unit! {
-    name: MetrePerSecond,
-    property: Velocity,
-    suffix: " m/s",
-}
-
-measures::measurement_scalar_property! { Energy }
-
-measures::measurement_unit! {
-    name: Joule,
-    property: Energy,
-    suffix: " J",
-}
-
-measures::measurement_scalar_property! { Mass }
-
-measures::measurement_unit! {
-    name: KiloGram,
-    property: Mass,
-    suffix: " kg",
-}
-
-measures::measurement_scalar_property! { GravitationalConstant }
-
-measures::measurement_unit! {
-    name: NewtonSquareMetrePerSquareKilogram,
-    property: GravitationalConstant,
-    suffix: " G",
-}
-
-measures::measurement_scalar_property! { SquareVelocity }
-
-measures::measurement_unit! {
-    name: SquareMetrePerSquareSecond,
-    property: SquareVelocity,
-    suffix: " m2/s2",
-}
-
-measures::measurement_scalar_property! { SquareMass }
-
-measures::measurement_unit! {
-    name: SquareKiloGram,
-    property: SquareMass,
-    suffix: " kg2",
-}
-
-measures::measurement_scalar_property! { SquareMassPerLength }
-
-measures::measurement_unit! {
-    name: SquareKiloGramPerMetre,
-    property: SquareMassPerLength,
-    suffix: " km2/m",
-}
-
-measures::measurement_vector_property! { TimePerArea }
-
-measures::measurement_unit! {
-    name: SecondPerSquareMetre,
-    property: TimePerArea,
-    suffix: " s/m2",
-}
-
-measures::measurement_vector_property! { MassTimePerArea }
-
-measures::measurement_unit! {
-    name: KiloGramSecondPerSquareMetre,
-    property: MassTimePerArea,
-    suffix: " kg s/m2",
 }
 
 use std::f64::consts::PI;

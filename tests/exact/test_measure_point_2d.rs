@@ -1,35 +1,29 @@
 measures::define_measure_types! {
     with_points with_2d exact,
-    scalar_properties               [ ]
-    vector_properties               [ ]
+    scalar_properties [ ]
+    vector_properties [
+        Length [
+            Metre {
+                suffix: " m",
+            }
+            MilliMetre {
+                suffix: " mm",
+                ratio: 1e-3,
+            }
+        ]
+    ]
     dimensionless_measurement_units [ ]
-    angle_measurement_units         [ ]
+    angle_measurement_units [
+        Degree {
+            suffix: " deg",
+            cycle_fraction: 360.,
+        }
+    ]
     relationships [
     ]
 }
 
 use measures::assert_eq_32;
-
-measures::measurement_vector_property! { Length }
-
-measures::measurement_unit! {
-    name: Metre,
-    property: Length,
-    suffix: " m",
-}
-
-measures::measurement_unit! {
-    name: MilliMetre,
-    property: Length,
-    suffix: " mm",
-    ratio: 1e-3,
-}
-
-measures::angle_measurement_unit! {
-    name: Degree,
-    suffix: " deg",
-    cycle_fraction: 360.,
-}
 
 #[test]
 fn measure_point_2d_default() {

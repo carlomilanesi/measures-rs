@@ -24,43 +24,35 @@
 
 measures::define_measure_types! {
     exact with_approx,
-    scalar_properties               [ ]
-    vector_properties               [ ]
+    scalar_properties [
+        Energy [
+            Joule {
+                suffix: " J",
+            }
+        ]
+    ]
+    vector_properties [
+        Length [
+            Metre {
+                suffix: " m",
+            }
+        ]
+        Force [
+            Newton {
+                suffix: " N",
+            }
+        ]
+    ]
     dimensionless_measurement_units [ ]
-    angle_measurement_units         [ ]
+    angle_measurement_units [
+        Degree {
+            suffix: " deg",
+            cycle_fraction: 360.,
+        }
+    ]
     relationships [
         Joule 1 == Newton 1 * Metre 1,
     ]
-}
-
-measures::angle_measurement_unit! {
-    name: Degree,
-    suffix: " deg",
-    cycle_fraction: 360.,
-}
-
-measures::measurement_vector_property! { Length }
-
-measures::measurement_unit! {
-    name: Metre,
-    property: Length,
-    suffix: " m",
-}
-
-measures::measurement_vector_property! { Force }
-
-measures::measurement_unit! {
-    name: Newton,
-    property: Force,
-    suffix: " N",
-}
-
-measures::measurement_scalar_property! { Energy }
-
-measures::measurement_unit! {
-    name: Joule,
-    property: Energy,
-    suffix: " J",
 }
 
 fn elapsed<const SIZE: usize>(start: Instant, x: f64) -> Duration {

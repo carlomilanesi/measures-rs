@@ -1,9 +1,9 @@
 measures::define_measure_types! {
     with_points exact with_approx,
-    scalar_properties               [ ]
-    vector_properties               [ ]
+    scalar_properties [ ]
+    vector_properties [ ]
     dimensionless_measurement_units [ ]
-    angle_measurement_units         [ ]
+    angle_measurement_units [ ]
     relationships [
     ]
 }

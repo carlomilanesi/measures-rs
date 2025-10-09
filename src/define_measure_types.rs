@@ -137,10 +137,7 @@ macro_rules! define_measure_types_aux {
 
         // `scalar_properties` section
         $(
-            //println!(" - scalar property: {}", stringify!($scalar_prop));
-
             measures::measurement_scalar_property! { $scalar_prop }
-
             $(
                 measures::measurement_unit! {
                     name: $scalar_unit,
@@ -149,19 +146,12 @@ macro_rules! define_measure_types_aux {
                         $scalar_key: $scalar_val,
                     )*
                 }
-                //println!("   * unit: {}", stringify!($scalar_unit));
-                //$(
-                //    println!("     {} = {}", stringify!($scalar_key), $scalar_val);
-                //)*
             )*
         )*
 
         // `vector_properties` section
         $(
-            //println!(" - vector property: {}", stringify!($vector_prop));
-
             measures::measurement_vector_property! { $vector_prop }
-
             $(
                 measures::measurement_unit! {
                     name: $vector_unit,
@@ -170,17 +160,11 @@ macro_rules! define_measure_types_aux {
                         $vector_key: $vector_val,
                     )*
                 }
-                //println!("   * unit: {}", stringify!($vector_unit));
-                //$(
-                //    println!("     {} = {}", stringify!($vector_key), $vector_val);
-                //)*
             )*
         )*
 
         // `dimensionless_measurement_units` section
         $(
-            //println!(" - dimensionless unit: {}", stringify!($dimless_unit));
-
             measures::measurement_unit! {
                 name: $dimless_unit,
                 property: Dimensionless,
@@ -188,26 +172,16 @@ macro_rules! define_measure_types_aux {
                     $dimless_key: $dimless_val,
                 )*
             }
-            //println!("   * unit: {}", stringify!($dimless_unit));
-            //$(
-            //    println!("     {} = {}", stringify!($dimless_key), $dimless_val);
-            //)*
         )*
 
         // `angle_measurement_units` section
         $(
-            //println!(" - angle unit: {}", stringify!($angle_unit));
-
             measures::angle_measurement_unit! {
                 name: $angle_unit,
                 $(
                     $angle_key: $angle_val,
                 )*
             }
-            //println!("   * unit: {}", stringify!($angle_unit));
-            //$(
-            //    println!("     {} = {}", stringify!($angle_key), $angle_val);
-            //)*
         )*
 
         // `relationships` section
@@ -1286,7 +1260,6 @@ macro_rules! define_measure_types {
 #[macro_export]
 macro_rules! measurement_scalar_property {
     ($name:ident) => {
-        #[allow(dead_code)]
         pub struct $name;
         impl $crate::traits::MeasurementProperty for $name {}
         impl $crate::traits::ScalarProperty for $name {}
@@ -1296,7 +1269,6 @@ macro_rules! measurement_scalar_property {
 #[macro_export]
 macro_rules! measurement_vector_property {
     ($name:ident) => {
-        #[allow(dead_code)]
         pub struct $name;
         impl $crate::traits::MeasurementProperty for $name {}
         impl $crate::traits::VectorProperty for $name {}
@@ -1400,5 +1372,29 @@ macro_rules! measurement_unit {
                 Measure::<$name, Number>::new(self.value * other.value)
             }
         }
+
+        /*
+        /// Measure<One> * Measure2d -> Measure2d
+        impl<Number> std::ops::Mul<Measure2d<$name, Number>> for Measure<measures::dimensionless::One, Number>
+        where
+            Number: measures::traits::ArithmeticOps,
+        {
+            type Output = Measure2d<$name, Number>;
+            fn mul(self, other: Measure2d<$name, Number>) -> Measure2d<$name, Number> {
+                Measure2d::<$name, Number>::new(self.value * other.values[0], self.value * other.values[1])
+            }
+        }
+
+        /// Measure<One> * Measure3d -> Measure3d
+        impl<Number> std::ops::Mul<Measure2d<$name, Number>> for Measure<measures::dimensionless::One, Number>
+        where
+            Number: measures::traits::ArithmeticOps,
+        {
+            type Output = Measure3d<$name, Number>;
+            fn mul(self, other: Measure3d<$name, Number>) -> Measure3d<$name, Number> {
+                Measure3d::<$name, Number>::new(self.value * other.values[0], self.value * other.values[1], self.value * other.values[2])
+            }
+        }
+        */
     };
 }

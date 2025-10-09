@@ -1,26 +1,21 @@
 measures::define_measure_types! {
     exact,
     scalar_properties               [ ]
-    vector_properties               [ ]
+    vector_properties [
+        Length [
+            Metre {
+                suffix: " m",
+            }
+            MilliMetre {
+                suffix: " mm",
+                ratio: 1e-3,
+            }
+        ]
+    ]
     dimensionless_measurement_units [ ]
     angle_measurement_units         [ ]
     relationships [
     ]
-}
-
-measures::measurement_vector_property! { Length }
-
-measures::measurement_unit! {
-    name: Metre,
-    property: Length,
-    suffix: " m",
-}
-
-measures::measurement_unit! {
-    name: MilliMetre,
-    property: Length,
-    suffix: " mm",
-    ratio: 1e-3,
 }
 
 #[test]

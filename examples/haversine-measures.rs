@@ -3,32 +3,26 @@
 
 measures::define_measure_types! {
     with_directions exact,
-    scalar_properties               [ ]
-    vector_properties               [ ]
+    scalar_properties [ ]
+    vector_properties [
+        Length [
+            KiloMetre {
+                suffix: " km",
+            }
+            Mile {
+                suffix: " mi",
+                ratio: 1.609344,
+            }
+        ]
+    ]
     dimensionless_measurement_units [ ]
-    angle_measurement_units         [ ]
+    angle_measurement_units [
+        Degree {
+            suffix: " deg",
+            cycle_fraction: 360.,
+        }
+    ]
     relationships [ ]
-}
-
-measures::angle_measurement_unit! {
-    name: Degree,
-    suffix: " deg",
-    cycle_fraction: 360.,
-}
-
-measures::measurement_vector_property! { Length }
-
-measures::measurement_unit! {
-    name: KiloMetre,
-    property: Length,
-    suffix: " km",
-}
-
-measures::measurement_unit! {
-    name: Mile,
-    property: Length,
-    suffix: " mi",
-    ratio: 1.609344,
 }
 
 struct Point {

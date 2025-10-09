@@ -2,10 +2,37 @@ use measures::traits::CrossProduct;
 
 measures::define_measure_types! {
     with_2d exact,
-    scalar_properties               [ ]
-    vector_properties               [ ]
+    scalar_properties [
+        Time [
+            Second {
+                suffix: " s",
+            }
+        ]
+        Energy [
+            Joule {
+                suffix: " J",
+            }
+        ]
+    ]
+    vector_properties [
+        Length [
+            Metre {
+                suffix: " m",
+            }
+        ]
+        Velocity [
+            MetrePerSecond {
+                suffix: " m/s",
+            }
+        ]
+        Force [
+            Newton {
+                suffix: " N",
+            }
+        ]
+    ]
     dimensionless_measurement_units [ ]
-    angle_measurement_units         [ ]
+    angle_measurement_units [ ]
     relationships [
         Metre 2 == MetrePerSecond 2 * Second 1,
         Metre 1 == Metre 2 * __ 2,
@@ -13,46 +40,6 @@ measures::define_measure_types! {
         NewtonMetre 1 == Newton 2 X Metre 2,
         Metre 1 == Metre 2 X __ 2,
     ]
-}
-
-measures::measurement_vector_property! { Length }
-
-measures::measurement_unit! {
-    name: Metre,
-    property: Length,
-    suffix: " m",
-}
-
-measures::measurement_scalar_property! { Time }
-
-measures::measurement_unit! {
-    name: Second,
-    property: Time,
-    suffix: " s",
-}
-
-measures::measurement_vector_property! { Velocity }
-
-measures::measurement_unit! {
-    name: MetrePerSecond,
-    property: Velocity,
-    suffix: " m/s",
-}
-
-measures::measurement_vector_property! { Force }
-
-measures::measurement_unit! {
-    name: Newton,
-    property: Force,
-    suffix: " N",
-}
-
-measures::measurement_scalar_property! { Energy }
-
-measures::measurement_unit! {
-    name: Joule,
-    property: Energy,
-    suffix: " J",
 }
 
 measures::measurement_vector_property! { Torque }

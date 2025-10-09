@@ -24,35 +24,29 @@
 
 measures::define_measure_types! {
     with_directions exact,
-    scalar_properties               [ ]
-    vector_properties               [ ]
+    scalar_properties [ ]
+    vector_properties [
+        Length [
+            Meter {
+                suffix: " m",
+            }
+        ]
+        Area [
+            SquareMeter  {
+                suffix: " m\u{b2}",
+            }
+        ]
+    ]
     dimensionless_measurement_units [ ]
-    angle_measurement_units         [ ]
+    angle_measurement_units [
+        Degree {
+            suffix: " deg",
+            cycle_fraction: 360.,
+        }
+    ]
     relationships [
         SquareMeter 1 == Meter 1 * __ 1,
     ]
-}
-
-measures::measurement_vector_property! { Length }
-
-measures::measurement_unit! {
-    name: Meter,
-    property: Length,
-    suffix: " m",
-}
-
-measures::measurement_scalar_property! { Area }
-
-measures::measurement_unit! {
-    name: SquareMeter,
-    property: Area,
-    suffix: " m\u{b2}",
-}
-
-measures::angle_measurement_unit! {
-    name: Degree,
-    suffix: " deg",
-    cycle_fraction: 360.,
 }
 
 const RE: Measure<Meter> = Measure::<Meter>::new(6371000.0); // Earth radius in meters

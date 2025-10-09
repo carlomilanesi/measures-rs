@@ -21,7 +21,7 @@ fn main() {
     let mo = Measure::<measures::dimensionless::One>::new(2.3);
     let m = Measure::<CentiMetre>::new(3.6);
     let _r1 = m * mo;
-    //TODO let _r2 = mo * m;
+    let _r2 = mo * m;
 
     // Setup length and time quantities using different units.
     let l1 = Measure::<Metre>::new(15.);

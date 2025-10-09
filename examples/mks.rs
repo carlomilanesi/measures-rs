@@ -10,29 +10,24 @@ UOM will print:
 
 measures::define_measure_types! {
     exact,
-    scalar_properties               [ ]
-    vector_properties               [ ]
+    scalar_properties [ ]
+    vector_properties [
+        Length [
+            Metre {
+                suffix: " m",
+            }
+            Foot {
+                suffix: " ft",
+                ratio: 0.3048,
+            }
+        ]
+    ]
     dimensionless_measurement_units [ ]
-    angle_measurement_units         [ ]
+    angle_measurement_units [ ]
     relationships [ ]
 }
 
 fn main() {
     let l1 = Measure::<Metre, f32>::new(100.);
     println!("{} = {}", l1, l1.convert::<Foot>());
-}
-
-measures::measurement_vector_property! { Length }
-
-measures::measurement_unit! {
-    name: Metre,
-    property: Length,
-    suffix: " m",
-}
-
-measures::measurement_unit! {
-    name: Foot,
-    property: Length,
-    suffix: " ft",
-    ratio: 0.3048,
 }

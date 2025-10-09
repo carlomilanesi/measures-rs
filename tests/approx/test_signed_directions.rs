@@ -1,23 +1,20 @@
 measures::define_measure_types! {
     with_points with_directions exact,
-    scalar_properties               [ ]
-    vector_properties               [ ]
+    scalar_properties [ ]
+    vector_properties [ ]
     dimensionless_measurement_units [ ]
-    angle_measurement_units         [ ]
+    angle_measurement_units [
+        Degree {
+            suffix: " deg",
+            cycle_fraction: 360.,
+        }
+        Cycle {
+            suffix: " rev",
+            cycle_fraction: 1.,
+        }
+    ]
     relationships [
     ]
-}
-
-measures::angle_measurement_unit! {
-    name: Degree,
-    suffix: " deg",
-    cycle_fraction: 360.,
-}
-
-measures::angle_measurement_unit! {
-    name: Cycle,
-    suffix: " rev",
-    cycle_fraction: 1.,
 }
 
 #[test]

@@ -5,29 +5,25 @@ use rand::{rngs::StdRng, Rng, SeedableRng};
 
 measures::define_measure_types! {
     with_points exact with_approx,
-    scalar_properties               [ ]
-    vector_properties               [ ]
+    scalar_properties [
+        Time [
+            NanoSecond {
+                suffix: " ns",
+                ratio: 1e-9,
+            }
+        ]
+    ]
+    vector_properties [
+        Length [
+            Metre {
+                suffix: " m",
+            }
+        ]
+    ]
     dimensionless_measurement_units [ ]
-    angle_measurement_units         [ ]
+    angle_measurement_units [ ]
     relationships [
     ]
-}
-
-measures::measurement_vector_property! { Length }
-
-measures::measurement_unit! {
-    name: Metre,
-    property: Length,
-    suffix: " m",
-}
-
-measures::measurement_scalar_property! { Time }
-
-measures::measurement_unit! {
-    name: NanoSecond,
-    property: Time,
-    suffix: " ns",
-    ratio: 1e-9,
 }
 
 const N_ITERATIONS: usize = 1_000;

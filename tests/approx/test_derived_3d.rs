@@ -2,10 +2,42 @@ use measures::traits::CrossProduct;
 
 measures::define_measure_types! {
     with_3d exact,
-    scalar_properties               [ ]
-    vector_properties               [ ]
+    scalar_properties [
+        Time [
+            Second {
+                suffix: " s",
+            }
+        ]
+        Energy [
+            Joule {
+                suffix: " J",
+            }
+        ]
+    ]
+    vector_properties [
+        Length [
+            Metre {
+                suffix: " m",
+            }
+        ]
+        Velocity [
+            MetrePerSecond {
+                suffix: " m/s",
+            }
+        ]
+        Force [
+            Newton {
+                suffix: " N",
+            }
+        ]
+        Torque [
+            NewtonMetre {
+                suffix: " N\u{b7}m",
+            }
+        ]
+    ]
     dimensionless_measurement_units [ ]
-    angle_measurement_units         [ ]
+    angle_measurement_units [ ]
     relationships [
         Metre 3 == MetrePerSecond 3 * Second 1,
         Metre 1 == Metre 3 * __ 3,
@@ -13,54 +45,6 @@ measures::define_measure_types! {
         NewtonMetre 3 == Newton 3 X Metre 3,
         Metre 3 == Metre 3 X __ 3,
     ]
-}
-
-measures::measurement_vector_property! { Length }
-
-measures::measurement_unit! {
-    name: Metre,
-    property: Length,
-    suffix: " m",
-}
-
-measures::measurement_scalar_property! { Time }
-
-measures::measurement_unit! {
-    name: Second,
-    property: Time,
-    suffix: " s",
-}
-
-measures::measurement_vector_property! { Velocity }
-
-measures::measurement_unit! {
-    name: MetrePerSecond,
-    property: Velocity,
-    suffix: " m/s",
-}
-
-measures::measurement_vector_property! { Force }
-
-measures::measurement_unit! {
-    name: Newton,
-    property: Force,
-    suffix: " N",
-}
-
-measures::measurement_scalar_property! { Energy }
-
-measures::measurement_unit! {
-    name: Joule,
-    property: Energy,
-    suffix: " J",
-}
-
-measures::measurement_vector_property! { Torque }
-
-measures::measurement_unit! {
-    name: NewtonMetre,
-    property: Torque,
-    suffix: " N\u{b7}m",
 }
 
 #[test]

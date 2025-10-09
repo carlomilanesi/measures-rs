@@ -1,45 +1,34 @@
 measures::define_measure_types! {
     exact,
-    scalar_properties               [ ]
-    vector_properties               [ ]
+    scalar_properties [
+        ElectricPotential [
+            Volt {
+                suffix: " V",
+            }
+        ]
+        SquareElectricCurrent [
+            SquareAmpere {
+                suffix: " A\u{b2}",
+            }
+        ]
+        ElectricCurrent [
+            Ampere {
+                suffix: " A",
+            }
+        ]
+        ElectricalResistance [
+            Ohm {
+                suffix: " \u{3a9}",
+            }
+        ]
+    ]
+    vector_properties [ ]
     dimensionless_measurement_units [ ]
-    angle_measurement_units         [ ]
+    angle_measurement_units [ ]
     relationships [
         Volt 1 == Ampere 1 * Ohm 1,
         SquareAmpere 1 == Ampere 1 * __ 1,
     ]
-}
-
-measures::measurement_scalar_property! { ElectricPotential }
-
-measures::measurement_unit! {
-    name: Volt,
-    property: ElectricPotential,
-    suffix: " V",
-}
-
-measures::measurement_scalar_property! { SquareElectricCurrent }
-
-measures::measurement_unit! {
-    name: SquareAmpere,
-    property: SquareElectricCurrent,
-    suffix: " A\u{b2}",
-}
-
-measures::measurement_scalar_property! { ElectricCurrent }
-
-measures::measurement_unit! {
-    name: Ampere,
-    property: ElectricCurrent,
-    suffix: " A",
-}
-
-measures::measurement_scalar_property! { ElectricalResistance }
-
-measures::measurement_unit! {
-    name: Ohm,
-    property: ElectricalResistance,
-    suffix: " \u{3a9}",
 }
 
 #[derive(Clone, Copy, PartialEq)]

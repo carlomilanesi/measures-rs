@@ -1,7 +1,29 @@
 measures::define_measure_types! {
     exact,
-    scalar_properties               [ ]
-    vector_properties               [ ]
+    scalar_properties [
+        Area [
+            SquareMetre {
+                suffix: " m\u{b2}",
+            }
+        ]
+        ElectricalConductance [
+            Siemens {
+                suffix: " S",
+            }
+        ]
+        ElectricalResistance [
+            Ohm {
+                suffix: " \u{3a9}",
+            }
+        ]
+    ]
+    vector_properties [
+        Length [
+            Metre {
+                suffix: " m",
+            }
+        ]
+    ]
     dimensionless_measurement_units [ ]
     angle_measurement_units         [ ]
     relationships [
@@ -26,38 +48,6 @@ measures::define_measure_types! {
     measures::expand_cross_3_same! {$exact $with_approx, $unit2 $unit1}
     measures::expand_cross_3! {$exact $with_approx, $unit2 $unit3 $unit1}
 */
-
-measures::measurement_vector_property! { Length }
-
-measures::measurement_unit! {
-    name: Metre,
-    property: Length,
-    suffix: " m",
-}
-
-measures::measurement_scalar_property! { Area }
-
-measures::measurement_unit! {
-    name: SquareMetre,
-    property: Area,
-    suffix: " m\u{b2}",
-}
-
-measures::measurement_scalar_property! { ElectricalConductance }
-
-measures::measurement_unit! {
-    name: Siemens,
-    property: ElectricalConductance,
-    suffix: " S",
-}
-
-measures::measurement_scalar_property! { ElectricalResistance }
-
-measures::measurement_unit! {
-    name: Ohm,
-    property: ElectricalResistance,
-    suffix: " \u{3a9}",
-}
 
 #[test]
 fn test_relationship_1_1() {
