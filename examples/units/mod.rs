@@ -1,8 +1,1195 @@
 measures::define_measure_types! {
     with_points with_directions with_2d with_3d with_transformations exact with_approx,
+    scalar_properties [
+        Action [
+            JouleSecond {
+                suffix: " J\u{b7}s", // J·s
+            }
+        ]
+        Amount [
+            Unit {
+                suffix: " u.",
+            }
+            Dozen {
+                suffix: " dz.",
+                ratio: 12.,
+            }
+            Mole {
+                suffix: " mol",
+                ratio: 6.0221413e23,
+            }
+        ]
+        Area [
+            SquareMetre {
+                suffix: " m\u{b2}", // m²
+            }
+            SquareKiloMetre {
+                suffix: " km\u{b2}", // km²
+                ratio: 1e6,
+            }
+            Hectare {
+                suffix: " ha",
+                ratio: 1e4,
+            }
+            Are {
+                suffix: " are",
+                ratio: 100.,
+            }
+            SquareDeciMetre {
+                suffix: " dm\u{b2}", // dm²
+                ratio: 0.01,
+            }
+            SquareCentiMetre {
+                suffix: " cm\u{b2}", // cm²
+                ratio: 1e-4,
+            }
+            SquareMilliMetre {
+                suffix: " mm\u{b2}", // mm²
+                ratio: 1e-6,
+            }
+            SquareMicroMetre {
+                suffix: " \u{b5}m\u{b2}", // µm²
+                ratio: 1e-12,
+            }
+            SquareNanoMetre {
+                suffix: " nm\u{b2}", // nm²
+                ratio: 1e-18,
+            }
+            SquareInch {
+                suffix: " in\u{b2}", // in²
+                ratio: 0.0254 * 0.0254,
+            }
+            SquareFoot {
+                suffix: " ft\u{b2}", // ft²
+                ratio: 0.3048 * 0.3048,
+            }
+            SquareYard {
+                suffix: " yd\u{b2}", // yd²
+                ratio: 0.9144 * 0.9144,
+            }
+            SquareMile {
+                suffix: " mi\u{b2}", // mi²
+                ratio: 1609. * 1609.,
+            }
+        ]
+        Capacitance [
+            Farad {
+                suffix: " F",
+            }
+            MilliFarad {
+                suffix: " mF",
+                ratio: 1e-3,
+            }
+            MicroFarad {
+                suffix: " \u{b5}F", // µF
+                ratio: 1e-6,
+            }
+            NanoFarad {
+                suffix: " nF",
+                ratio: 1e-9,
+            }
+            PicoFarad {
+                suffix: " pF",
+                ratio: 1e-12,
+            }
+        ]
+        CatalyticActivity [
+            Katal {
+                suffix: " kat",
+            }
+        ]
+        ChemicalPotential [
+            JoulePerMole {
+                suffix: " J/mol",
+            }
+        ]
+        DoseEquivalent [
+            Sievert {
+                suffix: " Sv",
+            }
+            Rem {
+                suffix: " rem",
+                ratio: 0.01,
+            }
+        ]
+        DynamicViscosity [
+            PascalSecond {
+                suffix: " Pa\u{b7}s", // Pa·s
+            }
+        ]
+        ElectricalConductance [
+            Siemens {
+                suffix: " S",
+            }
+        ]
+        ElectricalConductivity [
+            SiemensPerMetre {
+                suffix: " S/m",
+            }
+        ]
+        ElectricalResistance [
+            Ohm {
+                suffix: " \u{3a9}", // Ω
+            }
+            MilliOhm {
+                suffix: " m\u{3a9}", // mΩ
+                ratio: 1e-3,
+            }
+            KiloOhm {
+                suffix: " k\u{3a9}", // kΩ
+                ratio: 1e3,
+            }
+        ]
+        ElectricalResistivity [
+            OhmMetre {
+                suffix: " \u{3a9}\u{b7}m", // Ω·m
+            }
+        ]
+        ElectricCharge [
+            Coulomb {
+                suffix: " C",
+            }
+            MilliCoulomb {
+                suffix: " mC",
+                ratio: 1e-3,
+            }
+            MicroCoulomb {
+                suffix: " \u{b5}C", // µC
+                ratio: 1e-6,
+            }
+            NanoCoulomb {
+                suffix: " ",
+                ratio: 1e-9,
+            }
+            PicoCoulomb {
+                suffix: " pC",
+                ratio: 1e-12,
+            }
+        ]
+        ElectricChargeDensity [
+            CoulombPerCubicMetre {
+                suffix: " C/m\u{b3}", // C/m³
+            }
+        ]
+        ElectricCurrent [
+            Ampere {
+                suffix: " A",
+            }
+            MilliAmpere {
+                suffix: " mA",
+                ratio: 1e-3,
+            }
 
-    // Relationships among units
-    [
+            MicroAmpere {
+                suffix: " \u{b5}A", // µA
+                ratio: 1e-6,
+            }
+        ]
+        ElectricDisplacement [
+            CoulombPerSquareMetre {
+                suffix: " C/m\u{b2}", // C/m²
+            }
+        ]
+        ElectricPotential [
+            Volt {
+                suffix: " V",
+            }
+            KiloVolt {
+                suffix: " kV",
+                ratio: 1e3,
+            }
+            MilliVolt {
+                suffix: " mV",
+                ratio: 1e-3,
+            }
+            MicroVolt {
+                suffix: " \u{b5}V", // µV
+            }
+        ]
+        Energy [
+            Joule {
+                suffix: " J",
+            }
+            Erg {
+                suffix: " erg",
+                ratio: 1e-7,
+            }
+            WattHour {
+                suffix: " W\u{b7}h", // W·h
+                ratio: 3600.,
+            }
+            KiloWattHour {
+                suffix: " kW\u{b7}h", // kW·h
+                ratio: 3.6e6,
+            }
+            MegaWattHour {
+                suffix: " MW\u{b7}h", // MW·h
+                ratio: 3.6e9,
+            }
+            Calorie {
+                suffix: " cal",
+                ratio: 4.187,
+            }
+            KiloCalorie {
+                suffix: " kcal",
+                ratio: 4187.,
+            }
+            ElectronVolt {
+                suffix: " eV",
+                ratio: 1.602176634e-19,
+            }
+            KiloElectronVolt {
+                suffix: " keV",
+                ratio: 1.602176634e-16,
+            }
+            MegaElectronVolt {
+                suffix: " MeV",
+                ratio: 1.602176634e-13,
+            }
+            GigaElectronVolt {
+                suffix: " GeV",
+                ratio: 1.602176634e-10,
+            }
+            TeraElectronVolt {
+                suffix: " TeV",
+                ratio: 1.602176634e-7,
+            }
+        ]
+        EnergyDensity [
+            JoulePerCubicMetre {
+                suffix: " J/m\u{b3}", // J/m³
+            }
+        ]
+        Entropy [
+            JoulePerKelvin {
+                suffix: " J/\u{b0}K", // J/°K
+            }
+        ]
+        Frequency [
+            Hertz {
+                suffix: " Hz",
+            }
+            CyclePerSecond {
+                suffix: " c/s",
+            }
+            KiloHertz {
+                suffix: " kHz",
+                ratio: 1e3,
+            }
+            MegaHertz {
+                suffix: " MHz",
+                ratio: 1e6,
+            }
+            GigaHertz {
+                suffix: " GHz",
+                ratio: 1e9,
+            }
+            RadianPerSecond {
+                suffix: " rad/s",
+                ratio: 1. / core::f64::consts::TAU,
+            }
+            CyclePerMinute {
+                suffix: " rpm",
+                ratio: 1. / 60.,
+            }
+        ]
+        Illuminance [
+            Lux {
+                suffix: " lx",
+            }
+            Phot {
+                suffix: " phot",
+                ratio: 1e4,
+            }
+
+            FootCandle {
+                suffix: " fc",
+                ratio: 10.764,
+            }
+        ]
+        Inductance [
+            Henry {
+                suffix: " H",
+            }
+        ]
+        Information [
+            Bit {
+                suffix: " b",
+            }
+            Byte {
+                suffix: " B",
+                ratio: 8.,
+            }
+            KiloBit {
+                suffix: " kb",
+                ratio: 1e3,
+            }
+            KiloByte {
+                suffix: " kB",
+                ratio: 8e3,
+            }
+            KibiBit {
+                suffix: " kib",
+                ratio: 1024.,
+            }
+            KibiByte {
+                suffix: " kiB",
+                ratio: 8. * 1024.,
+            }
+            MegaBit {
+                suffix: " Mb",
+                ratio: 1e6,
+            }
+            MegaByte {
+                suffix: " MB",
+                ratio: 8e6,
+            }
+            MebiBit {
+                suffix: " Mib",
+                ratio: 1024. * 1024.,
+            }
+            MebiByte {
+                suffix: " MiB",
+                ratio: 8. * 1024. * 1024.,
+            }
+            GigaBit {
+                suffix: " Gb",
+                ratio: 1e9,
+            }
+            GigaByte {
+                suffix: " GB",
+                ratio: 8e9,
+            }
+            GibiBit {
+                suffix: " Gib",
+                ratio: 1024. * 1024. * 1024.,
+            }
+            GibiByte {
+                suffix: " GiB",
+                ratio: 8. * 1024. * 1024. * 1024.,
+            }
+            TeraBit {
+                suffix: " Tb",
+                ratio: 1e12,
+            }
+            TeraByte {
+                suffix: " TB",
+                ratio: 8e12,
+            }
+            TebiBit {
+                suffix: " TiB",
+                ratio: 1024. * 1024. * 1024. * 1024.,
+            }
+            TebiByte {
+                suffix: " TiB",
+                ratio: 8. * 1024. * 1024. * 1024. * 1024.,
+            }
+        ]
+        InformationRate [
+            BitPerSecond {
+                suffix: " b/s",
+            }
+            BytePerSecond {
+                suffix: " B/s",
+                ratio: 8.,
+            }
+            KiloBitPerSecond {
+                suffix: " kb/s",
+                ratio: 1e3,
+            }
+            KiloBytePerSecond {
+                suffix: " kB/s",
+                ratio: 8e3,
+            }
+            KibiBitPerSecond {
+                suffix: " kib/s",
+                ratio: 1024.,
+            }
+            KibiBytePerSecond {
+                suffix: " kiB/s",
+                ratio: 8. * 1024.,
+            }
+            MegaBitPerSecond {
+                suffix: " Mb/s",
+                ratio: 1e6,
+            }
+            MegaBytePerSecond {
+                suffix: " MB/s",
+                ratio: 8e6,
+            }
+            MebiBitPerSecond {
+                suffix: " Mib/s",
+                ratio: 1024. * 1024.,
+            }
+            MebiBytePerSecond {
+                suffix: " MiB/s",
+                ratio: 8. * 1024. * 1024.,
+            }
+            GigaBitPerSecond {
+                suffix: " Gb/s",
+                ratio: 1e9,
+            }
+            GigaBytePerSecond {
+                suffix: " GB/s",
+                ratio: 8e9,
+            }
+            GibiBitPerSecond {
+                suffix: " Gib/s",
+                ratio: 1024. * 1024. * 1024.,
+            }
+            GibiBytePerSecond {
+                suffix: " GiB/s",
+                ratio: 8. * 1024. * 1024. * 1024.,
+            }
+            TeraBitPerSecond {
+                suffix: " Tb/s",
+                ratio: 1e12,
+            }
+            TeraBytePerSecond {
+                suffix: " TB/s",
+                ratio: 8e12,
+            }
+            TebiBitPerSecond {
+                suffix: " Tib/s",
+                ratio: 1024. * 1024. * 1024. * 1024.,
+            }
+            TebiBytePerSecond {
+                suffix: " TiB/s",
+                ratio: 8. * 1024. * 1024. * 1024. * 1024.,
+            }
+        ]
+        Irradiance [
+            WattPerSquareMetre {
+                suffix: " W/m\u{b2}", // W/m²
+            }
+        ]
+        KinematicViscosity [
+            SquareMetrePerSecond {
+                suffix: " m\u{b2}/s", // m²/s
+            }
+            Stoke {
+                suffix: " St",
+                ratio: 1e-4,
+            }
+            CentiStoke {
+                suffix: " cSt",
+                ratio: 1e-6,
+            }
+        ]
+        LinearDensity [
+            KiloGramPerMetre {
+                suffix: " kg/m",
+            }
+            GramPerCentiMetre {
+                suffix: " g/cm",
+                ratio: 0.1,
+            }
+        ]
+        LinearElectricChargeDensity [
+            CoulombPerMetre {
+                suffix: " C/m",
+            }
+        ]
+        Luminance [
+            CandelaPerSquareMetre {
+                suffix: " cd/m\u{b2}", // cd/m²
+            }
+            Nit {
+                suffix: " nt",
+            }
+            Stilb {
+                suffix: " sb",
+                ratio: 1e4,
+            }
+            CandelaPerSquareFoot {
+                suffix: " cd/ft\u{b2}", // cd/ft²
+                ratio: 10.764,
+            }
+        ]
+        LuminousIntensity [
+            Candela {
+                suffix: " cd",
+            }
+        ]
+        MagneticFlux [
+            Weber {
+                suffix: " Wb",
+            }
+        ]
+        MagneticPermeability [
+            HenryPerMetre {
+                suffix: " H/m",
+            }
+        ]
+        MagneticReluctance [
+            InverseHenry {
+                suffix: " 1/H",
+            }
+        ]
+        Mass [
+            KiloGram {
+                suffix: " kg",
+            }
+            Tonne {
+                suffix: " t",
+                ratio: 1e3,
+            }
+            MegaGram {
+                suffix: " Mg",
+                ratio: 1e3,
+            }
+            HectoGram {
+                suffix: " hg",
+                ratio: 0.1,
+            }
+            DecaGram {
+                suffix: " dag",
+                ratio: 0.01,
+            }
+            Gram {
+                suffix: " g",
+                ratio: 1e-3,
+            }
+            MilliGram {
+                suffix: " mg",
+                ratio: 1e-6,
+            }
+            MicroGram {
+                suffix: " \u{b5}g", // µg
+                ratio: 1e-9,
+            }
+            NanoGram {
+                suffix: " ng",
+                ratio: 1e-12,
+            }
+            ImperialTon {
+                suffix: " t",
+                ratio: 1016.0469,
+            }
+            USTon {
+                suffix: " t",
+                ratio: 907.18474,
+            }
+            Stone {
+                suffix: " st.",
+                ratio: 6.35029,
+            }
+            Pound {
+                suffix: " lb",
+                ratio: 0.45359237,
+            }
+            Ounce {
+                suffix: " oz",
+                ratio: 0.028349523,
+            }
+            Carat {
+                suffix: " ct",
+                ratio: 2e-4,
+            }
+        ]
+        MassDensity [
+            KiloGramPerCubicMetre {
+                suffix: " kg/m\u{b3}", // kg/m³
+            }
+            GramPerMilliLitre {
+                suffix: " g/ml",
+                ratio: 1e3,
+            }
+        ]
+        MassFlowRate [
+            KiloGramPerSecond {
+                suffix: " kg/s",
+            }
+            GramPerSecond {
+                suffix: " g/s",
+                ratio: 1e-3,
+            }
+        ]
+        MolarConcentration [
+            MolePerCubicMetre {
+                suffix: " mol/m\u{b3}", // mol/m³
+            }
+        ]
+        MolarHeatCapacity [
+            JoulePerKelvinPerMole {
+                suffix: " J/\u{b0}K/mol", // J/°K/mol
+            }
+        ]
+        MomentOfInertia [
+            KiloGramSquareMetre {
+                suffix: " kg\u{b7}m\u{b2}", // kg·m²
+            }
+            GramSquareCentiMetre {
+                suffix: " g\u{b7}cm\u{b2}", // g·cm²
+                ratio: 1e-7,
+            }
+        ]
+        Permittivity [
+            FaradPerMetre {
+                suffix: " F/m",
+            }
+        ]
+        Power [
+            Watt {
+                suffix: " W",
+            }
+            MilliWatt {
+                suffix: " mW",
+                ratio: 1e-3,
+            }
+            KiloWatt {
+                suffix: " kW",
+                ratio: 1e3,
+            }
+            MegaWatt {
+                suffix: " MW",
+                ratio: 1e6,
+            }
+            GigaWatt {
+                suffix: " GW",
+                ratio: 1e9,
+            }
+            ErgPerSecond {
+                suffix: " erg/s",
+                ratio: 1e-7,
+            }
+            HorsePower {
+                suffix: " hp",
+                ratio: 745.699872,
+            }
+        ]
+        Pressure [
+            Pascal {
+                suffix: " Pa",
+            }
+            HectoPascal {
+                suffix: " hPa",
+                ratio: 100.,
+            }
+            Atmosphere {
+                suffix: " atm",
+                ratio: 1.013e5,
+            }
+            Bar {
+                suffix: " bar",
+                ratio: 1e5,
+            }
+            MilliBar {
+                suffix: " mbar",
+                ratio: 100.,
+            }
+            MmHg {
+                suffix: " torr",
+                ratio: 133.322,
+            }
+            PoundForcePerSquareInch {
+                suffix: " lbf/in\u{b2}", // lbf/in²
+                ratio: 6894.757,
+            }
+        ]
+        Radiance [
+            WattPerSquareMetrePerSteradian {
+                suffix: " W/m\u{b2}/sr", // W/m²/sr
+            }
+        ]
+        RadiantIntensity [
+            WattPerSteradian {
+                suffix: " W/sr",
+            }
+        ]
+        RadioactiveActivity [
+            Becquerel {
+                suffix: " Bq",
+            }
+            KiloBecquerel {
+                suffix: " kBq",
+                ratio: 1e3,
+            }
+            MegaBecquerel {
+                suffix: " MBq",
+                ratio: 1e6,
+            }
+            GigaBecquerel {
+                suffix: " GBq",
+                ratio: 1e9,
+            }
+        ]
+        RadioactiveDose [
+            Gray {
+                suffix: " Gy",
+            }
+            Rad {
+                suffix: " rad",
+                ratio: 0.01,
+            }
+        ]
+        RadioactiveDoseRate [
+            GrayPerSecond {
+                suffix: " Gy/s",
+            }
+        ]
+        ReactionRate [
+            MolePerCubicMetrePerSecond {
+                suffix: " mol/m\u{b3}/s", // mol/m³/s
+            }
+        ]
+        SolidAngle [
+            Steradian {
+                suffix: " sr",
+            }
+            Spat {
+                suffix: " sp",
+                ratio: 2. * core::f64::consts::TAU,
+            }
+            Sphere {
+                suffix: " sphere",
+                ratio: 2. * core::f64::consts::TAU,
+            }
+            SquareDegree {
+                suffix: " deg\u{b2}", // deg²
+                ratio: core::f64::consts::TAU * core::f64::consts::TAU / 360. / 360.,
+            }
+        ]
+        SpecificEnergy [
+            JoulePerKiloGram {
+                suffix: " J/kg",
+            }
+        ]
+        SpecificHeatCapacity [
+            JoulePerKiloGramPerKelvin {
+                suffix: " J/kg/\u{b0}K", // J/kg/°K
+            }
+        ]
+        SpecificVolume [
+            CubicMetrePerKiloGram {
+                suffix: " m\u{b3}/kg", // m³/kg
+            }
+        ]
+        SquareTime [
+            SquareSecond {
+                suffix: " s\u{b2}", // s²
+            }
+            HourSecond {
+                suffix: " h\u{b7}s", // h·s
+                ratio: 3600.,
+            }
+            HourHour {
+                suffix: " h\u{b7}h", // h·h
+                ratio: 3600. * 3600.,
+            }
+        ]
+        SurfaceDensity [
+            KiloGramPerSquareMetre {
+                suffix: " kg/m\u{b2}", // kg/m²
+            }
+        ]
+        SurfaceTension [
+            JoulePerSquareMetre {
+                suffix: " J/m\u{b2}", // J/m²
+            }
+        ]
+        Temperature [
+            Kelvin {
+                suffix: " \u{b0}K", // °K
+            }
+            Celsius {
+                suffix: " \u{b0}C", // °C
+                ratio: 1.,
+                offset: 273.15,
+            }
+            Fahrenheit {
+                suffix: " \u{b0}F", // °F
+                ratio: 5. / 9.,
+                offset: 273.15 - 32. * 5. / 9.,
+            }
+        ]
+        ThermalConductivity [
+            WattPerMetrePerKelvin {
+                suffix: " W/m/\u{b0}K", // W/m/°K
+            }
+        ]
+        Time [
+            Second {
+                suffix: " s",
+            }
+            Year {
+                suffix: " Y",
+                ratio: 365.24 * 86400.,
+            }
+            Week {
+                suffix: " W",
+                ratio: 7. * 86400.,
+            }
+            Day {
+                suffix: " D",
+                ratio: 86400.,
+            }
+            Hour {
+                suffix: " h",
+                ratio: 3600.,
+            }
+            Minute {
+                suffix: " min",
+                ratio: 60.,
+            }
+            MilliSecond {
+                suffix: " ms",
+                ratio: 1e-3,
+            }
+            MicroSecond {
+                suffix: " \u{b5}s", // µs
+                ratio: 1e-6,
+            }
+            NanoSecond {
+                suffix: " ns",
+                ratio: 1e-9,
+            }
+            PicoSecond {
+                suffix: " ps",
+                ratio: 1e-12,
+            }
+            FemtoSecond {
+                suffix: " fs",
+                ratio: 1e-15,
+            }
+        ]
+        Volume [
+            CubicMetre {
+                suffix: " m\u{b3}", // m³
+            }
+            CubicKiloMetre {
+                suffix: " km\u{b3}", // km³
+                ratio: 1e9,
+            }
+            CubicMicroMetre {
+                suffix: " \u{b5}m\u{b3}?", // µm³
+                ratio: 1e-18,
+            }
+            CubicNanoMetre {
+                suffix: " nm\u{b3}", // nm³
+                ratio: 1e-27,
+            }
+            CubicInch {
+                suffix: " in\u{b3}", // in³
+                ratio: 0.0254 * 0.0254 * 0.0254,
+            }
+            CubicFoot {
+                suffix: " ft\u{b3}", // ft³
+                ratio: 0.3048 * 0.3048 * 0.3048,
+            }
+            CubicYard {
+                suffix: " yd\u{b3}", // yd³
+                ratio: 0.9144 * 0.9144 * 0.9144,
+            }
+            CubicMile {
+                suffix: " mi\u{b3}", //mi³
+                ratio: 1609. * 1609. * 1609.,
+            }
+            Litre {
+                suffix: " l",
+                ratio: 1e-3,
+            }
+            CubicDecimetre {
+                suffix: " dm\u{b3}", //dm³
+                ratio: 1e-3,
+            }
+            MilliLitre {
+                suffix: " ml",
+                ratio: 1e-6,
+            }
+            CubicCentimetre {
+                suffix: " cm\u{b3}", // cm³
+                ratio: 1e-6,
+            }
+            MicroLitre {
+                suffix: " \u{b5}l", // µl
+                ratio: 1e-9,
+            }
+            CubicMillimetre {
+                suffix: " mm\u{b3}", // mm³
+                ratio: 1e-9,
+            }
+            NanoLitre {
+                suffix: " nl",
+                ratio: 1e-12,
+            }
+            PicoLitre {
+                suffix: " pl",
+                ratio: 1e-15,
+            }
+            Pint {
+                suffix: " pt",
+                ratio: 473.2e-6,
+            }
+            Gallon {
+                suffix: " gal",
+                ratio: 4546e-6,
+            }
+        ]
+        VolumetricFlowRate [
+            CubicMetrePerSecond {
+                suffix: " m\u{b3}/s", // m³/s
+            }
+            MilliLitrePerSecond {
+                suffix: " ml/s",
+                ratio: 1e-6,
+            }
+            CubicCentimetrePerSecond {
+                suffix: " cm\u{b3}/s", // cm³/s
+                ratio: 1e-6,
+            }
+        ]
+        WaveNumber [
+            CyclePerMetre {
+                suffix: " 1/m",
+            }
+            RadianPerMetre {
+                suffix: " rad/m",
+                ratio: 1. / core::f64::consts::TAU,
+            }
+        ]
+    ]
+    vector_properties [
+        Acceleration [
+            MetrePerSquareSecond {
+                suffix: " m/s\u{b2}", // m/s²
+            }
+            CentiMetrePerSquareSecond {
+                suffix: " cm/s\u{b2}", // cm/s²
+                ratio: 1e-2,
+            }
+            GForce {
+                suffix: " g",
+                ratio: 9.80665,
+            }
+            KiloMetrePerHourPerSecond {
+                suffix: " km/h/s",
+                ratio: 1. / 3.6,
+            }
+        ]
+        AngularAcceleration [
+            RadianPerSquareSecond {
+                suffix: " rad/s\u{b2}", // rad/s²
+            }
+        ]
+        AngularMomentum [
+            KiloGramSquareMetrePerSecond {
+                suffix: " kg\u{b7}m\u{b2}/s", // kg·m²/s
+            }
+            GramSquareCentiMetrePerSecond {
+                suffix: " g\u{b7}cm\u{b2}/s", // g·cm²/s
+                ratio: 1e-7,
+            }
+        ]
+        CurrentDensity [
+            AmperePerSquareMetre {
+                suffix: " A/m\u{b2}", // A/m²
+            }
+        ]
+        ElectricFieldStrength [
+            VoltPerMetre {
+                suffix: " V/m",
+            }
+            NewtonPerCoulomb {
+                suffix: " N/C",
+            }
+        ]
+        Force [
+            Newton {
+                suffix: " N",
+            }
+            Dyne {
+                suffix: " dyn",
+                ratio: 1e-5,
+            }
+            KiloGramForce {
+                suffix: " kgf",
+                ratio: 9.80665,
+            }
+            PoundForce {
+                suffix: " lbf",
+                ratio: 4.448222,
+            }
+            Poundal {
+                suffix: " pdl",
+                ratio: 0.138255,
+            }
+        ]
+        Length [
+            Metre {
+                suffix: " m",
+            }
+            AstronomicalUnit {
+                suffix: " a.u.",
+                ratio: 149597870691.,
+            }
+            Parsec {
+                suffix: " psc",
+                ratio: 3.0856775813e16,
+            }
+            LightYear {
+                suffix: " ly",
+                ratio: 31557600. * 2.99792458e8,
+            }
+            KiloMetre {
+                suffix: " km",
+                ratio: 1e3,
+            }
+            HectoMetre {
+                suffix: " hm",
+                ratio: 100.,
+            }
+            DecaMetre {
+                suffix: " dam",
+                ratio: 10.,
+            }
+            DeciMetre {
+                suffix: " dm",
+                ratio: 0.1,
+            }
+            CentiMetre {
+                suffix: " cm",
+                ratio: 0.01,
+            }
+            MilliMetre {
+                suffix: " mm",
+                ratio: 1e-3,
+            }
+            MicroMetre {
+                suffix: " \u{b5}m", // µm
+                ratio: 1e-6,
+            }
+            NanoMetre {
+                suffix: " nm",
+                ratio: 1e-9,
+            }
+            Angstrom {
+                suffix: " \u{212b}", // Å
+                ratio: 1e-10,
+            }
+            Inch {
+                suffix: " in",
+                ratio: 0.0254,
+            }
+            Foot {
+                suffix: " ft",
+                ratio: 0.3048,
+            }
+            Yard {
+                suffix: " yd",
+                ratio: 0.9144,
+            }
+            Mile {
+                suffix: " mi",
+                ratio: 1609.,
+            }
+            NauticalMile {
+                suffix: " naut.mi",
+                ratio: 1852.,
+            }
+        ]
+        LuminousFlux [
+            Lumen {
+                suffix: " lm",
+            }
+        ]
+        MagneticFieldStrength [
+            AmperePerMetre {
+                suffix: " A/m",
+            }
+        ]
+        MagneticFluxDensity [
+            Tesla {
+                suffix: " T",
+            }
+            Gauss {
+                suffix: " G",
+                ratio: 1e-4,
+            }
+        ]
+        Momentum [
+            NewtonSecond {
+                suffix: " N\u{b7}s", // N·s
+            }
+            KiloGramMetrePerSecond {
+                suffix: " kg\u{b7}m/s", // kg·m/s
+            }
+            DyneSecond {
+                suffix: " dyn\u{b7}s", // dyn·s
+                ratio: 1e-5,
+            }
+            GramCentiMetrePerSecond {
+                suffix: " g\u{b7}cm/s", // g·cm/s
+                ratio: 1e-5,
+            }
+        ]
+        Torque [
+            NewtonMetre {
+                suffix: " N\u{b7}m", // N·m
+            }
+            PoundFoot {
+                suffix: " lbf-ft",
+                ratio: 4.448222 * 0.3048,
+            }
+            PoundInch {
+                suffix: " lbf-in",
+                ratio: 4.448222 * 0.0254,
+            }
+        ]
+        Velocity [
+            MetrePerSecond {
+                suffix: " m/s",
+            }
+            Knot {
+                suffix: " kt",
+                ratio: 1852. / 3600.,
+            }
+            KiloMetrePerHour {
+                suffix: " km/h",
+                ratio: 1. / 3.6,
+            }
+            MilePerHour {
+                suffix: " mi/h",
+                ratio: 1609. / 3600.,
+            }
+            CentiMetrePerSecond {
+                suffix: " cm/s",
+                ratio: 0.01,
+            }
+            KiloMetrePerSecond {
+                suffix: " km/s",
+                ratio: 1e3,
+            }
+        ]
+    ]
+    dimensionless_measurement_units [
+        Mach {
+            suffix: " mach",
+        }
+    ]
+    angle_measurement_units [
+        Cycle {
+            suffix: " rev",
+            cycle_fraction: 1.,
+        }
+        Gradian {
+            suffix: " grad",
+            cycle_fraction: 400.,
+        }
+        Degree {
+            suffix: " deg",
+            cycle_fraction: 360.,
+        }
+        ArcMinute {
+            suffix: " deg'",
+            cycle_fraction: 360. * 60.,
+        }
+        ArcSecond {
+            suffix: " deg\"",
+            cycle_fraction: 360. * 60. * 60.,
+        }
+    ]
+    relationships [
         // Computer science
 
         // Properties:
@@ -185,6 +1372,14 @@ measures::define_measure_types! {
 
         // DynamicViscosity == Pressure * Time
         PascalSecond 1 == Pascal 1 * Second 1,
+
+        // Force
+        //Newton 1 == Newton 1 * One 1,
+        //Newton 2 == Newton 2 * One 1,
+        //Newton 3 == Newton 3 * One 1,
+
+        //Newton 2 == Newton 1 * One 2,
+        //Newton 3 == Newton 1 * One 3,
 
         // Energy == Force * Length
         Joule 1 == Newton 1 * Metre 1,
@@ -516,2092 +1711,11 @@ measures::define_measure_types! {
     ]
 }
 
-// Property: acceleration
-measures::measurement_vector_property! { Acceleration}
-
-measures::measurement_unit! {
-    name: MetrePerSquareSecond,
-    property: Acceleration,
-    suffix: " m/s\u{b2}", // m/s²
-}
-
-measures::measurement_unit! {
-    name: CentiMetrePerSquareSecond,
-    property: Acceleration,
-    ratio: 1e-2,
-    suffix: " cm/s\u{b2}", // cm/s²
-}
-
-measures::measurement_unit! {
-    name: GForce,
-    property: Acceleration,
-    ratio: 9.80665,
-    suffix: " g",
-}
-
-measures::measurement_unit! {
-    name: KiloMetrePerHourPerSecond,
-    property: Acceleration,
-    ratio: 1. / 3.6,
-    suffix: " km/h/s",
-}
-
-// Property: action
-measures::measurement_scalar_property! { Action }
-
-measures::measurement_unit! {
-    name: JouleSecond,
-    property: Action,
-    suffix: " J\u{b7}s", // J·s
-}
-
-// Property: amount of substance, count
-measures::measurement_scalar_property! { Amount }
-
-measures::measurement_unit! {
-    name: Unit,
-    property: Amount,
-    suffix: " u.",
-}
-
-measures::measurement_unit! {
-    name: Dozen,
-    property: Amount,
-    ratio: 12.,
-    suffix: " dz.",
-}
-
-measures::measurement_unit! {
-    name: Mole,
-    property: Amount,
-    ratio: 6.0221413e23,
-    suffix: " mol",
-}
-
-// Property: angle
-measures::angle_measurement_unit! {
-    name: Cycle,
-    suffix: " rev",
-    cycle_fraction: 1.,
-}
-
-measures::angle_measurement_unit! {
-    name: Gradian,
-    suffix: " grad",
-    cycle_fraction: 400.,
-}
-
-measures::angle_measurement_unit! {
-    name: Degree,
-    suffix: " deg",
-    cycle_fraction: 360.,
-}
-
-measures::angle_measurement_unit! {
-    name: ArcMinute,
-    suffix: " deg'",
-    cycle_fraction: 360. * 60.,
-}
-
-measures::angle_measurement_unit! {
-    name: ArcSecond,
-    suffix: " deg\"",
-    cycle_fraction: 360. * 60. * 60.,
-}
-
-// Property: angular acceleration
-measures::measurement_vector_property! { AngularAcceleration }
-
-measures::measurement_unit! {
-    name: RadianPerSquareSecond,
-    property: AngularAcceleration,
-    suffix: " rad/s\u{b2}", // rad/s²
-}
-
-// Property: angular momentum, spin
-measures::measurement_vector_property! { AngularMomentum }
-
-measures::measurement_unit! {
-    name: KiloGramSquareMetrePerSecond,
-    property: AngularMomentum,
-    suffix: " kg\u{b7}m\u{b2}/s", // kg·m²/s
-}
-
-measures::measurement_unit! {
-    name: GramSquareCentiMetrePerSecond,
-    property: AngularMomentum,
-    ratio: 1e-7,
-    suffix: " g\u{b7}cm\u{b2}/s", // g·cm²/s
-}
-
-// Property: area
-measures::measurement_scalar_property! { Area }
-
-measures::measurement_unit! {
-    name: SquareMetre,
-    property: Area,
-    suffix: " m\u{b2}", // m²
-}
-
-measures::measurement_unit! {
-    name: SquareKiloMetre,
-    property: Area,
-    ratio: 1e6,
-    suffix: " km\u{b2}", // km²
-}
-
-measures::measurement_unit! {
-    name: Hectare,
-    property: Area,
-    ratio: 1e4,
-    suffix: " ha",
-}
-
-measures::measurement_unit! {
-    name: Are,
-    property: Area,
-    ratio: 100.,
-    suffix: " are",
-}
-
-measures::measurement_unit! {
-    name: SquareDeciMetre,
-    property: Area,
-    ratio: 0.01,
-    suffix: " dm\u{b2}", // dm²
-}
-
-measures::measurement_unit! {
-    name: SquareCentiMetre,
-    property: Area,
-    ratio: 1e-4,
-    suffix: " cm\u{b2}", // cm²
-}
-
-measures::measurement_unit! {
-    name: SquareMilliMetre,
-    property: Area,
-    ratio: 1e-6,
-    suffix: " mm\u{b2}", // mm²
-}
-
-measures::measurement_unit! {
-    name: SquareMicroMetre,
-    property: Area,
-    ratio: 1e-12,
-    suffix: " \u{b5}m\u{b2}", // µm²
-}
-
-measures::measurement_unit! {
-    name: SquareNanoMetre,
-    property: Area,
-    ratio: 1e-18,
-    suffix: " nm\u{b2}", // nm²
-}
-
-measures::measurement_unit! {
-    name: SquareInch,
-    property: Area,
-    ratio: 0.0254 * 0.0254,
-    suffix: " in\u{b2}", // in²
-}
-
-measures::measurement_unit! {
-    name: SquareFoot,
-    property: Area,
-    ratio: 0.3048 * 0.3048,
-    suffix: " ft\u{b2}", // ft²
-}
-
-measures::measurement_unit! {
-    name: SquareYard,
-    property: Area,
-    ratio: 0.9144 * 0.9144,
-    suffix: " yd\u{b2}", // yd²
-}
-
-measures::measurement_unit! {
-    name: SquareMile,
-    property: Area,
-    ratio: 1609. * 1609.,
-    suffix: " mi\u{b2}", // mi²
-}
-
-// Property: capacitance
-measures::measurement_scalar_property! { Capacitance }
-
-measures::measurement_unit! {
-    name: Farad,
-    property: Capacitance,
-    suffix: " F",
-}
-
-measures::measurement_unit! {
-    name: MilliFarad,
-    property: Capacitance,
-    ratio: 1e-3,
-    suffix: " mF",
-}
-
-measures::measurement_unit! {
-    name: MicroFarad,
-    property: Capacitance,
-    ratio: 1e-6,
-    suffix: " \u{b5}F", // µF
-}
-
-measures::measurement_unit! {
-    name: NanoFarad,
-    property: Capacitance,
-    ratio: 1e-9,
-    suffix: " nF",
-}
-
-measures::measurement_unit! {
-    name: PicoFarad,
-    property: Capacitance,
-    ratio: 1e-12,
-    suffix: " pF",
-}
-
-// Property: catalytic activity
-measures::measurement_scalar_property! { CatalyticActivity }
-
-measures::measurement_unit! {
-    name: Katal,
-    property: CatalyticActivity,
-    suffix: " kat",
-}
-
-// Property: chemical potential, molar energy
-measures::measurement_scalar_property! { ChemicalPotential }
-
-measures::measurement_unit! {
-    name: JoulePerMole,
-    property: ChemicalPotential,
-    suffix: " J/mol",
-}
-
-// Property: current density
-measures::measurement_vector_property! { CurrentDensity }
-
-measures::measurement_unit! {
-    name: AmperePerSquareMetre,
-    property: CurrentDensity,
-    suffix: " A/m\u{b2}", // A/m²
-}
-
-// Property: dimensionless
-measures::measurement_unit! {
-    name: Mach,
-    property: Dimensionless,
-    suffix: " mach",
-}
-
-// Property: dose equivalent
-measures::measurement_scalar_property! { DoseEquivalent }
-
-measures::measurement_unit! {
-    name: Sievert,
-    property: DoseEquivalent,
-    suffix: " Sv",
-}
-
-measures::measurement_unit! {
-    name: Rem,
-    property: DoseEquivalent,
-    ratio: 0.01,
-    suffix: " rem",
-}
-
-// Property: dynamic viscosity, absolute viscosity
-measures::measurement_scalar_property! { DynamicViscosity }
-
-measures::measurement_unit! {
-    name: PascalSecond,
-    property: DynamicViscosity,
-    suffix: " Pa\u{b7}s", // Pa·s
-}
-
-// Property: electrical conductance, electric susceptance, electric admittance
-measures::measurement_scalar_property! { ElectricalConductance }
-
-measures::measurement_unit! {
-    name: Siemens,
-    property: ElectricalConductance,
-    suffix: " S",
-}
-
-// Property: electrical conductivity
-measures::measurement_scalar_property! { ElectricalConductivity }
-
-measures::measurement_unit! {
-    name: SiemensPerMetre,
-    property: ElectricalConductivity,
-    suffix: " S/m",
-}
-
-// Property: electrical resistance, electrical impedance
-measures::measurement_scalar_property! { ElectricalResistance }
-
-measures::measurement_unit! {
-    name: Ohm,
-    property: ElectricalResistance,
-    suffix: " \u{3a9}", // Ω
-}
-
-measures::measurement_unit! {
-    name: MilliOhm,
-    property: ElectricalResistance,
-    ratio: 1e-3,
-    suffix: " m\u{3a9}", // mΩ
-}
-
-measures::measurement_unit! {
-    name: KiloOhm,
-    property: ElectricalResistance,
-    ratio: 1e3,
-    suffix: " k\u{3a9}", // kΩ
-}
-
-// Property: electrical resistivity
-measures::measurement_scalar_property! { ElectricalResistivity }
-
-measures::measurement_unit! {
-    name: OhmMetre,
-    property: ElectricalResistivity,
-    suffix: " \u{3a9}\u{b7}m", // Ω·m
-}
-
-// Property: electric charge
-measures::measurement_scalar_property! { ElectricCharge }
-
-measures::measurement_unit! {
-    name: Coulomb,
-    property: ElectricCharge,
-    suffix: " C",
-}
-
-measures::measurement_unit! {
-    name: MilliCoulomb,
-    property: ElectricCharge,
-    ratio: 1e-3,
-    suffix: " mC",
-}
-
-measures::measurement_unit! {
-    name: MicroCoulomb,
-    property: ElectricCharge,
-    ratio: 1e-6,
-    suffix: " \u{b5}C", // µC
-}
-
-measures::measurement_unit! {
-    name: NanoCoulomb,
-    property: ElectricCharge,
-    ratio: 1e-9,
-    suffix: " ",
-}
-
-measures::measurement_unit! {
-    name: PicoCoulomb,
-    property: ElectricCharge,
-    ratio: 1e-12,
-    suffix: " pC",
-}
-
-// Property: electric charge density
-measures::measurement_scalar_property! { ElectricChargeDensity }
-
-measures::measurement_unit! {
-    name: CoulombPerCubicMetre,
-    property: ElectricChargeDensity,
-    suffix: " C/m\u{b3}", // C/m³
-}
-
-// Property: electric current
-measures::measurement_scalar_property! { ElectricCurrent }
-
-measures::measurement_unit! {
-    name: Ampere,
-    property: ElectricCurrent,
-    suffix: " A",
-}
-
-measures::measurement_unit! {
-    name: MilliAmpere,
-    property: ElectricCurrent,
-    ratio: 1e-3,
-    suffix: " mA",
-}
-
-measures::measurement_unit! {
-    name: MicroAmpere,
-    property: ElectricCurrent,
-    ratio: 1e-6,
-    suffix: " \u{b5}A", // µA
-}
-
-// Property: electric displacement, surface electric charge density
-measures::measurement_scalar_property! { ElectricDisplacement }
-
-measures::measurement_unit! {
-    name: CoulombPerSquareMetre,
-    property: ElectricDisplacement,
-    suffix: " C/m\u{b2}", // C/m²
-}
-
-// Property: electric field strength
-measures::measurement_vector_property! { ElectricFieldStrength }
-
-measures::measurement_unit! {
-    name: VoltPerMetre,
-    property: ElectricFieldStrength,
-    suffix: " V/m",
-}
-
-measures::measurement_unit! {
-    name: NewtonPerCoulomb,
-    property: ElectricFieldStrength,
-    suffix: " N/C",
-}
-
-// Property: electric potential
-measures::measurement_scalar_property! { ElectricPotential }
-
-measures::measurement_unit! {
-    name: Volt,
-    property: ElectricPotential,
-    suffix: " V",
-}
-
-measures::measurement_unit! {
-    name: KiloVolt,
-    property: ElectricPotential,
-    ratio: 1e3,
-    suffix: " kV",
-}
-
-measures::measurement_unit! {
-    name: MilliVolt,
-    property: ElectricPotential,
-    ratio: 1e-3,
-    suffix: " mV",
-}
-
-measures::measurement_unit! {
-    name: MicroVolt,
-    property: ElectricPotential,
-    suffix: " \u{b5}V", // µV
-}
-
-// Property: energy, work, heat
-measures::measurement_scalar_property! { Energy }
-
-measures::measurement_unit! {
-    name: Joule,
-    property: Energy,
-    suffix: " J",
-}
-
-measures::measurement_unit! {
-    name: Erg,
-    property: Energy,
-    ratio: 1e-7,
-    suffix: " erg",
-}
-
-measures::measurement_unit! {
-    name: WattHour,
-    property: Energy,
-    ratio: 3600.,
-    suffix: " W\u{b7}h", // W·h
-}
-
-measures::measurement_unit! {
-    name: KiloWattHour,
-    property: Energy,
-    ratio: 3.6e6,
-    suffix: " kW\u{b7}h", // kW·h
-}
-
-measures::measurement_unit! {
-    name: MegaWattHour,
-    property: Energy,
-    ratio: 3.6e9,
-    suffix: " MW\u{b7}h", // MW·h
-}
-
-measures::measurement_unit! {
-    name: Calorie,
-    property: Energy,
-    ratio: 4.187,
-    suffix: " cal",
-}
-
-measures::measurement_unit! {
-    name: KiloCalorie,
-    property: Energy,
-    ratio: 4187.,
-    suffix: " kcal",
-}
-
-measures::measurement_unit! {
-    name: ElectronVolt,
-    property: Energy,
-    ratio: 1.602176634e-19,
-    suffix: " eV",
-}
-
-measures::measurement_unit! {
-    name: KiloElectronVolt,
-    property: Energy,
-    ratio: 1.602176634e-16,
-    suffix: " keV",
-}
-
-measures::measurement_unit! {
-    name: MegaElectronVolt,
-    property: Energy,
-    ratio: 1.602176634e-13,
-    suffix: " MeV",
-}
-
-measures::measurement_unit! {
-    name: GigaElectronVolt,
-    property: Energy,
-    ratio: 1.602176634e-10,
-    suffix: " GeV",
-}
-
-measures::measurement_unit! {
-    name: TeraElectronVolt,
-    property: Energy,
-    ratio: 1.602176634e-7,
-    suffix: " TeV",
-}
-
-// Property: energy density
-measures::measurement_scalar_property! { EnergyDensity }
-
-measures::measurement_unit! {
-    name: JoulePerCubicMetre,
-    property: EnergyDensity,
-    suffix: " J/m\u{b3}", // J/m³
-}
-
-// Property: entropy, heat capacity
-measures::measurement_scalar_property! { Entropy }
-
-measures::measurement_unit! {
-    name: JoulePerKelvin,
-    property: Entropy,
-    suffix: " J/\u{b0}K", // J/°K
-}
-
-// Property: force, weight
-measures::measurement_vector_property! { Force }
-
-measures::measurement_unit! {
-    name: Newton,
-    property: Force,
-    suffix: " N",
-}
-
-measures::measurement_unit! {
-    name: Dyne,
-    property: Force,
-    ratio: 1e-5,
-    suffix: " dyn",
-}
-
-measures::measurement_unit! {
-    name: KiloGramForce,
-    property: Force,
-    ratio: 9.80665,
-    suffix: " kgf",
-}
-
-measures::measurement_unit! {
-    name: PoundForce,
-    property: Force,
-    ratio: 4.448222,
-    suffix: " lbf",
-}
-
-measures::measurement_unit! {
-    name: Poundal,
-    property: Force,
-    ratio: 0.138255,
-    suffix: " pdl",
-}
-
-// Property: frequency, angular speed, angular velocity
-measures::measurement_scalar_property! { Frequency }
-
-measures::measurement_unit! {
-    name: Hertz,
-    property: Frequency,
-    suffix: " Hz",
-}
-
-measures::measurement_unit! {
-    name: CyclePerSecond,
-    property: Frequency,
-    suffix: " c/s",
-}
-
-measures::measurement_unit! {
-    name: KiloHertz,
-    property: Frequency,
-    ratio: 1e3,
-    suffix: " kHz",
-}
-
-measures::measurement_unit! {
-    name: MegaHertz,
-    property: Frequency,
-    ratio: 1e6,
-    suffix: " MHz",
-}
-
-measures::measurement_unit! {
-    name: GigaHertz,
-    property: Frequency,
-    ratio: 1e9,
-    suffix: " GHz",
-}
-
-measures::measurement_unit! {
-    name: RadianPerSecond,
-    property: Frequency,
-    ratio: 1. / core::f64::consts::TAU,
-    suffix: " rad/s",
-}
-
-measures::measurement_unit! {
-    name: CyclePerMinute,
-    property: Frequency,
-    ratio: 1. / 60.,
-    suffix: " rpm",
-}
-
-measures::measurement_scalar_property! { Illuminance }
-
-measures::measurement_unit! {
-    name: Lux,
-    property: Illuminance,
-    suffix: " lx",
-}
-
-measures::measurement_unit! {
-    name: Phot,
-    property: Illuminance,
-    ratio: 1e4,
-    suffix: " phot",
-}
-
-measures::measurement_unit! {
-    name: FootCandle,
-    property: Illuminance,
-    ratio: 10.764,
-    suffix: " fc",
-}
-
-// Property: inductance
-measures::measurement_scalar_property! { Inductance }
-
-measures::measurement_unit! {
-    name: Henry,
-    property: Inductance,
-    suffix: " H",
-}
-
-// Property: information
-measures::measurement_scalar_property! { Information }
-
-measures::measurement_unit! {
-    name: Bit,
-    property: Information,
-    suffix: " b",
-}
-
-measures::measurement_unit! {
-    name: Byte,
-    property: Information,
-    ratio: 8.,
-    suffix: " B",
-}
-
-measures::measurement_unit! {
-    name: KiloBit,
-    property: Information,
-    ratio: 1e3,
-    suffix: " kb",
-}
-
-measures::measurement_unit! {
-    name: KiloByte,
-    property: Information,
-    ratio: 8e3,
-    suffix: " kB",
-}
-
-measures::measurement_unit! {
-    name: KibiBit,
-    property: Information,
-    ratio: 1024.,
-    suffix: " kib",
-}
-
-measures::measurement_unit! {
-    name: KibiByte,
-    property: Information,
-    ratio: 8. * 1024.,
-    suffix: " kiB",
-}
-
-measures::measurement_unit! {
-    name: MegaBit,
-    property: Information,
-    ratio: 1e6,
-    suffix: " Mb",
-}
-
-measures::measurement_unit! {
-    name: MegaByte,
-    property: Information,
-    ratio: 8e6,
-    suffix: " MB",
-}
-
-measures::measurement_unit! {
-    name: MebiBit,
-    property: Information,
-    ratio: 1024. * 1024.,
-    suffix: " Mib",
-}
-
-measures::measurement_unit! {
-    name: MebiByte,
-    property: Information,
-    ratio: 8. * 1024. * 1024.,
-    suffix: " MiB",
-}
-
-measures::measurement_unit! {
-    name: GigaBit,
-    property: Information,
-    ratio: 1e9,
-    suffix: " Gb",
-}
-
-measures::measurement_unit! {
-    name: GigaByte,
-    property: Information,
-    ratio: 8e9,
-    suffix: " GB",
-}
-
-measures::measurement_unit! {
-    name: GibiBit,
-    property: Information,
-    ratio: 1024. * 1024. * 1024.,
-    suffix: " Gib",
-}
-
-measures::measurement_unit! {
-    name: GibiByte,
-    property: Information,
-    ratio: 8. * 1024. * 1024. * 1024.,
-    suffix: " GiB",
-}
-
-measures::measurement_unit! {
-    name: TeraBit,
-    property: Information,
-    ratio: 1e12,
-    suffix: " Tb",
-}
-
-measures::measurement_unit! {
-    name: TeraByte,
-    property: Information,
-    ratio: 8e12,
-    suffix: " TB",
-}
-
-measures::measurement_unit! {
-    name: TebiBit,
-    property: Information,
-    ratio: 1024. * 1024. * 1024. * 1024.,
-    suffix: " TiB",
-}
-
-measures::measurement_unit! {
-    name: TebiByte,
-    property: Information,
-    ratio: 8. * 1024. * 1024. * 1024. * 1024.,
-    suffix: " TiB",
-}
-
-// Property: information rate
-measures::measurement_scalar_property! { InformationRate }
-
-measures::measurement_unit! {
-    name: BitPerSecond,
-    property: InformationRate,
-    suffix: " b/s",
-}
-
-measures::measurement_unit! {
-    name: BytePerSecond,
-    property: InformationRate,
-    ratio: 8.,
-    suffix: " B/s",
-}
-
-measures::measurement_unit! {
-    name: KiloBitPerSecond,
-    property: InformationRate,
-    ratio: 1e3,
-    suffix: " kb/s",
-}
-
-measures::measurement_unit! {
-    name: KiloBytePerSecond,
-    property: InformationRate,
-    ratio: 8e3,
-    suffix: " kB/s",
-}
-
-measures::measurement_unit! {
-    name: KibiBitPerSecond,
-    property: InformationRate,
-    ratio: 1024.,
-    suffix: " kib/s",
-}
-
-measures::measurement_unit! {
-    name: KibiBytePerSecond,
-    property: InformationRate,
-    ratio: 8. * 1024.,
-    suffix: " kiB/s",
-}
-
-measures::measurement_unit! {
-    name: MegaBitPerSecond,
-    property: InformationRate,
-    ratio: 1e6,
-    suffix: " Mb/s",
-}
-
-measures::measurement_unit! {
-    name: MegaBytePerSecond,
-    property: InformationRate,
-    ratio: 8e6,
-    suffix: " MB/s",
-}
-
-measures::measurement_unit! {
-    name: MebiBitPerSecond,
-    property: InformationRate,
-    ratio: 1024. * 1024.,
-    suffix: " Mib/s",
-}
-
-measures::measurement_unit! {
-    name: MebiBytePerSecond,
-    property: InformationRate,
-    ratio: 8. * 1024. * 1024.,
-    suffix: " MiB/s",
-}
-
-measures::measurement_unit! {
-    name: GigaBitPerSecond,
-    property: InformationRate,
-    ratio: 1e9,
-    suffix: " Gb/s",
-}
-
-measures::measurement_unit! {
-    name: GigaBytePerSecond,
-    property: InformationRate,
-    ratio: 8e9,
-    suffix: " GB/s",
-}
-
-measures::measurement_unit! {
-    name: GibiBitPerSecond,
-    property: InformationRate,
-    ratio: 1024. * 1024. * 1024.,
-    suffix: " Gib/s",
-}
-
-measures::measurement_unit! {
-    name: GibiBytePerSecond,
-    property: InformationRate,
-    ratio: 8. * 1024. * 1024. * 1024.,
-    suffix: " GiB/s",
-}
-
-measures::measurement_unit! {
-    name: TeraBitPerSecond,
-    property: InformationRate,
-    ratio: 1e12,
-    suffix: " Tb/s",
-}
-
-measures::measurement_unit! {
-    name: TeraBytePerSecond,
-    property: InformationRate,
-    ratio: 8e12,
-    suffix: " TB/s",
-}
-
-measures::measurement_unit! {
-    name: TebiBitPerSecond,
-    property: InformationRate,
-    ratio: 1024. * 1024. * 1024. * 1024.,
-    suffix: " Tib/s",
-}
-
-measures::measurement_unit! {
-    name: TebiBytePerSecond,
-    property: InformationRate,
-    ratio: 8. * 1024. * 1024. * 1024. * 1024.,
-    suffix: " TiB/s",
-}
-
-// Property: irradiance, heat flux density
-measures::measurement_scalar_property! { Irradiance }
-
-measures::measurement_unit! {
-    name: WattPerSquareMetre,
-    property: Irradiance,
-    suffix: " W/m\u{b2}", // W/m²
-}
-
-// Property: kinematic viscosity
-measures::measurement_scalar_property! { KinematicViscosity }
-
-measures::measurement_unit! {
-    name: SquareMetrePerSecond,
-    property: KinematicViscosity,
-    suffix: " m\u{b2}/s", // m²/s
-}
-
-measures::measurement_unit! {
-    name: Stoke,
-    property: KinematicViscosity,
-    ratio: 1e-4,
-    suffix: " St",
-}
-
-measures::measurement_unit! {
-    name: CentiStoke,
-    property: KinematicViscosity,
-    ratio: 1e-6,
-    suffix: " cSt",
-}
-
-// Property: length, width, height, depth, space, wavelength
-measures::measurement_vector_property! { Length }
-
-measures::measurement_unit! {
-    name: Metre,
-    property: Length,
-    suffix: " m",
-}
-
-measures::measurement_unit! {
-    name: AstronomicalUnit,
-    property: Length,
-    ratio: 149597870691.,
-    suffix: " a.u.",
-}
-
-measures::measurement_unit! {
-    name: Parsec,
-    property: Length,
-    ratio: 3.0856775813e16,
-    suffix: " psc",
-}
-
-measures::measurement_unit! {
-    name: LightYear,
-    property: Length,
-    ratio: 31557600. * 2.99792458e8,
-    suffix: " ly",
-}
-
-measures::measurement_unit! {
-    name: KiloMetre,
-    property: Length,
-    ratio: 1e3,
-    suffix: " km",
-}
-
-measures::measurement_unit! {
-    name: HectoMetre,
-    property: Length,
-    ratio: 100.,
-    suffix: " hm",
-}
-
-measures::measurement_unit! {
-    name: DecaMetre,
-    property: Length,
-    ratio: 10.,
-    suffix: " dam",
-}
-
-measures::measurement_unit! {
-    name: DeciMetre,
-    property: Length,
-    ratio: 0.1,
-    suffix: " dm",
-}
-
-measures::measurement_unit! {
-    name: CentiMetre,
-    property: Length,
-    ratio: 0.01,
-    suffix: " cm",
-}
-
-measures::measurement_unit! {
-    name: MilliMetre,
-    property: Length,
-    ratio: 1e-3,
-    suffix: " mm",
-}
-
-measures::measurement_unit! {
-    name: MicroMetre,
-    property: Length,
-    ratio: 1e-6,
-    suffix: " \u{b5}m", // µm
-}
-
-measures::measurement_unit! {
-    name: NanoMetre,
-    property: Length,
-    ratio: 1e-9,
-    suffix: " nm",
-}
-
-measures::measurement_unit! {
-    name: Angstrom,
-    property: Length,
-    ratio: 1e-10,
-    suffix: " \u{212b}", // Å
-}
-
-measures::measurement_unit! {
-    name: Inch,
-    property: Length,
-    ratio: 0.0254,
-    suffix: " in",
-}
-
-measures::measurement_unit! {
-    name: Foot,
-    property: Length,
-    ratio: 0.3048,
-    suffix: " ft",
-}
-
-measures::measurement_unit! {
-    name: Yard,
-    property: Length,
-    ratio: 0.9144,
-    suffix: " yd",
-}
-
-measures::measurement_unit! {
-    name: Mile,
-    property: Length,
-    ratio: 1609.,
-    suffix: " mi",
-}
-
-measures::measurement_unit! {
-    name: NauticalMile,
-    property: Length,
-    ratio: 1852.,
-    suffix: " naut.mi",
-}
-
-// Property: linear density
-measures::measurement_scalar_property! { LinearDensity }
-
-measures::measurement_unit! {
-    name: KiloGramPerMetre,
-    property: LinearDensity,
-    suffix: " kg/m",
-}
-
-measures::measurement_unit! {
-    name: GramPerCentiMetre,
-    property: LinearDensity,
-    ratio: 0.1,
-    suffix: " g/cm",
-}
-
-// Property: linear electric charge density
-measures::measurement_scalar_property! { LinearElectricChargeDensity }
-
-measures::measurement_unit! {
-    name: CoulombPerMetre,
-    property: LinearElectricChargeDensity,
-    suffix: " C/m",
-}
-
-// Property: luminance
-measures::measurement_scalar_property! { Luminance }
-
-measures::measurement_unit! {
-    name: CandelaPerSquareMetre,
-    property: Luminance,
-    suffix: " cd/m\u{b2}", // cd/m²
-}
-
-measures::measurement_unit! {
-    name: Nit,
-    property: Luminance,
-    suffix: " nt",
-}
-
-measures::measurement_unit! {
-    name: Stilb,
-    property: Luminance,
-    ratio: 1e4,
-    suffix: " sb",
-}
-
-measures::measurement_unit! {
-    name: CandelaPerSquareFoot,
-    property: Luminance,
-    ratio: 10.764,
-    suffix: " cd/ft\u{b2}", // cd/ft²
-}
-
-// Property: luminous flux, luminous power
-measures::measurement_vector_property! { LuminousFlux }
-
-measures::measurement_unit! {
-    name: Lumen,
-    property: LuminousFlux,
-    suffix: " lm",
-}
-
-// Property: luminous intensity
-measures::measurement_scalar_property! { LuminousIntensity }
-
-measures::measurement_unit! {
-    name: Candela,
-    property: LuminousIntensity,
-    suffix: " cd",
-}
-
-// Property: magnetic field strength, magnetic field intensity, magnetization
-measures::measurement_vector_property! { MagneticFieldStrength }
-
-measures::measurement_unit! {
-    name: AmperePerMetre,
-    property: MagneticFieldStrength,
-    suffix: " A/m",
-}
-
-// Property: magnetic flux
-measures::measurement_scalar_property! { MagneticFlux }
-
-measures::measurement_unit! {
-    name: Weber,
-    property: MagneticFlux,
-    suffix: " Wb",
-}
-
-// Property: magnetic flux density
-measures::measurement_vector_property! { MagneticFluxDensity }
-
-measures::measurement_unit! {
-    name: Tesla,
-    property: MagneticFluxDensity,
-    suffix: " T",
-}
-
-measures::measurement_unit! {
-    name: Gauss,
-    property: MagneticFluxDensity,
-    ratio: 1e-4,
-    suffix: " G",
-}
-
-// Property: magnetic permeability
-measures::measurement_scalar_property! { MagneticPermeability }
-
-measures::measurement_unit! {
-    name: HenryPerMetre,
-    property: MagneticPermeability,
-    suffix: " H/m",
-}
-
-// Property: magnetic reluctance, magnetic resistance
-measures::measurement_scalar_property! { MagneticReluctance }
-
-measures::measurement_unit! {
-    name: InverseHenry,
-    property: MagneticReluctance,
-    suffix: " 1/H",
-}
-
-// Property: mass
-measures::measurement_scalar_property! { Mass }
-
-measures::measurement_unit! {
-    name: KiloGram,
-    property: Mass,
-    suffix: " kg",
-}
-
-measures::measurement_unit! {
-    name: Tonne,
-    property: Mass,
-    ratio: 1e3,
-    suffix: " t",
-}
-
 #[allow(dead_code)]
 pub type MetricTon = Tonne;
-
-measures::measurement_unit! {
-    name: MegaGram,
-    property: Mass,
-    ratio: 1e3,
-    suffix: " Mg",
-}
-
-measures::measurement_unit! {
-    name: HectoGram,
-    property: Mass,
-    ratio: 0.1,
-    suffix: " hg",
-}
-
-measures::measurement_unit! {
-    name: DecaGram,
-    property: Mass,
-    ratio: 0.01,
-    suffix: " dag",
-}
-
-measures::measurement_unit! {
-    name: Gram,
-    property: Mass,
-    ratio: 1e-3,
-    suffix: " g",
-}
-
-measures::measurement_unit! {
-    name: MilliGram,
-    property: Mass,
-    ratio: 1e-6,
-    suffix: " mg",
-}
-
-measures::measurement_unit! {
-    name: MicroGram,
-    property: Mass,
-    ratio: 1e-9,
-    suffix: " \u{b5}g", // µg
-}
-
-measures::measurement_unit! {
-    name: NanoGram,
-    property: Mass,
-    ratio: 1e-12,
-    suffix: " ng",
-}
-
-measures::measurement_unit! {
-    name: ImperialTon,
-    property: Mass,
-    ratio: 1016.0469,
-    suffix: " t",
-}
 
 #[allow(dead_code)]
 pub type LongTon = ImperialTon;
 
-measures::measurement_unit! {
-    name: USTon,
-    property: Mass,
-    ratio: 907.18474,
-    suffix: " t",
-}
-
 #[allow(dead_code)]
 pub type ShortTon = USTon;
-
-measures::measurement_unit! {
-    name: Stone,
-    property: Mass,
-    ratio: 6.35029,
-    suffix: " st.",
-}
-
-measures::measurement_unit! {
-    name: Pound,
-    property: Mass,
-    ratio: 0.45359237,
-    suffix: " lb",
-}
-
-measures::measurement_unit! {
-    name: Ounce,
-    property: Mass,
-    ratio: 0.028349523,
-    suffix: " oz",
-}
-
-measures::measurement_unit! {
-    name: Carat,
-    property: Mass,
-    ratio: 2e-4,
-    suffix: " ct",
-}
-
-// Property: mass density
-measures::measurement_scalar_property! { MassDensity }
-
-measures::measurement_unit! {
-    name: KiloGramPerCubicMetre,
-    property: MassDensity,
-    suffix: " kg/m\u{b3}", // kg/m³
-}
-
-measures::measurement_unit! {
-    name: GramPerMilliLitre,
-    property: MassDensity,
-    ratio: 1e3,
-    suffix: " g/ml",
-}
-
-// Property: mass flow rate
-measures::measurement_scalar_property! { MassFlowRate }
-
-measures::measurement_unit! {
-    name: KiloGramPerSecond,
-    property: MassFlowRate,
-    suffix: " kg/s",
-}
-
-measures::measurement_unit! {
-    name: GramPerSecond,
-    property: MassFlowRate,
-    ratio: 1e-3,
-    suffix: " g/s",
-}
-
-// Property: molar concentration
-measures::measurement_scalar_property! { MolarConcentration }
-
-measures::measurement_unit! {
-    name: MolePerCubicMetre,
-    property: MolarConcentration,
-    suffix: " mol/m\u{b3}", // mol/m³
-}
-
-// Property: molar heat capacity, molar entropy
-measures::measurement_scalar_property! { MolarHeatCapacity }
-
-measures::measurement_unit! {
-    name: JoulePerKelvinPerMole,
-    property: MolarHeatCapacity,
-    suffix: " J/\u{b0}K/mol", // J/°K/mol
-}
-
-// Property: moment of inertia, rotational inertia
-measures::measurement_scalar_property! { MomentOfInertia }
-
-measures::measurement_unit! {
-    name: KiloGramSquareMetre,
-    property: MomentOfInertia,
-    suffix: " kg\u{b7}m\u{b2}", // kg·m²
-}
-
-measures::measurement_unit! {
-    name: GramSquareCentiMetre,
-    property: MomentOfInertia,
-    ratio: 1e-7,
-    suffix: " g\u{b7}cm\u{b2}", // g·cm²
-}
-
-// Property: momentum, impulse
-measures::measurement_vector_property! { Momentum }
-
-measures::measurement_unit! {
-    name: NewtonSecond,
-    property: Momentum,
-    suffix: " N\u{b7}s", // N·s
-}
-
-measures::measurement_unit! {
-    name: KiloGramMetrePerSecond,
-    property: Momentum,
-    suffix: " kg\u{b7}m/s", // kg·m/s
-}
-
-measures::measurement_unit! {
-    name: DyneSecond,
-    property: Momentum,
-    ratio: 1e-5,
-    suffix: " dyn\u{b7}s", // dyn·s
-}
-
-measures::measurement_unit! {
-    name: GramCentiMetrePerSecond,
-    property: Momentum,
-    ratio: 1e-5,
-    suffix: " g\u{b7}cm/s", // g·cm/s
-}
-
-// Property: permittivity
-measures::measurement_scalar_property! { Permittivity }
-
-measures::measurement_unit! {
-    name: FaradPerMetre,
-    property: Permittivity,
-    suffix: " F/m",
-}
-
-// Property: power
-measures::measurement_scalar_property! { Power }
-
-measures::measurement_unit! {
-    name: Watt,
-    property: Power,
-    suffix: " W",
-}
-
-measures::measurement_unit! {
-    name: MilliWatt,
-    property: Power,
-    ratio: 1e-3,
-    suffix: " mW",
-}
-
-measures::measurement_unit! {
-    name: KiloWatt,
-    property: Power,
-    ratio: 1e3,
-    suffix: " kW",
-}
-
-measures::measurement_unit! {
-    name: MegaWatt,
-    property: Power,
-    ratio: 1e6,
-    suffix: " MW",
-}
-
-measures::measurement_unit! {
-    name: GigaWatt,
-    property: Power,
-    ratio: 1e9,
-    suffix: " GW",
-}
-
-measures::measurement_unit! {
-    name: ErgPerSecond,
-    property: Power,
-    ratio: 1e-7,
-    suffix: " erg/s",
-}
-
-measures::measurement_unit! {
-    name: HorsePower,
-    property: Power,
-    ratio: 745.699872,
-    suffix: " hp",
-}
-
-// Property: pressure, stress
-measures::measurement_scalar_property! { Pressure }
-
-measures::measurement_unit! {
-    name: Pascal,
-    property: Pressure,
-    suffix: " Pa",
-}
-
-measures::measurement_unit! {
-    name: HectoPascal,
-    property: Pressure,
-    ratio: 100.,
-    suffix: " hPa",
-}
-
-measures::measurement_unit! {
-    name: Atmosphere,
-    property: Pressure,
-    ratio: 1.013e5,
-    suffix: " atm",
-}
-
-measures::measurement_unit! {
-    name: Bar,
-    property: Pressure,
-    ratio: 1e5,
-    suffix: " bar",
-}
-
-measures::measurement_unit! {
-    name: MilliBar,
-    property: Pressure,
-    ratio: 100.,
-    suffix: " mbar",
-}
-
-measures::measurement_unit! {
-    name: MmHg,
-    property: Pressure,
-    ratio: 133.322,
-    suffix: " torr",
-}
-
-measures::measurement_unit! {
-    name: PoundForcePerSquareInch,
-    property: Pressure,
-    ratio: 6894.757,
-    suffix: " lbf/in\u{b2}", // lbf/in²
-}
-
-// Property: radiance
-measures::measurement_scalar_property! { Radiance }
-
-measures::measurement_unit! {
-    name: WattPerSquareMetrePerSteradian,
-    property: Radiance,
-    suffix: " W/m\u{b2}/sr", // W/m²/sr
-}
-
-// Property: radiant intensity
-measures::measurement_scalar_property! { RadiantIntensity }
-
-measures::measurement_unit! {
-    name: WattPerSteradian,
-    property: RadiantIntensity,
-    suffix: " W/sr",
-}
-
-// Property: radioactive activity
-measures::measurement_scalar_property! { RadioactiveActivity }
-
-measures::measurement_unit! {
-    name: Becquerel,
-    property: RadioactiveActivity,
-    suffix: " Bq",
-}
-
-measures::measurement_unit! {
-    name: KiloBecquerel,
-    property: RadioactiveActivity,
-    ratio: 1e3,
-    suffix: " kBq",
-}
-
-measures::measurement_unit! {
-    name: MegaBecquerel,
-    property: RadioactiveActivity,
-    ratio: 1e6,
-    suffix: " MBq",
-}
-
-measures::measurement_unit! {
-    name: GigaBecquerel,
-    property: RadioactiveActivity,
-    ratio: 1e9,
-    suffix: " GBq",
-}
-
-// Property: radioactive dose
-measures::measurement_scalar_property! { RadioactiveDose }
-
-measures::measurement_unit! {
-    name: Gray,
-    property: RadioactiveDose,
-    suffix: " Gy",
-}
-
-measures::measurement_unit! {
-    name: Rad,
-    property: RadioactiveDose,
-    ratio: 0.01,
-    suffix: " rad",
-}
-
-// Property: radioactive dose rate
-measures::measurement_scalar_property! { RadioactiveDoseRate }
-
-measures::measurement_unit! {
-    name: GrayPerSecond,
-    property: RadioactiveDoseRate,
-    suffix: " Gy/s",
-}
-
-// Property: reaction rate, catalytic activity concentration
-measures::measurement_scalar_property! { ReactionRate }
-
-measures::measurement_unit! {
-    name: MolePerCubicMetrePerSecond,
-    property: ReactionRate,
-    suffix: " mol/m\u{b3}/s", // mol/m³/s
-}
-
-// Property: solid angle
-measures::measurement_scalar_property! { SolidAngle }
-
-measures::measurement_unit! {
-    name: Steradian,
-    property: SolidAngle,
-    suffix: " sr",
-}
-
-measures::measurement_unit! {
-    name: Spat,
-    property: SolidAngle,
-    ratio: 2. * core::f64::consts::TAU,
-    suffix: " sp",
-}
-
-measures::measurement_unit! {
-    name: Sphere,
-    property: SolidAngle,
-    ratio: 2. * core::f64::consts::TAU,
-    suffix: " sphere",
-}
-
-measures::measurement_unit! {
-    name: SquareDegree,
-    property: SolidAngle,
-    ratio: core::f64::consts::TAU * core::f64::consts::TAU / 360. / 360.,
-    suffix: " deg\u{b2}", // deg²
-}
-
-// Property: specific energy
-measures::measurement_scalar_property! { SpecificEnergy }
-
-measures::measurement_unit! {
-    name: JoulePerKiloGram,
-    property: SpecificEnergy,
-    suffix: " J/kg",
-}
-
-// Property: specific heat capacity
-measures::measurement_scalar_property! { SpecificHeatCapacity }
-
-measures::measurement_unit! {
-    name: JoulePerKiloGramPerKelvin,
-    property: SpecificHeatCapacity,
-    suffix: " J/kg/\u{b0}K", // J/kg/°K
-}
-
-// Property: specific volume
-measures::measurement_scalar_property! { SpecificVolume }
-
-measures::measurement_unit! {
-    name: CubicMetrePerKiloGram,
-    property: SpecificVolume,
-    suffix: " m\u{b3}/kg", // m³/kg
-}
-
-// Property: square time
-measures::measurement_scalar_property! { SquareTime }
-
-measures::measurement_unit! {
-    name: SquareSecond,
-    property: SquareTime,
-    suffix: " s\u{b2}", // s²
-}
-
-measures::measurement_unit! {
-    name: HourSecond,
-    property: SquareTime,
-    ratio: 3600.,
-    suffix: " h\u{b7}s", // h·s
-}
-
-measures::measurement_unit! {
-    name: HourHour,
-    property: SquareTime,
-    ratio: 3600. * 3600.,
-    suffix: " h\u{b7}h", // h·h
-}
-
-// Property: surface density
-measures::measurement_scalar_property! { SurfaceDensity }
-
-measures::measurement_unit! {
-    name: KiloGramPerSquareMetre,
-    property: SurfaceDensity,
-    suffix: " kg/m\u{b2}", // kg/m²
-}
-
-// Property: surface tension
-measures::measurement_scalar_property! { SurfaceTension }
-
-measures::measurement_unit! {
-    name: JoulePerSquareMetre,
-    property: SurfaceTension,
-    suffix: " J/m\u{b2}", // J/m²
-}
-
-// Property: temperature
-measures::measurement_scalar_property! { Temperature }
-
-measures::measurement_unit! {
-    name: Kelvin,
-    property: Temperature,
-    suffix: " \u{b0}K", // °K
-}
-
-measures::measurement_unit! {
-    name: Celsius,
-    property: Temperature,
-    ratio: 1.,
-    offset: 273.15,
-    suffix: " \u{b0}C", // °C
-}
-
-measures::measurement_unit! {
-    name: Fahrenheit,
-    property: Temperature,
-    ratio: 5. / 9.,
-    offset: 273.15 - 32. * 5. / 9.,
-    suffix: " \u{b0}F", // °F
-}
-
-// Property: thermal conductivity
-measures::measurement_scalar_property! { ThermalConductivity }
-
-measures::measurement_unit! {
-    name: WattPerMetrePerKelvin,
-    property: ThermalConductivity,
-    suffix: " W/m/\u{b0}K", // W/m/°K
-}
-
-// Property: time, mean lifetime
-measures::measurement_scalar_property! { Time }
-
-measures::measurement_unit! {
-    name: Second,
-    property: Time,
-    suffix: " s",
-}
-
-measures::measurement_unit! {
-    name: Year,
-    property: Time,
-    ratio: 365.24 * 86400.,
-    suffix: " Y",
-}
-
-measures::measurement_unit! {
-    name: Week,
-    property: Time,
-    ratio: 7. * 86400.,
-    suffix: " W",
-}
-
-measures::measurement_unit! {
-    name: Day,
-    property: Time,
-    ratio: 86400.,
-    suffix: " D",
-}
-
-measures::measurement_unit! {
-    name: Hour,
-    property: Time,
-    ratio: 3600.,
-    suffix: " h",
-}
-
-measures::measurement_unit! {
-    name: Minute,
-    property: Time,
-    ratio: 60.,
-    suffix: " min",
-}
-
-measures::measurement_unit! {
-    name: MilliSecond,
-    property: Time,
-    ratio: 1e-3,
-    suffix: " ms",
-}
-
-measures::measurement_unit! {
-    name: MicroSecond,
-    property: Time,
-    ratio: 1e-6,
-    suffix: " \u{b5}s", // µs
-}
-
-measures::measurement_unit! {
-    name: NanoSecond,
-    property: Time,
-    ratio: 1e-9,
-    suffix: " ns",
-}
-
-measures::measurement_unit! {
-    name: PicoSecond,
-    property: Time,
-    ratio: 1e-12,
-    suffix: " ps",
-}
-
-measures::measurement_unit! {
-    name: FemtoSecond,
-    property: Time,
-    ratio: 1e-15,
-    suffix: " fs",
-}
-
-// Property: torque
-measures::measurement_vector_property! { Torque }
-
-measures::measurement_unit! {
-    name: NewtonMetre,
-    property: Torque,
-    suffix: " N\u{b7}m", // N·m
-}
-
-measures::measurement_unit! {
-    name: PoundFoot,
-    property: Torque,
-    ratio: 4.448222 * 0.3048,
-    suffix: " lbf-ft",
-}
-
-measures::measurement_unit! {
-    name: PoundInch,
-    property: Torque,
-    ratio: 4.448222 * 0.0254,
-    suffix: " lbf-in",
-}
-
-// Property: velocity, speed
-measures::measurement_vector_property! { Velocity }
-
-measures::measurement_unit! {
-    name: MetrePerSecond,
-    property: Velocity,
-    suffix: " m/s",
-}
-
-measures::measurement_unit! {
-    name: Knot,
-    property: Velocity,
-    ratio: 1852. / 3600.,
-    suffix: " kt",
-}
-
-measures::measurement_unit! {
-    name: KiloMetrePerHour,
-    property: Velocity,
-    ratio: 1. / 3.6,
-    suffix: " km/h",
-}
-
-measures::measurement_unit! {
-    name: MilePerHour,
-    property: Velocity,
-    ratio: 1609. / 3600.,
-    suffix: " mi/h",
-}
-
-measures::measurement_unit! {
-    name: CentiMetrePerSecond,
-    property: Velocity,
-    ratio: 0.01,
-    suffix: " cm/s",
-}
-
-measures::measurement_unit! {
-    name: KiloMetrePerSecond,
-    property: Velocity,
-    ratio: 1e3,
-    suffix: " km/s",
-}
-
-// Property: volume
-measures::measurement_scalar_property! { Volume }
-
-measures::measurement_unit! {
-    name: CubicMetre,
-    property: Volume,
-    suffix: " m\u{b3}", // m³
-}
-
-measures::measurement_unit! {
-    name: CubicKiloMetre,
-    property: Volume,
-    ratio: 1e9,
-    suffix: " km\u{b3}", // km³
-}
-
-measures::measurement_unit! {
-    name: CubicMicroMetre,
-    property: Volume,
-    ratio: 1e-18,
-    suffix: " \u{b5}m\u{b3}?", // µm³
-}
-
-measures::measurement_unit! {
-    name: CubicNanoMetre,
-    property: Volume,
-    ratio: 1e-27,
-    suffix: " nm\u{b3}", // nm³
-}
-
-measures::measurement_unit! {
-    name: CubicInch,
-    property: Volume,
-    ratio: 0.0254 * 0.0254 * 0.0254,
-    suffix: " in\u{b3}", // in³
-}
-
-measures::measurement_unit! {
-    name: CubicFoot,
-    property: Volume,
-    ratio: 0.3048 * 0.3048 * 0.3048,
-    suffix: " ft\u{b3}", // ft³
-}
-
-measures::measurement_unit! {
-    name: CubicYard,
-    property: Volume,
-    ratio: 0.9144 * 0.9144 * 0.9144,
-    suffix: " yd\u{b3}", // yd³
-}
-
-measures::measurement_unit! {
-    name: CubicMile,
-    property: Volume,
-    ratio: 1609. * 1609. * 1609.,
-    suffix: " mi\u{b3}", //mi³
-}
-
-measures::measurement_unit! {
-    name: Litre,
-    property: Volume,
-    ratio: 1e-3,
-    suffix: " l",
-}
-
-measures::measurement_unit! {
-    name: CubicDecimetre,
-    property: Volume,
-    ratio: 1e-3,
-    suffix: " dm\u{b3}", //dm³
-}
-
-measures::measurement_unit! {
-    name: MilliLitre,
-    property: Volume,
-    ratio: 1e-6,
-    suffix: " ml",
-}
-
-measures::measurement_unit! {
-    name: CubicCentimetre,
-    property: Volume,
-    ratio: 1e-6,
-    suffix: " cm\u{b3}", // cm³
-}
-
-measures::measurement_unit! {
-    name: MicroLitre,
-    property: Volume,
-    ratio: 1e-9,
-    suffix: " \u{b5}l", // µl
-}
-
-measures::measurement_unit! {
-    name: CubicMillimetre,
-    property: Volume,
-    ratio: 1e-9,
-    suffix: " mm\u{b3}", // mm³
-}
-
-measures::measurement_unit! {
-    name: NanoLitre,
-    property: Volume,
-    ratio: 1e-12,
-    suffix: " nl",
-}
-
-measures::measurement_unit! {
-    name: PicoLitre,
-    property: Volume,
-    ratio: 1e-15,
-    suffix: " pl",
-}
-
-measures::measurement_unit! {
-    name: Pint,
-    property: Volume,
-    ratio: 473.2e-6,
-    suffix: " pt",
-}
-
-measures::measurement_unit! {
-    name: Gallon,
-    property: Volume,
-    ratio: 4546e-6,
-    suffix: " gal",
-}
-
-// Property: volumetric flow rate
-measures::measurement_scalar_property! { VolumetricFlowRate }
-
-measures::measurement_unit! {
-    name: CubicMetrePerSecond,
-    property: VolumetricFlowRate,
-    suffix: " m\u{b3}/s", // m³/s
-}
-
-measures::measurement_unit! {
-    name: MilliLitrePerSecond,
-    property: VolumetricFlowRate,
-    ratio: 1e-6,
-    suffix: " ml/s",
-}
-
-measures::measurement_unit! {
-    name: CubicCentimetrePerSecond,
-    property: VolumetricFlowRate,
-    ratio: 1e-6,
-    suffix: " cm\u{b3}/s", // cm³/s
-}
-
-// Property: wave number
-measures::measurement_scalar_property! { WaveNumber }
-
-measures::measurement_unit! {
-    name: CyclePerMetre,
-    property: WaveNumber,
-    suffix: " 1/m",
-}
-
-measures::measurement_unit! {
-    name: RadianPerMetre,
-    property: WaveNumber,
-    ratio: 1. / core::f64::consts::TAU,
-    suffix: " rad/m",
-}

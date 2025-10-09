@@ -58,6 +58,7 @@ macro_rules! inner_define_measure_2d {
                 Measure2d::<DestUnit, Number>::new([self.values[0] * factor, self.values[1] * factor])
             }
 
+            /// Measure2d.lossless_into() -> Measure2d
             pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
                 self,
             ) -> Measure2d<Unit, DestNumber> {

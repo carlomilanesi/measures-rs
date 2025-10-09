@@ -1,6 +1,11 @@
 measures::define_measure_types! {
     with_points with_directions with_2d with_transformations exact,
-    []
+    scalar_properties               [ ]
+    vector_properties               [ ]
+    dimensionless_measurement_units [ ]
+    angle_measurement_units         [ ]
+    relationships [
+    ]
 }
 
 use measures::{assert_eq_32, assert_eq_64};
@@ -16,8 +21,8 @@ measures::measurement_unit! {
 measures::measurement_unit! {
     name: MilliMetre,
     property: Length,
-    ratio: 1e-3,
     suffix: " mm",
+    ratio: 1e-3,
 }
 
 measures::angle_measurement_unit! {

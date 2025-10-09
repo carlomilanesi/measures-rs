@@ -11,7 +11,11 @@
 
 measures::define_measure_types! {
     with_points with_3d exact with_approx,
-    [
+    scalar_properties               [ ]
+    vector_properties               [ ]
+    dimensionless_measurement_units [ ]
+    angle_measurement_units         [ ]
+    relationships [
         Metre 3 == MetrePerSecond 3 * Second 1,
         SquareMetre 1 == Metre 1 * __ 1,
         SquareMetre 1 == Metre 3 * __ 3,

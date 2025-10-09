@@ -7,9 +7,9 @@ use units::Measure;
 measures::measurement_unit! {
     name: Smoot,
     property: Length,
+    suffix: " smoot",
     ratio: 1.702,
     offset: 0.,
-    suffix: " smoot",
 }
 
 fn main() {

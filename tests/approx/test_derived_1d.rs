@@ -1,6 +1,10 @@
 measures::define_measure_types! {
     exact,
-    [
+    scalar_properties               [ ]
+    vector_properties               [ ]
+    dimensionless_measurement_units [ ]
+    angle_measurement_units         [ ]
+    relationships [
         SquareMetre 1 == Metre 1 * __ 1,
         One 1 == Siemens 1 * Ohm 1,
     ]

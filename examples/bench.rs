@@ -5,7 +5,12 @@ use rand::{rngs::StdRng, Rng, SeedableRng};
 
 measures::define_measure_types! {
     with_points exact with_approx,
-    []
+    scalar_properties               [ ]
+    vector_properties               [ ]
+    dimensionless_measurement_units [ ]
+    angle_measurement_units         [ ]
+    relationships [
+    ]
 }
 
 measures::measurement_vector_property! { Length }
@@ -21,8 +26,8 @@ measures::measurement_scalar_property! { Time }
 measures::measurement_unit! {
     name: NanoSecond,
     property: Time,
-    ratio: 1e-9,
     suffix: " ns",
+    ratio: 1e-9,
 }
 
 const N_ITERATIONS: usize = 1_000;

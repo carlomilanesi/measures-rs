@@ -1,6 +1,10 @@
 measures::define_measure_types! {
     exact,
-    [
+    scalar_properties               [ ]
+    vector_properties               [ ]
+    dimensionless_measurement_units [ ]
+    angle_measurement_units         [ ]
+    relationships [
         Volt 1 == Ampere 1 * Ohm 1,
         SquareAmpere 1 == Ampere 1 * __ 1,
     ]

@@ -10,7 +10,11 @@ UOM will print:
 
 measures::define_measure_types! {
     exact,
-    []
+    scalar_properties               [ ]
+    vector_properties               [ ]
+    dimensionless_measurement_units [ ]
+    angle_measurement_units         [ ]
+    relationships [ ]
 }
 
 fn main() {
@@ -29,6 +33,6 @@ measures::measurement_unit! {
 measures::measurement_unit! {
     name: Foot,
     property: Length,
-    ratio: 0.3048,
     suffix: " ft",
+    ratio: 0.3048,
 }

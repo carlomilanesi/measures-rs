@@ -3,7 +3,11 @@
 
 measures::define_measure_types! {
     with_directions exact,
-    []
+    scalar_properties               [ ]
+    vector_properties               [ ]
+    dimensionless_measurement_units [ ]
+    angle_measurement_units         [ ]
+    relationships [ ]
 }
 
 measures::angle_measurement_unit! {
@@ -23,8 +27,8 @@ measures::measurement_unit! {
 measures::measurement_unit! {
     name: Mile,
     property: Length,
-    ratio: 1.609344,
     suffix: " mi",
+    ratio: 1.609344,
 }
 
 struct Point {

@@ -1,6 +1,11 @@
 measures::define_measure_types! {
     with_3d exact,
-    []
+    scalar_properties               [ ]
+    vector_properties               [ ]
+    dimensionless_measurement_units [ ]
+    angle_measurement_units         [ ]
+    relationships [
+    ]
 }
 
 measures::measurement_vector_property! { P1 }

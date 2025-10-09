@@ -1,6 +1,11 @@
 measures::define_measure_types! {
     with_points exact,
-    []
+    scalar_properties               [ ]
+    vector_properties               [ ]
+    dimensionless_measurement_units [ ]
+    angle_measurement_units         [ ]
+    relationships [
+    ]
 }
 
 use measures::assert_eq_32;
@@ -10,17 +15,17 @@ measures::measurement_scalar_property! { Temperature }
 measures::measurement_unit! {
     name: Celsius,
     property: Temperature,
+    suffix: " \u{B0}C",
     ratio: 1.,
     offset: 273.15,
-    suffix: " \u{B0}C",
 }
 
 measures::measurement_unit! {
     name: Fahrenheit,
     property: Temperature,
+    suffix: " \u{B0}F",
     ratio: 5. / 9.,
     offset: 273.15 - 32. * 5. / 9.,
-    suffix: " \u{B0}F",
 }
 
 #[test]

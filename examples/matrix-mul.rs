@@ -24,7 +24,11 @@
 
 measures::define_measure_types! {
     exact with_approx,
-    [
+    scalar_properties               [ ]
+    vector_properties               [ ]
+    dimensionless_measurement_units [ ]
+    angle_measurement_units         [ ]
+    relationships [
         Joule 1 == Newton 1 * Metre 1,
     ]
 }

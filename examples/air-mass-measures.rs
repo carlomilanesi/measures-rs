@@ -24,7 +24,11 @@
 
 measures::define_measure_types! {
     with_directions exact,
-    [
+    scalar_properties               [ ]
+    vector_properties               [ ]
+    dimensionless_measurement_units [ ]
+    angle_measurement_units         [ ]
+    relationships [
         SquareMeter 1 == Meter 1 * __ 1,
     ]
 }

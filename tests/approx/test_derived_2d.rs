@@ -2,7 +2,11 @@ use measures::traits::CrossProduct;
 
 measures::define_measure_types! {
     with_2d exact,
-    [
+    scalar_properties               [ ]
+    vector_properties               [ ]
+    dimensionless_measurement_units [ ]
+    angle_measurement_units         [ ]
+    relationships [
         Metre 2 == MetrePerSecond 2 * Second 1,
         Metre 1 == Metre 2 * __ 2,
         Joule 1 == Newton 2 * Metre 2,
