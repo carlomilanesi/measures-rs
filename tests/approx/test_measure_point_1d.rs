@@ -16,7 +16,9 @@ measures::measurement_unit! {
     suffix: " \u{B0}C",
     ratio: 1.,
     offset: 273.15,
-
+    with_2d: false,
+    with_3d: false,
+    vector: false,
 }
 measures::measurement_unit! {
     name: Fahrenheit,
@@ -24,7 +26,9 @@ measures::measurement_unit! {
     suffix: " \u{B0}F",
     ratio: 5. / 9.,
     offset: 273.15 - 32. * 5. / 9.,
-
+    with_2d: false,
+    with_3d: false,
+    vector: false,
 }
 
 #[test]

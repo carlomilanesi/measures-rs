@@ -48,6 +48,9 @@ measures::measurement_unit! {
     name: NewtonMetre,
     property: Torque,
     suffix: " N\u{b7}m",
+    with_2d: true,
+    with_3d: false,
+    vector: true,
 }
 
 #[test]

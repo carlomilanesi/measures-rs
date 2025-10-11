@@ -212,10 +212,27 @@ macro_rules! inner_define_measure_3d {
         {
             type Output = Self;
             fn mul(self, other: Measure<One, Number>) -> Self::Output {
-                Self::Output::new([
+                Self::new([
                     self.values[0] * other.value,
                     self.values[1] * other.value,
                     self.values[2] * other.value,
+                ])
+            }
+        }
+
+        // Measure<One> * Measure3d -> Measure3d
+        impl<Unit, Number> Mul<Measure3d<Unit, Number>> for Measure<One, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+            Unit::Property: VectorProperty,
+        {
+            type Output = Measure3d<Unit, Number>;
+            fn mul(self, other: Measure3d<Unit, Number>) -> Self::Output {
+                Self::Output::new([
+                    self.value * other.values[0],
+                    self.value * other.values[1],
+                    self.value * other.values[2],
                 ])
             }
         }

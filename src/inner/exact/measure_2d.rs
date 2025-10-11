@@ -274,6 +274,19 @@ macro_rules! inner_define_measure_2d {
             }
         }
 
+        // Measure<One> * Measure2d -> Measure2d
+        impl<Unit, Number> Mul<Measure2d<Unit, Number>> for Measure<One, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+            Unit::Property: VectorProperty,
+        {
+            type Output = Measure2d<Unit, Number>;
+            fn mul(self, other: Measure2d<Unit, Number>) -> Self::Output {
+                Self::Output::new([self.value * other.values[0], self.value * other.values[1]])
+            }
+        }
+
         // Measure2d *= Number
         impl<Unit, Number> MulAssign<Number> for Measure2d<Unit, Number>
         where

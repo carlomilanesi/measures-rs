@@ -1,3 +1,17 @@
+
+## Using different absolute angle types
+
+In `measures`, There are three kinds of absolute angles:
+* `MeasurePoint`
+* `SignedDirection`
+* `UnsignedDirection`
+
+The whenever an absolute angle is needed, three different functions are used, each receiving one of the above types.
+Though, it is possible to write an implicit zero-cost conversions from `SignedDirection` to `MeasurePoint` and from `UnsignedDirection to `MeasurePoint`.
+
+In this way, just one function is needed in such cases.
+That function receives an object that can be easily converted to an angle `MeasurePoint`.
+
 ## Mixed-unit operations with unit `One`
 
 Currently, the compilation of the following code allows the first three lines, but on the fourth it emits ``error[E0277]: cannot multiply `Measure<One>` by `Measure<CentiMetre>`` and then ``no implementation for `Measure<One> * Measure<CentiMetre>``:

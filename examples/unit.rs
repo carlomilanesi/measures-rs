@@ -10,6 +10,9 @@ measures::measurement_unit! {
     suffix: " smoot",
     ratio: 1.702,
     offset: 0.,
+    with_2d: false,
+    with_3d: false,
+    vector: true,
 }
 
 fn main() {

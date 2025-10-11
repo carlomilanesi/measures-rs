@@ -145,6 +145,9 @@ macro_rules! define_measure_types_aux {
                     $(
                         $scalar_key: $scalar_val,
                     )*
+                    with_2d: $with_2d,
+                    with_3d: $with_3d,
+                    vector: false,
                 }
             )*
         )*
@@ -159,6 +162,9 @@ macro_rules! define_measure_types_aux {
                     $(
                         $vector_key: $vector_val,
                     )*
+                    with_2d: $with_2d,
+                    with_3d: $with_3d,
+                    vector: true,
                 }
             )*
         )*
@@ -171,6 +177,9 @@ macro_rules! define_measure_types_aux {
                 $(
                     $dimless_key: $dimless_val,
                 )*
+                with_2d: $with_2d,
+                with_3d: $with_3d,
+                vector: true,
             }
         )*
 
@@ -1325,12 +1334,18 @@ macro_rules! measurement_unit {
         name: $name:ident,
         property: $property:ident,
         suffix: $suffix:expr,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        vector: $vector:tt,
     } => {
         $crate::measurement_unit! {
             name: $name,
             property: $property,
             suffix: $suffix,
             ratio: 1.,
+            with_2d: $with_2d,
+            with_3d: $with_3d,
+            vector: $vector,
         }
     };
     {
@@ -1338,6 +1353,9 @@ macro_rules! measurement_unit {
         property: $property:ident,
         suffix: $suffix:expr,
         ratio: $ratio:expr,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        vector: $vector:tt,
     } => {
         $crate::measurement_unit! {
             name: $name,
@@ -1345,6 +1363,9 @@ macro_rules! measurement_unit {
             suffix: $suffix,
             ratio: $ratio,
             offset: 0.,
+            with_2d: $with_2d,
+            with_3d: $with_3d,
+            vector: $vector,
         }
     };
     {
@@ -1353,6 +1374,9 @@ macro_rules! measurement_unit {
         suffix: $suffix:expr,
         ratio: $ratio:expr,
         offset: $offset:expr,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        vector: $vector:tt,
     } => {
         pub struct $name;
         impl measures::traits::MeasurementUnit for $name {
@@ -1373,28 +1397,66 @@ macro_rules! measurement_unit {
             }
         }
 
-        /*
-        /// Measure<One> * Measure2d -> Measure2d
-        impl<Number> std::ops::Mul<Measure2d<$name, Number>> for Measure<measures::dimensionless::One, Number>
-        where
-            Number: measures::traits::ArithmeticOps,
-        {
-            type Output = Measure2d<$name, Number>;
-            fn mul(self, other: Measure2d<$name, Number>) -> Measure2d<$name, Number> {
-                Measure2d::<$name, Number>::new(self.value * other.values[0], self.value * other.values[1])
+        measures::if_all_true! { { $with_2d $vector }
+            /// Measure2d<One> * Measure -> Measure2d
+            impl<Number> std::ops::Mul<Measure<$name, Number>> for Measure2d<measures::dimensionless::One, Number>
+            where
+                Number: measures::traits::ArithmeticOps,
+            {
+                type Output = Measure2d<$name, Number>;
+                fn mul(self, other: Measure<$name, Number>) -> Self::Output {
+                    Measure2d::<$name, Number>::new([
+                        self.values[0] * other.value,
+                        self.values[1] * other.value,
+                    ])
+                }
+            }
+
+            /// Measure * Measure2d<One> -> Measure2d
+            impl<Number> std::ops::Mul<Measure2d<One, Number>> for Measure<$name, Number>
+            where
+                Number: measures::traits::ArithmeticOps,
+            {
+                type Output = Measure2d<$name, Number>;
+                fn mul(self, other: Measure2d<One, Number>) -> Self::Output {
+                    Measure2d::<$name, Number>::new([
+                        self.value * other.values[0],
+                        self.value * other.values[1],
+                    ])
+                }
             }
         }
 
-        /// Measure<One> * Measure3d -> Measure3d
-        impl<Number> std::ops::Mul<Measure2d<$name, Number>> for Measure<measures::dimensionless::One, Number>
-        where
-            Number: measures::traits::ArithmeticOps,
-        {
-            type Output = Measure3d<$name, Number>;
-            fn mul(self, other: Measure3d<$name, Number>) -> Measure3d<$name, Number> {
-                Measure3d::<$name, Number>::new(self.value * other.values[0], self.value * other.values[1], self.value * other.values[2])
+        measures::if_all_true! { { $with_3d $vector }
+            /// Measure3d<One> * Measure -> Measure3d
+            impl<Number> std::ops::Mul<Measure<$name, Number>> for Measure3d<measures::dimensionless::One, Number>
+            where
+                Number: measures::traits::ArithmeticOps,
+            {
+                type Output = Measure3d<$name, Number>;
+                fn mul(self, other: Measure<$name, Number>) -> Self::Output {
+                    Measure3d::<$name, Number>::new([
+                        self.values[0] * other.value,
+                        self.values[1] * other.value,
+                        self.values[2] * other.value,
+                    ])
+                }
+            }
+
+            /// Measure * Measure3d<One> -> Measure3d
+            impl<Number> std::ops::Mul<Measure3d<One, Number>> for Measure<$name, Number>
+            where
+                Number: measures::traits::ArithmeticOps,
+            {
+                type Output = Measure3d<$name, Number>;
+                fn mul(self, other: Measure3d<One, Number>) -> Self::Output {
+                    Measure3d::<$name, Number>::new([
+                        self.value * other.values[0],
+                        self.value * other.values[1],
+                        self.value * other.values[2],
+                    ])
+                }
             }
         }
-        */
     };
 }

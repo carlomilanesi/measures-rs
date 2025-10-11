@@ -39,6 +39,9 @@ measures::measurement_unit! {
     name: SquareMetre,
     property: Area,
     suffix: " m\u{b2}",
+    with_2d: false,
+    with_3d: false,
+    vector: false,
 }
 
 measures::measurement_scalar_property! { ElectricalConductance }
@@ -47,6 +50,9 @@ measures::measurement_unit! {
     name: Siemens,
     property: ElectricalConductance,
     suffix: " S",
+    with_2d: false,
+    with_3d: false,
+    vector: false,
 }
 
 measures::measurement_scalar_property! { ElectricalResistance }
@@ -55,6 +61,9 @@ measures::measurement_unit! {
     name: Ohm,
     property: ElectricalResistance,
     suffix: " \u{3a9}",
+    with_2d: false,
+    with_3d: false,
+    vector: false,
 }
 
 #[test]
