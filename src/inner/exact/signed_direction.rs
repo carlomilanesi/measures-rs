@@ -83,6 +83,18 @@ macro_rules! inner_define_signed_direction {
             }
         }
 
+        measures::if_all_true! { { $with_points }
+            impl<Unit, Number> From<SignedDirection<Unit, Number>> for MeasurePoint<Unit, Number>
+            where
+                Unit: AngleMeasurementUnit,
+                Number: ArithmeticOps,
+            {
+                fn from(m: SignedDirection<Unit, Number>) -> Self {
+                    MeasurePoint::<Unit, Number>::new(m.value)
+                }
+            }
+        }
+
         impl<Unit> From<SignedDirection<Unit, f32>> for SignedDirection<Unit, f64>
         where
             Unit: AngleMeasurementUnit,

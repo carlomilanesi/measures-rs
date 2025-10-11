@@ -84,6 +84,18 @@ macro_rules! inner_define_unsigned_direction {
             }
         }
 
+        measures::if_all_true! { { $with_points }
+            impl<Unit, Number> From<UnsignedDirection<Unit, Number>> for MeasurePoint<Unit, Number>
+            where
+                Unit: AngleMeasurementUnit,
+                Number: ArithmeticOps,
+            {
+                fn from(m: UnsignedDirection<Unit, Number>) -> Self {
+                    MeasurePoint::<Unit, Number>::new(m.value)
+                }
+            }
+        }
+
         impl<Unit> From<UnsignedDirection<Unit, f32>> for UnsignedDirection<Unit, f64>
         where
             Unit: AngleMeasurementUnit,

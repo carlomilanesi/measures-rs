@@ -123,14 +123,14 @@ fn affine_map_2d_projection_by_point_angle() {
     let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
     let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
-    let am1 = AffineMap2d::<Metre, f64>::projection_by_point_angle(
+    let am1 = AffineMap2d::<Metre, f64>::projection_by_angle(
         fixed_point,
         MeasurePoint::<Degree, f64>::new(90.),
     );
     let mp2 = am1.apply_to(mp1);
     assert_eq_64!(mp2.values, [6., 5.]);
 
-    let am2 = AffineMap2d::<Metre, f64>::projection_by_point_angle(
+    let am2 = AffineMap2d::<Metre, f64>::projection_by_angle(
         fixed_point,
         MeasurePoint::<Degree, f64>::new(60.),
     );
@@ -143,14 +143,14 @@ fn affine_map_2d_projection_by_signed_direction() {
     let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
     let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
-    let am1 = AffineMap2d::<Metre, f64>::projection_by_signed_direction(
+    let am1 = AffineMap2d::<Metre, f64>::projection_by_angle(
         fixed_point,
         SignedDirection::<Degree, f64>::new(90.),
     );
     let mp2 = am1.apply_to(mp1);
     assert_eq_64!(mp2.values, [6., 5.]);
 
-    let am2 = AffineMap2d::<Metre, f64>::projection_by_signed_direction(
+    let am2 = AffineMap2d::<Metre, f64>::projection_by_angle(
         fixed_point,
         SignedDirection::<Degree, f64>::new(60.),
     );
@@ -163,14 +163,14 @@ fn affine_map_2d_projection_by_unsigned_direction() {
     let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
     let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
-    let am1 = AffineMap2d::<Metre, f64>::projection_by_unsigned_direction(
+    let am1 = AffineMap2d::<Metre, f64>::projection_by_angle(
         fixed_point,
         UnsignedDirection::<Degree, f64>::new(90.),
     );
     let mp2 = am1.apply_to(mp1);
     assert_eq_64!(mp2.values, [6., 5.]);
 
-    let am2 = AffineMap2d::<Metre, f64>::projection_by_unsigned_direction(
+    let am2 = AffineMap2d::<Metre, f64>::projection_by_angle(
         fixed_point,
         UnsignedDirection::<Degree, f64>::new(60.),
     );
@@ -205,14 +205,14 @@ fn affine_map_2d_reflection_by_point_angle() {
     let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
     let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
-    let am1 = AffineMap2d::<Metre, f64>::reflection_by_point_angle(
+    let am1 = AffineMap2d::<Metre, f64>::reflection_by_angle(
         fixed_point,
         MeasurePoint::<Degree, f64>::new(90.),
     );
     let mp2 = am1.apply_to(mp1);
     assert_eq_64!(mp2.values, [4., 5.]);
 
-    let am2 = AffineMap2d::<Metre, f64>::reflection_by_point_angle(
+    let am2 = AffineMap2d::<Metre, f64>::reflection_by_angle(
         fixed_point,
         MeasurePoint::<Degree, f64>::new(60.),
     );
@@ -225,14 +225,14 @@ fn affine_map_2d_reflection_by_signed_direction() {
     let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
     let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
-    let am1 = AffineMap2d::<Metre, f64>::reflection_by_signed_direction(
+    let am1 = AffineMap2d::<Metre, f64>::reflection_by_angle(
         fixed_point,
         SignedDirection::<Degree, f64>::new(90.),
     );
     let mp2 = am1.apply_to(mp1);
     assert_eq_64!(mp2.values, [4., 5.]);
 
-    let am2 = AffineMap2d::<Metre, f64>::reflection_by_signed_direction(
+    let am2 = AffineMap2d::<Metre, f64>::reflection_by_angle(
         fixed_point,
         SignedDirection::<Degree, f64>::new(60.),
     );
@@ -245,14 +245,14 @@ fn affine_map_2d_reflection_by_unsigned_direction() {
     let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
     let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
-    let am1 = AffineMap2d::<Metre, f64>::reflection_by_unsigned_direction(
+    let am1 = AffineMap2d::<Metre, f64>::reflection_by_angle(
         fixed_point,
         UnsignedDirection::<Degree, f64>::new(90.),
     );
     let mp2 = am1.apply_to(mp1);
     assert_eq_64!(mp2.values, [4., 5.]);
 
-    let am2 = AffineMap2d::<Metre, f64>::reflection_by_unsigned_direction(
+    let am2 = AffineMap2d::<Metre, f64>::reflection_by_angle(
         fixed_point,
         UnsignedDirection::<Degree, f64>::new(60.),
     );

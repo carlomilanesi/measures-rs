@@ -1,6 +1,6 @@
 measures::define_measure_types! {
     with_3d with_transformations exact,
-    scalar_properties               [ ]
+    scalar_properties [ ]
     vector_properties [
         Length [
             Metre {

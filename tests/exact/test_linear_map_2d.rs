@@ -85,7 +85,7 @@ fn linear_map_2d_rotation_at_left() {
 #[test]
 fn linear_map_2d_projection_by_point_angle() {
     let m1 = Measure2d::<Metre, f64>::new([8., 5.]);
-    let lm = LinearMap2d::<f64>::projection_by_point_angle(MeasurePoint::<Degree, f64>::new(60.));
+    let lm = LinearMap2d::<f64>::projection_by_angle(MeasurePoint::<Degree, f64>::new(60.));
     let m2 = lm.apply_to(m1);
     assert_eq_64!(m2.values, [4.165063509461098, 7.214101615137755]);
 }
@@ -93,9 +93,7 @@ fn linear_map_2d_projection_by_point_angle() {
 #[test]
 fn linear_map_2d_projection_by_signed_direction() {
     let m1 = Measure2d::<Metre, f64>::new([8., 5.]);
-    let lm = LinearMap2d::<f64>::projection_by_signed_direction(
-        SignedDirection::<Degree, f64>::new(60.),
-    );
+    let lm = LinearMap2d::<f64>::projection_by_angle(SignedDirection::<Degree, f64>::new(60.));
     let m2 = lm.apply_to(m1);
     assert_eq_64!(m2.values, [4.165063509461098, 7.214101615137755]);
 }
@@ -103,9 +101,7 @@ fn linear_map_2d_projection_by_signed_direction() {
 #[test]
 fn linear_map_2d_unsigned_direction() {
     let m1 = Measure2d::<Metre, f64>::new([8., 5.]);
-    let lm = LinearMap2d::<f64>::projection_by_unsigned_direction(
-        UnsignedDirection::<Degree, f64>::new(60.),
-    );
+    let lm = LinearMap2d::<f64>::projection_by_angle(UnsignedDirection::<Degree, f64>::new(60.));
     let m2 = lm.apply_to(m1);
     assert_eq_64!(m2.values, [4.165063509461098, 7.214101615137755]);
 }
@@ -125,7 +121,7 @@ fn linear_map_2d_projection_by_unit_vector() {
 #[test]
 fn linear_map_2d_reflection_by_point_angle() {
     let m1 = Measure2d::<Metre, f64>::new([8., 5.]);
-    let lm = LinearMap2d::<f64>::reflection_by_point_angle(MeasurePoint::<Degree, f64>::new(80.));
+    let lm = LinearMap2d::<f64>::reflection_by_angle(MeasurePoint::<Degree, f64>::new(80.));
     let m2 = lm.apply_to(m1);
     assert_eq_64!(m2.values, [-5.807440249658923, 7.434624250534892]);
 }
@@ -133,9 +129,7 @@ fn linear_map_2d_reflection_by_point_angle() {
 #[test]
 fn linear_map_2d_reflection_by_signed_direction() {
     let m1 = Measure2d::<Metre, f64>::new([8., 5.]);
-    let lm = LinearMap2d::<f64>::reflection_by_signed_direction(
-        SignedDirection::<Degree, f64>::new(80.),
-    );
+    let lm = LinearMap2d::<f64>::reflection_by_angle(SignedDirection::<Degree, f64>::new(80.));
     let m2 = lm.apply_to(m1);
     assert_eq_64!(m2.values, [-5.807440249658923, 7.434624250534892]);
 }
@@ -143,9 +137,7 @@ fn linear_map_2d_reflection_by_signed_direction() {
 #[test]
 fn linear_map_2d_reflection_by_unsigned_direction() {
     let m1 = Measure2d::<Metre, f64>::new([8., 5.]);
-    let lm = LinearMap2d::<f64>::reflection_by_unsigned_direction(
-        UnsignedDirection::<Degree, f64>::new(80.),
-    );
+    let lm = LinearMap2d::<f64>::reflection_by_angle(UnsignedDirection::<Degree, f64>::new(80.));
     let m2 = lm.apply_to(m1);
     assert_eq_64!(m2.values, [-5.807440249658923, 7.434624250534892]);
 }

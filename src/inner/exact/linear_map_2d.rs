@@ -34,24 +34,10 @@ macro_rules! inner_define_linear_map_2d {
             //// Projections
 
             // Projection onto a line identified by a measure point angle.
-            pub fn projection_by_point_angle<Unit: AngleMeasurementUnit>(
-                angle: MeasurePoint<Unit, Number>,
+            pub fn projection_by_angle<Unit: AngleMeasurementUnit>(
+                angle: impl Into<MeasurePoint<Unit, Number>>,
             ) -> Self {
-                Self::projection_by_radians(angle.convert::<Radian>().value)
-            }
-
-            // Projection onto a line identified by a signed direction.
-            pub fn projection_by_signed_direction<Unit: AngleMeasurementUnit>(
-                direction: SignedDirection<Unit, Number>,
-            ) -> Self {
-                Self::projection_by_radians(direction.convert::<Radian>().value)
-            }
-
-            // Projection onto a line identified by an unsigned direction.
-            pub fn projection_by_unsigned_direction<Unit: AngleMeasurementUnit>(
-                angle: UnsignedDirection<Unit, Number>,
-            ) -> Self {
-                Self::projection_by_radians(angle.convert::<Radian>().value)
+                Self::projection_by_radians(angle.into().convert::<Radian>().value)
             }
 
             // Projection onto a line identified by a unit plane vector.
@@ -63,24 +49,10 @@ macro_rules! inner_define_linear_map_2d {
             //// Reflections
 
             // Reflection over a line identified by a point angle.
-            pub fn reflection_by_point_angle<AngleUnit: AngleMeasurementUnit>(
-                angle: MeasurePoint<AngleUnit, Number>,
+            pub fn reflection_by_angle<AngleUnit: AngleMeasurementUnit>(
+                angle: impl Into<MeasurePoint<AngleUnit, Number>>,
             ) -> Self {
-                Self::reflection_by_radians(angle.convert::<Radian>().value)
-            }
-
-            // Reflection over a line identified by a signed direction.
-            pub fn reflection_by_signed_direction<AngleUnit: AngleMeasurementUnit>(
-                direction: SignedDirection<AngleUnit, Number>,
-            ) -> Self {
-                Self::reflection_by_radians(direction.convert::<Radian>().value)
-            }
-
-            // Reflection over a line identified by an unsigned direction.
-            pub fn reflection_by_unsigned_direction<AngleUnit: AngleMeasurementUnit>(
-                direction: UnsignedDirection<AngleUnit, Number>,
-            ) -> Self {
-                Self::reflection_by_radians(direction.convert::<Radian>().value)
+                Self::reflection_by_radians(angle.into().convert::<Radian>().value)
             }
 
             // Reflection over a line identified by a unit plane vector.
