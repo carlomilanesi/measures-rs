@@ -1163,11 +1163,6 @@ measures::define_measure_types! {
             }
         ]
     ]
-    dimensionless_measurement_units [
-        Mach {
-            suffix: " mach",
-        }
-    ]
     angle_measurement_units [
         Cycle {
             suffix: " rev",
@@ -1720,3 +1715,6 @@ pub type LongTon = ImperialTon;
 
 #[allow(dead_code)]
 pub type ShortTon = USTon;
+
+#[allow(dead_code)]
+pub type Mach = One;

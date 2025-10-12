@@ -1,7 +1,7 @@
 error: no rules expected `/`
-  --> tests/define-units-relationship/fail_1_is_bad_literal_div_1.rs:19:22
+  --> tests/define-units-relationship/fail_1_is_bad_literal_div_1.rs:18:22
    |
-19 |         U1 1 == U2 1 / __ 1,
+18 |         U1 1 == U2 1 / __ 1,
    |                      ^ no rules expected this token in macro call
    |
 note: while trying to match `*`

@@ -20,7 +20,6 @@ measures::define_measure_types! {
             }
         ]
     ]
-    dimensionless_measurement_units [ ]
     angle_measurement_units [ ]
     relationships [
     ]

@@ -13,7 +13,6 @@ measures::define_measure_types! {
             }
         ]
     ]
-    dimensionless_measurement_units [ ]
     angle_measurement_units [ ]
     relationships [
         U1 1 == U2 2 * __ 2,

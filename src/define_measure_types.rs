@@ -55,14 +55,6 @@ macro_rules! define_measure_types_aux {
             )*
         ]
 
-        dimensionless_measurement_units [
-            $(
-                $dimless_unit:ident {
-                    $($dimless_key:ident : $dimless_val:expr),* $(,)?
-                }
-            )*
-        ]
-
         angle_measurement_units [
             $(
                 $angle_unit:ident {
@@ -169,20 +161,6 @@ macro_rules! define_measure_types_aux {
             )*
         )*
 
-        // `dimensionless_measurement_units` section
-        $(
-            measures::measurement_unit! {
-                name: $dimless_unit,
-                property: Dimensionless,
-                $(
-                    $dimless_key: $dimless_val,
-                )*
-                with_2d: $with_2d,
-                with_3d: $with_3d,
-                vector: true,
-            }
-        )*
-
         // `angle_measurement_units` section
         $(
             measures::angle_measurement_unit! {
@@ -239,14 +217,6 @@ macro_rules! define_measure_types_aux {
             )*
         ]
 
-        dimensionless_measurement_units [
-            $(
-                $dimless_unit:ident {
-                    $($dimless_key:ident : $dimless_val:expr),* $(,)?
-                }
-            )*
-        ]
-
         angle_measurement_units [
             $(
                 $angle_unit:ident {
@@ -294,14 +264,6 @@ macro_rules! define_measure_types_aux {
                             }
                         )*
                     ]
-                )*
-            ]
-
-            dimensionless_measurement_units [
-                $(
-                    $dimless_unit {
-                        $($dimless_key : $dimless_val),*
-                    }
                 )*
             ]
 
@@ -358,14 +320,6 @@ macro_rules! define_measure_types_aux {
             )*
         ]
 
-        dimensionless_measurement_units [
-            $(
-                $dimless_unit:ident {
-                    $($dimless_key:ident : $dimless_val:expr),* $(,)?
-                }
-            )*
-        ]
-
         angle_measurement_units [
             $(
                 $angle_unit:ident {
@@ -413,14 +367,6 @@ macro_rules! define_measure_types_aux {
                             }
                         )*
                     ]
-                )*
-            ]
-
-            dimensionless_measurement_units [
-                $(
-                    $dimless_unit {
-                        $($dimless_key : $dimless_val),*
-                    }
                 )*
             ]
 
@@ -477,14 +423,6 @@ macro_rules! define_measure_types_aux {
             )*
         ]
 
-        dimensionless_measurement_units [
-            $(
-                $dimless_unit:ident {
-                    $($dimless_key:ident : $dimless_val:expr),* $(,)?
-                }
-            )*
-        ]
-
         angle_measurement_units [
             $(
                 $angle_unit:ident {
@@ -532,14 +470,6 @@ macro_rules! define_measure_types_aux {
                             }
                         )*
                     ]
-                )*
-            ]
-
-            dimensionless_measurement_units [
-                $(
-                    $dimless_unit {
-                        $($dimless_key : $dimless_val),*
-                    }
                 )*
             ]
 
@@ -596,14 +526,6 @@ macro_rules! define_measure_types_aux {
             )*
         ]
 
-        dimensionless_measurement_units [
-            $(
-                $dimless_unit:ident {
-                    $($dimless_key:ident : $dimless_val:expr),* $(,)?
-                }
-            )*
-        ]
-
         angle_measurement_units [
             $(
                 $angle_unit:ident {
@@ -651,14 +573,6 @@ macro_rules! define_measure_types_aux {
                             }
                         )*
                     ]
-                )*
-            ]
-
-            dimensionless_measurement_units [
-                $(
-                    $dimless_unit {
-                        $($dimless_key : $dimless_val),*
-                    }
                 )*
             ]
 
@@ -715,14 +629,6 @@ macro_rules! define_measure_types_aux {
             )*
         ]
 
-        dimensionless_measurement_units [
-            $(
-                $dimless_unit:ident {
-                    $($dimless_key:ident : $dimless_val:expr),* $(,)?
-                }
-            )*
-        ]
-
         angle_measurement_units [
             $(
                 $angle_unit:ident {
@@ -770,14 +676,6 @@ macro_rules! define_measure_types_aux {
                             }
                         )*
                     ]
-                )*
-            ]
-
-            dimensionless_measurement_units [
-                $(
-                    $dimless_unit {
-                        $($dimless_key : $dimless_val),*
-                    }
                 )*
             ]
 
@@ -834,14 +732,6 @@ macro_rules! define_measure_types_aux {
             )*
         ]
 
-        dimensionless_measurement_units [
-            $(
-                $dimless_unit:ident {
-                    $($dimless_key:ident : $dimless_val:expr),* $(,)?
-                }
-            )*
-        ]
-
         angle_measurement_units [
             $(
                 $angle_unit:ident {
@@ -889,14 +779,6 @@ macro_rules! define_measure_types_aux {
                             }
                         )*
                     ]
-                )*
-            ]
-
-            dimensionless_measurement_units [
-                $(
-                    $dimless_unit {
-                        $($dimless_key : $dimless_val),*
-                    }
                 )*
             ]
 
@@ -953,14 +835,6 @@ macro_rules! define_measure_types_aux {
             )*
         ]
 
-        dimensionless_measurement_units [
-            $(
-                $dimless_unit:ident {
-                    $($dimless_key:ident : $dimless_val:expr),* $(,)?
-                }
-            )*
-        ]
-
         angle_measurement_units [
             $(
                 $angle_unit:ident {
@@ -1008,14 +882,6 @@ macro_rules! define_measure_types_aux {
                             }
                         )*
                     ]
-                )*
-            ]
-
-            dimensionless_measurement_units [
-                $(
-                    $dimless_unit {
-                        $($dimless_key : $dimless_val),*
-                    }
                 )*
             ]
 
@@ -1072,14 +938,6 @@ macro_rules! define_measure_types_aux {
             )*
         ]
 
-        dimensionless_measurement_units [
-            $(
-                $dimless_unit:ident {
-                    $($dimless_key:ident : $dimless_val:expr),* $(,)?
-                }
-            )*
-        ]
-
         angle_measurement_units [
             $(
                 $angle_unit:ident {
@@ -1129,14 +987,6 @@ macro_rules! define_measure_types_aux {
                 )*
             ]
 
-            dimensionless_measurement_units [
-                $(
-                    $dimless_unit {
-                        $($dimless_key : $dimless_val),*
-                    }
-                )*
-            ]
-
             angle_measurement_units [
                 $(
                     $angle_unit {
@@ -1180,14 +1030,6 @@ macro_rules! define_measure_types {
                         }
                     )*
                 ]
-            )*
-        ]
-
-        dimensionless_measurement_units [
-            $(
-                $dimless_unit:ident {
-                    $($dimless_key:ident : $dimless_val:expr),* $(,)?
-                }
             )*
         ]
 
@@ -1238,14 +1080,6 @@ macro_rules! define_measure_types {
                             }
                         )*
                     ]
-                )*
-            ]
-
-            dimensionless_measurement_units [
-                $(
-                    $dimless_unit {
-                        $($dimless_key : $dimless_val),*
-                    }
                 )*
             ]
 

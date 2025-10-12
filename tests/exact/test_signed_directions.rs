@@ -2,7 +2,6 @@ measures::define_measure_types! {
     with_points with_directions exact,
     scalar_properties [ ]
     vector_properties [ ]
-    dimensionless_measurement_units [ ]
     angle_measurement_units [
         Degree {
             suffix: " deg",

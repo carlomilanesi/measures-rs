@@ -1,38 +1,26 @@
 measures::define_measure_types! {
     with_points exact,
-    scalar_properties [ ]
+    scalar_properties [
+        Temperature [
+            Celsius {
+                suffix: " \u{B0}C",
+                ratio: 1.,
+                offset: 273.15,
+            }
+            Fahrenheit {
+                suffix: " \u{B0}F",
+                ratio: 5. / 9.,
+                offset: 273.15 - 32. * 5. / 9.,
+            }
+        ]
+    ]
     vector_properties [ ]
-    dimensionless_measurement_units [ ]
     angle_measurement_units [ ]
     relationships [
     ]
 }
 
 use measures::assert_eq_32;
-
-measures::measurement_scalar_property! { Temperature }
-
-measures::measurement_unit! {
-    name: Celsius,
-    property: Temperature,
-    suffix: " \u{B0}C",
-    ratio: 1.,
-    offset: 273.15,
-    with_2d: false,
-    with_3d: false,
-    vector: false,
-}
-
-measures::measurement_unit! {
-    name: Fahrenheit,
-    property: Temperature,
-    suffix: " \u{B0}F",
-    ratio: 5. / 9.,
-    offset: 273.15 - 32. * 5. / 9.,
-    with_2d: false,
-    with_3d: false,
-    vector: false,
-}
 
 #[test]
 fn measure_point_default() {

@@ -30,8 +30,12 @@ measures::define_measure_types! {
                 suffix: " N",
             }
         ]
+        Torque [
+            NewtonMetre {
+                suffix: " N\u{b7}m",
+            }
+        ]
     ]
-    dimensionless_measurement_units [ ]
     angle_measurement_units [ ]
     relationships [
         Metre 2 == MetrePerSecond 2 * Second 1,
@@ -40,17 +44,6 @@ measures::define_measure_types! {
         NewtonMetre 1 == Newton 2 X Metre 2,
         Metre 1 == Metre 2 X __ 2,
     ]
-}
-
-measures::measurement_vector_property! { Torque }
-
-measures::measurement_unit! {
-    name: NewtonMetre,
-    property: Torque,
-    suffix: " N\u{b7}m",
-    with_2d: true,
-    with_3d: false,
-    vector: true,
 }
 
 #[test]

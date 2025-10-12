@@ -1,7 +1,7 @@
 error: no rules expected `*`
-  --> tests/define-units-relationship/fail_1_mul_1_mul_1.rs:24:14
+  --> tests/define-units-relationship/fail_1_mul_1_mul_1.rs:23:14
    |
-24 |         U1 1 * U2 1 * U3 1,
+23 |         U1 1 * U2 1 * U3 1,
    |              ^ no rules expected this token in macro call
    |
 note: while trying to match `==`

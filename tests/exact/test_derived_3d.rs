@@ -36,8 +36,7 @@ measures::define_measure_types! {
             }
         ]
     ]
-    dimensionless_measurement_units [ ]
-    angle_measurement_units         [ ]
+    angle_measurement_units [ ]
     relationships [
         Metre 3 == MetrePerSecond 3 * Second 1,
         Metre 1 == Metre 3 * __ 3,

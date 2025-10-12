@@ -23,7 +23,6 @@ measures::define_measure_types! {
         ]
     ]
     vector_properties [ ]
-    dimensionless_measurement_units [ ]
     angle_measurement_units [ ]
     relationships [
         Volt 1 == Ampere 1 * Ohm 1,
