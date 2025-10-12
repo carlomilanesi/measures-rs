@@ -2,74 +2,89 @@
 
 This document describes the rationale for the library `measures`, contained in the package `measures-rs`.
 
-You can store the value of physical or geometrical quantities by using only the primitive Rust data types, like `f32` or `f64`. Though, if you do this, several programming errors are possible. But some of them can be avoided, at no run-time cost, by encapsulating these values in custom types.
+You can store the value of physical or geometrical quantities by using only the primitive Rust data types, like `f32` or `f64`.
+Though, if you do this, several programming errors are possible.
+But some of them can be avoided, at no run-time cost, by encapsulating these values in custom types.
 
 ## Mixing measures having different unit of measurement
 
 Consider the following Rust code:
 
 ```rust
-let mass1 = 1.2; // In kilograms.
-let mut mass2: f64; // In pounds.
-mass2 = mass1; // Wrong.
-fn set_mass_in_pounds(val: f64) { /* ... */ }
-set_mass_in_pounds(mass1); // Wrong.
+    let mass_in_kg = 1.2; // In kilograms.
+    let mut mass_in_pounds: f64; // In pounds.
+    mass_in_pounds = mass_in_kg; // Wrong.
+    fn set_mass_in_pounds(val: f64) { /* ... */ }
+    set_mass_in_pounds(mass_in_kg); // Wrong.
 ```
 
-In the third statement, a value meant to be in kilograms is assigned to a variable meant to be in pounds. In the last statement, a function meant to receive a value in pounds receives a value meant to be in kilograms.
+In the third statement, a value meant to be in kilograms is assigned to a variable meant to be in pounds.
+In the last statement, a function meant to receive a value in pounds receives a value meant to be in kilograms.
 
 This is avoided by using this code:
 
 ```rust
-let mass1 = Measure::<KiloGram>::new(1.2);
-let mut mass2: Measure<Pound>;
-mass2 = mass1; // Compilation error.
-fn set_mass(val: Measure<Pound>) { /* ... */ }
-set_mass(mass1); // Compilation error.
+    let mass_in_kg = Measure::<KiloGram>::new(1.2);
+    let mut mass_in_pounds: Measure<Pound>;
+    mass_in_pounds = mass_in_kg; // Compilation error.
+    fn set_mass(val: Measure<Pound>) { /* ... */ }
+    set_mass(mass_in_kg); // Compilation error.
 ```
 
-The third and the last statements cause compilation errors for type mismatch, because the values are encapsulated in objects whose types is characterized by a unit of measurement, and any value must have the same type of the variable to which it is assigned.
+The third and the last statements cause "type mismatch" compilation errors, because we are trying to assign a `Measure<KiloGram>` to a `Measure<Pound>`.
+Here, the values are encapsulated in objects whose types is characterized by a unit of measurement.
+In Rust, the left and right side of an assignment must have the same type.
 
 ## Unit conversions
 
 Consider the following Rust code:
 
 ```rust
-let mass1 = 1.2; // kilograms
-let mut mass2: f64; // pounds
-mass2 = mass1 * 0.45359237; // Wrong conversion operation; it should be a division.
-mass2 = mass1 / 453.59237; // Wrong conversion ratio; it should be 0.45359237.
+    let mass_in_kilograms = 1.2; // kilograms
+    let mut mass_in_pounds: f64; // pounds
+
+    // Wrong conversion operation; it should be a division.
+    mass_in_pounds = mass_in_kilograms * 0.45359237;
+
+    // Wrong conversion ratio; it should be 0.45359237.
+    mass_in_pounds = mass_in_kilograms / 453.59237;
 ```
 
-The third statement tries to convert a value from kilograms to pounds, but it uses a multiplication instead of a division. Also the fourth statement tries to do the same unit conversion, but it uses a wrong divisor.
+The third statement tries to convert a value from kilograms to pounds, but it uses a multiplication instead of a division.
+Also the fourth statement tries to do the same unit conversion, but it uses a wrong divisor.
 
 This is avoided by using the following code:
 
 ```rust
-let mass1 = Measure::<KiloGram>::new(1.2);
-let mut mass2: Measure<Pound>;
-mass2 = mass1.convert();
-// or
-let mass3 = mass1.convert::<Pound>();
+    let mass_in_kilograms = Measure::<KiloGram>::new(1.2);
+    let mut mass_in_pounds: Measure<Pound>;
+    mass_in_pounds = mass_in_kilograms.convert();
+    // or
+    let another_mass_in_pounds = mass_in_kilograms.convert::<Pound>();
 ```
 
-The third statement simply invokes the method `convert`. The correct conversion formula is inferred by using the type of the source expression and the type of the destination variable. Instead, in the last statement, the destination variable does not have a type annotation, and so the unit conversion must specify the destination unit of measurement.
+The third statement simply invokes the method `convert`.
+The correct conversion formula is inferred from the type of the source expression and the type of the destination variable.
+Instead, in the last statement, the destination variable does not have a type annotation, and so the unit conversion must specify the destination unit of measurement.
 
 ## Non-standard units of measurement
 
-Some existing libraries, like, for example, the crate UOM, encapsulate each value in an object which represents that value in a standard unit of measurement, typically taken from the SI international standard.
+Some other libraries, like, for example, the crate UOM, encapsulate each value in an object which represents that value in a standard unit of measurement, typically taken from the SI international standard.
 This raises the problem of how to handle non-standard units, like milligrams or pounds for mass.
 These libraries always use internally a standard unit, and so they can convert, at run-time, any input value from a user-chosen unit to a standard unit, and any output value from a standard unit to a user-chosen unit.
 
 Such technique has the following drawbacks:
 
-1. It forces developers to use units that are different from the ones actually seen by users. For example, a developer wants to use only the pound as a unit of mass. But if he tries to explore with a debugger the contents of a mass object, he finds a value in kilograms.
+1. It forces developers to use units that are different from the ones actually seen by users.
+   For example, a developer wants to use only the pound as a unit of mass.
+   But if he tries to explore with a debugger the contents of an object encapsulating a mass, he finds a value in kilograms.
 2. It may introduce rounding errors.
 3. It introduces a small conversion overhead for every I/O operation.
 
-Instead, when using the library `measures`, the developer can choose the pound as a unit of the mass, so that the input is in pounds, the computations are in pounds, and the output is in pounds. This eases debugging, avoids unexpected rounding errors, and avoids run-time conversion overhead.
+Instead, when using the library `measures`, the developer can choose the pound as the unit of mass, so that the input operations are in pounds, the computations are in pounds, and the output operations are in pounds.
+This eases debugging, avoids unexpected rounding errors, and avoids run-time conversion overhead.
 
-Regarding the rounding errors, consider, for example, the following Rust code using the crate UOM:
+Regarding the rounding errors, consider, for example, the following Rust code, which uses the crate UOM:
 
 ```rust
 use uom::fmt::DisplayStyle::Abbreviation;
@@ -91,14 +106,16 @@ fn main() {
 }
 ```
 
-It defines the variables `mass1` and `mass2` by specifying a value in grams and a value in pounds, but it stores internally those values in kilograms. Then, it prints the first variable using two different formatters, one for grams, and one for kilograms, and the second variable using the formatter for pounds. The output is: `8030.0005 g, 8.030001 kg, 27.000002 lb.`.
+It defines the variables `mass1` and `mass2` by specifying a value in grams and a value in pounds, but it stores internally those values in kilograms.
+Then, it prints the first variable using two different formatters, one for grams, and one for kilograms, and the second variable using the formatter for pounds.
+The output is: `8030.0005 g, 8.030001 kg, 27.000002 lb.`.
 
-As you can see, even the value in grams and the value in pounds are different from the original values. This happens even with such small integer values, which usually do not introduce rounding errors in floating-point numbers.
+As you can see, even the value in grams and the value in pounds are different from the original values.
+This happens even with such small integer values, which usually do not introduce rounding errors in floating-point numbers.
 
 The corresponding program using `measures` is this:
 
 ```rust
-use measures::{Measure, units::{Gram, KiloGram, Pound}};
 fn main() {
     let mass1 = Measure::<Gram, f32>::new(8030.);
     let mass2 = Measure::<Pound, f32>::new(27.);
@@ -115,21 +132,23 @@ Only the value in kilograms is not exact, because its value is stored internally
 To represent all possible physical or geometrical properties, such libraries try to define inside them all existing properties and all existing units.
 This has the following drawbacks:
 1. It makes the library heavy to compile, as the resulting types are quite numerous.
-2. If the library is not extensible, it may be incomplete, as there are some little used units that some applications may require and which have not been included in the library. If it is extensible, it is usually somewhat difficult to extend it.
-3. It forces developers to use a specific natural language to name the properties and their units of measurements, instead of the natural language of the developers. For example, some people prefer to write `metre` and others prefer to write `meter`, for the same unit.
+2. If the library is not extensible, it may be incomplete, as there are some little used units that some applications may require and which have not been included in the library.
+   If the library is extensible, it is usually somewhat difficult to extend it.
+3. It forces developers to use a specific natural language to name the properties and their units of measurements, instead of the natural language preferred by the developers.
+   For example, some people prefer to write `metre` and others prefer to write `meter`, for the same unit.
 
-Instead, the library `measures` defines just two built-in properties, `Dimensionless` and `Angle`, and it defines just two built-in unit of measurements, `One` for the property `Dimensionless`, and `Radian` for the property `Angle`.
+Instead, the library `measures` defines just two built-in properties, `Dimensionless` and `Angle`, and it defines just two built-in units of measurements, `One` for the property `Dimensionless`, and `Radian` for the property `Angle`.
 
 Every other property and every other unit of measurement can be easily defined by the application developers. As consequences:
-1. The library uses little compile-time and run-time resources, because it will include only the few properties and units needed by the application.
-2. The library is by-design easily extensible, by adding custom properties and units.
+1. For typical applications, this library uses little compile-time and run-time resources, because it will include only the few properties and units needed by the application.
+2. For this library it is easy to add custom properties or custom units.
 3. The developers can define their preferred names for properties and for units of measurement, and they can define also the preferred unit-of-measurement suffixes for outputting measures.
 
 ## Specifying derived units
 
 If you have a value representing a mass and another value representing a volume, the division of the first value by the second value must represent a mass density.
 This can be enforced by specifying relationships among units.
-In existing libraries, these relationships are built-in, and implemented in very complex types, in a way that cannot be modified by the application developers.
+In other libraries, these relationships are built-in, and implemented by very complex types, in a way that cannot be modified by the application developers.
 This has the following drawbacks:
 1. The complexity of the resulting types makes the application heavy to compile.
 2. The complexity of the resulting types makes the compiler error messages quite cryptic.
@@ -175,13 +194,12 @@ error[E0308]: mismatched types
               found struct `units::Measure<units::Gram>`
 ```
 
-From it, it is clear that it was used unit `Gram` where unit `Metre` was expected (or vice versa).
+From it, it is clear that unit `Gram` was used where unit `Metre` was expected (or vice versa).
 
-Instead, if we write the statement `let _ = Measure::<Metre>::new(0.).convert::<Second>();`, that tries to convert a measure in metres into a measure in seconds, the generated error message is this one:
+Instead, if we write the statement `let _ = Measure::<Metre>::new(0.).convert::<Second>();`, that tries to convert a measure in metres into a measure in seconds, the generated error message begins with these lines:
 
 ```text
-error[E0271]: type mismatch resolving `<Second as MeasurementUnit>::Property == 
-Length`
+error[E0271]: type mismatch resolving `<Second as MeasurementUnit>::Property == Length`
     --> src/main.rs:10:49
      |
 10   |     let _ = Measure::<Metre>::new(0.).convert::<Second>();
@@ -189,15 +207,6 @@ Length`
 nit>::Property == Length`
      |
 note: expected this to be `Length`
-    --> src/units.rs:2139:21
-     |
-2139 |     type Property = Time;
-     |                     ^^^^
-note: required by a bound in `units::Measure::<Unit, Number>::convert`
-    --> src/units.rs:1:1
-     |
-1    | measures::define_1d! {}
-     | ^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `Measure::<Unit, Number>::convert`
 ```
 
 From it, it is enough clear that, for the destination unit of the conversion, a unit of `Length` was expected, but a unit of `Time` was specified.
@@ -209,76 +218,89 @@ There are other features that makes this library useful to prevent programming e
 Consider the following Rust code:
 
 ```rust
-let position1 = 1.2;
-let position2 = 2.3;
-let displacement1 = 0.3;
-let position3 = position1 + displacement1; // Meaningful.
-let what1 = position1 + position2; // Meaningless.
-let displacement2 = position2 - position1; // Meaningful.
-let what2 = position1 * 2.; // Meaningless.
+    let position1 = 1.2;
+    let position2 = 2.3;
+    let displacement1 = 0.3;
+    let position3 = position1 + displacement1; // Meaningful.
+    let what1 = position1 + position2; // Meaningless.
+    let displacement2 = position2 - position1; // Meaningful.
+    let what2 = position1 * 2.; // Meaningless.
 ```
 
-The value of the variable `position3` is a position, obtained by incrementing another position by a displacement. It is a meaningful operation.
+The value of the variables `position1` and `position2` are meant to be positions of an thing along a line.
+The value of the variable `displacement1` is meant to a movement of that thing along that line.
 
-Instead, the value of the variable `what1` is obtained by incrementing a position by another position. It is a meaningless operation, but it is allowed by the compiler.
+So, the value of the variable `position3` is also a position, obtained by incrementing position `position1` by displacement `displacement1`.
+This is a meaningful operation.
 
-The value of the variable `displacement2` is a displacement, obtained by computing the difference between two positions. It is the movement to go from the `position1` to `position2`. It is a meaningful operation.
+Instead, the value of the variable `what1` is obtained by incrementing position `position1` by position `position12`.
+Incrementing a position by another position is a meaningless operation, yet it is allowed by the compiler.
 
-Instead, the variable `what2` is obtained by multiplying a position by 2. It is a meaningless operation, but it is allowed by the compiler.
+The value of the variable `displacement2` is obtained by computing the difference between position `position2` and position `position1`.
+It represents the movement to go from `position1` to `position2`.
+It is a meaningful operation.
 
-This can be avoided by using this code:
+Instead, the variable `what2` is obtained by multiplying by 2 position `position1`.
+Multiplying a position by a number is a meaningless operation, yet it is allowed by the compiler.
+
+These meaningless operations can avoided by using this code:
 
 ```rust
-let position1 = MeasurePoint::<Metre, f64>::new(1.2);
-let position2 = MeasurePoint::<Metre, f64>::new(2.3);
-let displacement1 = Measure::<Metre, f64>::new(0.3);
-let position3 = position1 + displacement1; // Allowed.
-let what1 = position1 + position2; // Compilation error.
-let displacement2 = position2 - position1; // Allowed.
-let what2 = position1 * 2.; // Compilation error.
+    let position1 = MeasurePoint::<Metre, f64>::new(1.2);
+    let position2 = MeasurePoint::<Metre, f64>::new(2.3);
+    let displacement1 = Measure::<Metre, f64>::new(0.3);
+    let position3 = position1 + displacement1; // Allowed.
+    let what1 = position1 + position2; // Compilation error.
+    let displacement2 = position2 - position1; // Allowed.
+    let what2 = position1 * 2.; // Compilation error.
 ```
 
-In this code, displacements are encapsulated in objects of type `Measure`, and positions are encapsulated in objects of type `MeasurePoint`. Using such types, the attempts to add two positions or to multiply a position by a number cause compilation errors.
+In this code, displacements are encapsulated in objects of type `Measure`, and positions are encapsulated in objects of type `MeasurePoint`.
+Using such types, the fifth statement, which attempts to add two positions, and the last statement, which attempts to multiply a position by a number, cause compilation errors.
 
 ## Different origins for measure points
 
 Consider the following Rust code:
 
 ```rust
-let fahrenheit_temperature_variation = 3.;
-let celsius_temperature_variation = fahrenheit_temperature_variation
-    / 9. * 5.; // Right.
-let fahrenheit_temperature_point = 70.;
-let celsius_temperature_point = fahrenheit_temperature_point
-    / 9. * 5.; // Wrong; different scale origin.
+    let fahrenheit_temperature_variation = 3.;
+    let celsius_temperature_variation = fahrenheit_temperature_variation
+        / 9. * 5.; // Right.
+    let fahrenheit_temperature_point = 70.;
+    let celsius_temperature_point = fahrenheit_temperature_point
+        / 9. * 5.; // Wrong; different scale origin.
 ```
 
 To compute the value to assign to the variable `celsius_temperature_variation`, a temperature variation is correctly converted from the Fahrenheit scale to the Celsius scale.
-Instead, to compute the value to assign to the variable `celsius_temperature_point`, the same formula is wrongly applied to convert a temperature point from the Celsius scale to the Fahrenheit scale.
-It is wrong, because it does not take into account the fact that these two scales have different origins.
+
+Instead, to compute the value to assign to the variable `celsius_temperature_point`, the same formula is wrongly applied.
+
+It is wrong, because this statements should convert between temperature points, not between temperature variations.
+To convert between temperature points, the fact that these two scales have different origins should be taken into account.
 
 This is avoided by using this code:
 
 ```rust
-let fahrenheit_temperature_variation = Measure::<Fahrenheit>::new(3.);
-let celsius_temperature_variation =
-    fahrenheit_temperature_variation.convert::<Celsius>();
-let fahrenheit_temperature_point = MeasurePoint::<Fahrenheit>::new(3.);
-let celsius_temperature_point =
-    fahrenheit_temperature_point.convert::<Celsius>();
+    let fahrenheit_temperature_variation = Measure::<Fahrenheit>::new(3.);
+    let celsius_temperature_variation =
+        fahrenheit_temperature_variation.convert::<Celsius>();
+    let fahrenheit_temperature_point = MeasurePoint::<Fahrenheit>::new(70.);
+    let celsius_temperature_point =
+        fahrenheit_temperature_point.convert::<Celsius>();
 ```
 
-Both unit conversions use the clause `.convert::<Celsius>()`; though, the second one uses the type `MeasurePoint`, and so it takes into account the different origins.
+Both unit conversions use the clause `.convert::<Celsius>()`; though, the second one is applied to an object of type `MeasurePoint`, and so that conversion takes into account the difference between the origins.
 
 ## Wrong derived units of measurement
 
 Consider the following Rust code:
 
 ```rust
-let distance = 8.; // Miles.
-let time_elapsed = 2.; // Hours.
-let average_speed_in_metres_per_second = distance / time_elapsed;
-// Wrong; this value is in miles per hour.
+    let distance = 8.; // Miles.
+    let time_elapsed = 2.; // Hours.
+
+    // Wrong; this value is in miles per hour.
+    let average_speed_in_metres_per_second = distance / time_elapsed;
 ```
 
 The value of the variable `average_speed_in_metres_per_second` is computed in miles per hours, but it is wrongly assigned to a variable meant to keep a value in metres per second.
@@ -286,14 +308,13 @@ The value of the variable `average_speed_in_metres_per_second` is computed in mi
 This is avoided by using this code:
 
 ```rust
-let distance = Measure::<Mile>::new(8.);
-let time_elapsed = Measure::<Hour>::new(2.);
-let average_speed1: Measure<MilePerHour>
-    = distance / time_elapsed; // Allowed.
-// or
-let average_speed2 = distance / time_elapsed; // Allowed.
-let average_speed3: Measure<MetrePerSecond>
-    = distance / time_elapsed; // Compilation error.
+    let distance = Measure::<Mile>::new(8.);
+    let time_elapsed = Measure::<Hour>::new(2.);
+    let average_speed1: Measure<MilePerHour>
+        = distance / time_elapsed; // Allowed.
+    let average_speed2 = distance / time_elapsed; // Allowed.
+    let average_speed3: Measure<MetrePerSecond>
+        = distance / time_elapsed; // Compilation error.
 ```
 
 The compilation of the assignment to `average_speed1` checks that the value assigned has the same derived unit of measurement of the variable that receives that value.
@@ -305,51 +326,60 @@ The compilation of the assignment to `average_speed3` generates a type-mismatch 
 ## Plane (2D) And space (3D) measures
 
 So far, we have seen features comparable to what is offered by most other libraries handling units of measurement.
-Though, the library `measures` has some multi-dimensional features which make it useful to work with bi-dimensional or three-dimensional quantities, in an ergonomic and safe manner.
 
-Some physical or geometrical properties are properly described as multidimensional. For example, a displacement in a plane has two dimensions (X and Y), and a displacement in space has three dimensions (X, Y, and Z). They are called “vector measures”. Plane vector measures (a.k.a. 2D measures) have two components, and space vector measures (a.k.a. 3D measures) have three components.
+Though, the library `measures` has some multi-dimensional features, which make it useful to work with bi-dimensional or three-dimensional quantities, in an ergonomic and safe manner.
 
-For vector measures, usually it is good to have the same unit of measurement and the same numeric type for all the components. So, the library `measures` allows to encapsulate all the components of a vector measure into a single object, like `Measure3d<Metre, f64>`, in which all three components have `Metre` as unit of measurement and `f64` as inner type.
+Some physical or geometrical properties are properly described as multidimensional.
 
-For example, to represent a planar force and a planar displacement, instead of writing this code:
+For example, a displacement in a plane has two dimensions (X and Y), and a displacement in space has three dimensions (X, Y, and Z).
+They are called “vector measures”.
+Plane vector measures (a.k.a. 2D measures) have two components, and space vector measures (a.k.a. 3D measures) have three components.
+
+For vector measures, usually it is good to have the same unit of measurement and the same numeric type for all the components.
+So, the library `measures` allows to encapsulate all the components of a vector measure into a single object, like `Measure3d<Metre, f64>`, in which all three components have `Metre` as unit of measurement and `f64` as inner type.
+
+For example, to represent a planar force and a planar displacement, this code could be written:
 
 ```rust
-let force = (Measure::<Newton>::new(3.), Measure::<Newton>::new(4.));
-let displacement = (Measure::<Metre>::new(7.), Measure::<Metre>::new(1.));
+    let force = (Measure::<Newton>::new(3.), Measure::<Newton>::new(4.));
+    let displacement = (Measure::<Metre>::new(7.), Measure::<Metre>::new(1.));
 ```
 
-you can and should write this code:
+but this other code is definitely better:
 
 ```rust
-let force = Measure2d::<Newton>::new(3., 4.);
-let displacement = Measure2d::<Metre>::new(7., 1.);
+    let force = Measure2d::<Newton>::new([3., 4.]);
+    let displacement = Measure2d::<Metre>::new([7., 1.]);
 ```
 
 Similarly, it is possible to create 3D measures in space:
 
 ```rust
-let force = Measure3d::<Newton>::new(3., 4., 5.);
-let displacement = Measure3d::<Metre>::new(7., 1., -6.);
+    let force = Measure3d::<Newton>::new([3., 4., 5.]);
+    let displacement = Measure3d::<Metre>::new([7., 1., -6.]);
 ```
 
 Also points in a plane or in space can be represented by single objects:
 
 ```rust
-let position_in_plane = MeasurePoint2d::<Metre>::new(3., 4.);
-let position_in_space = MeasurePoint3d::<Metre>::new(3., 4., 5.);
+    let position_in_plane = MeasurePoint2d::<Metre>::new([3., 4.]);
+    let position_in_space = MeasurePoint3d::<Metre>::new([3., 4., 5.]);
 ```
 
 Dot products and cross products between measures have the right units of measurement:
 
 ```rust
-// In a plane
-let force = Measure2d::<Newton>::new(3., 4.);
-let displacement = Measure2d::<Metre>::new(7., 1.);
-let work: Measure<Joule> = force * displacement;
-let torque: Measure<NewtonMetre> = force.cross_product(displacement);
+   // In a plane
+    let force = Measure2d::<Newton>::new([3., 4.]);
+    let displacement = Measure2d::<Metre>::new([7., 1.]);
+    let work: Measure<Joule> = force * displacement;
+    use measures::traits::CrossProduct;
+    let torque: Measure<NewtonMetre> = force.cross_product(displacement);
 ```
 
-The value of `work` is obtained by multiplying `force`, a 2D force expressed in newtons, by `displacement`, a 2D displacement expressed in metres. Such multiplication, which uses the "`*`" operator, is the *dot product* between the two 2D vectors. So, the result is an energy (or work), expressed in joules.
+The value of `work` is obtained by multiplying `force`, a 2D force expressed in newtons, by `displacement`, a 2D displacement expressed in metres.
+Such multiplication, which uses the "`*`" operator, is the *dot product* between the two 2D vectors.
+So, the result is an energy (or work), expressed in joules.
 
 The value of `torque` is obtained by computing the cross product between `force` and `displacement`, resulting in a torque, expressed in newton-metres.
 
@@ -358,71 +388,78 @@ Notice that the unit `Joule` and `NewtonMetre` are different types, even if they
 Similarly, it happens in 3D space:
 
 ```rust
-// In space
-let force = Measure3d::<Newton>::new(3., 4., 5.);
-let displacement = Measure3d::<Metre>::new(7., 1., -6.);
-let work: Measure<Joule> = force * displacement;
-let torque: Measure3d<NewtonMetre> = force.cross_product(displacement);
+    // In space
+    let force = Measure3d::<Newton>::new([3., 4., 5.]);
+    let displacement = Measure3d::<Metre>::new([7., 1., -6.]);
+    let work: Measure<Joule> = force * displacement;
+    use measures::traits::CrossProduct;
+    let torque: Measure3d<NewtonMetre> = force.cross_product(displacement);
 ```
 
 Notice a difference: the 2D torque is a scalar (a `Measure`), while the 3D torque is a 3D vector (a `Measure3d`).
 
 ## Angles and directions
 
-Angles deserve a special treatment. Consider the following Rust code:
+Angles deserve a special treatment.
+Consider the following Rust code:
 
 ```rust
-let mut angular_position = 300.; // In degrees.
-let rotation = 400.; // In degrees.
-angular_position += rotation;
-assert_eq!(angular_position, 700.);
+    let mut angular_position = 300.; // In degrees.
+    let rotation = 400.; // In degrees.
+    angular_position += rotation;
+    assert_eq!(angular_position, 700.);
 ```
 
-The third statement increments an angular position by a rotation. The resulting position is 700 degrees, that is more than one cycle. It may be just what we needed, but it may be that we needed instead a position in the circumference, i.e. a directional angle. And in such a case, 700 degrees is not a valid result.
+The third statement increments an angular position by a rotation.
+The resulting position is 700 degrees, which is more than one cycle.
 
-There are two widely used conventions to specify a direction: using an angle from 0 to 360 degrees, or an angle from -180 to +180 degrees. The former case, which uses only non-negative values, is computed by the the following statement:
+It may be just what we needed, but it may be that we needed instead a position in the circumference, i.e. a directional angle.
+And in such a case, 700 degrees is not a valid result.
+
+There are two widely used conventions to specify a direction: using an angle from 0 to 360 degrees, or an angle from -180 to +180 degrees.
+The former case, which uses only non-negative values, is computed by the the following statement:
 
 ```rust
-let direction360 = angular_position % 360.;
-assert_eq!(direction360, 340.);
+    let direction360 = angular_position % 360.;
+    assert_eq!(direction360, 340.);
 ```
 
 The other case, using positive or negative values, is computed by the following statement:
 
 ```rust
-let direction180 = (angular_position + 180.) % 360. - 180.;
-assert_eq!(direction180, -20.);
+    let direction180 = (angular_position + 180.) % 360. - 180.;
+    assert_eq!(direction180, -20.);
 ```
 
-Though, these formulas are error-prone, and depend on the angular unit of measurement. These unsafe expressions are avoided by using this code:
+Though, these formulas are error-prone, and they depend on the angular unit of measurement.
+These unsafe expressions are avoided by using this code:
 
 ```rust
-// An unconstrained angular position.
-let mut angular_position = MeasurePoint::<Degree>::new(300.);
+    // An unconstrained angular position.
+    let mut angular_position = MeasurePoint::<Degree>::new(300.);
 
-// A rotation.
-let rotation = Measure::<Degree>::new(400.);
+    // A rotation.
+    let rotation = Measure::<Degree>::new(400.);
 
-// The position is incremented by the rotation.
-angular_position += rotation;
-assert_eq!(angular_position.value, 700.);
+    // The position is incremented by the rotation.
+    angular_position += rotation;
+    assert_eq!(angular_position.value, 700.);
 
-// The method `to_unsigned_direction` converts the unconstrained angular position
-// to a direction type, whose values are constrained to be in the range 0 to 360 degrees.
-// Such a type is named `UnsignedDirection`, because it may have only non-negative values.
-let unsigned_direction: UnsignedDirection::<Degree> = angular_position.to_unsigned_direction();
-assert_eq!(unsigned_direction.value, 340.);
+    // Direction in the range [0..360].
+    let unsigned_direction = UnsignedDirection::<Degree>::from_measure_point(angular_position);
+    assert_eq!(unsigned_direction.value, 340.);
 
-// The method `to_signed_direction` converts the unconstrained angular position
-// to a direction type, whose values are constrained to be in the range -180 to 180 degrees.
-// Such a type is named `SignedDirection`, because it may have negative or positive values.
-let signed_direction: SignedDirection::<Degree> = angular_position.to_signed_direction();
-assert_eq!(signed_direction.value, -20.);
+    // Direction in the range [-180..180].
+    let signed_direction = SignedDirection::<Degree>::from_measure_point(angular_position);
+    assert_eq!(signed_direction.value, -20.);
 ```
 
 ## Vector and affine transformations
 
-When using vector measures in a plane or in the 3D space, it is quite typical to need to perform vector operations. There are good linear algebra libraries, like the crate `nalgebra`, which could be used for this. Though, when using them, it is not possible to keep the measurement unit information of components. Consider the following Rust program, which uses the crate `nalgebra`:
+When using vector measures in a plane or in the 3D space, it is quite typical to need to perform vector operations.
+There are good linear algebra libraries, like the crate `nalgebra`, which could be used for this.
+Though, when using them, it is not possible to keep the measurement unit information of components.
+Consider the following Rust program, which uses the crate `nalgebra`:
 
 ```rust
 extern crate nalgebra;
@@ -434,82 +471,94 @@ fn main() {
 }
 ```
 
-First, it stores in `displacement` a 2D measure, with no units of measurement. Then, it stores in `rotation` a 2D linear transformation. Then, such rotation is applied to the displacement, using a matrix multiplication, obtaining a transformed 2D measure. Such resulting measure is stored in the variable `rotated_displacement`. Of course, such a variable is meant to have the same unit of measurement of the first variable, but this is not specified by the used types.
+First, it stores a 2D measure into the variable `displacement`, with no units of measurement.
+Then, it stores a 2D linear transformation into the variable `rotation`.
+Then, such rotation is applied to the displacement, using a matrix multiplication, obtaining a transformed 2D measure.
+Such resulting measure is stored into the variable `rotated_displacement`.
+Of course, such a variable is meant to have the same unit of measurement of the first variable, yet this is not specified by the used types.
 
 So, let’s try to attach units of measurement to these measures:
 
 ```rust
-let displacement = Vector2::new(
-    Measure::<Metre>::new(4.),
-    Measure::<Metre>::new(5.),
-);
-let rotation = Rotation2::new(Measure::<Radian>::new(0.1));
+    let displacement = Vector2::new(
+        Measure::<Metre>::new(4.),
+        Measure::<Metre>::new(5.),
+    );
+    let rotation = Rotation2::new(Measure::<measures::angle::Radian>::new(0.1));
 ```
 
 The first statement is allowed, but the second one is not allowed by `nalgebra`.
-This happens because, as argument of a call to `Rotation2::new`, `nalgebra` allows only some value which behaves like a number.
-For example, we must be able to multiply it by itself, to compute its square root, and so on.
-This is not available for all measures, in general.
+It generates the compilation error: ``the trait bound `units::Measure<Radian>: SimdRealField` is not satisfied``.
+
+This happens because the `nalgebra` library  allows only values which implement the trait `SimdRealField`, as arguments of a call to `Rotation2::new`.
+And the type `Measure` does not implement that trait.
 
 Then, we can try to use a primitive number for the rotation:
 
 ```rust
-let displacement = Vector2::new(
-    Measure::<Metre>::new(4.),
-    Measure::<Metre>::new(5.),
-);
-let rotation = Rotation2::new(0.1);
-let rotated_displacement = rotation * displacement;
+    let displacement = Vector2::new(
+        Measure::<Metre>::new(4.),
+        Measure::<Metre>::new(5.),
+    );
+    let rotation = Rotation2::new(0.1);
+    let rotated_displacement = rotation * displacement;
 ```
 
-This causes an error on the last statement, as `nalgebra` is not able to apply a linear transformation to a vector of `Measure` values, for the same reason that measures do not implement all the traits implemented by numbers.
+This causes a compilation error on the last statement, because `nalgebra` is not able to apply a linear transformation to a vector of `Measure` values, for a similar reason.
 And even if it were able, probably the resulting value, which is assigned to `rotated_displacement`, wouldn’t have the proper unit of measurement.
 
-Instead, using the library `measures`, it is possible to compile the following code:
+Instead, by using the library `measures`, it is possible to compile the following code:
 
 ```rust
-// A 2D measure in metres.
-let displacement = Measure2d::<Metre>::new(4., 5.);
+    // A 2D measure in metres.
+    let displacement = Measure2d::<Metre>::new([4., 5.]);
 
-// A 2D linear transformation, corresponding
-// to a counterclockwise rotation on 0.1 radians.
-let rotation = LinearMap2d::rotation(
-    Measure::<Radian>::new(0.1));
+    // A 2D linear transformation, corresponding
+    // to a counterclockwise rotation on 0.1 radians.
+    let rotation = LinearMap2d::rotation(
+        Measure::<measures::angle::Radian>::new(0.1));
 
-// The rotation is applied to the planar measure,
-// obtaining a rotated measure,
-// having the same type of the original measure.
-let rotated_displacement = rotation.apply_to(displacement);
+    // The rotation is applied to the planar measure,
+    // obtaining a rotated measure,
+    // having the same type of the original measure.
+    let rotated_displacement = rotation.apply_to(displacement);
 ```
 
 The above code uses the type `LinearMap2d` to transform objects of type `Measure2d`.
-To transform objects of type `MeasurePoint2d`, the type `AffineMap2d` should be used instead.
+Instead, to transform objects of type `MeasurePoint2d`, the type `AffineMap2d` should be used.
 
 And when working in three dimensions, the types `LinearMap3d` and `AffineMap3d` should be used.
 
-With some programming languages, and also with old versions of Rust, a good reason to use an linear algebra package is to improve performance over naive application code.
-Though recent versions of the Rust compiler use automatically the SIMD instructions available in the target architecture, and so no optimizations are to be expected, when very small matrices are manipulated.
-
 So, when simple linear or affine transformations are needed, it is simpler to avoid including a linear algebra package in the project.
-
-However, when more complex linear or affine transformations are needed, it is possible to include also a linear algebra package in the project, and exchange data for that library and the library `measure`.
+However, when more complex linear or affine transformations are needed, it is possible to include also a linear algebra package in the project, and to exchange data between that library and the library `measures`.
 
 ## Working with uncertainty
 
-In experimental science and in engineering, you rarely handle exact measures. Typically, every measure is affected by some _uncertainty_ (often improperly name "error"). This means that a measure is not a number, but a probability distribution.
+In experimental science and in engineering, you rarely handle exact measures.
+Typically, every measure is affected by some _uncertainty_ (often improperly named "error").
+his means that a measure is not a number, but a probability distribution.
 
 Measuring something means to extract samples from this distribution.
 
-In most cases, the uncertainty is much smaller than the average value of the measurement. In such cases, the probability distribution has the shape of a bell-shaped _normal_ distribution. Such kind of distributions can be characterized by two numbers: the mean (μ) and the standard deviation (σ).
+In most cases, the uncertainty is much smaller than the average value of the measurement.
+In such cases, the probability distribution can be represented by a bell-shaped _normal_ distribution.
+Such kind of distributions can be characterized by two numbers: the mean (μ) and the standard deviation (σ).
 
 So, it is quite typical to express a length as `170 ± 1.5 cm`, or a mass as `87.3 ± 0.2 kg`.
 
-We want to be able to represent such measures in a variable. Of course our variable will need to store two numbers.
+We want to be able to represent such measures in a variable.
+Of course, our variable will need to store two numbers.
 
-A problem regarding uncertainty is its propagation. For example, let's consider a physical object, for which we measured its mass as `87.3 ± 0.2 kg` and its volume as `0.3 ± 0.012 m³`. We can say that, for its mass density, the most likely value is `87.3 / 0.3 = 291 kg/m³`. But about the uncertainty of such derived measure?
+A problem regarding uncertainty is its propagation.
 
-The library `measure` allows to define measures with an associated variance, that is the square of the standard deviation. In addition, the library allows to perform arithmetic operations on such measures, propagating the uncertainty to the results.
+For example, let's consider a physical object, for which we measured its mass as `87.3 ± 0.2 kg` and its volume as `0.3 ± 0.012 m³`.
+We can say that, for its mass density, the most likely value is `87.3 / 0.3 = 291 kg/m³`.
+But about the uncertainty of such derived measure?
 
-The propagation of the uncertainty of measures follows rules depending on the statistical correlation of the measures involved in the operations. The usual infix operators (`+`, `-`, `*`, `/`) assume that their operands are statistically independent (i.e. they have correlation = 0).
+The library `measures` allows to define measures with an associated variance, that is the square of the standard deviation.
+In addition, the library allows to perform arithmetic operations on such measures, propagating the uncertainty to the results.
+
+The propagation of the uncertainty of measures follows rules depending on the statistical correlation of the measures involved in the operations.
+The usual infix operators (`+`, `-`, `*`, `/`) assume that their operands are statistically independent (i.e. they have correlation = 0).
 
 Though, in some applications, a non-zero correlation is a better representation of reality, and so, for every mathematical operation involving two measures, an alternate operation is provided, in which the correlation can be specified.
