@@ -24,7 +24,6 @@
 
 measures::define_measure_types! {
     with_directions exact,
-    scalar_properties [ ]
     vector_properties [
         Length [
             Meter {

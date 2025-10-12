@@ -10,7 +10,6 @@ UOM will print:
 
 measures::define_measure_types! {
     exact,
-    scalar_properties [ ]
     vector_properties [
         Length [
             Metre {
@@ -22,8 +21,6 @@ measures::define_measure_types! {
             }
         ]
     ]
-    angle_measurement_units [ ]
-    relationships [ ]
 }
 
 fn main() {

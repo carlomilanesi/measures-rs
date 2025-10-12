@@ -36,7 +36,6 @@ measures::define_measure_types! {
             }
         ]
     ]
-    angle_measurement_units [ ]
     relationships [
         Metre 2 == MetrePerSecond 2 * Second 1,
         Metre 1 == Metre 2 * __ 2,

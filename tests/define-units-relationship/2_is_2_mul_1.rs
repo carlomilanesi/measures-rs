@@ -1,6 +1,5 @@
 measures::define_measure_types! {
     with_2d exact,
-    scalar_properties [ ]
     vector_properties [
         P1 [
             U1 {
@@ -18,7 +17,6 @@ measures::define_measure_types! {
             }
         ]
     ]
-    angle_measurement_units [ ]
     relationships [
         U1 2 == U2 2 * U3 1,
     ]

@@ -1,6 +1,5 @@
 measures::define_measure_types! {
     with_points with_directions with_2d with_transformations exact,
-    scalar_properties [ ]
     vector_properties [
         Length [
             Metre {
@@ -17,8 +16,6 @@ measures::define_measure_types! {
             suffix: " deg",
             cycle_fraction: 360.,
         }
-    ]
-    relationships [
     ]
 }
 

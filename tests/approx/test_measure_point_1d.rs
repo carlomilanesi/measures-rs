@@ -14,10 +14,6 @@ measures::define_measure_types! {
             }
         ]
     ]
-    vector_properties [ ]
-    angle_measurement_units [ ]
-    relationships [
-    ]
 }
 
 #[test]

@@ -1,6 +1,5 @@
 measures::define_measure_types! {
     exact with_approx,
-    scalar_properties [ ]
     vector_properties [
         Length [
             Metre {
@@ -11,9 +10,6 @@ measures::define_measure_types! {
                 ratio: 1e-3,
             }
         ]
-    ]
-    angle_measurement_units [ ]
-    relationships [
     ]
 }
 

@@ -20,9 +20,6 @@ measures::define_measure_types! {
             }
         ]
     ]
-    angle_measurement_units [ ]
-    relationships [
-    ]
 }
 
 const N_ITERATIONS: usize = 1_000;

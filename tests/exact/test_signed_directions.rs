@@ -1,7 +1,5 @@
 measures::define_measure_types! {
     with_points with_directions exact,
-    scalar_properties [ ]
-    vector_properties [ ]
     angle_measurement_units [
         Degree {
             suffix: " deg",
@@ -11,8 +9,6 @@ measures::define_measure_types! {
             suffix: " rev",
             cycle_fraction: 1.,
         }
-    ]
-    relationships [
     ]
 }
 

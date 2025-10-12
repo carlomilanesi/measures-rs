@@ -1299,8 +1299,6 @@ Therefore, the suggested procedure for production code is the following one:
 ```rust
 measures::define_measure_types! {
     with_points with_directions with_2d with_3d with_transformations exact with_approx,
-    [
-    ]
 }
 ```
 * Remove from the second line of the file the features you don't need.

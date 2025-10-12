@@ -1,9 +1,5 @@
 measures::define_measure_types! {
     exact,
-    scalar_properties [ ]
-    vector_properties [ ]
-    angle_measurement_units [ ]
-    relationships [ ]
 }
 
 measures::angle_measurement_unit! {

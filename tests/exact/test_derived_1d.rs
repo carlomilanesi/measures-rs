@@ -24,7 +24,6 @@ measures::define_measure_types! {
             }
         ]
     ]
-    angle_measurement_units [ ]
     relationships [
         SquareMetre 1 == Metre 1 * __ 1,
         One 1 == Siemens 1 * Ohm 1,

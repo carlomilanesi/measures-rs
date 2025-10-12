@@ -3,7 +3,6 @@
 
 measures::define_measure_types! {
     with_directions exact,
-    scalar_properties [ ]
     vector_properties [
         Length [
             KiloMetre {
@@ -21,7 +20,6 @@ measures::define_measure_types! {
             cycle_fraction: 360.,
         }
     ]
-    relationships [ ]
 }
 
 struct Point {
