@@ -1,5 +1,5 @@
-// Build and run with:
-//     cargo run --release --example matrix-mul
+// To run this, type:
+// cargo run --release --example matrix-mul
 
 // This program performs a matrix multiplication of two matrices of size 192x192
 // using different libraries and approaches, measuring the time taken for each
@@ -382,7 +382,7 @@ fn ndarray_f64_measures_item_wise<const SIZE: usize>() -> Duration {
 fn bench<const SIZE: usize>(f: fn() -> Duration) -> f64 {
     f(); // warm up
     let mut t = Duration::ZERO;
-    for _ in 0..100_000_000 / SIZE / SIZE / SIZE {
+    for _ in 0..20_000_000 / SIZE / SIZE {
         t += f();
     }
     t.as_nanos() as f64 / 1e7

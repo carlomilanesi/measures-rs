@@ -1,7 +1,7 @@
 # Tutorial for the library `measures`
 
 This documents explains how to use, in Rust software development projects, the library (or _crate_) `measures`, contained in the package `measures-rs`.
-The document [Motivation](Motivation.md) explains which are the advantages of using this library, with respect to using other libraries or to primitive numbers.
+The document [Motivation](Motivation.md) explains which are the advantages of using this library, with respect to using other libraries or to using only primitive numbers.
 
 ## Creating a tutorial project
 
@@ -34,6 +34,7 @@ fn main() {
 
 Run your project.
 It should print: `The distance is 100 km`.
+
 Notice that the characters "` km`" are not part of your code.
 They are printed because of the type of the variable `distance`.
 The type of such a variable is `Measure::<KiloMetre>`, meaning _"a measure whose unit of measurement is kilometres (or kilometers)"_.
@@ -59,6 +60,7 @@ The second printed line has no unit, because it is a primitive number.
 
 This code is valid with `distance_value` having type `f64`, because `f64` is the default value type of the generic type `Measure`.
 The statement `let distance_value: f32 = distance.value;` would have been illegal.
+
 Though, you can also use `f32` as value type, as long as you specify it explicitly, like in the following statement:
 ```rust
     let distance: f32 = Measure::<KiloMetre, f32>::new(100.).value;

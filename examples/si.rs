@@ -1,7 +1,9 @@
 //! measures-rs version of the example `si.rs` of the crate `uom` version 0.35.0.
 //! Example showing how to use the pre-built SI system.
 /*
-measures-rs will print:
+To run this, type:
+cargo run --example si
+Expected output:
 15 m + 10 cm = 15.1 m
 15 m + 10 cm = 0.0151 km
 15 m / 50 s = 0.3 m/s

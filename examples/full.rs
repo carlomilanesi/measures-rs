@@ -1,5 +1,5 @@
 // To run this, type:
-//     cargo run --example full
+// cargo run --example full
 
 mod units;
 use measures::{angle::Radian, dimensionless::One, traits::CrossProduct};

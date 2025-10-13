@@ -1,3 +1,8 @@
+// To run this, type:
+// cargo run --example resistor-mesh-naked
+// Expected output:
+// R = 1.60899124172989
+
 #[derive(Clone, Copy, PartialEq)]
 enum Fixed {
     A,

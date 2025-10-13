@@ -1,4 +1,5 @@
-// Run with: cargo run --example air-mass-measures
+// To run this, type:
+// cargo run --example air-mass-measures
 // Expected output:
 // Angle                          0 m              13700 m
 // ---------------------------------------------------------

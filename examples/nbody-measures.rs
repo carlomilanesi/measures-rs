@@ -1,11 +1,11 @@
 // Conversion to use the library Measures of the benchmark "The Computer Language Benchmarks Game"
 // https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/nbody-rust-6.html
 //
-// Build with:
-//     cargo build --release --example nbody-measures
-// And then run with:
-//     /bin/time target/release/examples/nbody-measures 50000000
-// It should print:
+// To build this, type:
+// cargo build --release --example nbody-measures
+// And then to run the generated executable program, type:
+// /bin/time target/release/examples/nbody-measures 50000000
+// Expected output:
 // -0.169075164 J
 // -0.169059907 J
 

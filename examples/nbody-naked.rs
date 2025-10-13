@@ -3,11 +3,11 @@
 //
 // contributed by the packed_simd developers
 // contributed by Andre Bogus
-// Compile with:
-//     cargo build --release --example nbody-naked
-// And then run with:
-//     /bin/time target/release/examples/nbody-naked 50000000
-// It should print:
+// To build this, type:
+// cargo build --release --example nbody-naked
+// And then to run the generated executable program, type:
+// /bin/time target/release/examples/nbody-naked 50000000
+// Expected output:
 // -0.169075164
 // -0.169059907
 

@@ -1,3 +1,8 @@
+// To run this, type:
+// cargo run --example resistor-mesh-measures
+// Expected output:
+// R = 1.60899124172989 Ω
+
 measures::define_measure_types! {
     exact,
     scalar_properties [

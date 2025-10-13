@@ -1,10 +1,12 @@
 //! measures-rs version of the example `mks.rs` of the crate `uom` version 0.35.0.
 //! Example showing how to create a custom system of quantities.
 /*
-measures-rs will print:
+To run this, type:
+cargo run --example mks
+Expected output:
 100 m = 328.08398 ft
 
-UOM will print:
+The corresponding version using UOM would print:
 100 m = 328.08398 ft
 */
 

@@ -1,5 +1,6 @@
-// Build and run with (where 10000000 is the size of the data set; the default is 100):
-//     cargo run --release --example bench 10000000
+// To run this, type:
+// cargo run --release --example bench 1000000
+// where 1000000 is the size of the data set; the default date set size is 10_000
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
 

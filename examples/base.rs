@@ -2,22 +2,24 @@
 //! Example showing how to create a set of `Quantity` type aliases for a different set of base
 //! units.
 /*
-measures-rs will print:
+To run this, type:
+cargo run --example base
+Expected output:
 length: 1 m
 length: 1 cm
 1 m + 1 cm = 1.01 m
 1 cm + 1 m = 101 cm
 1 cm / 15 s = 0.06666667 cm/s
 
-UOM will print:
+The corresponding version using UOM would print:
 length: 1.0 m^1
 length: 1.0 cm^1
 1.0 m^1 + 1.0 cm^1 = 1.01 m^1
 1.0 cm^1 + 1.0 m^1 = 101.0 cm^1
 1.0 cm^1 / 15.0 s^1 = 0.06666667 cm^1 s^-1
 
-After replacing every `{:?}` with `{}`, measures-rs will print the same.
-UOM will emit compilation error.
+After replacing every `{:?}` with `{}`, the output of this program  will be the same.
+The corresponding version using UOM would emit a compilation error.
 */
 
 mod units;

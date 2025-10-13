@@ -1,6 +1,8 @@
 // From https://rosettacode.org/wiki/Haversine_formula#Rust
-// Run with: cargo run --example haversine_formula-naked
-// Expected output: Distance: 2887.2599506071106 km (1794.060157807846 mi)
+// To run this, type:
+// cargo run --example haversine-naked
+// Expected output:
+// Distance: 2887.2599506071106 km (1794.060157807846 mi)
 
 struct Point {
     lat: f64,

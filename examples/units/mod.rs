@@ -69,7 +69,7 @@ measures::define_measure_types! {
             }
             SquareMile {
                 suffix: " mi\u{b2}", // mi²
-                ratio: 1609. * 1609.,
+                ratio: 1609.344 * 1609.344,
             }
         ]
         Capacitance [
@@ -884,7 +884,7 @@ measures::define_measure_types! {
             }
             CubicMile {
                 suffix: " mi\u{b3}", //mi³
-                ratio: 1609. * 1609. * 1609.,
+                ratio: 1609.344 * 1609.344 * 1609.344,
             }
             Litre {
                 suffix: " l",
@@ -1082,7 +1082,7 @@ measures::define_measure_types! {
             }
             Mile {
                 suffix: " mi",
-                ratio: 1609.,
+                ratio: 1609.344,
             }
             NauticalMile {
                 suffix: " naut.mi",
@@ -1151,7 +1151,7 @@ measures::define_measure_types! {
             }
             MilePerHour {
                 suffix: " mi/h",
-                ratio: 1609. / 3600.,
+                ratio: 1609.344 / 3600.,
             }
             CentiMetrePerSecond {
                 suffix: " cm/s",
