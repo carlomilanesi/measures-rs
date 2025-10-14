@@ -1,9 +1,10 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_3d {
     { $with_approx:ident } => {
-        pub struct Measure3d<Unit, Number: ArithmeticOps = f64> {
+        /// Relative measure inside a 3D space
+        pub struct Measure3d<Unit, Number = f64> {
             pub values: [Number; 3],
-            phantom: std::marker::PhantomData<Unit>,
+            phantom: PhantomData<Unit>,
         }
 
         impl<Unit, Number> Measure3d<Unit, Number>
@@ -20,22 +21,22 @@ macro_rules! inner_define_measure_3d {
                 }
             }
 
-            /// measure 3d .x() -> measure
+            /// Measure3d.x() -> Measure
             pub const fn x(self) -> Measure<Unit, Number> {
                 Measure::<Unit, Number>::new(self.values[0])
             }
 
-            /// measure 3d .y() -> measure
+            /// Measure3d.y() -> Measure
             pub const fn y(self) -> Measure<Unit, Number> {
                 Measure::<Unit, Number>::new(self.values[1])
             }
 
-            /// measure 3d .z() -> measure
+            /// Measure3d.z() -> Measure
             pub const fn z(self) -> Measure<Unit, Number> {
                 Measure::<Unit, Number>::new(self.values[2])
             }
 
-            /// measure 3d .convert() -> measure 3d
+            /// Measure3d.convert() -> Measure3d
             pub fn convert<DestUnit: MeasurementUnit<Property = Unit::Property>>(
                 &self,
             ) -> Measure3d<DestUnit, Number> {
@@ -58,7 +59,7 @@ macro_rules! inner_define_measure_3d {
                 ])
             }
 
-            /// measure 3d .lossy_into() -> measure 3d
+            /// Measure3d.lossy_into() -> Measure3d
             pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
                 &self,
             ) -> Measure3d<Unit, DestNumber> {
@@ -93,6 +94,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
+        /// Measure3d::default() -> Measure3d
         impl<Unit, Number> Default for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -105,6 +107,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
+        /// Measure3d<f64>::from(Measure3d<f32>) -> Measure3d<f64>
         impl<Unit> From<Measure3d<Unit, f32>> for Measure3d<Unit, f64>
         where
             Unit: MeasurementUnit,
@@ -115,7 +118,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // -Measure3d -> Measure3d
+        /// -Measure3d -> Measure3d
         impl<Unit, Number> Neg for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -128,7 +131,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d + Measure3d -> Measure3d
+        /// Measure3d + Measure3d -> Measure3d
         impl<Unit, Number> Add<Measure3d<Unit, Number>> for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -145,7 +148,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d += Measure3d
+        /// Measure3d += Measure3d
         impl<Unit, Number> AddAssign<Measure3d<Unit, Number>> for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -159,7 +162,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d - Measure3d -> Measure3d
+        /// Measure3d - Measure3d -> Measure3d
         impl<Unit, Number> Sub<Measure3d<Unit, Number>> for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -176,7 +179,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d -= Measure3d
+        /// Measure3d -= Measure3d
         impl<Unit, Number> SubAssign<Measure3d<Unit, Number>> for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -190,7 +193,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d * Number -> Measure3d
+        /// Measure3d * Number -> Measure3d
         impl<Unit, Number> Mul<Number> for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -203,7 +206,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d * Measure<One> -> Measure3d
+        /// Measure3d * Measure<One> -> Measure3d
         impl<Unit, Number> Mul<Measure<One, Number>> for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -220,7 +223,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure<One> * Measure3d -> Measure3d
+        /// Measure<One> * Measure3d -> Measure3d
         impl<Unit, Number> Mul<Measure3d<Unit, Number>> for Measure<One, Number>
         where
             Unit: MeasurementUnit,
@@ -237,7 +240,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d *= Number
+        /// Measure3d *= Number
         impl<Unit, Number> MulAssign<Number> for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -251,7 +254,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d *= Measure<One, Number>
+        /// Measure3d *= Measure<One>
         impl<Unit, Number> MulAssign<Measure<One, Number>> for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -265,7 +268,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // f64 * Measure3d -> Measure3d
+        /// f64 * Measure3d -> Measure3d
         impl<Unit> Mul<Measure3d<Unit, f64>> for f64
         where
             Unit: MeasurementUnit,
@@ -281,7 +284,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // f32 * Measure3d -> Measure3d
+        /// f32 * Measure3d -> Measure3d
         impl<Unit> Mul<Measure3d<Unit, f32>> for f32
         where
             Unit: MeasurementUnit,
@@ -297,7 +300,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d / Number -> Measure3d
+        /// Measure3d / Number -> Measure3d
         impl<Unit, Number> Div<Number> for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -315,7 +318,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d /= Number
+        /// Measure3d /= Number
         impl<Unit, Number> DivAssign<Number> for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -329,7 +332,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d /= Measure<One>
+        /// Measure3d /= Measure<One>
         impl<Unit, Number> DivAssign<Measure<One, Number>> for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -342,7 +345,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d == Measure3d -> bool
+        /// Measure3d == Measure3d -> bool
         impl<Unit, Number> PartialEq<Measure3d<Unit, Number>> for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -354,7 +357,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d.clone() -> Measure3d
+        /// Measure3d.clone() -> Measure3d
         impl<Unit, Number> Clone for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -366,7 +369,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // Measure3d = Measure3d
+        /// Measure3d = Measure3d
         impl<Unit, Number> Copy for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -375,7 +378,7 @@ macro_rules! inner_define_measure_3d {
         {
         }
 
-        // format!("{}", Measure3d)
+        /// format!("{}", Measure3d)
         impl<Unit, Number> fmt::Display for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,
@@ -394,7 +397,7 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
-        // format!("{:?}", Measure3d)
+        /// format!("{:?}", Measure3d)
         impl<Unit, Number> fmt::Debug for Measure3d<Unit, Number>
         where
             Unit: MeasurementUnit,

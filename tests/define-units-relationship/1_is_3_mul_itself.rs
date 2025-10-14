@@ -1,20 +1,10 @@
 measures::define_measure_types! {
     with_3d exact,
     vector_properties [
-        P1 [
-            U1 {
-                suffix: " u1",
-            }
-        ]
-        P2 [
-            U2 {
-                suffix: " u2",
-            }
-        ]
+        P1 [ U1 { suffix: " u1" } ]
+        P2 [ U2 { suffix: " u2" } ]
     ]
-    relationships [
-        U1 1 == U2 3 * __ 3,
-    ]
+    relationships [ U1 1 == U2 3 * __ 3 ]
 }
 
 fn main() {

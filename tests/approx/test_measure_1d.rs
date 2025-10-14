@@ -134,6 +134,30 @@ fn approx_measure_lossy_into_64_to_64() {
 }
 
 #[test]
+fn approx_measure_norm_positive() {
+    let am1 = ApproxMeasure::<Metre, f32>::with_variance(12., 9.);
+    let am2: ApproxMeasure<Metre, f32> = am1.norm();
+    assert_eq!(am2.value, 12.);
+    assert_eq!(am2.variance, 9.);
+}
+
+#[test]
+fn approx_measure_norm_negative() {
+    let am1 = ApproxMeasure::<Metre, f32>::with_variance(-12., 9.);
+    let am2: ApproxMeasure<Metre, f32> = am1.norm();
+    assert_eq!(am2.value, 12.);
+    assert_eq!(am2.variance, 9.);
+}
+
+#[test]
+fn approx_measure_norm_zero() {
+    let am1 = ApproxMeasure::<Metre, f32>::with_variance(0., 9.);
+    let am2: ApproxMeasure<Metre, f32> = am1.norm();
+    assert_eq!(am2.value, 0.);
+    assert_eq!(am2.variance, 9.);
+}
+
+#[test]
 fn approx_measure_squared_norm_positive() {
     let am1 = ApproxMeasure::<Metre, f32>::with_variance(12., 9.);
     let am2: ApproxMeasure<One, f32> = am1.squared_norm();

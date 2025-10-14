@@ -1,11 +1,11 @@
 error: no rules expected `*`
-  --> tests/define-units-relationship/fail_1_mul_1_mul_1.rs:21:14
-   |
-21 |         U1 1 * U2 1 * U3 1,
-   |              ^ no rules expected this token in macro call
-   |
+ --> tests/define-units-relationship/fail_1_mul_1_mul_1.rs:8:26
+  |
+8 |     relationships [ U1 1 * U2 1 * U3 1 ]
+  |                          ^ no rules expected this token in macro call
+  |
 note: while trying to match `==`
-  --> src/define_measure_types.rs
-   |
-   |                     $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt $(,)?
-   |                                           ^^
+ --> src/define_measure_types.rs
+  |
+  |                     $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt $(,)?
+  |                                           ^^

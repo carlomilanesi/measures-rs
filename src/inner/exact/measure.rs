@@ -47,16 +47,18 @@ macro_rules! inner_define_measure {
             }
 
             /// Measure.lossless_into() -> Measure
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                self,
-            ) -> Measure<Unit, DestNumber> {
+            pub fn lossless_into<DestNumber>(self) -> Measure<Unit, DestNumber>
+            where
+                DestNumber: ArithmeticOps + From<Number>,
+            {
                 Measure::<Unit, DestNumber>::new(DestNumber::from(self.value))
             }
 
             /// Measure.lossy_into() -> Measure
-            pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
-                &self,
-            ) -> Measure<Unit, DestNumber> {
+            pub fn lossy_into<DestNumber>(&self) -> Measure<Unit, DestNumber>
+            where
+                DestNumber: ArithmeticOps + LossyFrom<Number>,
+            {
                 Measure::<Unit, DestNumber>::new(DestNumber::lossy_from(self.value))
             }
 

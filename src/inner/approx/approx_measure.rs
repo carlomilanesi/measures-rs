@@ -89,6 +89,13 @@ macro_rules! inner_define_approx_measure {
                 )
             }
 
+            /// ApproxMeasure.norm() -> ApproxMeasure
+            /// The norm of a scalar is the absolute value of its value.
+            /// The variance remains the same.
+            pub fn norm(self) -> ApproxMeasure<Unit, Number> {
+                ApproxMeasure::<Unit, Number>::with_variance(self.value.abs(), self.variance)
+            }
+
             /// ApproxMeasure.squared_norm() -> ApproxMeasure<One>
             /// The squared norm of a scalar is the square of its value.
             /// For the variance, the correlation term is one, because

@@ -1,11 +1,11 @@
 error: no rules expected `2`
-  --> tests/define-units-relationship/fail_1_is_1_mul_2.rs:21:27
-   |
-21 |         U1 1 == U2 1 * U3 2,
-   |                           ^ no rules expected this token in macro call
-   |
+ --> tests/define-units-relationship/fail_1_is_1_mul_2.rs:8:39
+  |
+8 |     relationships [ U1 1 == U2 1 * U3 2 ]
+  |                                       ^ no rules expected this token in macro call
+  |
 note: while trying to match `1`
-  --> src/define_units_relationship.rs
-   |
-   |     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 1 * $unit3:ident 1 } => {
-   |                                                                                                       ^
+ --> src/define_units_relationship.rs
+  |
+  |     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 1 * $unit3:ident 1 } => {
+  |                                                                                                       ^

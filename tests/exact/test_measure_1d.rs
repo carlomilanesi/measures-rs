@@ -16,15 +16,15 @@ measures::define_measure_types! {
 #[test]
 fn measure_default() {
     let m: Measure<Metre, f32> = Measure::default();
-    assert_eq!(m.value, 0.);
+    assert_eq!(m.value, 0f32);
     let m = Measure::<Metre>::default();
-    assert_eq!(m.value, 0.);
+    assert_eq!(m.value, 0f64);
 }
 
 #[test]
 fn measure_new() {
     let m: Measure<Metre, f32> = Measure::<Metre, f32>::new(12.);
-    assert_eq!(m.value, 12.);
+    assert_eq!(m.value, 12f32);
 }
 
 #[test]
@@ -84,6 +84,27 @@ fn measure_lossy_into_64_to_64() {
     let m1 = Measure::<Metre, f64>::new(12.);
     let m2: Measure<Metre, f64> = m1.lossy_into::<f64>();
     assert_eq!(m2.value, 12.);
+}
+
+#[test]
+fn measure_norm_positive() {
+    let m1 = Measure::<Metre, f32>::new(12.);
+    let m2: Measure<Metre, f32> = m1.norm();
+    assert_eq!(m2.value, 12.);
+}
+
+#[test]
+fn measure_norm_negative() {
+    let m1 = Measure::<Metre, f64>::new(-12.);
+    let m2: Measure<Metre, f64> = m1.norm();
+    assert_eq!(m2.value, 12.);
+}
+
+#[test]
+fn measure_norm_zero() {
+    let m1 = Measure::<Metre, f64>::new(0.);
+    let m2: Measure<Metre, f64> = m1.norm();
+    assert_eq!(m2.value, 0.);
 }
 
 #[test]

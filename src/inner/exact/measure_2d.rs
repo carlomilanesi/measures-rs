@@ -1,6 +1,7 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_2d {
     { $with_points:tt $with_directions:tt $with_approx:ident } => {
+        /// Relative measure inside a 2D space
         pub struct Measure2d<Unit, Number = f64> {
             pub values: [Number; 2],
             phantom: PhantomData<Unit>,
@@ -59,9 +60,10 @@ macro_rules! inner_define_measure_2d {
             }
 
             /// Measure2d.lossless_into() -> Measure2d
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                self,
-            ) -> Measure2d<Unit, DestNumber> {
+            pub fn lossless_into<DestNumber>(self) -> Measure2d<Unit, DestNumber>
+            where
+                DestNumber: ArithmeticOps + From<Number>,
+            {
                 Measure2d::<Unit, DestNumber>::new([
                     DestNumber::from(self.values[0]),
                     DestNumber::from(self.values[1]),
@@ -69,9 +71,10 @@ macro_rules! inner_define_measure_2d {
             }
 
             /// Measure2d.lossy_into() -> Measure2d
-            pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
-                self,
-            ) -> Measure2d<Unit, DestNumber> {
+            pub fn lossy_into<DestNumber>(self) -> Measure2d<Unit, DestNumber>
+            where
+                DestNumber: ArithmeticOps + LossyFrom<Number>,
+            {
                 Measure2d::<Unit, DestNumber>::new([
                     DestNumber::lossy_from(self.values[0]),
                     DestNumber::lossy_from(self.values[1]),
@@ -102,16 +105,19 @@ macro_rules! inner_define_measure_2d {
                     direction: MeasurePoint<AngleUnit, Number>,
                 ) -> Self
                 where
-                AngleUnit: AngleMeasurementUnit,
+                    AngleUnit: AngleMeasurementUnit,
                 {
                     let (y, x) = direction.convert::<Radian>().sin_cos();
                     Self::new([x, y])
                 }
 
                 /// Measure2d.direction_measure() -> MeasurePoint
-                pub fn direction_measure<AngleUnit: MeasurementUnit<Property = Angle>>(
+                pub fn direction_measure<AngleUnit>(
                     self,
-                ) -> MeasurePoint<AngleUnit, Number> {
+                ) -> MeasurePoint<AngleUnit, Number>
+                where
+                    AngleUnit: AngleMeasurementUnit,
+                {
                     MeasurePoint::<Radian, Number>::new(self.values[1].atan2(self.values[0])).convert::<AngleUnit>()
                 }
             }
@@ -122,7 +128,7 @@ macro_rules! inner_define_measure_2d {
                     direction: SignedDirection<AngleUnit, Number>,
                 ) -> Self
                 where
-                AngleUnit: AngleMeasurementUnit,
+                    AngleUnit: AngleMeasurementUnit,
                 {
                     let (y, x) = direction.convert::<Radian>().sin_cos();
                     Self::new([x, y])
@@ -133,23 +139,29 @@ macro_rules! inner_define_measure_2d {
                     direction: UnsignedDirection<AngleUnit, Number>,
                 ) -> Self
                 where
-                AngleUnit: AngleMeasurementUnit,
+                    AngleUnit: AngleMeasurementUnit,
                 {
                     let (y, x) = direction.convert::<Radian>().sin_cos();
                     Self::new([x, y])
                 }
 
                 /// Measure2d.signed_direction() -> SignedDirection
-                pub fn signed_direction<AngleUnit: MeasurementUnit<Property = Angle>>(
+                pub fn signed_direction<AngleUnit>(
                     self,
-                ) -> SignedDirection<AngleUnit, Number> {
+                ) -> SignedDirection<AngleUnit, Number>
+                where
+                    AngleUnit: AngleMeasurementUnit,
+                {
                     SignedDirection::<Radian, Number>::new(self.values[1].atan2(self.values[0])).convert::<AngleUnit>()
                 }
 
                 /// Measure2d.unsigned_direction() -> UnsignedDirection
-                pub fn unsigned_direction<AngleUnit: MeasurementUnit<Property = Angle>>(
+                pub fn unsigned_direction<AngleUnit>(
                     self,
-                ) -> UnsignedDirection<AngleUnit, Number> {
+                ) -> UnsignedDirection<AngleUnit, Number>
+                where
+                    AngleUnit: AngleMeasurementUnit,
+                {
                     UnsignedDirection::<Radian, Number>::new(self.values[1].atan2(self.values[0])).convert::<AngleUnit>()
                 }
             }

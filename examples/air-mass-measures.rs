@@ -48,9 +48,9 @@ measures::define_measure_types! {
     ]
 }
 
-const RE: Measure<Meter> = Measure::<Meter>::new(6371000.0); // Earth radius in meters
+const RE: Measure<Meter> = Measure::<Meter>::new(6_371_000.0); // Earth radius in meters
 const DD: f64 = 0.001; // integrate in this fraction of the distance already covered
-const FIN: Measure<Meter> = Measure::<Meter>::new(10000000.0); // integrate only to a height of 10000km, effectively infinity
+const FIN: Measure<Meter> = Measure::<Meter>::new(10_000_000.0); // integrate only to a height of 10000km, effectively infinity
 
 fn rho(a: Measure<Meter>) -> f64 {
     // the density of air as a function of height above sea level

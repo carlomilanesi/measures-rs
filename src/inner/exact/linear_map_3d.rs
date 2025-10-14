@@ -1,11 +1,17 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_linear_map_3d {
     {} => {
-        pub struct LinearMap3d<Number: ArithmeticOps> {
+        pub struct LinearMap3d<Number>
+        where
+            Number: ArithmeticOps,
+        {
             c: [[Number; 3]; 3],
         }
 
-        impl<Number: ArithmeticOps> LinearMap3d<Number> {
+        impl<Number> LinearMap3d<Number>
+        where
+            Number: ArithmeticOps,
+        {
             pub const fn new(coefficients: [[Number; 3]; 3]) -> Self {
                 Self { c: coefficients }
             }
@@ -16,11 +22,13 @@ macro_rules! inner_define_linear_map_3d {
 
             // Rotation by an angle measure around a unit vector.
             // Precondition: unit_vector.squared_norm().value == 1
-            pub fn rotation<AngleUnit: AngleMeasurementUnit, AxisUnit: MeasurementUnit>(
+            pub fn rotation<AngleUnit, AxisUnit>(
                 angle: Measure<AngleUnit, Number>,
                 unit_vector: Measure3d<AxisUnit, Number>,
             ) -> Self
             where
+                AngleUnit: AngleMeasurementUnit,
+                AxisUnit: MeasurementUnit,
                 AxisUnit::Property: VectorProperty,
             {
                 Self::rotation_by_radians_around_unit_vector(

@@ -1,6 +1,7 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_point_2d {
     {$with_approx:ident} => {
+        /// Absolute measure inside a 2D space
         pub struct MeasurePoint2d<Unit, Number = f64> {
             pub values: [Number; 2],
             phantom: PhantomData<Unit>,
