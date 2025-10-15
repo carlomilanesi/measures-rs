@@ -326,9 +326,27 @@ macro_rules! inner_define_measure_3d {
             Unit::Property: VectorProperty,
         {
             fn div_assign(&mut self, n: Number) {
-                self.values[0] /= n;
-                self.values[1] /= n;
-                self.values[2] /= n;
+                let factor = Number::ONE / n;
+                self.values[0] *= factor;
+                self.values[1] *= factor;
+                self.values[2] *= factor;
+            }
+        }
+
+        /// Measure3d / Measure -> Measure3d<One>
+        impl<Unit, Number> Div<Measure<Unit, Number>> for Measure3d<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+            Unit::Property: VectorProperty,
+        {
+            type Output = Measure3d<One, Number>;
+            fn div(self, other: Measure<Unit, Number>) -> Self::Output {
+                Measure3d::new([
+                    self.values[0] / other.value,
+                    self.values[1] / other.value,
+                    self.values[2] / other.value,
+                ])
             }
         }
 

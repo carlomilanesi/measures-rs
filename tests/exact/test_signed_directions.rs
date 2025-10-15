@@ -414,3 +414,22 @@ fn signed_direction_formatting_for_debug_in_degrees_one_fractional_digit() {
     let sd = SignedDirection::<Degree, f32>::new(12.25);
     assert_eq!(format!("{:.1?}", sd), "at 12.2 deg (in -180°..180°)");
 }
+
+#[test]
+fn signed_direction_traits() {
+    fn impl_common_traits<
+        T: Sized
+            + Copy
+            + Clone
+            + Default
+            + core::fmt::Debug
+            + core::fmt::Display
+            + Send
+            + Sync
+            + PartialEq
+            + Unpin
+            + PartialOrd,
+    >() {
+    }
+    impl_common_traits::<SignedDirection<Degree>>();
+}

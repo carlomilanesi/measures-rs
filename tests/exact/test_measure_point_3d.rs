@@ -232,3 +232,21 @@ fn measure_point_3d_formatting_for_debug_in_metres_one_fractional_digit() {
     let mp = MeasurePoint3d::<Metre, f32>::new([12.25, 23.50, 34.75]);
     assert_eq!(format!("{:.1?}", mp), "at (12.2, 23.5, 34.8) m");
 }
+
+#[test]
+fn measure_point_3d_traits() {
+    fn impl_common_traits<
+        T: Sized
+            + Copy
+            + Clone
+            + Default
+            + core::fmt::Debug
+            + core::fmt::Display
+            + Send
+            + Sync
+            + PartialEq
+            + Unpin,
+    >() {
+    }
+    impl_common_traits::<MeasurePoint3d<Metre>>();
+}

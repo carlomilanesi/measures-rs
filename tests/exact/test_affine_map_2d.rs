@@ -93,21 +93,21 @@ fn affine_map_2d_rotation_by_angle() {
 }
 
 #[test]
-fn affine_map_2d_rotation_at_right() {
+fn affine_map_2d_right_rotation() {
     let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
     let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
-    let am1 = AffineMap2d::<Metre, f64>::rotation_at_right(fixed_point);
+    let am1 = AffineMap2d::<Metre, f64>::right_rotation(fixed_point);
     let mp2 = am1.apply_to(mp1);
     assert_eq_64!(mp2.values, [9., 0.]);
 }
 
 #[test]
-fn affine_map_2d_rotation_at_left() {
+fn affine_map_2d_left_rotation() {
     let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
     let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
-    let am1 = AffineMap2d::<Metre, f64>::rotation_at_left(fixed_point);
+    let am1 = AffineMap2d::<Metre, f64>::left_rotation(fixed_point);
     let mp2 = am1.apply_to(mp1);
     assert_eq_64!(mp2.values, [3., 4.]);
 }
@@ -394,4 +394,21 @@ fn affine_map_2d_formatting_for_debug_with_both_padding() {
         format!("{:?}", am),
         " ⎡     1.254 650         -872    ⎤ m\n ⎣ 98763.4     1.7658909    5.43 ⎦"
     );
+}
+
+#[test]
+fn affine_map_2d_traits() {
+    fn impl_common_traits<
+        T: Sized
+            + Clone
+            + Default
+            + core::fmt::Debug
+            + core::fmt::Display
+            + Send
+            + Sync
+            + PartialEq
+            + Unpin,
+    >() {
+    }
+    impl_common_traits::<AffineMap2d<Metre>>();
 }

@@ -5,7 +5,7 @@
 // contributed by Andre Bogus
 // To build this, type:
 // cargo build --release --example nbody-naked
-// And then to run the generated executable program, type:
+// And then, to run the generated executable program, type:
 // /bin/time target/release/examples/nbody-naked 50000000
 // Expected output:
 // -0.169075164

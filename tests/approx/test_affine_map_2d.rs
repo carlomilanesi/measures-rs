@@ -93,21 +93,21 @@ fn affine_map_2d_rotation_by_point_angle() {
 }
 
 #[test]
-fn affine_map_2d_rotation_at_right() {
+fn affine_map_2d_right_rotation() {
     let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
     let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
-    let am1 = AffineMap2d::<Metre, f64>::rotation_at_right(fixed_point);
+    let am1 = AffineMap2d::<Metre, f64>::right_rotation(fixed_point);
     let mp2 = am1.apply_to(mp1);
     assert_eq_64!(mp2.values, [9., 0.]);
 }
 
 #[test]
-fn affine_map_2d_rotation_at_left() {
+fn affine_map_2d_left_rotation() {
     let fixed_point = MeasurePoint2d::<Metre, f64>::new([6., 2.]);
     let mp1 = MeasurePoint2d::<Metre, f64>::new([8., 5.]);
 
-    let am1 = AffineMap2d::<Metre, f64>::rotation_at_left(fixed_point);
+    let am1 = AffineMap2d::<Metre, f64>::left_rotation(fixed_point);
     let mp2 = am1.apply_to(mp1);
     assert_eq_64!(mp2.values, [3., 4.]);
 }

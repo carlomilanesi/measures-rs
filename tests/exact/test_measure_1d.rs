@@ -16,15 +16,15 @@ measures::define_measure_types! {
 #[test]
 fn measure_default() {
     let m: Measure<Metre, f32> = Measure::default();
-    assert_eq!(m.value, 0f32);
+    assert_eq!(m.value, 0_f32);
     let m = Measure::<Metre>::default();
-    assert_eq!(m.value, 0f64);
+    assert_eq!(m.value, 0_f64);
 }
 
 #[test]
 fn measure_new() {
     let m: Measure<Metre, f32> = Measure::<Metre, f32>::new(12.);
-    assert_eq!(m.value, 12f32);
+    assert_eq!(m.value, 12_f32);
 }
 
 #[test]
@@ -363,4 +363,23 @@ fn measure_formatting_for_debug_in_metres_in_decibels() {
 fn measure_formatting_for_debug_in_metres_in_decibels_one_fractional_digit() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{:.1?}", m.decibels_formatter()), "10.9 dB m");
+}
+
+#[test]
+fn measure_traits() {
+    fn impl_common_traits<
+        T: Sized
+            + Copy
+            + Clone
+            + Default
+            + core::fmt::Debug
+            + core::fmt::Display
+            + Send
+            + Sync
+            + PartialEq
+            + Unpin
+            + PartialOrd,
+    >() {
+    }
+    impl_common_traits::<Measure<Metre>>();
 }

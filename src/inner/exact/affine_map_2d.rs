@@ -1,6 +1,7 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_affine_map_2d {
     {} => {
+        /// Affine transformation of `MeasurePoint2d` objects.
         pub struct AffineMap2d<Unit, Number = f64>
         where
             Unit: MeasurementUnit,
@@ -16,6 +17,7 @@ macro_rules! inner_define_affine_map_2d {
             Number: ArithmeticOps,
             Unit::Property: VectorProperty,
         {
+            /// Create an AffineMap2d from its 6 coefficients.
             pub const fn new(coefficients: [[Number; 3]; 2]) -> Self {
                 Self {
                     c: coefficients,
@@ -54,11 +56,13 @@ macro_rules! inner_define_affine_map_2d {
                 Self::rotation_by_radians(fixed_point.values, angle.convert::<Radian>().value)
             }
 
-            pub fn rotation_at_right(fixed_point: MeasurePoint2d<Unit, Number>) -> Self {
+            /// Create a rotation to the right.
+            pub fn right_rotation(fixed_point: MeasurePoint2d<Unit, Number>) -> Self {
                 Self::right_rotation_by_sin(fixed_point.values, -Number::ONE)
             }
 
-            pub fn rotation_at_left(fixed_point: MeasurePoint2d<Unit, Number>) -> Self {
+            /// Create a rotation to the left.
+            pub fn left_rotation(fixed_point: MeasurePoint2d<Unit, Number>) -> Self {
                 Self::right_rotation_by_sin(fixed_point.values, Number::ONE)
             }
 
@@ -217,6 +221,30 @@ macro_rules! inner_define_affine_map_2d {
                     [Number::ONE, Number::ZERO, Number::ZERO],
                     [Number::ZERO, Number::ONE, Number::ZERO],
                 ])
+            }
+        }
+
+        // AffineMap2d == AffineMap2d -> bool
+        impl<Unit, Number> PartialEq<AffineMap2d<Unit, Number>> for AffineMap2d<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Unit::Property: VectorProperty,
+            Number: ArithmeticOps,
+        {
+            fn eq(&self, other: &AffineMap2d<Unit, Number>) -> bool {
+                self.c == other.c
+            }
+        }
+
+        // AffineMap2d.clone() -> AffineMap2d
+        impl<Unit, Number> Clone for AffineMap2d<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Unit::Property: VectorProperty,
+            Number: ArithmeticOps,
+        {
+            fn clone(&self) -> Self {
+                Self::new(self.c.clone())
             }
         }
 

@@ -224,7 +224,7 @@ macro_rules! inner_define_measure {
             }
         }
 
-        /// Measure *= Measure<One, Number>
+        /// Measure *= Measure<One>
         impl<Unit, Number> MulAssign<Measure<One, Number>> for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,

@@ -1,7 +1,12 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_affine_map_3d {
     {} => {
-        pub struct AffineMap3d<Unit: MeasurementUnit, Number: ArithmeticOps = f64> {
+        /// Affine transformation of `MeasurePoint3d` objects.
+        pub struct AffineMap3d<Unit, Number = f64>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
             c: [[Number; 4]; 3],
             phantom: std::marker::PhantomData<Unit>,
         }
@@ -12,6 +17,7 @@ macro_rules! inner_define_affine_map_3d {
             Number: ArithmeticOps,
             Unit::Property: VectorProperty,
         {
+            /// Create an AffineMap3d from its 12 coefficients.
             pub const fn new(coefficients: [[Number; 4]; 3]) -> Self {
                 Self {
                     c: coefficients,
@@ -369,6 +375,30 @@ macro_rules! inner_define_affine_map_3d {
                     [Number::ZERO, Number::ONE, Number::ZERO, Number::ZERO],
                     [Number::ZERO, Number::ZERO, Number::ONE, Number::ZERO],
                 ])
+            }
+        }
+
+        // AffineMap3d == AffineMap3d -> bool
+        impl<Unit, Number> PartialEq<AffineMap3d<Unit, Number>> for AffineMap3d<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Unit::Property: VectorProperty,
+            Number: ArithmeticOps,
+        {
+            fn eq(&self, other: &AffineMap3d<Unit, Number>) -> bool {
+                self.c == other.c
+            }
+        }
+
+        // AffineMap3d.clone() -> AffineMap3d
+        impl<Unit, Number> Clone for AffineMap3d<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Unit::Property: VectorProperty,
+            Number: ArithmeticOps,
+        {
+            fn clone(&self) -> Self {
+                Self::new(self.c.clone())
             }
         }
 

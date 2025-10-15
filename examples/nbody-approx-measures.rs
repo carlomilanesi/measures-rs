@@ -1,9 +1,10 @@
-// Conversion to use the library measures-rs of benchmark The Computer Language Benchmarks Game
+// Conversion of the benchmark "The Computer Language Benchmarks Game"
+// to use the library `measures` with values affected by uncertainty
 // https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/nbody-rust-6.html
 //
 // To build this, type:
 // cargo build --release --example nbody-approx-measures
-// And then to run the generated executable program, type:
+// And then, to run the generated executable program, type:
 // /bin/time target/release/examples/nbody-approx-measures 50000000
 // Expected output:
 // -0.169075164 J
@@ -222,7 +223,7 @@ pub fn offset_momentum(bodies: &mut [Body; N_BODIES]) {
     let sun = &mut sun[0];
     for body in rest {
         let m_ratio = body.mass / SOLAR_MASS;
-        sun.v -= body.v * m_ratio.value;
+        sun.v -= body.v * m_ratio;
     }
 }
 
@@ -248,13 +249,11 @@ pub fn advance(bodies: &mut [Body; N_BODIES], dt: ApproxMeasure<Second>) {
 
     // compute distance between bodies:
     let mut r = [ApproxMeasure3d::<Metre>::default(); N];
-    {
-        let mut i = 0;
-        for j in 0..N_BODIES {
-            for k in j + 1..N_BODIES {
-                r[i] = bodies[j].x - bodies[k].x;
-                i += 1;
-            }
+    let mut i = 0;
+    for j in 0..N_BODIES {
+        for k in j + 1..N_BODIES {
+            r[i] = bodies[j].x - bodies[k].x;
+            i += 1;
         }
     }
 

@@ -419,15 +419,20 @@ fn unsigned_direction_formatting_for_debug_in_degrees_one_fractional_digit() {
 }
 
 #[test]
-fn unsigned_direction_is_send() {
-    fn is_send(_: impl Send) {}
-    is_send(UnsignedDirection::<Degree, f32>::new(3.4));
+fn unsigned_direction_traits() {
+    fn impl_common_traits<
+        T: Sized
+            + Copy
+            + Clone
+            + Default
+            + core::fmt::Debug
+            + core::fmt::Display
+            + Send
+            + Sync
+            + PartialEq
+            + Unpin
+            + PartialOrd,
+    >() {
+    }
+    impl_common_traits::<UnsignedDirection<Degree>>();
 }
-
-#[test]
-fn unsigned_direction_is_sync() {
-    fn is_sync(_: impl Sync) {}
-    is_sync(UnsignedDirection::<Degree, f32>::new(3.4));
-}
-
-// Consider whether the following traits should be implemented for the type: `Serialize`, `Deserialize`.

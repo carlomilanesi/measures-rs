@@ -400,3 +400,20 @@ fn affine_map_3d_formatting_for_debug_with_both_padding() {
         " ⎡     1.254 650         -872       6    ⎤ m\n ⎢ 98763.4     1.7658909    5.43    9    ⎥\n ⎣   756       3.8472      41.81 -561.81 ⎦"
     );
 }
+
+#[test]
+fn affine_map_3d_traits() {
+    fn impl_common_traits<
+        T: Sized
+            + Clone
+            + Default
+            + core::fmt::Debug
+            + core::fmt::Display
+            + Send
+            + Sync
+            + PartialEq
+            + Unpin,
+    >() {
+    }
+    impl_common_traits::<AffineMap3d<Metre>>();
+}

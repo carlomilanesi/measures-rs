@@ -1,31 +1,41 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_linear_map_2d {
     {} => {
-        pub struct LinearMap2d<Number: ArithmeticOps> {
+        /// Linear transformation of `Measure2d` objects.
+        pub struct LinearMap2d<Number = f64>
+        where
+            Number: ArithmeticOps,
+        {
             c: [[Number; 2]; 2],
         }
 
         impl<Number: ArithmeticOps> LinearMap2d<Number> {
+            /// Create a LinearMap2d from its 4 coefficients.
             pub const fn new(coefficients: [[Number; 2]; 2]) -> Self {
                 Self { c: coefficients }
             }
 
-            // No translations
+            // Linear maps have no translations.
 
             //// Rotations
 
-            // Rotation by an angle measure.
-            pub fn rotation<AngleUnit: AngleMeasurementUnit>(angle: Measure<AngleUnit, Number>) -> Self {
+            /// Create a rotation by an angle measure.
+            pub fn rotation<AngleUnit>(angle: Measure<AngleUnit, Number>) -> Self
+            where
+                AngleUnit: AngleMeasurementUnit,
+            {
                 Self::rotation_by_radians(angle.convert::<Radian>().value)
             }
 
-            pub fn rotation_at_right() -> Self {
+            /// Create a rotation to the right.
+            pub fn right_rotation() -> Self {
                 Self {
                     c: [[Number::ZERO, Number::ONE], [-Number::ONE, Number::ZERO]],
                 }
             }
 
-            pub fn rotation_at_left() -> Self {
+            /// Create a rotation to the left.
+            pub fn left_rotation() -> Self {
                 Self {
                     c: [[Number::ZERO, -Number::ONE], [Number::ONE, Number::ZERO]],
                 }
@@ -164,6 +174,26 @@ macro_rules! inner_define_linear_map_2d {
             // It returns the identity transformation.
             fn default() -> Self {
                 Self::new([[Number::ONE, Number::ZERO], [Number::ZERO, Number::ONE]])
+            }
+        }
+
+        // LinearMap2d == LinearMap2d -> bool
+        impl<Number> PartialEq<LinearMap2d<Number>> for LinearMap2d<Number>
+        where
+            Number: ArithmeticOps,
+        {
+            fn eq(&self, other: &LinearMap2d<Number>) -> bool {
+                self.c == other.c
+            }
+        }
+
+        // LinearMap2d.clone() -> LinearMap2d
+        impl<Number> Clone for LinearMap2d<Number>
+        where
+            Number: ArithmeticOps,
+        {
+            fn clone(&self) -> Self {
+                Self { c: self.c.clone() }
             }
         }
 

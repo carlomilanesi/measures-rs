@@ -61,17 +61,17 @@ fn linear_map_2d_rotation_by_angle() {
 }
 
 #[test]
-fn linear_map_2d_rotation_at_right() {
+fn linear_map_2d_right_rotation() {
     let m1 = Measure2d::<Metre, f32>::new([8., 5.]);
-    let lm = LinearMap2d::<f32>::rotation_at_right();
+    let lm = LinearMap2d::<f32>::right_rotation();
     let m2 = lm.apply_to(m1);
     assert_eq!(m2.values, [5., -8.]);
 }
 
 #[test]
-fn linear_map_2d_rotation_at_left() {
+fn linear_map_2d_left_rotation() {
     let m1 = Measure2d::<Metre, f32>::new([8., 5.]);
-    let lm = LinearMap2d::<f32>::rotation_at_left();
+    let lm = LinearMap2d::<f32>::left_rotation();
     let m2 = lm.apply_to(m1);
     assert_eq!(m2.values, [-5., 8.]);
 }
@@ -251,4 +251,21 @@ fn linear_map_2d_formatting_for_debug_with_both_padding() {
         format!("{:?}", lm),
         " ⎡     1.254 650         ⎤\n ⎣ 98763.4     1.7658909 ⎦"
     );
+}
+
+#[test]
+fn linear_map_2d_traits() {
+    fn impl_common_traits<
+        T: Sized
+            + Clone
+            + Default
+            + core::fmt::Debug
+            + core::fmt::Display
+            + Send
+            + Sync
+            + PartialEq
+            + Unpin,
+    >() {
+    }
+    impl_common_traits::<LinearMap2d>();
 }

@@ -1,7 +1,8 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_linear_map_3d {
     {} => {
-        pub struct LinearMap3d<Number>
+        /// Linear transformation of `Measure3d` objects.
+        pub struct LinearMap3d<Number = f64>
         where
             Number: ArithmeticOps,
         {
@@ -12,11 +13,12 @@ macro_rules! inner_define_linear_map_3d {
         where
             Number: ArithmeticOps,
         {
+            /// Create a LinearMap3d from its 9 coefficients.
             pub const fn new(coefficients: [[Number; 3]; 3]) -> Self {
                 Self { c: coefficients }
             }
 
-            // No translations
+            // Linear maps have no translations.
 
             // Rotations
 
@@ -287,6 +289,26 @@ macro_rules! inner_define_linear_map_3d {
                     [Number::ZERO, Number::ONE, Number::ZERO],
                     [Number::ZERO, Number::ZERO, Number::ONE],
                 ])
+            }
+        }
+
+        // LinearMap3d == LinearMap3d -> bool
+        impl<Number> PartialEq<LinearMap3d<Number>> for LinearMap3d<Number>
+        where
+            Number: ArithmeticOps,
+        {
+            fn eq(&self, other: &LinearMap3d<Number>) -> bool {
+                self.c == other.c
+            }
+        }
+
+        // LinearMap3d.clone() -> LinearMap3d
+        impl<Number> Clone for LinearMap3d<Number>
+        where
+            Number: ArithmeticOps,
+        {
+            fn clone(&self) -> Self {
+                Self { c: self.c.clone() }
             }
         }
 

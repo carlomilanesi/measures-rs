@@ -222,3 +222,21 @@ fn measure_point_formatting_for_debug_in_celsius_one_fractional_digit() {
     let mp = MeasurePoint::<Celsius, f32>::new(12.25);
     assert_eq!(format!("{:.1?}", mp), "at 12.2 °C");
 }
+#[test]
+fn measure_point_traits() {
+    fn impl_common_traits<
+        T: Sized
+            + Copy
+            + Clone
+            + Default
+            + core::fmt::Debug
+            + core::fmt::Display
+            + Send
+            + Sync
+            + PartialEq
+            + Unpin
+            + PartialOrd,
+    >() {
+    }
+    impl_common_traits::<MeasurePoint<Celsius>>();
+}

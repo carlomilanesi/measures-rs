@@ -1,9 +1,10 @@
-// Conversion to use the library Measures of the benchmark "The Computer Language Benchmarks Game"
+// Conversion of the benchmark "The Computer Language Benchmarks Game"
+// to use the library `measures` with exact values
 // https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/nbody-rust-6.html
 //
 // To build this, type:
 // cargo build --release --example nbody-measures
-// And then to run the generated executable program, type:
+// And then, to run the generated executable program, type:
 // /bin/time target/release/examples/nbody-measures 50000000
 // Expected output:
 // -0.169075164 J

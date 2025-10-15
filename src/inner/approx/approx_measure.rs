@@ -309,7 +309,22 @@ macro_rules! inner_define_approx_measure {
         {
             type Output = Self;
             fn mul(self, n: Number) -> Self::Output {
-                Self::with_variance(n * self.value, self.variance * (n * n))
+                Self::with_variance(self.value * n, self.variance * (n * n))
+            }
+        }
+
+        /// ApproxMeasure * ApproxMeasure<One> -> ApproxMeasure
+        impl<Unit, Number> Mul<ApproxMeasure<One, Number>> for ApproxMeasure<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
+            type Output = Self;
+            fn mul(self, other: ApproxMeasure<One, Number>) -> Self::Output {
+                Self::with_variance(
+                    self.value * other.value,
+                    self.value * self.value * other.variance + other.value * other.value * self.variance,
+                )
             }
         }
 
@@ -322,6 +337,19 @@ macro_rules! inner_define_approx_measure {
             fn mul_assign(&mut self, n: Number) {
                 self.value *= n;
                 self.variance *= n * n;
+            }
+        }
+
+        /// ApproxMeasure *= ApproxMeasure<One>
+        impl<Unit, Number> MulAssign<ApproxMeasure<One, Number>> for ApproxMeasure<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
+            fn mul_assign(&mut self, other: ApproxMeasure<One, Number>) {
+                self.value *= other.value;
+                self.variance =
+                    self.value * self.value * other.variance + other.value * other.value * self.variance;
             }
         }
 
@@ -356,18 +384,6 @@ macro_rules! inner_define_approx_measure {
             type Output = Self;
             fn div(self, n: Number) -> Self::Output {
                 Self::with_variance(self.value / n, self.variance / (n * n))
-            }
-        }
-
-        // ApproxMeasure /= Number
-        impl<Unit, Number> DivAssign<Number> for ApproxMeasure<Unit, Number>
-        where
-            Unit: MeasurementUnit,
-            Number: ArithmeticOps,
-        {
-            fn div_assign(&mut self, n: Number) {
-                self.value /= n;
-                self.variance /= n * n;
             }
         }
 
@@ -412,6 +428,33 @@ macro_rules! inner_define_approx_measure {
                             * self.variance.sqrt()
                             * other.variance.sqrt(),
                 )
+            }
+        }
+
+        // ApproxMeasure /= Number
+        impl<Unit, Number> DivAssign<Number> for ApproxMeasure<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
+            fn div_assign(&mut self, n: Number) {
+                self.value /= n;
+                self.variance /= n * n;
+            }
+        }
+
+        /// Measure /= Measure<One>
+        impl<Unit, Number> DivAssign<ApproxMeasure<One, Number>> for ApproxMeasure<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
+            fn div_assign(&mut self, other: ApproxMeasure<One, Number>) {
+                let self_ratio = self.variance / (self.value * self.value);
+                let other_ratio = other.variance / (other.value * other.value);
+                let value_ratio = self.value / other.value;
+                self.value = value_ratio;
+                self.variance = value_ratio * value_ratio * (self_ratio + other_ratio);
             }
         }
 

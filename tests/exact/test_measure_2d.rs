@@ -403,3 +403,21 @@ fn measure_2d_formatting_in_metres_for_debug_one_fractional_digit() {
     let m = Measure2d::<Metre, f32>::new([12.25, 23.5498]);
     assert_eq!(format!("{:.1?}", m), "(12.2, 23.5) m");
 }
+
+#[test]
+fn measure_2d_traits() {
+    fn impl_common_traits<
+        T: Sized
+            + Copy
+            + Clone
+            + Default
+            + core::fmt::Debug
+            + core::fmt::Display
+            + Send
+            + Sync
+            + PartialEq
+            + Unpin,
+    >() {
+    }
+    impl_common_traits::<Measure2d<Metre>>();
+}
