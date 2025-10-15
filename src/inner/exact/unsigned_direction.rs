@@ -203,7 +203,7 @@ macro_rules! inner_define_unsigned_direction {
         impl<Unit, Number: ArithmeticOps> PartialOrd<UnsignedDirection<Unit, Number>>
             for UnsignedDirection<Unit, Number>
         {
-            fn partial_cmp(&self, other: &UnsignedDirection<Unit, Number>) -> Option<std::cmp::Ordering> {
+            fn partial_cmp(&self, other: &UnsignedDirection<Unit, Number>) -> Option<core::cmp::Ordering> {
                 self.value.partial_cmp(&other.value)
             }
         }

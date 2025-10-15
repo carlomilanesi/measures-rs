@@ -302,7 +302,7 @@ fn measure_partial_cmp() {
     let m2 = Measure::<Metre, f32>::new(12.);
     let m3 = Measure::<Metre, f32>::new(13.);
     let m4 = Measure::<Metre, f32>::new(f32::NAN);
-    use std::cmp::Ordering;
+    use core::cmp::Ordering;
     assert_eq!(m1.partial_cmp(&m2), Some(Ordering::Equal));
     assert_eq!(m1.partial_cmp(&m3), Some(Ordering::Less));
     assert_eq!(m3.partial_cmp(&m1), Some(Ordering::Greater));

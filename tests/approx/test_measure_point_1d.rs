@@ -188,7 +188,7 @@ fn approx_measure_point_partial_cmp() {
     let mp2 = ApproxMeasurePoint::<Celsius, f32>::new(12.);
     let mp3 = ApproxMeasurePoint::<Celsius, f32>::new(13.);
     let mp4 = ApproxMeasurePoint::<Celsius, f32>::new(f32::NAN);
-    use std::cmp::Ordering;
+    use core::cmp::Ordering;
     assert_eq!(mp1.partial_cmp(&mp2), Some(Ordering::Equal));
     assert_eq!(mp1.partial_cmp(&mp3), Some(Ordering::Less));
     assert_eq!(mp3.partial_cmp(&mp1), Some(Ordering::Greater));

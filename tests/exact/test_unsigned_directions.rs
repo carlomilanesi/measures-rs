@@ -379,7 +379,7 @@ fn unsigned_direction_partial_cmp() {
     let ud2 = UnsignedDirection::<Degree, f32>::new(12.);
     let ud3 = UnsignedDirection::<Degree, f32>::new(13.);
     let ud4 = UnsignedDirection::<Degree, f32>::new(f32::NAN);
-    use std::cmp::Ordering;
+    use core::cmp::Ordering;
     assert_eq!(ud1.partial_cmp(&ud2), Some(Ordering::Equal));
     assert_eq!(ud1.partial_cmp(&ud3), Some(Ordering::Less));
     assert_eq!(ud3.partial_cmp(&ud1), Some(Ordering::Greater));

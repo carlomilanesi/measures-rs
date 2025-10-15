@@ -1,5 +1,5 @@
+use core::fmt;
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, Sub, SubAssign};
-use std::fmt;
 
 pub trait Pow {
     fn powf(self, exponent: Self) -> Self;

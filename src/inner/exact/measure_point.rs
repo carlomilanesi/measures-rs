@@ -252,7 +252,7 @@ macro_rules! inner_define_measure_point {
         where
             Number: ArithmeticOps,
         {
-            fn partial_cmp(&self, other: &MeasurePoint<Unit, Number>) -> Option<std::cmp::Ordering> {
+            fn partial_cmp(&self, other: &MeasurePoint<Unit, Number>) -> Option<core::cmp::Ordering> {
                 self.value.partial_cmp(&other.value)
             }
         }

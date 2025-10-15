@@ -7,7 +7,7 @@ fn angle_units_consts() {
         angle::Radian,
         traits::{AngleMeasurementUnit, MeasurementUnit},
     };
-    let pi = std::f64::consts::PI;
+    let pi = core::f64::consts::PI;
 
     // Radians
     assert_eq!(Radian::CYCLE_FRACTION, 2. * pi);

@@ -376,7 +376,7 @@ fn signed_direction_partial_cmp() {
     let sd2 = SignedDirection::<Degree, f32>::new(12.);
     let sd3 = SignedDirection::<Degree, f32>::new(13.);
     let sd4 = SignedDirection::<Degree, f32>::new(f32::NAN);
-    use std::cmp::Ordering;
+    use core::cmp::Ordering;
     assert_eq!(sd1.partial_cmp(&sd2), Some(Ordering::Equal));
     assert_eq!(sd1.partial_cmp(&sd3), Some(Ordering::Less));
     assert_eq!(sd3.partial_cmp(&sd1), Some(Ordering::Greater));

@@ -6,7 +6,7 @@ macro_rules! inner_define_approx_measure_3d {
         pub struct ApproxMeasure3d<Unit, Number: ArithmeticOps = f64> {
             pub values: [Number; 3],
             pub variance: Number,
-            phantom: std::marker::PhantomData<Unit>,
+            phantom: core::marker::PhantomData<Unit>,
         }
         impl<Unit, Number> ApproxMeasure3d<Unit, Number>
         where

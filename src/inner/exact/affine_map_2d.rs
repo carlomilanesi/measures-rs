@@ -8,7 +8,7 @@ macro_rules! inner_define_affine_map_2d {
             Number: ArithmeticOps,
         {
             c: [[Number; 3]; 2],
-            phantom: std::marker::PhantomData<Unit>,
+            phantom: core::marker::PhantomData<Unit>,
         }
 
         impl<Unit, Number> AffineMap2d<Unit, Number>

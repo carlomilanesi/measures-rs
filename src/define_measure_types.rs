@@ -85,8 +85,8 @@ macro_rules! define_measure_types_aux {
                 AngleMeasurementUnit, ArithmeticOps, LossyFrom, MeasurementUnit, Sqrt, VectorProperty, Trigonometry,
             },
         };
-        use std::fmt;
-        use std::marker::PhantomData;
+        use core::fmt;
+        use core::marker::PhantomData;
 
         measures::inner_define_measure! { $with_approx }
         measures::if_all_true! { { $with_approx }
@@ -1310,7 +1310,7 @@ macro_rules! angle_measurement_unit {
             const CYCLE_FRACTION: f64 = $cycle_fraction;
         }
 
-        impl<Number> std::ops::Mul<Measure<$name, Number>> for Measure<measures::dimensionless::One, Number>
+        impl<Number> core::ops::Mul<Measure<$name, Number>> for Measure<measures::dimensionless::One, Number>
         where
             Number: measures::traits::ArithmeticOps,
         {
@@ -1381,7 +1381,7 @@ macro_rules! measurement_unit {
         }
 
         /// Measure<One> * Measure -> Measure
-        impl<Number> std::ops::Mul<Measure<$name, Number>> for Measure<measures::dimensionless::One, Number>
+        impl<Number> core::ops::Mul<Measure<$name, Number>> for Measure<measures::dimensionless::One, Number>
         where
             Number: measures::traits::ArithmeticOps,
         {
@@ -1393,7 +1393,7 @@ macro_rules! measurement_unit {
 
         measures::if_all_true! { { $with_2d $vector }
             /// Measure2d<One> * Measure -> Measure2d
-            impl<Number> std::ops::Mul<Measure<$name, Number>> for Measure2d<measures::dimensionless::One, Number>
+            impl<Number> core::ops::Mul<Measure<$name, Number>> for Measure2d<measures::dimensionless::One, Number>
             where
                 Number: measures::traits::ArithmeticOps,
             {
@@ -1407,7 +1407,7 @@ macro_rules! measurement_unit {
             }
 
             /// Measure * Measure2d<One> -> Measure2d
-            impl<Number> std::ops::Mul<Measure2d<One, Number>> for Measure<$name, Number>
+            impl<Number> core::ops::Mul<Measure2d<One, Number>> for Measure<$name, Number>
             where
                 Number: measures::traits::ArithmeticOps,
             {
@@ -1423,7 +1423,7 @@ macro_rules! measurement_unit {
 
         measures::if_all_true! { { $with_3d $vector }
             /// Measure3d<One> * Measure -> Measure3d
-            impl<Number> std::ops::Mul<Measure<$name, Number>> for Measure3d<measures::dimensionless::One, Number>
+            impl<Number> core::ops::Mul<Measure<$name, Number>> for Measure3d<measures::dimensionless::One, Number>
             where
                 Number: measures::traits::ArithmeticOps,
             {
@@ -1438,7 +1438,7 @@ macro_rules! measurement_unit {
             }
 
             /// Measure * Measure3d<One> -> Measure3d
-            impl<Number> std::ops::Mul<Measure3d<One, Number>> for Measure<$name, Number>
+            impl<Number> core::ops::Mul<Measure3d<One, Number>> for Measure<$name, Number>
             where
                 Number: measures::traits::ArithmeticOps,
             {

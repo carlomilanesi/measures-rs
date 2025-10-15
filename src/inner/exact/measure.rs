@@ -346,7 +346,7 @@ macro_rules! inner_define_measure {
         where
             Number: ArithmeticOps,
         {
-            fn partial_cmp(&self, other: &Measure<Unit, Number>) -> Option<std::cmp::Ordering> {
+            fn partial_cmp(&self, other: &Measure<Unit, Number>) -> Option<core::cmp::Ordering> {
                 self.value.partial_cmp(&other.value)
             }
         }

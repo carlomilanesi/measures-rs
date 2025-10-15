@@ -16,5 +16,5 @@ impl MeasurementUnit for Radian {
 
 // Measure of a full circle in radians.
 impl AngleMeasurementUnit for Radian {
-    const CYCLE_FRACTION: f64 = std::f64::consts::TAU;
+    const CYCLE_FRACTION: f64 = core::f64::consts::TAU;
 }

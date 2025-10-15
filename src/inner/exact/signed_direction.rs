@@ -207,7 +207,7 @@ macro_rules! inner_define_signed_direction {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
-            fn partial_cmp(&self, other: &SignedDirection<Unit, Number>) -> Option<std::cmp::Ordering> {
+            fn partial_cmp(&self, other: &SignedDirection<Unit, Number>) -> Option<core::cmp::Ordering> {
                 self.value.partial_cmp(&other.value)
             }
         }

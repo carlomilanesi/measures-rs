@@ -8,7 +8,7 @@ macro_rules! inner_define_affine_map_3d {
             Number: ArithmeticOps,
         {
             c: [[Number; 4]; 3],
-            phantom: std::marker::PhantomData<Unit>,
+            phantom: core::marker::PhantomData<Unit>,
         }
 
         impl<Unit, Number> AffineMap3d<Unit, Number>
