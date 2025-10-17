@@ -113,14 +113,8 @@ macro_rules! define_measure_types_aux {
         measures::if_all_true! { { $with_3d }
             measures::inner_define_measure_3d! { $with_approx }
         }
-        measures::if_all_true! { { $with_approx $with_3d }
-            measures::inner_define_approx_measure_3d! { $exact }
-        }
         measures::if_all_true! { { $with_points $with_3d }
             measures::inner_define_measure_point_3d! { $with_approx }
-        }
-        measures::if_all_true! { { $with_approx $with_points $with_3d }
-            measures::inner_define_approx_measure_point_3d! { $exact }
         }
         measures::if_all_true! { { $with_2d $with_transformations }
             measures::inner_define_linear_map_2d! {}
@@ -133,6 +127,19 @@ macro_rules! define_measure_types_aux {
         }
         measures::if_all_true! { {$with_3d $with_transformations $with_points}
             measures::inner_define_affine_map_3d! {}
+        }
+
+        measures::if_all_true! { { $with_approx $with_2d }
+            measures::inner_define_approx_measure_2d! { $exact }
+        }
+        measures::if_all_true! { { $with_approx $with_points $with_2d }
+            measures::inner_define_approx_measure_point_2d! { $exact }
+        }
+        measures::if_all_true! { { $with_approx $with_3d }
+            measures::inner_define_approx_measure_3d! { $exact }
+        }
+        measures::if_all_true! { { $with_approx $with_points $with_3d }
+            measures::inner_define_approx_measure_point_3d! { $exact }
         }
 
         // `scalar_properties` section
