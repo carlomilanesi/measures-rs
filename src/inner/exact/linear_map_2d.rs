@@ -6,7 +6,7 @@ macro_rules! inner_define_linear_map_2d {
         where
             Number: ArithmeticOps,
         {
-            c: [[Number; 2]; 2],
+            pub c: [[Number; 2]; 2],
         }
 
         impl<Number: ArithmeticOps> LinearMap2d<Number> {

@@ -1,25 +1,31 @@
-measures::define_measure_types! {
-    with_points with_3d exact,
-    vector_properties [
-        Length [
-            Metre {
-                suffix: " m",
-            }
-            MilliMetre {
-                suffix: " mm",
-                ratio: 1e-3,
+use measures::assert_eq_32;
+use units::{
+    barycentric_combination_3d, midpoint_3d, weighted_midpoint_3d, Measure3d, MeasurePoint,
+    MeasurePoint3d, Metre, MilliMetre,
+};
+
+mod units {
+    measures::define_measure_types! {
+        with_points with_3d exact,
+        vector_properties [
+            Length [
+                Metre {
+                    suffix: " m",
+                }
+                MilliMetre {
+                    suffix: " mm",
+                    ratio: 1e-3,
+                }
+            ]
+        ]
+        angle_measurement_units [
+            Degree {
+                suffix: " deg",
+                cycle_fraction: 360.,
             }
         ]
-    ]
-    angle_measurement_units [
-        Degree {
-            suffix: " deg",
-            cycle_fraction: 360.,
-        }
-    ]
+    }
 }
-
-use measures::assert_eq_32;
 
 #[test]
 fn measure_point_3d_default() {

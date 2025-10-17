@@ -1,7 +1,7 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_approx_measure {
     {$exact:tt} => {
-        /// Approximate measurement with static unit of measurement and value type,
+        /// Approximate measure with static unit of measurement and value type,
         /// and with dynamic value and variance.
         pub struct ApproxMeasure<Unit, Number = f64>
         where

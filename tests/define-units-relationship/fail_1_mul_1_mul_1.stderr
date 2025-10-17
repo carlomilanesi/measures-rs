@@ -1,8 +1,8 @@
 error: no rules expected `*`
- --> tests/define-units-relationship/fail_1_mul_1_mul_1.rs:8:26
+ --> tests/define-units-relationship/fail_1_mul_1_mul_1.rs:9:30
   |
-8 |     relationships [ U1 1 * U2 1 * U3 1 ]
-  |                          ^ no rules expected this token in macro call
+9 |         relationships [ U1 1 * U2 1 * U3 1 ]
+  |                              ^ no rules expected this token in macro call
   |
 note: while trying to match `==`
  --> src/define_measure_types.rs

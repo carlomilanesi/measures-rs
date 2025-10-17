@@ -1,8 +1,8 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_approx_measure_2d {
     {$with_approx:ident} => {
-        /// Approximate 2d relative measurement with static unit of measurement and value type,
-        /// and with dynamic values and variances and covariances.
+        /// Approximate 2d relative measure, with static unit of measurement and value type,
+        /// and with dynamic values, variances, and covariances.
         pub struct ApproxMeasure2d<Unit, Number = f64>
         where
             Unit: MeasurementUnit,

@@ -1,22 +1,26 @@
-measures::define_measure_types! {
-    with_3d exact,
-    vector_properties [
-        Length [
-            Metre {
-                suffix: " m",
-            }
-            MilliMetre {
-                suffix: " mm",
-                ratio: 1e-3,
+use units::{Measure, Measure3d, Metre, MilliMetre};
+
+mod units {
+    measures::define_measure_types! {
+        with_3d exact,
+        vector_properties [
+            Length [
+                Metre {
+                    suffix: " m",
+                }
+                MilliMetre {
+                    suffix: " mm",
+                    ratio: 1e-3,
+                }
+            ]
+        ]
+        angle_measurement_units [
+            Degree {
+                suffix: " deg",
+                cycle_fraction: 360.,
             }
         ]
-    ]
-    angle_measurement_units [
-        Degree {
-            suffix: " deg",
-            cycle_fraction: 360.,
-        }
-    ]
+    }
 }
 
 use measures::{assert_eq_32, assert_eq_64};

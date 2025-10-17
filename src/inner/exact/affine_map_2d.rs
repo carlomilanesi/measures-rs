@@ -7,7 +7,7 @@ macro_rules! inner_define_affine_map_2d {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
-            c: [[Number; 3]; 2],
+            pub c: [[Number; 3]; 2],
             phantom: core::marker::PhantomData<Unit>,
         }
 

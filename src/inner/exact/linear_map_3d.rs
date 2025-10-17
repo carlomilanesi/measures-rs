@@ -6,7 +6,7 @@ macro_rules! inner_define_linear_map_3d {
         where
             Number: ArithmeticOps,
         {
-            c: [[Number; 3]; 3],
+            pub c: [[Number; 3]; 3],
         }
 
         impl<Number> LinearMap3d<Number>

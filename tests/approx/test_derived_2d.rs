@@ -1,48 +1,51 @@
 use measures::traits::CrossProduct;
+use units::{Joule, Measure, Measure2d, Metre, MetrePerSecond, Newton, NewtonMetre, Second};
 
-measures::define_measure_types! {
-    with_2d exact,
-    scalar_properties [
-        Time [
-            Second {
-                suffix: " s",
-            }
+mod units {
+    measures::define_measure_types! {
+        with_2d exact,
+        scalar_properties [
+            Time [
+                Second {
+                    suffix: " s",
+                }
+            ]
+            Energy [
+                Joule {
+                    suffix: " J",
+                }
+            ]
         ]
-        Energy [
-            Joule {
-                suffix: " J",
-            }
+        vector_properties [
+            Length [
+                Metre {
+                    suffix: " m",
+                }
+            ]
+            Velocity [
+                MetrePerSecond {
+                    suffix: " m/s",
+                }
+            ]
+            Force [
+                Newton {
+                    suffix: " N",
+                }
+            ]
+            Torque [
+                NewtonMetre {
+                    suffix: " N\u{b7}m",
+                }
+            ]
         ]
-    ]
-    vector_properties [
-        Length [
-            Metre {
-                suffix: " m",
-            }
+        relationships [
+            Metre 2 == MetrePerSecond 2 * Second 1,
+            Metre 1 == Metre 2 * __ 2,
+            Joule 1 == Newton 2 * Metre 2,
+            NewtonMetre 1 == Newton 2 X Metre 2,
+            Metre 1 == Metre 2 X __ 2,
         ]
-        Velocity [
-            MetrePerSecond {
-                suffix: " m/s",
-            }
-        ]
-        Force [
-            Newton {
-                suffix: " N",
-            }
-        ]
-        Torque [
-            NewtonMetre {
-                suffix: " N\u{b7}m",
-            }
-        ]
-    ]
-    relationships [
-        Metre 2 == MetrePerSecond 2 * Second 1,
-        Metre 1 == Metre 2 * __ 2,
-        Joule 1 == Newton 2 * Metre 2,
-        NewtonMetre 1 == Newton 2 X Metre 2,
-        Metre 1 == Metre 2 X __ 2,
-    ]
+    }
 }
 
 #[test]

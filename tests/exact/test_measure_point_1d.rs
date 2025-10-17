@@ -1,22 +1,28 @@
-measures::define_measure_types! {
-    with_points exact,
-    scalar_properties [
-        Temperature [
-            Celsius {
-                suffix: " \u{B0}C",
-                ratio: 1.,
-                offset: 273.15,
-            }
-            Fahrenheit {
-                suffix: " \u{B0}F",
-                ratio: 5. / 9.,
-                offset: 273.15 - 32. * 5. / 9.,
-            }
-        ]
-    ]
-}
-
 use measures::assert_eq_32;
+use units::{
+    barycentric_combination, midpoint, weighted_midpoint, Celsius, Fahrenheit, Measure,
+    MeasurePoint,
+};
+
+mod units {
+    measures::define_measure_types! {
+        with_points exact,
+        scalar_properties [
+            Temperature [
+                Celsius {
+                    suffix: " \u{B0}C",
+                    ratio: 1.,
+                    offset: 273.15,
+                }
+                Fahrenheit {
+                    suffix: " \u{B0}F",
+                    ratio: 5. / 9.,
+                    offset: 273.15 - 32. * 5. / 9.,
+                }
+            ]
+        ]
+    }
+}
 
 #[test]
 fn measure_point_default() {

@@ -1,16 +1,21 @@
-measures::define_measure_types! {
-    exact,
-    vector_properties [
-        Length [
-            Metre {
-                suffix: " m",
-            }
-            MilliMetre {
-                suffix: " mm",
-                ratio: 1e-3,
-            }
+use measures::dimensionless::One;
+use units::{Measure, Metre, MilliMetre};
+
+mod units {
+    measures::define_measure_types! {
+        exact,
+        vector_properties [
+            Length [
+                Metre {
+                    suffix: " m",
+                }
+                MilliMetre {
+                    suffix: " mm",
+                    ratio: 1e-3,
+                }
+            ]
         ]
-    ]
+    }
 }
 
 #[test]

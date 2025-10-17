@@ -1,11 +1,15 @@
-measures::define_measure_types! {
-    with_3d exact,
-    vector_properties [
-        P1 [ U1 { suffix: " u1" } ]
-        P2 [ U2 { suffix: " u2" } ]
-        P3 [ U3 { suffix: " u3" } ]
-    ]
-    relationships [ U1 3 == U2 3 * U3 1 ]
+use units::{Measure, Measure3d, U1, U2, U3};
+
+mod units {
+    measures::define_measure_types! {
+        with_3d exact,
+        vector_properties [
+            P1 [ U1 { suffix: " u1" } ]
+            P2 [ U2 { suffix: " u2" } ]
+            P3 [ U3 { suffix: " u3" } ]
+        ]
+        relationships [ U1 3 == U2 3 * U3 1 ]
+    }
 }
 
 fn main() {

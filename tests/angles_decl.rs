@@ -1,5 +1,9 @@
-measures::define_measure_types! {
-    exact,
+use units::Measure;
+
+mod units {
+    measures::define_measure_types! {
+        exact,
+    }
 }
 
 measures::angle_measurement_unit! {

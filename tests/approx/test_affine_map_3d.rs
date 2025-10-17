@@ -1,22 +1,27 @@
-measures::define_measure_types! {
-    with_points with_3d with_transformations exact,
-    vector_properties [
-        Length [
-            Metre {
-                suffix: " m",
-            }
-            MilliMetre {
-                suffix: " mm",
-                ratio: 1e-3,
+use measures::dimensionless::One;
+use units::{AffineMap3d, Degree, Measure, Measure3d, MeasurePoint3d, Metre, MilliMetre};
+
+mod units {
+    measures::define_measure_types! {
+        with_points with_3d with_transformations exact,
+        vector_properties [
+            Length [
+                Metre {
+                    suffix: " m",
+                }
+                MilliMetre {
+                    suffix: " mm",
+                    ratio: 1e-3,
+                }
+            ]
+        ]
+        angle_measurement_units [
+            Degree {
+                suffix: " deg",
+                cycle_fraction: 360.,
             }
         ]
-    ]
-    angle_measurement_units [
-        Degree {
-            suffix: " deg",
-            cycle_fraction: 360.,
-        }
-    ]
+    }
 }
 
 use measures::{assert_eq_32, assert_eq_64};

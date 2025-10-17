@@ -1,15 +1,19 @@
-measures::define_measure_types! {
-    with_points with_directions exact,
-    angle_measurement_units [
-        Degree {
-            suffix: " deg",
-            cycle_fraction: 360.,
-        }
-        Cycle {
-            suffix: " rev",
-            cycle_fraction: 1.,
-        }
-    ]
+use units::{Cycle, Degree, Measure, MeasurePoint, SignedDirection, UnsignedDirection};
+
+mod units {
+    measures::define_measure_types! {
+        with_points with_directions exact,
+        angle_measurement_units [
+            Degree {
+                suffix: " deg",
+                cycle_fraction: 360.,
+            }
+            Cycle {
+                suffix: " rev",
+                cycle_fraction: 1.,
+            }
+        ]
+    }
 }
 
 #[test]

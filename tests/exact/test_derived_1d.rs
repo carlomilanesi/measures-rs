@@ -1,33 +1,39 @@
-measures::define_measure_types! {
-    exact,
-    scalar_properties [
-        Area [
-            SquareMetre {
-                suffix: " m\u{b2}",
-            }
+use measures::dimensionless::One;
+use measures::traits::Sqrt;
+use units::{Measure, Metre, Ohm, Siemens, SquareMetre};
+
+mod units {
+    measures::define_measure_types! {
+        exact,
+        scalar_properties [
+            Area [
+                SquareMetre {
+                    suffix: " m\u{b2}",
+                }
+            ]
+            ElectricalConductance [
+                Siemens {
+                    suffix: " S",
+                }
+            ]
+            ElectricalResistance [
+                Ohm {
+                    suffix: " \u{3a9}",
+                }
+            ]
         ]
-        ElectricalConductance [
-            Siemens {
-                suffix: " S",
-            }
+        vector_properties [
+            Length [
+                Metre {
+                    suffix: " m",
+                }
+            ]
         ]
-        ElectricalResistance [
-            Ohm {
-                suffix: " \u{3a9}",
-            }
+        relationships [
+            SquareMetre 1 == Metre 1 * __ 1,
+            One 1 == Siemens 1 * Ohm 1,
         ]
-    ]
-    vector_properties [
-        Length [
-            Metre {
-                suffix: " m",
-            }
-        ]
-    ]
-    relationships [
-        SquareMetre 1 == Metre 1 * __ 1,
-        One 1 == Siemens 1 * Ohm 1,
-    ]
+    }
 }
 /*
 1

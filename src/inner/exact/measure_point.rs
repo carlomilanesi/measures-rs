@@ -1,7 +1,13 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_point {
     { $with_approx:ident } => {
-        pub struct MeasurePoint<Unit, Number = f64> {
+        /// 1D absolute measure with static unit of measurement, static value type,
+        /// and with a dynamic value.
+        pub struct MeasurePoint<Unit, Number = f64>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
             pub value: Number,
             phantom: PhantomData<Unit>,
         }
@@ -49,16 +55,18 @@ macro_rules! inner_define_measure_point {
             }
 
             /// MeasurePoint.lossless_into() -> MeasurePoint
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                self,
-            ) -> MeasurePoint<Unit, DestNumber> {
+            pub fn lossless_into<DestNumber>(self) -> MeasurePoint<Unit, DestNumber>
+            where
+                DestNumber: ArithmeticOps + From<Number>,
+            {
                 MeasurePoint::<Unit, DestNumber>::new(DestNumber::from(self.value))
             }
 
             /// Measure.lossy_into() -> Measure
-            pub fn lossy_into<DestNumber: ArithmeticOps + LossyFrom<Number>>(
-                &self,
-            ) -> MeasurePoint<Unit, DestNumber> {
+            pub fn lossy_into<DestNumber>(&self) -> MeasurePoint<Unit, DestNumber>
+            where
+                DestNumber: ArithmeticOps + LossyFrom<Number>,
+            {
                 MeasurePoint::<Unit, DestNumber> {
                     value: DestNumber::lossy_from(self.value),
                     phantom: PhantomData,
@@ -240,6 +248,7 @@ macro_rules! inner_define_measure_point {
         /// MeasurePoint == MeasurePoint -> bool
         impl<Unit, Number> PartialEq<MeasurePoint<Unit, Number>> for MeasurePoint<Unit, Number>
         where
+            Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
             fn eq(&self, other: &MeasurePoint<Unit, Number>) -> bool {
@@ -250,6 +259,7 @@ macro_rules! inner_define_measure_point {
         /// MeasurePoint < MeasurePoint -> bool
         impl<Unit, Number> PartialOrd<MeasurePoint<Unit, Number>> for MeasurePoint<Unit, Number>
         where
+            Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
             fn partial_cmp(&self, other: &MeasurePoint<Unit, Number>) -> Option<core::cmp::Ordering> {
@@ -260,6 +270,7 @@ macro_rules! inner_define_measure_point {
         /// MeasurePoint.clone() -> Measure
         impl<Unit, Number> Clone for MeasurePoint<Unit, Number>
         where
+            Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
             fn clone(&self) -> Self {
@@ -268,7 +279,12 @@ macro_rules! inner_define_measure_point {
         }
 
         /// MeasurePoint = MeasurePoint
-        impl<Unit, Number> Copy for MeasurePoint<Unit, Number> where Number: ArithmeticOps {}
+        impl<Unit, Number> Copy for MeasurePoint<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
+        }
 
         /// format!("{}", MeasurePoint)
         impl<Unit, Number> fmt::Display for MeasurePoint<Unit, Number>

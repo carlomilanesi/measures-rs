@@ -1,7 +1,13 @@
-#[macro_export] // Don't add nor remove the first three lines and the last two lines.
+#[macro_export] // Don't add nor remove the first three lines and the last two lines of this file.
 macro_rules! inner_define_measure {
     { $with_approx:ident } => {
-        pub struct Measure<Unit, Number = f64> {
+        /// 1D relative measure with static unit of measurement, static value type,
+        /// and with a dynamic value.
+        pub struct Measure<Unit, Number = f64>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
             pub value: Number,
             phantom: PhantomData<Unit>,
         }
@@ -334,6 +340,7 @@ macro_rules! inner_define_measure {
         /// Measure == Measure -> bool
         impl<Unit, Number> PartialEq<Measure<Unit, Number>> for Measure<Unit, Number>
         where
+            Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
             fn eq(&self, other: &Measure<Unit, Number>) -> bool {
@@ -344,6 +351,7 @@ macro_rules! inner_define_measure {
         /// Measure < Measure -> bool
         impl<Unit, Number> PartialOrd<Measure<Unit, Number>> for Measure<Unit, Number>
         where
+            Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
             fn partial_cmp(&self, other: &Measure<Unit, Number>) -> Option<core::cmp::Ordering> {
@@ -354,6 +362,7 @@ macro_rules! inner_define_measure {
         /// Measure.clone() -> Measure
         impl<Unit, Number> Clone for Measure<Unit, Number>
         where
+            Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
             fn clone(&self) -> Self {
@@ -362,7 +371,12 @@ macro_rules! inner_define_measure {
         }
 
         /// Measure = Measure
-        impl<Unit, Number> Copy for Measure<Unit, Number> where Number: ArithmeticOps {}
+        impl<Unit, Number> Copy for Measure<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
+        }
 
         /// format!("{}", Measure)
         impl<Unit, Number> fmt::Display for Measure<Unit, Number>
@@ -388,7 +402,10 @@ macro_rules! inner_define_measure {
             }
         }
 
-        pub struct DecibelsMeasureFormatter<Unit, Number>(Measure<Unit, Number>);
+        pub struct DecibelsMeasureFormatter<Unit, Number>(Measure<Unit, Number>)
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps;
 
         /// format!("{}", Measure.decibels_formatter())
         impl<Unit, Number> fmt::Display for DecibelsMeasureFormatter<Unit, Number>

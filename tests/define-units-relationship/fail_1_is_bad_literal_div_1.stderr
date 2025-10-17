@@ -1,8 +1,8 @@
 error: no rules expected `/`
- --> tests/define-units-relationship/fail_1_is_bad_literal_div_1.rs:7:34
+ --> tests/define-units-relationship/fail_1_is_bad_literal_div_1.rs:8:38
   |
-7 |     relationships [ U1 1 == U2 1 / __ 1 ]
-  |                                  ^ no rules expected this token in macro call
+8 |         relationships [ U1 1 == U2 1 / __ 1 ]
+  |                                      ^ no rules expected this token in macro call
   |
 note: while trying to match `*`
  --> src/define_units_relationship.rs

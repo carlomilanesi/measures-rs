@@ -1270,6 +1270,7 @@ macro_rules! define_measure_types {
 #[macro_export]
 macro_rules! measurement_scalar_property {
     ($name:ident) => {
+        /// A scalar measure property.
         pub struct $name;
         impl $crate::traits::MeasurementProperty for $name {}
         impl $crate::traits::ScalarProperty for $name {}
@@ -1279,6 +1280,7 @@ macro_rules! measurement_scalar_property {
 #[macro_export]
 macro_rules! measurement_vector_property {
     ($name:ident) => {
+        /// A vector measure property.
         pub struct $name;
         impl $crate::traits::MeasurementProperty for $name {}
         impl $crate::traits::VectorProperty for $name {}
@@ -1305,6 +1307,7 @@ macro_rules! angle_measurement_unit {
         offset: $offset:expr,
         cycle_fraction: $cycle_fraction:expr,
     } => {
+        /// An `Angle` unit of measurement.
         pub struct $name;
         impl measures::traits::MeasurementUnit for $name {
             type Property = $crate::angle::Angle;
@@ -1379,6 +1382,7 @@ macro_rules! measurement_unit {
         with_3d: $with_3d:tt,
         vector: $vector:tt,
     } => {
+        /// A unit of measurement.
         pub struct $name;
         impl measures::traits::MeasurementUnit for $name {
             type Property = $property;

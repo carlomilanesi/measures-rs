@@ -1,25 +1,31 @@
-measures::define_measure_types! {
-    with_points with_directions with_2d exact,
-    vector_properties [
-        Length [
-            Metre {
-                suffix: " m",
-            }
-            MilliMetre {
-                suffix: " mm",
-                ratio: 1e-3,
+use measures::angle::Radian;
+use measures::{assert_eq_32, assert_eq_64};
+use units::{
+    Degree, Measure, Measure2d, MeasurePoint, Metre, MilliMetre, SignedDirection, UnsignedDirection,
+};
+
+mod units {
+    measures::define_measure_types! {
+        with_points with_directions with_2d exact,
+        vector_properties [
+            Length [
+                Metre {
+                    suffix: " m",
+                }
+                MilliMetre {
+                    suffix: " mm",
+                    ratio: 1e-3,
+                }
+            ]
+        ]
+        angle_measurement_units [
+            Degree {
+                suffix: " deg",
+                cycle_fraction: 360.,
             }
         ]
-    ]
-    angle_measurement_units [
-        Degree {
-            suffix: " deg",
-            cycle_fraction: 360.,
-        }
-    ]
+    }
 }
-
-use measures::{assert_eq_32, assert_eq_64};
 
 #[test]
 fn measure_2d_default() {

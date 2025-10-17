@@ -1,6 +1,10 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_signed_direction {
     { $with_points:ident } => {
+        /// Direction in a plane, represented by an angle with value
+        /// between minus half cycle (included) and plus half cycle (excluded),
+        /// with static angular unit of measurement, static value type,
+        /// and with a dynamic value.
         pub struct SignedDirection<Unit, Number = f64> {
             pub value: Number,
             phantom: PhantomData<Unit>,
@@ -151,7 +155,7 @@ macro_rules! inner_define_signed_direction {
         }
 
         // Signed direction - Signed direction
-        impl<AngleUnit: AngleMeasurementUnit, Number: ArithmeticOps> Sub<SignedDirection<AngleUnit, Number>>
+        impl<AngleUnit, Number> Sub<SignedDirection<AngleUnit, Number>>
             for SignedDirection<AngleUnit, Number>
         where
             AngleUnit: AngleMeasurementUnit,

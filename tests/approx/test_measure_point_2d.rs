@@ -1,22 +1,29 @@
-measures::define_measure_types! {
-    with_points with_2d exact,
-    vector_properties [
-        Length [
-            Metre {
-                suffix: " m",
-            }
-            MilliMetre {
-                suffix: " mm",
-                ratio: 1e-3,
+use units::{
+    barycentric_combination_2d, midpoint_2d, weighted_midpoint_2d, Measure2d, MeasurePoint,
+    MeasurePoint2d, Metre, MilliMetre,
+};
+
+mod units {
+    measures::define_measure_types! {
+        with_points with_2d exact,
+        vector_properties [
+            Length [
+                Metre {
+                    suffix: " m",
+                }
+                MilliMetre {
+                    suffix: " mm",
+                    ratio: 1e-3,
+                }
+            ]
+        ]
+        angle_measurement_units [
+            Degree {
+                suffix: " deg",
+                cycle_fraction: 360.,
             }
         ]
-    ]
-    angle_measurement_units [
-        Degree {
-            suffix: " deg",
-            cycle_fraction: 360.,
-        }
-    ]
+    }
 }
 
 use measures::assert_eq_32;

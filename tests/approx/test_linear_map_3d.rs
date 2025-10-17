@@ -1,21 +1,25 @@
-measures::define_measure_types! {
-    with_3d with_transformations exact,
-    vector_properties [
-        Length [
-            Metre {
-                suffix: " m",
+use measures::assert_eq_64;
+use measures::dimensionless::One;
+use units::{Degree, LinearMap3d, Measure, Measure3d, Metre};
+
+mod units {
+    measures::define_measure_types! {
+        with_3d with_transformations exact,
+        vector_properties [
+            Length [
+                Metre {
+                    suffix: " m",
+                }
+            ]
+        ]
+        angle_measurement_units [
+            Degree {
+                suffix: " deg",
+                cycle_fraction: 360.,
             }
         ]
-    ]
-    angle_measurement_units [
-        Degree {
-            suffix: " deg",
-            cycle_fraction: 360.,
-        }
-    ]
+    }
 }
-
-use measures::assert_eq_64;
 
 #[test]
 fn linear_map_3d_default() {

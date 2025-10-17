@@ -5,7 +5,7 @@ use crate::traits::{AngleMeasurementUnit, MeasurementUnit};
 
 measurement_scalar_property! { Angle }
 
-// The only built-in unit of measurement for the property Angle.
+/// The only built-in unit of measurement for the property `Angle`.
 pub struct Radian;
 impl MeasurementUnit for Radian {
     type Property = Angle;
@@ -14,7 +14,7 @@ impl MeasurementUnit for Radian {
     const SUFFIX: &'static str = " rad";
 }
 
-// Measure of a full circle in radians.
+/// Measure of a full circle in radians.
 impl AngleMeasurementUnit for Radian {
     const CYCLE_FRACTION: f64 = core::f64::consts::TAU;
 }

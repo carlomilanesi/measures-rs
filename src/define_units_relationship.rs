@@ -214,7 +214,7 @@ macro_rules! expand_1_1_same {
 
             // Measure<U1>.squared() -> Measure<U3>
             impl<Number: ArithmeticOps> Measure<$unit1, Number> {
-                fn squared(self) -> Measure<$unit3, Number> {
+                pub fn squared(self) -> Measure<$unit3, Number> {
                     Measure::<$unit3, Number>::new(self.value * self.value)
                 }
             }
@@ -464,7 +464,7 @@ macro_rules! expand_2_2_same {
 
         // Measure2d<U1>.squared() -> Measure<U3>
         impl<Number: ArithmeticOps> Measure2d<$unit1, Number> {
-            fn squared(self) -> Measure<$unit2, Number> {
+            pub fn squared(self) -> Measure<$unit2, Number> {
                 Measure::<$unit2, Number>::new(self.values[0] * self.values[0] + self.values[1] * self.values[1])
             }
         }
@@ -491,7 +491,7 @@ macro_rules! expand_3_3_same {
 
         // Measure3d<U1>.squared() -> Measure<U3>
         impl<Number: ArithmeticOps> Measure3d<$unit1, Number> {
-            fn squared(self) -> Measure<$unit2, Number> {
+            pub fn squared(self) -> Measure<$unit2, Number> {
                 Measure::<$unit2, Number>::new(self.values[0] * self.values[0] + self.values[1] * self.values[1] + self.values[2] * self.values[2])
             }
         }

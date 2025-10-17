@@ -1,21 +1,27 @@
-measures::define_measure_types! {
-    with_points with_directions with_2d with_transformations exact,
-    vector_properties [
-        Length [
-            Metre {
-                suffix: " m",
+use measures::{assert_eq_32, assert_eq_64};
+use units::{
+    Degree, LinearMap2d, Measure, Measure2d, MeasurePoint, Metre, SignedDirection,
+    UnsignedDirection,
+};
+
+mod units {
+    measures::define_measure_types! {
+        with_points with_directions with_2d with_transformations exact,
+        vector_properties [
+            Length [
+                Metre {
+                    suffix: " m",
+                }
+            ]
+        ]
+        angle_measurement_units [
+            Degree {
+                suffix: " deg",
+                cycle_fraction: 360.,
             }
         ]
-    ]
-    angle_measurement_units [
-        Degree {
-            suffix: " deg",
-            cycle_fraction: 360.,
-        }
-    ]
+    }
 }
-
-use measures::{assert_eq_32, assert_eq_64};
 
 #[test]
 fn linear_map_2d_default() {

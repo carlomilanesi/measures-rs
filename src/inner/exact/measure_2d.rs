@@ -1,7 +1,8 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_2d {
     { $with_points:tt $with_directions:tt $with_approx:ident } => {
-        /// Relative measure inside a 2D space
+        /// 2D relative measure with static unit of measurement, static value type,
+        /// and with 2 dynamic components.
         pub struct Measure2d<Unit, Number = f64> {
             pub values: [Number; 2],
             phantom: PhantomData<Unit>,

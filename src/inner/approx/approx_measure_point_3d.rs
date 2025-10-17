@@ -1,8 +1,8 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_approx_measure_point_3d {
     {$with_approx:ident} => {
-        /// Approximate 3d absolute measurement with static unit of measurement and value type,
-        /// and with dynamic values and variances and covariances.
+        /// Approximate 3d absolute measure, with static unit of measurement and value type,
+        /// and with dynamic values, variances, and covariances.
         pub struct ApproxMeasurePoint3d<Unit, Number = f64>
         where
             Unit: MeasurementUnit,

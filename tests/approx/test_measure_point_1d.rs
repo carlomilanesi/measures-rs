@@ -1,19 +1,23 @@
-measures::define_measure_types! {
-    with_points exact with_approx,
-    scalar_properties [
-        Temperature [
-            Celsius {
-                suffix: " \u{B0}C",
-                ratio: 1.,
-                offset: 273.15,
-            }
-            Fahrenheit {
-                suffix: " \u{B0}F",
-                ratio: 5. / 9.,
-                offset: 273.15 - 32. * 5. / 9.,
-            }
+use units::{ApproxMeasurePoint, Celsius, Fahrenheit};
+
+mod units {
+    measures::define_measure_types! {
+        with_points exact with_approx,
+        scalar_properties [
+            Temperature [
+                Celsius {
+                    suffix: " \u{B0}C",
+                    ratio: 1.,
+                    offset: 273.15,
+                }
+                Fahrenheit {
+                    suffix: " \u{B0}F",
+                    ratio: 5. / 9.,
+                    offset: 273.15 - 32. * 5. / 9.,
+                }
+            ]
         ]
-    ]
+    }
 }
 
 #[test]

@@ -1,6 +1,10 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_unsigned_direction {
     { $with_points:ident } => {
+        /// Direction in a plane, represented by an angle with value
+        /// between zero (included) and a cycle (excluded),
+        /// with static angular unit of measurement, static value type,
+        /// and with a dynamic value.
         pub struct UnsignedDirection<Unit, Number = f64> {
             pub value: Number,
             phantom: PhantomData<Unit>,
