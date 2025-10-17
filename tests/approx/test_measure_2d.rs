@@ -200,14 +200,14 @@ fn measure_2d_normalized_zero() {
 fn measure_2d_from_direction_up() {
     let dir = MeasurePoint::<Degree, f32>::new(90.);
     println!("{}, {:?}.", dir, dir.value.sin_cos());
-    let m = Measure2d::<Metre, f32>::from_direction(MeasurePoint::<Degree, f32>::new(90.));
+    let m = Measure2d::<Metre, f32>::from_angle(MeasurePoint::<Degree, f32>::new(90.));
     assert_eq_32!(m.values[0], 0.);
     assert_eq_32!(m.values[1], 1.);
 }
 
 #[test]
 fn measure_2d_from_direction_down_left() {
-    let m = Measure2d::<Metre, f32>::from_direction(MeasurePoint::<Degree, f32>::new(-135.));
+    let m = Measure2d::<Metre, f32>::from_angle(MeasurePoint::<Degree, f32>::new(-135.));
     assert_eq_32!(m.values[0], -1f32 / 2f32.sqrt());
     assert_eq_32!(m.values[1], -1f32 / 2f32.sqrt());
 }

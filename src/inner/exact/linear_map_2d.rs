@@ -44,8 +44,8 @@ macro_rules! inner_define_linear_map_2d {
             //// Projections
 
             // Projection onto a line identified by a measure point angle.
-            pub fn projection_by_angle<Unit: AngleMeasurementUnit>(
-                angle: impl Into<MeasurePoint<Unit, Number>>,
+            pub fn projection_by_angle<AngleUnit: AngleMeasurementUnit>(
+                angle: impl Into<MeasurePoint<AngleUnit, Number>>,
             ) -> Self {
                 Self::projection_by_radians(angle.into().convert::<Radian>().value)
             }

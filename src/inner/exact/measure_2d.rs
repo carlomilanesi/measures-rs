@@ -100,15 +100,15 @@ macro_rules! inner_define_measure_2d {
             }
 
             measures::if_all_true! { {$with_points}
-                /// Measure2d::from_direction_measure(AnglePoint) -> Measure2d
-                pub fn from_direction<AngleUnit>(
-                    direction: MeasurePoint<AngleUnit, Number>,
+                /// Measure2d::from_angle(impl MeasurePoint<AngleUnit>) -> Measure2d
+                pub fn from_angle<AngleUnit>(
+                    angle: impl Into<MeasurePoint<AngleUnit, Number>>,
                 ) -> Self
                 where
                     AngleUnit: AngleMeasurementUnit,
                 {
-                    let (y, x) = direction.convert::<Radian>().sin_cos();
-                    Self::new([x, y])
+                    let (sin_a, cos_a) = angle.into().convert::<Radian>().sin_cos();
+                    Self::new([cos_a, sin_a])
                 }
 
                 /// Measure2d.direction_measure() -> MeasurePoint
@@ -123,28 +123,6 @@ macro_rules! inner_define_measure_2d {
             }
 
             measures::if_all_true! { {$with_directions}
-                /// Measure2d::from_signed_direction(SignedDirection) -> Measure2d
-                pub fn from_signed_direction<AngleUnit>(
-                    direction: SignedDirection<AngleUnit, Number>,
-                ) -> Self
-                where
-                    AngleUnit: AngleMeasurementUnit,
-                {
-                    let (y, x) = direction.convert::<Radian>().sin_cos();
-                    Self::new([x, y])
-                }
-
-                /// Measure2d::from_unsigned_direction(UnsignedDirection) -> Measure2d
-                pub fn from_unsigned_direction<AngleUnit>(
-                    direction: UnsignedDirection<AngleUnit, Number>,
-                ) -> Self
-                where
-                    AngleUnit: AngleMeasurementUnit,
-                {
-                    let (y, x) = direction.convert::<Radian>().sin_cos();
-                    Self::new([x, y])
-                }
-
                 /// Measure2d.signed_direction() -> SignedDirection
                 pub fn signed_direction<AngleUnit>(
                     self,

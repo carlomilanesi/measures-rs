@@ -379,21 +379,13 @@ macro_rules! expand_1_3 {
                     let value_product_x = self.value * other.values[0];
                     let value_product_y = self.value * other.values[1];
                     let value_product_z = self.value * other.values[2];
-                    Self::Output::with_variance(
+                    Self::Output::with_covariances(
                         [
                             value_product_x,
                             value_product_y,
                             value_product_z,
                         ],
-                        value_product_x *
-                            (other.values[0] * self.variance / self.value +
-                            self.value * other.variance / other.values[0]) +
-                        value_product_y *
-                            (other.values[1] * self.variance / self.value +
-                            self.value * other.variance / other.values[1]) +
-                        value_product_z *
-                            (other.values[2] * self.variance / self.value +
-                            self.value * other.variance / other.values[2]),
+                        other.covariances,
                     )
                 }
             }
@@ -413,19 +405,13 @@ macro_rules! expand_1_3 {
                     let value_ratio_x = self.values[0] / other.value;
                     let value_ratio_y = self.values[1] / other.value;
                     let value_ratio_z = self.values[2] / other.value;
-                    let self_ratio_x = self.variance / (self.values[0] * self.values[0]);
-                    let self_ratio_y = self.variance / (self.values[1] * self.values[1]);
-                    let self_ratio_z = self.variance / (self.values[2] * self.values[2]);
-                    let other_ratio = other.variance / (other.value * other.value);
-                    Self::Output::with_variance(
+                    Self::Output::with_covariances(
                         [
                             value_ratio_x,
                             value_ratio_y,
                             value_ratio_z,
                         ],
-                        value_ratio_x * value_ratio_x * (self_ratio_x + other_ratio) +
-                        value_ratio_y * value_ratio_y * (self_ratio_y + other_ratio) +
-                        value_ratio_z * value_ratio_z * (self_ratio_z + other_ratio)
+                        self.covariances,
                     )
                 }
             }
@@ -522,15 +508,7 @@ macro_rules! expand_3_3_same {
                         value_product_x +
                         value_product_y +
                         value_product_z,
-                        value_product_x *
-                            (other.values[0] * self.variance / self.values[0] +
-                            self.values[0] * other.variance / other.values[0]) +
-                        value_product_y *
-                            (other.values[1] * self.variance / self.values[1] +
-                            self.values[1] * other.variance / other.values[1]) +
-                        value_product_z *
-                            (other.values[2] * self.variance / self.values[2] +
-                            self.values[2] * other.variance / other.values[2]),
+                        self.covariances[0][0],
                     )
                 }
             }
@@ -541,7 +519,7 @@ macro_rules! expand_3_3_same {
                     let value = self.values[0] * self.values[0] + self.values[1] * self.values[1] + self.values[2] * self.values[2];
                     ApproxMeasure::<$unit2, Number>::with_variance(
                         value,
-                        value * (self.variance + self.variance),
+                        value * (self.covariances[0][0] + self.covariances[0][0]),
                     )
                 }
             }
@@ -582,15 +560,7 @@ macro_rules! expand_3_3 {
                     let value_product_z = self.values[2] * other.values[2];
                     Self::Output::with_variance(
                         value_product_x + value_product_y + value_product_z,
-                        value_product_x *
-                            (other.values[0] * self.variance / self.values[0] +
-                            self.values[0] * other.variance / other.values[0]) +
-                        value_product_y *
-                            (other.values[1] * self.variance / self.values[1] +
-                            self.values[1] * other.variance / other.values[1]) +
-                        value_product_z *
-                            (other.values[2] * self.variance / self.values[2] +
-                            self.values[2] * other.variance / other.values[2]),
+                        self.covariances[0][0],
                     )
                 }
             }
@@ -604,15 +574,7 @@ macro_rules! expand_3_3 {
                     let value_product_z = self.values[2] * other.values[2];
                     Self::Output::with_variance(
                         value_product_x + value_product_y + value_product_z,
-                        value_product_x *
-                            (other.values[0] * self.variance / self.values[0] +
-                            self.values[0] * other.variance / other.values[0]) +
-                        value_product_y *
-                            (other.values[1] * self.variance / self.values[1] +
-                            self.values[1] * other.variance / other.values[1]) +
-                        value_product_z *
-                            (other.values[2] * self.variance / self.values[2] +
-                            self.values[2] * other.variance / other.values[2]),
+                        self.covariances[0][0],
                     )
                 }
             }

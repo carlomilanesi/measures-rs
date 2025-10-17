@@ -1,27 +1,3 @@
-
-## Using different absolute angle types
-
-In `measures`, There are three kinds of absolute angles:
-* `MeasurePoint`
-* `SignedDirection`
-* `UnsignedDirection`
-
-The whenever an absolute angle is needed, three different functions are used, each receiving one of the above types.
-Though, it is possible to write an implicit zero-cost conversions from `SignedDirection` to `MeasurePoint` and from `UnsignedDirection to `MeasurePoint`.
-
-In this way, just one function is needed in such cases.
-That function receives an object that can be easily converted to an angle `MeasurePoint`.
-
-## Mixed-unit operations with unit `One`
-
-Currently, the compilation of the following code allows the first three lines, but on the fourth it emits ``error[E0277]: cannot multiply `Measure<One>` by `Measure<CentiMetre>`` and then ``no implementation for `Measure<One> * Measure<CentiMetre>``:
-```
-    let mo = Measure::<measures::dimensionless::One>::new(2.3);
-    let m = Measure::<CentiMetre>::new(3.6);
-    let r1 = m * mo;
-    let r2 = mo * m;
-```
-
 ## Uncertainty
 
 Let `m1` and `m2` be measures with absolute uncertainties `d1` and `d2`, and with correlation between such uncertainties `c`.
@@ -57,8 +33,3 @@ Instead, for multiplication and division, different formulas apply.
 
 For `m1` and `m2`, the relative uncertainties are, respectively, `r1 = d1 / m1` and `r2 = d1 / m1`.
 We can define the relative uncertainty of their multiplication or division `r(m1 */ m2) = ?`.
-
-## Implemented traits
-
-Consider whether the following traits should be implemented for the various defined generic types: `Copy`, `Clone`, `Default`, `Debug`, `Display`, `Send`, `Sync`, `PartialEq`, `PartialOrd`, `Hash`, `Eq`, `Ord`, `Serialize`, `Deserialize`.
-In case, add the unit-tests which check the existence and behavior of such implementations.

@@ -69,15 +69,15 @@ macro_rules! inner_define_affine_map_2d {
             // Projections
 
             // Projection onto a line identified by a fixed point
-            // and a point angle.
+            // and a value which can be converted into a point angle.
             pub fn projection_by_angle<AngleUnit>(
                 fixed_point: MeasurePoint2d<Unit, Number>,
-                direction: impl Into<MeasurePoint<AngleUnit, Number>>,
+                angle: impl Into<MeasurePoint<AngleUnit, Number>>,
             ) -> Self
             where
                 AngleUnit: AngleMeasurementUnit,
             {
-                let (sin_a, cos_a) = direction.into().convert::<Radian>().value.sin_cos();
+                let (sin_a, cos_a) = angle.into().convert::<Radian>().value.sin_cos();
                 Self::projection_by_cos_sin(fixed_point.values, cos_a, sin_a)
             }
 
@@ -94,15 +94,15 @@ macro_rules! inner_define_affine_map_2d {
             // Reflections
 
             // Reflection over a line identified by a fixed point
-            // and a point angle.
+            // and a value which can be converted into a point angle.
             pub fn reflection_by_angle<AngleUnit>(
                 fixed_point: MeasurePoint2d<Unit, Number>,
-                direction: impl Into<MeasurePoint<AngleUnit, Number>>,
+                angle: impl Into<MeasurePoint<AngleUnit, Number>>,
             ) -> Self
             where
                 AngleUnit: AngleMeasurementUnit,
             {
-                let (sin_a, cos_a) = direction.into().convert::<Radian>().value.sin_cos();
+                let (sin_a, cos_a) = angle.into().convert::<Radian>().value.sin_cos();
                 Self::reflection_by_cos_sin(fixed_point.values, cos_a, sin_a)
             }
 

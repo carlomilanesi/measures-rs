@@ -2827,7 +2827,7 @@ fn print_all_single_unit_operations_for_measure_2d() {
         let mp1 = MeasurePoint::<Degree>::new(12.);
         println!(
             "{m1} can be created from angle {mp1}.",
-            m1 = Measure2d::<KiloMetrePerHour>::from_direction(mp1)
+            m1 = Measure2d::<KiloMetrePerHour>::from_angle(mp1)
         );
     }
     {
