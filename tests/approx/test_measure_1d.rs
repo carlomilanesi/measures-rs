@@ -47,7 +47,7 @@ fn approx_measure_with_uncertainty() {
 #[test]
 fn approx_measure_from_measure_with_variance() {
     let m: Measure<Metre, f32> = Measure::<Metre, f32>::new(12.);
-    let am = ApproxMeasure::<Metre, f32>::from_measure_with_variance(m, 9.);
+    let am = ApproxMeasure::<Metre, f32>::from_measure_and_variance(m, 9.);
     assert_eq!(am.value, 12.);
     assert_eq!(am.variance, 9.);
 }
@@ -55,7 +55,7 @@ fn approx_measure_from_measure_with_variance() {
 #[test]
 fn approx_measure_from_measure_with_uncertainty() {
     let m: Measure<Metre, f32> = Measure::<Metre, f32>::new(12.);
-    let am = ApproxMeasure::<Metre, f32>::from_measure_with_uncertainty(
+    let am = ApproxMeasure::<Metre, f32>::from_measure_and_uncertainty(
         m,
         Measure::<Metre, f32>::new(3.),
     );
@@ -66,7 +66,7 @@ fn approx_measure_from_measure_with_uncertainty() {
 #[test]
 fn approx_measure_to_measure() {
     let am: ApproxMeasure<Metre, f32> = ApproxMeasure::<Metre, f32>::with_variance(12., 2.5);
-    let m: Measure<Metre, f32> = am.to_measure();
+    let m: Measure<Metre, f32> = am.into();
     assert_eq!(m.value, 12.);
 }
 

@@ -30,11 +30,10 @@ macro_rules! inner_define_approx_measure {
             measures::if_all_true! { {$exact}
                 /// ApproxMeasure::with_uncertainty(Number, Measure) -> ApproxMeasure
                 pub fn with_uncertainty(value: Number, uncertainty: Measure<Unit, Number>) -> Self {
-                    Self {
+                    Self::with_variance(
                         value,
-                        variance: uncertainty.value * uncertainty.value,
-                        phantom: PhantomData,
-                    }
+                        uncertainty.value * uncertainty.value,
+                    )
                 }
 
                 /// ApproxMeasure.uncertainty() -> Measure
@@ -42,19 +41,14 @@ macro_rules! inner_define_approx_measure {
                     Measure::<Unit, Number>::new(self.variance.sqrt())
                 }
 
-                /// ApproxMeasure::from_measure_with_variance(Measure, Number) -> ApproxMeasure
-                pub fn from_measure_with_variance(measure: Measure<Unit, Number>, variance: Number) -> Self {
+                /// ApproxMeasure::from_measure_and_variance(Measure, Number) -> ApproxMeasure
+                pub fn from_measure_and_variance(measure: Measure<Unit, Number>, variance: Number) -> Self {
                     Self::with_variance(measure.value, variance)
                 }
 
-                /// ApproxMeasure::from_measure_with_uncertainty(Measure, Measure) -> ApproxMeasure
-                pub fn from_measure_with_uncertainty(measure: Measure<Unit, Number>, uncertainty: Measure<Unit, Number>) -> Self {
+                /// ApproxMeasure::from_measure_and_uncertainty(Measure, Measure) -> ApproxMeasure
+                pub fn from_measure_and_uncertainty(measure: Measure<Unit, Number>, uncertainty: Measure<Unit, Number>) -> Self {
                     Self::with_uncertainty(measure.value, uncertainty)
-                }
-
-                /// ApproxMeasure.to_measure() -> Measure
-                pub const fn to_measure(self) -> Measure<Unit, Number> {
-                    Measure::<Unit, Number>::new(self.value)
                 }
             }
 

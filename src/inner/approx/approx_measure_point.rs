@@ -30,11 +30,10 @@ macro_rules! inner_define_approx_measure_point {
             measures::if_all_true! { {$exact}
                 /// ApproxMeasurePoint::with_uncertainty(Number, Measure) -> ApproxMeasurePoint
                 pub fn with_uncertainty(value: Number, uncertainty: Measure<Unit, Number>) -> Self {
-                    Self {
+                    Self::with_variance(
                         value,
-                        variance: uncertainty.value * uncertainty.value,
-                        phantom: PhantomData,
-                    }
+                        uncertainty.value * uncertainty.value,
+                    )
                 }
 
                 /// ApproxMeasurePoint.uncertainty() -> Measure
@@ -42,19 +41,14 @@ macro_rules! inner_define_approx_measure_point {
                     MeasurePoint::<Unit, Number>::new(self.variance.sqrt())
                 }
 
-                /// ApproxMeasurePoint::from_measure_with_variance(Measure, Number) -> ApproxMeasurePoint
-                pub fn from_measure_point_with_variance(measure_point: MeasurePoint<Unit, Number>, variance: Number) -> Self {
+                /// ApproxMeasurePoint::from_measure_point_and_variance(Measure, Number) -> ApproxMeasurePoint
+                pub fn from_measure_point_and_variance(measure_point: MeasurePoint<Unit, Number>, variance: Number) -> Self {
                     Self::with_variance(measure_point.value, variance)
                 }
 
-                /// ApproxMeasurePoint::from_measure_with_uncertainty(Measure, Measure) -> ApproxMeasurePoint
-                pub fn from_measure_point_with_uncertainty(measure_point: MeasurePoint<Unit, Number>, uncertainty: Measure<Unit, Number>) -> Self {
+                /// ApproxMeasurePoint::from_measure_point_and_uncertainty(Measure, Measure) -> ApproxMeasurePoint
+                pub fn from_measure_point_and_uncertainty(measure_point: MeasurePoint<Unit, Number>, uncertainty: Measure<Unit, Number>) -> Self {
                     Self::with_uncertainty(measure_point.value, uncertainty)
-                }
-
-                /// ApproxMeasurePoint.to_measure_point() -> MeasurePoint
-                pub const fn to_measure_point(self) -> MeasurePoint<Unit, Number> {
-                    MeasurePoint::<Unit, Number>::new(self.value)
                 }
             }
 

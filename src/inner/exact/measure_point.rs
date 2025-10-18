@@ -1,7 +1,7 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_point {
     { $with_approx:ident } => {
-        /// 1D absolute measure with static unit of measurement, static value type,
+        /// 1D absolute measure with generic unit of measurement, generic value type,
         /// and with a dynamic value.
         pub struct MeasurePoint<Unit, Number = f64>
         where
@@ -22,23 +22,6 @@ macro_rules! inner_define_measure_point {
                 Self {
                     value,
                     phantom: PhantomData,
-                }
-            }
-
-            measures::if_all_true! { {$with_approx}
-                /// MeasurePoint::from_approx_measure_point(ApproxMeasurePoint) -> MeasurePoint
-                pub const fn from_approx_measure_point(approx_measure_point: ApproxMeasurePoint<Unit, Number>) -> Self {
-                    Self::new(approx_measure_point.value)
-                }
-
-                /// MeasurePoint.to_approx_measure_point_with_variance(Number) -> ApproxMeasurePoint
-                pub fn to_approx_measure_point_with_variance(self, variance: Number) -> ApproxMeasurePoint<Unit, Number> {
-                    ApproxMeasurePoint::<Unit, Number>::with_variance(self.value, variance)
-                }
-
-                /// MeasurePoint.to_approx_measure_point_with_uncertainty(Measure) -> ApproxMeasurePoint
-                pub fn to_approx_measure_point_with_uncertainty(self, uncertainty: Measure<Unit, Number>) -> ApproxMeasurePoint<Unit, Number> {
-                    ApproxMeasurePoint::<Unit, Number>::with_uncertainty(self.value, uncertainty)
                 }
             }
 
@@ -119,6 +102,18 @@ macro_rules! inner_define_measure_point {
         {
             fn from(measure_point: MeasurePoint<Unit, f32>) -> Self {
                 Self::new(measure_point.value as f64)
+            }
+        }
+
+        measures::if_all_true! { {$with_approx}
+            impl<Unit, Number> From<ApproxMeasurePoint<Unit, Number>> for MeasurePoint<Unit, Number>
+            where
+                Unit: MeasurementUnit,
+                Number: ArithmeticOps,
+            {
+                fn from(am: ApproxMeasurePoint<Unit, Number>) -> Self {
+                    Self::new(am.value)
+                }
             }
         }
 
