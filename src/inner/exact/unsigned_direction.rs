@@ -50,9 +50,10 @@ macro_rules! inner_define_unsigned_direction {
                 SignedDirection::<Unit, Number>::new(self.value)
             }
 
-            pub fn convert<DestUnit: MeasurementUnit<Property = Unit::Property>>(
-                &self,
-            ) -> UnsignedDirection<DestUnit, Number> {
+            pub fn convert<DestUnit>(&self) -> UnsignedDirection<DestUnit, Number>
+            where
+                DestUnit: MeasurementUnit<Property = Unit::Property>,
+            {
                 UnsignedDirection::<DestUnit, Number> {
                     value: self.value * Number::from_f64(Unit::RATIO / DestUnit::RATIO)
                         + Number::from_f64((Unit::OFFSET - DestUnit::OFFSET) / DestUnit::RATIO),

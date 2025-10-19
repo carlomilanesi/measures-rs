@@ -1,6 +1,6 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_approx_measure_3d {
-    {$with_approx:ident} => {
+    { $with_approx:ident } => {
         /// Approximate 3d relative measure, with static unit of measurement and value type,
         /// and with dynamic values, variances, and covariances.
         pub struct ApproxMeasure3d<Unit, Number = f64>
@@ -15,9 +15,8 @@ macro_rules! inner_define_approx_measure_3d {
 
         impl<Unit, Number> ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             /// Measure3d::with_covariances([number; 3], [[number; 3]; 3]) -> Measure3d
             pub const fn with_covariances(values: [Number; 3], covariances: [[Number; 3]; 3]) -> Self {
@@ -57,9 +56,10 @@ macro_rules! inner_define_approx_measure_3d {
             }
 
             /// Measure3d.convert() -> Measure3d
-            pub fn convert<DestUnit: MeasurementUnit<Property = Unit::Property>>(
-                &self,
-            ) -> ApproxMeasure3d<DestUnit, Number> {
+            pub fn convert<DestUnit>(&self) -> ApproxMeasure3d<DestUnit, Number>
+            where
+                DestUnit: MeasurementUnit<Property = Unit::Property>,
+            {
                 let ratio = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
                 let r2 = ratio * ratio;
                 ApproxMeasure3d::<DestUnit, Number>::with_covariances(
@@ -183,9 +183,8 @@ macro_rules! inner_define_approx_measure_3d {
 
         impl<Unit, Number> Default for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             // It returns the zero vector.
             fn default() -> Self {
@@ -202,8 +201,7 @@ macro_rules! inner_define_approx_measure_3d {
 
         impl<Unit> From<ApproxMeasure3d<Unit, f32>> for ApproxMeasure3d<Unit, f64>
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
         {
             fn from(m: ApproxMeasure3d<Unit, f32>) -> Self {
                 Self::with_covariances(
@@ -232,9 +230,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// -ApproxMeasure3d -> ApproxMeasure3d
         impl<Unit, Number> Neg for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn neg(self) -> Self::Output {
@@ -248,9 +245,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d + ApproxMeasure3d -> ApproxMeasure3d
         impl<Unit, Number> Add<ApproxMeasure3d<Unit, Number>> for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn add(self, other: ApproxMeasure3d<Unit, Number>) -> Self::Output {
@@ -284,9 +280,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d += ApproxMeasure3d
         impl<Unit, Number> AddAssign<ApproxMeasure3d<Unit, Number>> for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn add_assign(&mut self, other: ApproxMeasure3d<Unit, Number>) {
                 self.values[0] += other.values[0];
@@ -307,9 +302,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d - ApproxMeasure3d -> ApproxMeasure3d
         impl<Unit, Number> Sub<ApproxMeasure3d<Unit, Number>> for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn sub(self, other: ApproxMeasure3d<Unit, Number>) -> Self::Output {
@@ -343,9 +337,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d -= ApproxMeasure3d
         impl<Unit, Number> SubAssign<ApproxMeasure3d<Unit, Number>> for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn sub_assign(&mut self, other: ApproxMeasure3d<Unit, Number>) {
                 self.values[0] -= other.values[0];
@@ -366,9 +359,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d * Number -> ApproxMeasure3d
         impl<Unit, Number> Mul<Number> for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn mul(self, n: Number) -> Self::Output {
@@ -399,9 +391,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d * ApproxMeasure<One> -> ApproxMeasure3d
         impl<Unit, Number> Mul<ApproxMeasure<One, Number>> for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn mul(self, other: ApproxMeasure<One, Number>) -> Self::Output {
@@ -419,9 +410,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure<One> * ApproxMeasure3d -> ApproxMeasure3d
         impl<Unit, Number> Mul<ApproxMeasure3d<Unit, Number>> for ApproxMeasure<One, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = ApproxMeasure3d<Unit, Number>;
             fn mul(self, other: ApproxMeasure3d<Unit, Number>) -> Self::Output {
@@ -439,9 +429,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d *= Number
         impl<Unit, Number> MulAssign<Number> for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn mul_assign(&mut self, n: Number) {
                 self.values[0] *= n;
@@ -453,9 +442,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d *= ApproxMeasure<One>
         impl<Unit, Number> MulAssign<ApproxMeasure<One, Number>> for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn mul_assign(&mut self, other: ApproxMeasure<One, Number>) {
                 self.values[0] *= other.value;
@@ -467,8 +455,7 @@ macro_rules! inner_define_approx_measure_3d {
         /// f64 * ApproxMeasure3d -> ApproxMeasure3d
         impl<Unit> Mul<ApproxMeasure3d<Unit, f64>> for f64
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
         {
             type Output = ApproxMeasure3d<Unit, f64>;
             fn mul(self, other: ApproxMeasure3d<Unit, f64>) -> Self::Output {
@@ -486,8 +473,7 @@ macro_rules! inner_define_approx_measure_3d {
         /// f32 * ApproxMeasure3d -> ApproxMeasure3d
         impl<Unit> Mul<ApproxMeasure3d<Unit, f32>> for f32
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
         {
             type Output = ApproxMeasure3d<Unit, f32>;
             fn mul(self, other: ApproxMeasure3d<Unit, f32>) -> Self::Output {
@@ -505,9 +491,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d / Number -> ApproxMeasure3d
         impl<Unit, Number> Div<Number> for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn div(self, n: Number) -> Self::Output {
@@ -526,9 +511,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d /= Number
         impl<Unit, Number> DivAssign<Number> for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn div_assign(&mut self, n: Number) {
                 let factor = Number::ONE / n;
@@ -541,9 +525,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d / ApproxMeasure -> ApproxMeasure3d<One>
         impl<Unit, Number> Div<ApproxMeasure<Unit, Number>> for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = ApproxMeasure3d<One, Number>;
             fn div(self, other: ApproxMeasure<Unit, Number>) -> Self::Output {
@@ -574,9 +557,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d == ApproxMeasure3d -> bool
         impl<Unit, Number> PartialEq<ApproxMeasure3d<Unit, Number>> for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn eq(&self, other: &ApproxMeasure3d<Unit, Number>) -> bool {
                 self.values == other.values && self.covariances == other.covariances
@@ -586,9 +568,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d.clone() -> ApproxMeasure3d
         impl<Unit, Number> Clone for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn clone(&self) -> Self {
                 *self
@@ -598,18 +579,16 @@ macro_rules! inner_define_approx_measure_3d {
         /// ApproxMeasure3d = ApproxMeasure3d
         impl<Unit, Number> Copy for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
         }
 
         /// format!("{}", ApproxMeasure3d)
         impl<Unit, Number> fmt::Display for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("(")?;
@@ -632,9 +611,8 @@ macro_rules! inner_define_approx_measure_3d {
         /// format!("{:?}", ApproxMeasure3d)
         impl<Unit, Number> fmt::Debug for ApproxMeasure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("values=(")?;

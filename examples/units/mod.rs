@@ -1675,12 +1675,14 @@ measures::define_measure_types! {
 
         // TODO  MagneticFlux == Mass * Area / SquareTime / Current
 
-        // ElectricFieldStrength == Velocity X MagneticFlux
-        VoltPerMetre 1 == MetrePerSecond 1 * Weber 1,
-        VoltPerMetre 1 == MetrePerSecond 2 X Weber 2,
-        VoltPerMetre 3 == MetrePerSecond 3 X Weber 3,
+        // ElectricFieldStrength == Velocity X MagneticFluxDensity
+        VoltPerMetre 1 == MetrePerSecond 1 * Tesla 1,
+        VoltPerMetre 1 == MetrePerSecond 2 X Tesla 2,
+        VoltPerMetre 3 == MetrePerSecond 3 X Tesla 3,
 
         // MagneticFluxDensity == MagneticFlux / Area
+        Weber 1 == Tesla 1 * SquareMetre 1,
+
         // TODO  MagneticFluxDensity == Mass / SquareTime / Current
         // TODO  MagneticFluxDensity == Force / Length / Current
 
@@ -1718,3 +1720,6 @@ pub type ShortTon = USTon;
 
 #[allow(dead_code)]
 pub type Mach = One;
+
+#[allow(dead_code)]
+pub type WeberPerSquareMetre = Tesla;

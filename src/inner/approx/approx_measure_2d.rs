@@ -1,6 +1,6 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_approx_measure_2d {
-    {$with_approx:ident} => {
+    { $with_approx:ident } => {
         /// Approximate 2d relative measure, with static unit of measurement and value type,
         /// and with dynamic values, variances, and covariances.
         pub struct ApproxMeasure2d<Unit, Number = f64>
@@ -15,9 +15,8 @@ macro_rules! inner_define_approx_measure_2d {
 
         impl<Unit, Number> ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             /// Measure2d::with_covariances([number; 2], [[number; 2]; 2]) -> Measure2d
             pub const fn with_covariances(values: [Number; 2], covariances: [[Number; 2]; 2]) -> Self {
@@ -50,9 +49,10 @@ macro_rules! inner_define_approx_measure_2d {
             }
 
             /// Measure2d.convert() -> Measure2d
-            pub fn convert<DestUnit: MeasurementUnit<Property = Unit::Property>>(
-                &self,
-            ) -> ApproxMeasure2d<DestUnit, Number> {
+            pub fn convert<DestUnit>(&self) -> ApproxMeasure2d<DestUnit, Number>
+            where
+                DestUnit: MeasurementUnit<Property = Unit::Property>,
+            {
                 let ratio = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
                 let r2 = ratio * ratio;
                 ApproxMeasure2d::<DestUnit, Number>::with_covariances(
@@ -125,9 +125,8 @@ macro_rules! inner_define_approx_measure_2d {
 
         impl<Unit, Number> Default for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             // It returns the zero vector.
             fn default() -> Self {
@@ -140,8 +139,7 @@ macro_rules! inner_define_approx_measure_2d {
 
         impl<Unit> From<ApproxMeasure2d<Unit, f32>> for ApproxMeasure2d<Unit, f64>
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
         {
             fn from(m: ApproxMeasure2d<Unit, f32>) -> Self {
                 Self::with_covariances(
@@ -157,9 +155,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// -ApproxMeasure2d -> ApproxMeasure2d
         impl<Unit, Number> Neg for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn neg(self) -> Self::Output {
@@ -170,9 +167,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d + ApproxMeasure2d -> ApproxMeasure2d
         impl<Unit, Number> Add<ApproxMeasure2d<Unit, Number>> for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn add(self, other: ApproxMeasure2d<Unit, Number>) -> Self::Output {
@@ -198,9 +194,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d += ApproxMeasure2d
         impl<Unit, Number> AddAssign<ApproxMeasure2d<Unit, Number>> for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn add_assign(&mut self, other: ApproxMeasure2d<Unit, Number>) {
                 self.values[0] += other.values[0];
@@ -216,9 +211,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d - ApproxMeasure2d -> ApproxMeasure2d
         impl<Unit, Number> Sub<ApproxMeasure2d<Unit, Number>> for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn sub(self, other: ApproxMeasure2d<Unit, Number>) -> Self::Output {
@@ -244,9 +238,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d -= ApproxMeasure2d
         impl<Unit, Number> SubAssign<ApproxMeasure2d<Unit, Number>> for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn sub_assign(&mut self, other: ApproxMeasure2d<Unit, Number>) {
                 self.values[0] -= other.values[0];
@@ -262,9 +255,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d * Number -> ApproxMeasure2d
         impl<Unit, Number> Mul<Number> for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn mul(self, n: Number) -> Self::Output {
@@ -282,9 +274,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d * ApproxMeasure<One> -> ApproxMeasure2d
         impl<Unit, Number> Mul<ApproxMeasure<One, Number>> for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn mul(self, other: ApproxMeasure<One, Number>) -> Self::Output {
@@ -298,9 +289,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure<One> * ApproxMeasure2d -> ApproxMeasure2d
         impl<Unit, Number> Mul<ApproxMeasure2d<Unit, Number>> for ApproxMeasure<One, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = ApproxMeasure2d<Unit, Number>;
             fn mul(self, other: ApproxMeasure2d<Unit, Number>) -> Self::Output {
@@ -314,9 +304,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d *= Number
         impl<Unit, Number> MulAssign<Number> for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn mul_assign(&mut self, n: Number) {
                 self.values[0] *= n;
@@ -327,9 +316,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d *= ApproxMeasure<One>
         impl<Unit, Number> MulAssign<ApproxMeasure<One, Number>> for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn mul_assign(&mut self, other: ApproxMeasure<One, Number>) {
                 self.values[0] *= other.value;
@@ -340,8 +328,7 @@ macro_rules! inner_define_approx_measure_2d {
         /// f64 * ApproxMeasure2d -> ApproxMeasure2d
         impl<Unit> Mul<ApproxMeasure2d<Unit, f64>> for f64
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
         {
             type Output = ApproxMeasure2d<Unit, f64>;
             fn mul(self, other: ApproxMeasure2d<Unit, f64>) -> Self::Output {
@@ -355,8 +342,7 @@ macro_rules! inner_define_approx_measure_2d {
         /// f32 * ApproxMeasure2d -> ApproxMeasure2d
         impl<Unit> Mul<ApproxMeasure2d<Unit, f32>> for f32
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
         {
             type Output = ApproxMeasure2d<Unit, f32>;
             fn mul(self, other: ApproxMeasure2d<Unit, f32>) -> Self::Output {
@@ -370,9 +356,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d / Number -> ApproxMeasure2d
         impl<Unit, Number> Div<Number> for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn div(self, n: Number) -> Self::Output {
@@ -387,9 +372,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d /= Number
         impl<Unit, Number> DivAssign<Number> for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn div_assign(&mut self, n: Number) {
                 let factor = Number::ONE / n;
@@ -401,9 +385,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d / ApproxMeasure -> ApproxMeasure2d<One>
         impl<Unit, Number> Div<ApproxMeasure<Unit, Number>> for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = ApproxMeasure2d<One, Number>;
             fn div(self, other: ApproxMeasure<Unit, Number>) -> Self::Output {
@@ -429,9 +412,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d == ApproxMeasure2d -> bool
         impl<Unit, Number> PartialEq<ApproxMeasure2d<Unit, Number>> for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn eq(&self, other: &ApproxMeasure2d<Unit, Number>) -> bool {
                 self.values == other.values && self.covariances == other.covariances
@@ -441,9 +423,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d.clone() -> ApproxMeasure2d
         impl<Unit, Number> Clone for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn clone(&self) -> Self {
                 *self
@@ -453,18 +434,16 @@ macro_rules! inner_define_approx_measure_2d {
         /// ApproxMeasure2d = ApproxMeasure2d
         impl<Unit, Number> Copy for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
         }
 
         /// format!("{}", ApproxMeasure2d)
         impl<Unit, Number> fmt::Display for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("(")?;
@@ -487,9 +466,8 @@ macro_rules! inner_define_approx_measure_2d {
         /// format!("{:?}", ApproxMeasure2d)
         impl<Unit, Number> fmt::Debug for ApproxMeasure2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("values=(")?;

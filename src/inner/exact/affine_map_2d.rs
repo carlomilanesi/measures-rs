@@ -13,9 +13,8 @@ macro_rules! inner_define_affine_map_2d {
 
         impl<Unit, Number> AffineMap2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             /// Create an AffineMap2d from its 6 coefficients.
             pub const fn new(coefficients: [[Number; 3]; 2]) -> Self {
@@ -211,9 +210,8 @@ macro_rules! inner_define_affine_map_2d {
 
         impl<Unit, Number> Default for AffineMap2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             // It returns the identity transformation.
             fn default() -> Self {
@@ -227,8 +225,7 @@ macro_rules! inner_define_affine_map_2d {
         // AffineMap2d == AffineMap2d -> bool
         impl<Unit, Number> PartialEq<AffineMap2d<Unit, Number>> for AffineMap2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
             fn eq(&self, other: &AffineMap2d<Unit, Number>) -> bool {
@@ -239,8 +236,7 @@ macro_rules! inner_define_affine_map_2d {
         // AffineMap2d.clone() -> AffineMap2d
         impl<Unit, Number> Clone for AffineMap2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
             fn clone(&self) -> Self {
@@ -250,8 +246,7 @@ macro_rules! inner_define_affine_map_2d {
 
         impl<Unit> From<AffineMap2d<Unit, f32>> for AffineMap2d<Unit, f64>
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
         {
             fn from(m: AffineMap2d<Unit, f32>) -> Self {
                 Self::new([
@@ -264,9 +259,8 @@ macro_rules! inner_define_affine_map_2d {
         // format!("{}", AffineMap2d)
         impl<Unit, Number> fmt::Display for AffineMap2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(
@@ -280,9 +274,8 @@ macro_rules! inner_define_affine_map_2d {
         // format!("{:?}", AffineMap2d)
         impl<Unit, Number> fmt::Debug for AffineMap2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(

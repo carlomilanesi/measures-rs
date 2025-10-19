@@ -100,7 +100,7 @@ macro_rules! inner_define_measure {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
-            // It returns the zero vector.
+            /// It returns the zero measure.
             fn default() -> Self {
                 Self::new(Number::ZERO)
             }
@@ -115,17 +115,19 @@ macro_rules! inner_define_measure {
         where
             Unit: MeasurementUnit,
         {
+            /// Measure<f64>::from(Measure<f32>) -> Measure<f64>
             fn from(measure: Measure<Unit, f32>) -> Self {
                 Self::new(measure.value as f64)
             }
         }
 
-        measures::if_all_true! { {$with_approx}
+        measures::if_all_true! { { $with_approx }
             impl<Unit, Number> From<ApproxMeasure<Unit, Number>> for Measure<Unit, Number>
             where
                 Unit: MeasurementUnit,
                 Number: ArithmeticOps,
             {
+                /// Measure::from(ApproxMeasure) -> Measure
                 fn from(am: ApproxMeasure<Unit, Number>) -> Self {
                     Self::new(am.value)
                 }
@@ -397,6 +399,7 @@ macro_rules! inner_define_measure {
             }
         }
 
+        /// Wrapper of a `Measure<Unit, Number>`, printing in decibels.
         pub struct DecibelsMeasureFormatter<Unit, Number>(Measure<Unit, Number>)
         where
             Unit: MeasurementUnit,

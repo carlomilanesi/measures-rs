@@ -25,7 +25,7 @@ macro_rules! inner_define_measure_point {
                 }
             }
 
-            /// Measure.convert() -> Measure
+            /// MeasurePoint.convert() -> MeasurePoint
             pub fn convert<DestUnit>(&self) -> MeasurePoint<DestUnit, Number>
             where
                 DestUnit: MeasurementUnit<Property = Unit::Property>,
@@ -45,18 +45,15 @@ macro_rules! inner_define_measure_point {
                 MeasurePoint::<Unit, DestNumber>::new(DestNumber::from(self.value))
             }
 
-            /// Measure.lossy_into() -> Measure
+            /// MeasurePoint.lossy_into() -> MeasurePoint
             pub fn lossy_into<DestNumber>(&self) -> MeasurePoint<Unit, DestNumber>
             where
                 DestNumber: ArithmeticOps + LossyFrom<Number>,
             {
-                MeasurePoint::<Unit, DestNumber> {
-                    value: DestNumber::lossy_from(self.value),
-                    phantom: PhantomData,
-                }
+                MeasurePoint::<Unit, DestNumber>::new(DestNumber::lossy_from(self.value))
             }
 
-            /// MeasurePoint.min(Measure) -> MeasurePoint
+            /// MeasurePoint.min(MeasurePoint) -> MeasurePoint
             pub fn min(self, other: Self) -> Self {
                 if self <= other {
                     self
@@ -65,7 +62,7 @@ macro_rules! inner_define_measure_point {
                 }
             }
 
-            /// MeasurePoint.max(Measure) -> MeasurePoint
+            /// MeasurePoint.max(MeasurePoint) -> MeasurePoint
             pub fn max(self, other: Self) -> Self {
                 if self >= other {
                     self
@@ -105,7 +102,7 @@ macro_rules! inner_define_measure_point {
             }
         }
 
-        measures::if_all_true! { {$with_approx}
+        measures::if_all_true! { { $with_approx }
             impl<Unit, Number> From<ApproxMeasurePoint<Unit, Number>> for MeasurePoint<Unit, Number>
             where
                 Unit: MeasurementUnit,

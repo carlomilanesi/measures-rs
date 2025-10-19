@@ -10,9 +10,8 @@ macro_rules! inner_define_measure_3d {
 
         impl<Unit, Number> Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             /// Measure3d::new([Number; 3]) -> Measure3d
             pub const fn new(values: [Number; 3]) -> Self {
@@ -38,9 +37,10 @@ macro_rules! inner_define_measure_3d {
             }
 
             /// Measure3d.convert() -> Measure3d
-            pub fn convert<DestUnit: MeasurementUnit<Property = Unit::Property>>(
-                &self,
-            ) -> Measure3d<DestUnit, Number> {
+            pub fn convert<DestUnit>(&self) -> Measure3d<DestUnit, Number>
+            where
+                DestUnit: MeasurementUnit<Property = Unit::Property>,
+            {
                 let factor = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
                 Measure3d::<DestUnit, Number>::new([
                     self.values[0] * factor,
@@ -98,9 +98,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d::default() -> Measure3d
         impl<Unit, Number> Default for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             // It returns the zero vector.
             fn default() -> Self {
@@ -111,8 +110,7 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d<f64>::from(Measure3d<f32>) -> Measure3d<f64>
         impl<Unit> From<Measure3d<Unit, f32>> for Measure3d<Unit, f64>
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
         {
             fn from(m: Measure3d<Unit, f32>) -> Self {
                 Measure3d::<Unit, f64>::new([m.values[0] as f64, m.values[1] as f64, m.values[2] as f64])
@@ -122,9 +120,8 @@ macro_rules! inner_define_measure_3d {
         /// -Measure3d -> Measure3d
         impl<Unit, Number> Neg for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn neg(self) -> Self::Output {
@@ -135,9 +132,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d + Measure3d -> Measure3d
         impl<Unit, Number> Add<Measure3d<Unit, Number>> for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn add(self, other: Measure3d<Unit, Number>) -> Self::Output {
@@ -152,9 +148,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d += Measure3d
         impl<Unit, Number> AddAssign<Measure3d<Unit, Number>> for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn add_assign(&mut self, other: Measure3d<Unit, Number>) {
                 self.values[0] += other.values[0];
@@ -166,9 +161,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d - Measure3d -> Measure3d
         impl<Unit, Number> Sub<Measure3d<Unit, Number>> for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn sub(self, other: Measure3d<Unit, Number>) -> Self::Output {
@@ -183,9 +177,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d -= Measure3d
         impl<Unit, Number> SubAssign<Measure3d<Unit, Number>> for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn sub_assign(&mut self, other: Measure3d<Unit, Number>) {
                 self.values[0] -= other.values[0];
@@ -197,9 +190,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d * Number -> Measure3d
         impl<Unit, Number> Mul<Number> for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn mul(self, n: Number) -> Self::Output {
@@ -210,9 +202,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d * Measure<One> -> Measure3d
         impl<Unit, Number> Mul<Measure<One, Number>> for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn mul(self, other: Measure<One, Number>) -> Self::Output {
@@ -227,9 +218,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure<One> * Measure3d -> Measure3d
         impl<Unit, Number> Mul<Measure3d<Unit, Number>> for Measure<One, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Measure3d<Unit, Number>;
             fn mul(self, other: Measure3d<Unit, Number>) -> Self::Output {
@@ -244,9 +234,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d *= Number
         impl<Unit, Number> MulAssign<Number> for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn mul_assign(&mut self, n: Number) {
                 self.values[0] *= n;
@@ -258,9 +247,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d *= Measure<One>
         impl<Unit, Number> MulAssign<Measure<One, Number>> for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn mul_assign(&mut self, other: Measure<One, Number>) {
                 self.values[0] *= other.value;
@@ -272,8 +260,7 @@ macro_rules! inner_define_measure_3d {
         /// f64 * Measure3d -> Measure3d
         impl<Unit> Mul<Measure3d<Unit, f64>> for f64
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
         {
             type Output = Measure3d<Unit, f64>;
             fn mul(self, other: Measure3d<Unit, f64>) -> Self::Output {
@@ -288,8 +275,7 @@ macro_rules! inner_define_measure_3d {
         /// f32 * Measure3d -> Measure3d
         impl<Unit> Mul<Measure3d<Unit, f32>> for f32
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
         {
             type Output = Measure3d<Unit, f32>;
             fn mul(self, other: Measure3d<Unit, f32>) -> Self::Output {
@@ -304,9 +290,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d / Number -> Measure3d
         impl<Unit, Number> Div<Number> for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn div(self, n: Number) -> Self::Output {
@@ -322,9 +307,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d /= Number
         impl<Unit, Number> DivAssign<Number> for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn div_assign(&mut self, n: Number) {
                 let factor = Number::ONE / n;
@@ -337,9 +321,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d / Measure -> Measure3d<One>
         impl<Unit, Number> Div<Measure<Unit, Number>> for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Measure3d<One, Number>;
             fn div(self, other: Measure<Unit, Number>) -> Self::Output {
@@ -367,9 +350,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d == Measure3d -> bool
         impl<Unit, Number> PartialEq<Measure3d<Unit, Number>> for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn eq(&self, other: &Measure3d<Unit, Number>) -> bool {
                 self.values == other.values
@@ -379,9 +361,8 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d.clone() -> Measure3d
         impl<Unit, Number> Clone for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn clone(&self) -> Self {
                 *self
@@ -391,18 +372,16 @@ macro_rules! inner_define_measure_3d {
         /// Measure3d = Measure3d
         impl<Unit, Number> Copy for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
         }
 
         /// format!("{}", Measure3d)
         impl<Unit, Number> fmt::Display for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("(")?;
@@ -419,9 +398,8 @@ macro_rules! inner_define_measure_3d {
         /// format!("{:?}", Measure3d)
         impl<Unit, Number> fmt::Debug for Measure3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("(")?;

@@ -1,6 +1,6 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_approx_measure_point {
-    {$exact:tt} => {
+    { $exact:tt } => {
         /// Approximate point measurement with static unit of measurement and value type,
         /// and with dynamic value and variance.
         pub struct ApproxMeasurePoint<Unit, Number = f64>
@@ -27,7 +27,7 @@ macro_rules! inner_define_approx_measure_point {
                 }
             }
 
-            measures::if_all_true! { {$exact}
+            measures::if_all_true! { { $exact }
                 /// ApproxMeasurePoint::with_uncertainty(Number, Measure) -> ApproxMeasurePoint
                 pub fn with_uncertainty(value: Number, uncertainty: Measure<Unit, Number>) -> Self {
                     Self::with_variance(
@@ -53,9 +53,10 @@ macro_rules! inner_define_approx_measure_point {
             }
 
             /// ApproxMeasurePoint.convert() -> ApproxMeasurePoint
-            pub fn convert<DestUnit: MeasurementUnit<Property = Unit::Property>>(
-                self,
-            ) -> ApproxMeasurePoint<DestUnit, Number> {
+            pub fn convert<DestUnit>(self) -> ApproxMeasurePoint<DestUnit, Number>
+            where
+                DestUnit: MeasurementUnit<Property = Unit::Property>,
+            {
                 let ratio = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
                 ApproxMeasurePoint::<DestUnit, Number>::with_variance(
                     self.value * ratio

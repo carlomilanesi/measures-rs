@@ -30,8 +30,7 @@ macro_rules! inner_define_linear_map_3d {
             ) -> Self
             where
                 AngleUnit: AngleMeasurementUnit,
-                AxisUnit: MeasurementUnit,
-                AxisUnit::Property: VectorProperty,
+                AxisUnit: MeasurementUnit<Property: VectorProperty>,
             {
                 Self::rotation_by_radians_around_unit_vector(
                     angle.convert::<Radian>().value,
@@ -234,12 +233,9 @@ macro_rules! inner_define_linear_map_3d {
                 }
             }
 
-            pub fn apply_to<Unit: MeasurementUnit>(
-                &self,
-                m: Measure3d<Unit, Number>,
-            ) -> Measure3d<Unit, Number>
+            pub fn apply_to<Unit>(&self, m: Measure3d<Unit, Number>) -> Measure3d<Unit, Number>
             where
-                Unit::Property: VectorProperty,
+                Unit: MeasurementUnit<Property: VectorProperty>,
             {
                 Measure3d::<Unit, Number>::new([
                     self.c[0][0] * m.values[0] + self.c[0][1] * m.values[1] + self.c[0][2] * m.values[2],

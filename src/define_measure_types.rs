@@ -122,10 +122,10 @@ macro_rules! define_measure_types_aux {
         measures::if_all_true! { { $with_3d $with_transformations }
             measures::inner_define_linear_map_3d! {}
         }
-        measures::if_all_true! { {$with_2d $with_transformations $with_points}
+        measures::if_all_true! { { $with_2d $with_transformations $with_points }
             measures::inner_define_affine_map_2d! {}
         }
-        measures::if_all_true! { {$with_3d $with_transformations $with_points}
+        measures::if_all_true! { { $with_3d $with_transformations $with_points }
             measures::inner_define_affine_map_3d! {}
         }
 

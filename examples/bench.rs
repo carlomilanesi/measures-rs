@@ -23,11 +23,12 @@ measures::define_measure_types! {
     ]
 }
 
-const N_ITERATIONS: usize = 1_000;
+const N_ITERATIONS: usize = 10_000;
 
 fn main() {
     let n_data_size = parse_command_line();
     println!("Using {n_data_size} items.");
+    std::thread::sleep(std::time::Duration::from_millis(400));
 
     use_primitive_numbers(n_data_size);
     use_measures(n_data_size);

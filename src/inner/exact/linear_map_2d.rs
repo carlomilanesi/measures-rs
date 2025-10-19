@@ -52,22 +52,29 @@ macro_rules! inner_define_linear_map_2d {
 
             // Projection onto a line identified by a unit plane vector.
             // Precondition: unit_v.squared_norm().value == 1
-            pub fn projection_by_unit_vector<Unit: MeasurementUnit>(v: Measure2d<Unit, Number>) -> Self {
+            pub fn projection_by_unit_vector<Unit>(v: Measure2d<Unit, Number>) -> Self
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+            {
                 Self::projection_by_cos_sin(v.values[0], v.values[1])
             }
 
             //// Reflections
 
             // Reflection over a line identified by a point angle.
-            pub fn reflection_by_angle<AngleUnit: AngleMeasurementUnit>(
-                angle: impl Into<MeasurePoint<AngleUnit, Number>>,
-            ) -> Self {
+            pub fn reflection_by_angle<AngleUnit>(angle: impl Into<MeasurePoint<AngleUnit, Number>>) -> Self
+            where
+                AngleUnit: AngleMeasurementUnit,
+            {
                 Self::reflection_by_radians(angle.into().convert::<Radian>().value)
             }
 
             // Reflection over a line identified by a unit plane vector.
             // Precondition: v.squared_norm() == 1
-            pub fn reflection_by_unit_vector<Unit: MeasurementUnit>(v: Measure2d<Unit, Number>) -> Self {
+            pub fn reflection_by_unit_vector<Unit>(v: Measure2d<Unit, Number>) -> Self
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+            {
                 Self::reflection_by_cos_sin(v.values[0], v.values[1])
             }
 
@@ -116,12 +123,9 @@ macro_rules! inner_define_linear_map_2d {
                 }
             }
 
-            pub fn apply_to<Unit: MeasurementUnit>(
-                &self,
-                m: Measure2d<Unit, Number>,
-            ) -> Measure2d<Unit, Number>
+            pub fn apply_to<Unit>(&self, m: Measure2d<Unit, Number>) -> Measure2d<Unit, Number>
             where
-                Unit::Property: VectorProperty,
+                Unit: MeasurementUnit<Property: VectorProperty>,
             {
                 Measure2d::<Unit, Number>::new([
                     self.c[0][0] * m.values[0] + self.c[0][1] * m.values[1],

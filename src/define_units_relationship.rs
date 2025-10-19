@@ -1,46 +1,46 @@
 #[macro_export]
 macro_rules! define_units_relationship {
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 1 * __ 1 } => {
-        measures::expand_1_1_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
+        measures::expand_1_1_same! { $exact $with_approx $with_correlation, $unit2 $unit1 }
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 1 * $unit3:ident 1 } => {
-        measures::expand_1_1! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
+        measures::expand_1_1! { $exact $with_approx $with_correlation, $unit2 $unit3 $unit1 }
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 == $unit2:ident 1 * $unit3:ident 2 } => {
-        measures::expand_1_2! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
+        measures::expand_1_2! { $exact $with_approx $with_correlation, $unit2 $unit3 $unit1 }
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 2 == $unit2:ident 2 * $unit3:ident 1 } => {
-        measures::expand_1_2! {$exact $with_approx $with_correlation, $unit3 $unit2 $unit1}
+        measures::expand_1_2! { $exact $with_approx $with_correlation, $unit3 $unit2 $unit1 }
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 == $unit2:ident 1 * $unit3:ident 3 } => {
-        measures::expand_1_3! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
+        measures::expand_1_3! { $exact $with_approx $with_correlation, $unit2 $unit3 $unit1 }
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 == $unit2:ident 3 * $unit3:ident 1 } => {
-        measures::expand_1_3! {$exact $with_approx $with_correlation, $unit3 $unit2 $unit1}
+        measures::expand_1_3! { $exact $with_approx $with_correlation, $unit3 $unit2 $unit1 }
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 2 * __ 2} => {
-        measures::expand_2_2_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 2 * __ 2 } => {
+        measures::expand_2_2_same! { $exact $with_approx $with_correlation, $unit2 $unit1 }
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 2 * $unit3:ident 2 } => {
-        measures::expand_2_2! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
+        measures::expand_2_2! { $exact $with_approx $with_correlation, $unit2 $unit3 $unit1 }
     };
-    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 3 * __ 3} => {
-        measures::expand_3_3_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
+    { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 3 * __ 3 } => {
+        measures::expand_3_3_same! { $exact $with_approx $with_correlation, $unit2 $unit1 }
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 3 * $unit3:ident 3 } => {
-        measures::expand_3_3! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
+        measures::expand_3_3! { $exact $with_approx $with_correlation, $unit2 $unit3 $unit1 }
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 2 X __ 2 } => {
-        measures::expand_cross_2_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
+        measures::expand_cross_2_same! { $exact $with_approx $with_correlation, $unit2 $unit1 }
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 1 == $unit2:ident 2 X $unit3:ident 2 } => {
-        measures::expand_cross_2! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
+        measures::expand_cross_2! { $exact $with_approx $with_correlation, $unit2 $unit3 $unit1 }
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 == $unit2:ident 3 X __ 3 } => {
-        measures::expand_cross_3_same! {$exact $with_approx $with_correlation, $unit2 $unit1}
+        measures::expand_cross_3_same! { $exact $with_approx $with_correlation, $unit2 $unit1 }
     };
     { $exact:tt $with_approx:tt $with_correlation:tt, $unit1:ident 3 == $unit2:ident 3 X $unit3:ident 3 } => {
-        measures::expand_cross_3! {$exact $with_approx $with_correlation, $unit2 $unit3 $unit1}
+        measures::expand_cross_3! { $exact $with_approx $with_correlation, $unit2 $unit3 $unit1 }
     };
 }
 
@@ -52,7 +52,7 @@ macro_rules! expand_1_1 {
         $unit1:ident $unit2:ident $unit3:ident
     } => {
         // Operations for exact measures.
-        measures::if_all_true! { {$exact}
+        measures::if_all_true! { { $exact }
             // Measure<U1> * Measure<U2> -> Measure<U3>
             impl<Number: ArithmeticOps> Mul<Measure<$unit2, Number>> for Measure<$unit1, Number> {
                 type Output = Measure<$unit3, Number>;
@@ -87,7 +87,7 @@ macro_rules! expand_1_1 {
         }
 
         // Operations for measures with a variance.
-        measures::if_all_true! { {$with_approx}
+        measures::if_all_true! { { $with_approx }
             // ApproxMeasure<U1> * ApproxMeasure<U2> -> ApproxMeasure<U3>
             impl<Number: ArithmeticOps> Mul<ApproxMeasure<$unit2, Number>> for ApproxMeasure<$unit1, Number> {
                 type Output = ApproxMeasure<$unit3, Number>;
@@ -143,7 +143,7 @@ macro_rules! expand_1_1 {
         }
 
         // Operations with correlation, for measures with a variance.
-        measures::if_all_true! { {$with_correlation}
+        measures::if_all_true! { { $with_correlation }
             // ApproxMeasure<U1>.multiply_with_correlation(ApproxMeasure<U2>, Number) -> ApproxMeasure<U3>
             impl<Number: ArithmeticOps> ApproxMeasure<$unit1, Number> {
                 fn multiply_with_correlation(self, other: ApproxMeasure<$unit2, Number>, correlation: Number) -> ApproxMeasure<$unit3, Number> {
@@ -195,7 +195,7 @@ macro_rules! expand_1_1_same {
         $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit3:ident
     } => {
-        measures::if_all_true! { {$exact}
+        measures::if_all_true! { { $exact }
             // Measure<U1> * Measure<U1> -> Measure<U3>
             impl<Number: ArithmeticOps> Mul<Measure<$unit1, Number>> for Measure<$unit1, Number> {
                 type Output = Measure<$unit3, Number>;
@@ -220,23 +220,15 @@ macro_rules! expand_1_1_same {
             }
 
             // Measure<U3>.sqrt() -> Measure<U1>
-            // This generic implementation causes performance issues is some cases,
-            // and so it is replaced by the following implementations, specific,
+            // A generic implementation caused a slowdown in some cases,
+            // and so it was replaced by the following implementations, specific,
             // respectively, for f64 and f32.
-            // impl<Number: ArithmeticOps> Sqrt for Measure<$unit3, Number> {
-            //     type Output = Measure<$unit1, Number>;
-            //     fn sqrt(self) -> Self::Output {
-            //         Self::Output::new(self.value.sqrt())
-            //     }
-            // }
-
             impl Sqrt for Measure<$unit3, f64> {
                 type Output = Measure<$unit1, f64>;
                 fn sqrt(self) -> Self::Output {
                     Self::Output::new(self.value.sqrt())
                 }
             }
-
             impl Sqrt for Measure<$unit3, f32> {
                 type Output = Measure<$unit1, f32>;
                 fn sqrt(self) -> Self::Output {
@@ -245,7 +237,7 @@ macro_rules! expand_1_1_same {
             }
         }
 
-        measures::if_all_true! { {$with_approx}
+        measures::if_all_true! { { $with_approx }
             // ApproxMeasure<U1> * ApproxMeasure<U1> -> ApproxMeasure<U3>
             impl<Number: ArithmeticOps> Mul<ApproxMeasure<$unit1, Number>> for ApproxMeasure<$unit1, Number> {
                 type Output = ApproxMeasure<$unit3, Number>;
@@ -371,7 +363,7 @@ macro_rules! expand_1_3 {
             }
         }
 
-        measures::if_all_true! { {$with_approx}
+        measures::if_all_true! { { $with_approx }
             // ApproxMeasure<U1> * ApproxMeasure3d<U2> -> ApproxMeasure3d<U3>
             impl<Number: ArithmeticOps> Mul<ApproxMeasure3d<$unit2, Number>> for ApproxMeasure<$unit1, Number> {
                 type Output = ApproxMeasure3d<$unit3, Number>;
@@ -442,7 +434,7 @@ macro_rules! expand_2_2 {
             }
         }
 
-        measures::if_all_true! { {$with_approx}
+        measures::if_all_true! { { $with_approx }
         }
     };
 }
@@ -469,7 +461,7 @@ macro_rules! expand_2_2_same {
             }
         }
 
-        measures::if_all_true! { {$with_approx}
+        measures::if_all_true! { { $with_approx }
         }
     };
 }
@@ -496,7 +488,7 @@ macro_rules! expand_3_3_same {
             }
         }
 
-        measures::if_all_true! { {$with_approx}
+        measures::if_all_true! { { $with_approx }
             // ApproxMeasure3d<U1> * ApproxMeasure3d<U1> -> ApproxMeasure<U3>
             impl<Number: ArithmeticOps> Mul<ApproxMeasure3d<$unit1, Number>> for ApproxMeasure3d<$unit1, Number> {
                 type Output = ApproxMeasure<$unit2, Number>;
@@ -550,7 +542,7 @@ macro_rules! expand_3_3 {
             }
         }
 
-        measures::if_all_true! { {$with_approx}
+        measures::if_all_true! { { $with_approx }
             // Measure3d<U1> * Measure3d<U2> -> Measure<U3>
             impl<Number: ArithmeticOps> Mul<ApproxMeasure3d<$unit2, Number>> for ApproxMeasure3d<$unit1, Number> {
                 type Output = ApproxMeasure<$unit3, Number>;
@@ -597,7 +589,7 @@ macro_rules! expand_cross_2_same {
             }
         }
 
-        measures::if_all_true! { {$with_approx}
+        measures::if_all_true! { { $with_approx }
         }
     };
 }
@@ -625,7 +617,7 @@ macro_rules! expand_cross_2 {
             }
         }
 
-        measures::if_all_true! { {$with_approx}
+        measures::if_all_true! { { $with_approx }
         }
     };
 }
@@ -651,7 +643,7 @@ macro_rules! expand_cross_3_same {
             }
         }
 
-        measures::if_all_true! { {$with_approx}
+        measures::if_all_true! { { $with_approx }
         }
     };
 }
@@ -687,7 +679,7 @@ macro_rules! expand_cross_3 {
             }
         }
 
-        measures::if_all_true! { {$with_approx}
+        measures::if_all_true! { { $with_approx }
         }
     };
 }

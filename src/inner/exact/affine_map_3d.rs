@@ -13,9 +13,8 @@ macro_rules! inner_define_affine_map_3d {
 
         impl<Unit, Number> AffineMap3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             /// Create an AffineMap3d from its 12 coefficients.
             pub const fn new(coefficients: [[Number; 4]; 3]) -> Self {
@@ -26,9 +25,10 @@ macro_rules! inner_define_affine_map_3d {
             }
 
             // Unit conversion.
-            pub fn convert<DestUnit: MeasurementUnit<Property = Unit::Property>>(
-                &self,
-            ) -> AffineMap3d<DestUnit, Number> {
+            pub fn convert<DestUnit>(&self) -> AffineMap3d<DestUnit, Number>
+            where
+                DestUnit: MeasurementUnit<Property = Unit::Property>,
+            {
                 let factor = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
                 AffineMap3d::<DestUnit, Number>::new([
                     [
@@ -67,13 +67,14 @@ macro_rules! inner_define_affine_map_3d {
             // Rotation by an angle measure around a unit vector
             // applied to a point.
             // Precondition: unit_vector.squared_norm().value == 1
-            pub fn rotation<AngleUnit: AngleMeasurementUnit, AxisUnit: MeasurementUnit>(
+            pub fn rotation<AngleUnit, AxisUnit>(
                 fixed_point: MeasurePoint3d<Unit, Number>,
                 unit_vector: Measure3d<AxisUnit, Number>,
                 angle: Measure<AngleUnit, Number>,
             ) -> Self
             where
-                AxisUnit::Property: VectorProperty,
+                AngleUnit: AngleMeasurementUnit,
+                AxisUnit: MeasurementUnit<Property: VectorProperty>,
             {
                 let fpx = fixed_point.values[0];
                 let fpy = fixed_point.values[1];
@@ -364,9 +365,8 @@ macro_rules! inner_define_affine_map_3d {
 
         impl<Unit, Number> Default for AffineMap3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             // It returns the identity transformation.
             fn default() -> Self {
@@ -381,8 +381,7 @@ macro_rules! inner_define_affine_map_3d {
         // AffineMap3d == AffineMap3d -> bool
         impl<Unit, Number> PartialEq<AffineMap3d<Unit, Number>> for AffineMap3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
             fn eq(&self, other: &AffineMap3d<Unit, Number>) -> bool {
@@ -393,8 +392,7 @@ macro_rules! inner_define_affine_map_3d {
         // AffineMap3d.clone() -> AffineMap3d
         impl<Unit, Number> Clone for AffineMap3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
             fn clone(&self) -> Self {
@@ -404,8 +402,7 @@ macro_rules! inner_define_affine_map_3d {
 
         impl<Unit> From<AffineMap3d<Unit, f32>> for AffineMap3d<Unit, f64>
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
         {
             fn from(m: AffineMap3d<Unit, f32>) -> Self {
                 Self::new([
@@ -434,9 +431,8 @@ macro_rules! inner_define_affine_map_3d {
         // format!("{}", AffineMap3d)
         impl<Unit, Number> fmt::Display for AffineMap3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(
@@ -450,9 +446,8 @@ macro_rules! inner_define_affine_map_3d {
         // format!("{:?}", AffineMap3d)
         impl<Unit, Number> fmt::Debug for AffineMap3d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(

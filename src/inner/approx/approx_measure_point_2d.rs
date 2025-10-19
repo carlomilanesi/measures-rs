@@ -1,6 +1,6 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_approx_measure_point_2d {
-    {$with_approx:ident} => {
+    { $with_approx:ident } => {
         /// Approximate 2d absolute measure, with static unit of measurement and value type,
         /// and with dynamic values, variances, and covariances.
         pub struct ApproxMeasurePoint2d<Unit, Number = f64>
@@ -15,9 +15,8 @@ macro_rules! inner_define_approx_measure_point_2d {
 
         impl<Unit, Number> ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             pub const fn with_covariances(values: [Number; 2], covariances: [[Number; 2]; 2]) -> Self {
                 Self {
@@ -45,9 +44,10 @@ macro_rules! inner_define_approx_measure_point_2d {
                 ApproxMeasurePoint::<Unit, Number>::with_variance(self.values[02], self.covariances[2][2])
             }
 
-            pub fn convert<DestUnit: MeasurementUnit<Property = Unit::Property>>(
-                &self,
-            ) -> ApproxMeasurePoint2d<DestUnit, Number> {
+            pub fn convert<DestUnit>(&self) -> ApproxMeasurePoint2d<DestUnit, Number>
+            where
+                DestUnit: MeasurementUnit<Property = Unit::Property>,
+            {
                 let ratio = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
                 let offset = Number::from_f64((Unit::OFFSET - DestUnit::OFFSET) / DestUnit::RATIO);
                 let r2 = ratio * ratio;
@@ -102,9 +102,8 @@ macro_rules! inner_define_approx_measure_point_2d {
 
         impl<Unit, Number> Default for ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             // It returns the origin.
             fn default() -> Self {
@@ -117,8 +116,7 @@ macro_rules! inner_define_approx_measure_point_2d {
 
         impl<Unit> From<ApproxMeasurePoint2d<Unit, f32>> for ApproxMeasurePoint2d<Unit, f64>
         where
-            Unit: MeasurementUnit,
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
         {
             fn from(m: ApproxMeasurePoint2d<Unit, f32>) -> Self {
                 Self::with_covariances(
@@ -134,9 +132,8 @@ macro_rules! inner_define_approx_measure_point_2d {
         // ApproxMeasurePoint2d + ApproxMeasure2d -> ApproxMeasurePoint2d
         impl<Unit, Number> Add<ApproxMeasure2d<Unit, Number>> for ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn add(self, other: ApproxMeasure2d<Unit, Number>) -> Self::Output {
@@ -153,9 +150,8 @@ macro_rules! inner_define_approx_measure_point_2d {
         // ApproxMeasurePoint2d += ApproxMeasure2d
         impl<Unit, Number> AddAssign<ApproxMeasure2d<Unit, Number>> for ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn add_assign(&mut self, other: ApproxMeasure2d<Unit, Number>) {
                 self.values[0] += other.values[0];
@@ -166,9 +162,8 @@ macro_rules! inner_define_approx_measure_point_2d {
         // ApproxMeasurePoint2d - ApproxMeasure2d -> ApproxMeasurePoint2d
         impl<Unit, Number> Sub<ApproxMeasure2d<Unit, Number>> for ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = Self;
             fn sub(self, other: ApproxMeasure2d<Unit, Number>) -> Self::Output {
@@ -185,9 +180,8 @@ macro_rules! inner_define_approx_measure_point_2d {
         // ApproxMeasurePoint2d -= ApproxMeasure2d
         impl<Unit, Number> SubAssign<ApproxMeasure2d<Unit, Number>> for ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn sub_assign(&mut self, other: ApproxMeasure2d<Unit, Number>) {
                 self.values[0] -= other.values[0];
@@ -198,9 +192,8 @@ macro_rules! inner_define_approx_measure_point_2d {
         /// measure point 2d - measure point 2d -> measure 2d
         impl<Unit, Number> Sub<ApproxMeasurePoint2d<Unit, Number>> for ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             type Output = ApproxMeasure2d<Unit, Number>;
             fn sub(self, other: ApproxMeasurePoint2d<Unit, Number>) -> Self::Output {
@@ -215,13 +208,14 @@ macro_rules! inner_define_approx_measure_point_2d {
         }
 
         /// weighted_midpoint_2d(measure point 2d, measure point 2d, weight) -> measure point 2d
-        pub fn approx_weighted_midpoint_2d<Unit: MeasurementUnit, Number: ArithmeticOps>(
+        pub fn approx_weighted_midpoint_2d<Unit, Number>(
             p1: ApproxMeasurePoint2d<Unit, Number>,
             p2: ApproxMeasurePoint2d<Unit, Number>,
             weight1: Number,
         ) -> ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
+            Number: ArithmeticOps,
         {
             let weight2 = Number::ONE - weight1;
             ApproxMeasurePoint2d::<Unit, Number>::with_covariances(
@@ -234,12 +228,13 @@ macro_rules! inner_define_approx_measure_point_2d {
         }
 
         /// midpoint_2d(measure point 2d, measure point 2d) -> measure point 2d
-        pub fn approx_midpoint_2d<Unit: MeasurementUnit, Number: ArithmeticOps>(
+        pub fn approx_midpoint_2d<Unit, Number>(
             p1: ApproxMeasurePoint2d<Unit, Number>,
             p2: ApproxMeasurePoint2d<Unit, Number>,
         ) -> ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
+            Number: ArithmeticOps,
         {
             ApproxMeasurePoint2d::<Unit, Number>::with_covariances(
                 [
@@ -251,12 +246,13 @@ macro_rules! inner_define_approx_measure_point_2d {
         }
 
         /// barycentric_combination_2d(array of 2d measure points, array of weights) -> 2d measure point
-        pub fn approx_barycentric_combination_2d<Unit: MeasurementUnit, Number: ArithmeticOps>(
+        pub fn approx_barycentric_combination_2d<Unit, Number>(
             points: &[ApproxMeasurePoint2d<Unit, Number>],
             weights: &[Number],
         ) -> ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit::Property: VectorProperty,
+            Unit: MeasurementUnit<Property: VectorProperty>,
+            Number: ArithmeticOps,
         {
             ApproxMeasurePoint2d::<Unit, Number>::with_covariances(
                 [
@@ -279,9 +275,8 @@ macro_rules! inner_define_approx_measure_point_2d {
         impl<Unit, Number> PartialEq<ApproxMeasurePoint2d<Unit, Number>>
             for ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn eq(&self, other: &ApproxMeasurePoint2d<Unit, Number>) -> bool {
                 self.values == other.values && self.covariances == other.covariances
@@ -291,9 +286,8 @@ macro_rules! inner_define_approx_measure_point_2d {
         // ApproxMeasurePoint2d.clone() -> ApproxMeasurePoint2d
         impl<Unit, Number> Clone for ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn clone(&self) -> Self {
                 *self
@@ -303,18 +297,16 @@ macro_rules! inner_define_approx_measure_point_2d {
         // ApproxMeasurePoint2d = ApproxMeasurePoint2d
         impl<Unit, Number> Copy for ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
         }
 
         // format!("{}", ApproxMeasurePoint2d)
         impl<Unit, Number> fmt::Display for ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at (")?;
@@ -333,9 +325,8 @@ macro_rules! inner_define_approx_measure_point_2d {
         // format!("{:?}", ApproxMeasurePoint2d)
         impl<Unit, Number> fmt::Debug for ApproxMeasurePoint2d<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
-            Unit::Property: VectorProperty,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at ")?;

@@ -35,7 +35,6 @@ This is no different than other Rust projects.
 ```shell
 git clone https://github.com/carlomilanesi/measures-rs
 cd measures-rs
-cargo build
 ```
 
 ### Useful Commands
@@ -47,6 +46,9 @@ Instead, use the following commands:
 ```sh
 # To compile all the library code and run all the tests:
 cargo t
+
+# To compile all the library code and run all quick tests (this is the command to run after any change):
+cargo test --quiet test_
 
 # To format all the code:
 ./format_measures.sh
