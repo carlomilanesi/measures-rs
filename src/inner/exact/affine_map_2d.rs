@@ -213,7 +213,8 @@ macro_rules! inner_define_affine_map_2d {
             Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
-            // It returns the identity transformation.
+            /// AffineMap2d::default() -> AffineMap2d
+            /// It returns the identity transformation.
             fn default() -> Self {
                 Self::new([
                     [Number::ONE, Number::ZERO, Number::ZERO],

@@ -61,9 +61,10 @@ macro_rules! inner_define_signed_direction {
             }
 
             /// SignedDirection.lossless_into() -> SignedDirection
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                self,
-            ) -> SignedDirection<Unit, DestNumber> {
+            pub fn lossless_into<DestNumber>(self) -> SignedDirection<Unit, DestNumber>
+            where
+                DestNumber: ArithmeticOps + From<Number>,
+            {
                 SignedDirection::<Unit, DestNumber>::new(DestNumber::from(self.value))
             }
 
@@ -82,7 +83,8 @@ macro_rules! inner_define_signed_direction {
             Unit: AngleMeasurementUnit,
             Number: ArithmeticOps,
         {
-            // It returns the zero direction (eastbound).
+            /// SignedDirection::default() -> SignedDirection
+            /// It returns the zero direction (to the right).
             fn default() -> Self {
                 Self::new(Number::ZERO)
             }

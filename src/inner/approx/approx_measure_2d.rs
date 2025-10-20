@@ -128,7 +128,8 @@ macro_rules! inner_define_approx_measure_2d {
             Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
-            // It returns the zero vector.
+            /// ApproxMeasure2d::default() -> ApproxMeasure2d
+            /// It returns the zero vector, with no uncertainty.
             fn default() -> Self {
                 Self::with_covariances(
                     [Number::ZERO, Number::ZERO],

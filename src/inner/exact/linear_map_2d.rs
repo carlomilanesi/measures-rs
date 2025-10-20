@@ -175,7 +175,8 @@ macro_rules! inner_define_linear_map_2d {
         where
             Number: ArithmeticOps,
         {
-            // It returns the identity transformation.
+            /// LinearMap2d::default() -> LinearMap2d
+            /// It returns the identity transformation.
             fn default() -> Self {
                 Self::new([[Number::ONE, Number::ZERO], [Number::ZERO, Number::ONE]])
             }

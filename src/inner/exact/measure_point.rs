@@ -82,7 +82,8 @@ macro_rules! inner_define_measure_point {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
-            // It returns the origin.
+            /// MeasurePoint::default() -> MeasurePoint
+            /// It returns the origin.
             fn default() -> Self {
                 Self::new(Number::ZERO)
             }
@@ -116,59 +117,62 @@ macro_rules! inner_define_measure_point {
             }
         }
 
-        /// MeasurePoint + Measure -> MeasurePoint
         impl<Unit, Number> Add<Measure<Unit, Number>> for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
             type Output = Self;
+
+            /// MeasurePoint + Measure -> MeasurePoint
             fn add(self, other: Measure<Unit, Number>) -> Self::Output {
                 Self::new(self.value + other.value)
             }
         }
 
-        /// MeasurePoint += Measure
         impl<Unit, Number> AddAssign<Measure<Unit, Number>> for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
+            /// MeasurePoint += Measure
             fn add_assign(&mut self, other: Measure<Unit, Number>) {
                 self.value += other.value;
             }
         }
 
-        /// MeasurePoint - Measure -> MeasurePoint
         impl<Unit, Number> Sub<Measure<Unit, Number>> for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
             type Output = Self;
+
+            /// MeasurePoint - Measure -> MeasurePoint
             fn sub(self, other: Measure<Unit, Number>) -> Self::Output {
                 Self::new(self.value - other.value)
             }
         }
 
-        /// MeasurePoint -= Measure
         impl<Unit, Number> SubAssign<Measure<Unit, Number>> for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
+            /// MeasurePoint -= Measure
             fn sub_assign(&mut self, other: Measure<Unit, Number>) {
                 self.value -= other.value;
             }
         }
 
-        /// MeasurePoint - MeasurePoint -> Measure
         impl<Unit, Number> Sub<MeasurePoint<Unit, Number>> for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
             type Output = Measure<Unit, Number>;
+
+            /// MeasurePoint - MeasurePoint -> Measure
             fn sub(self, other: MeasurePoint<Unit, Number>) -> Self::Output {
                 Self::Output::new(self.value - other.value)
             }
@@ -239,34 +243,34 @@ macro_rules! inner_define_measure_point {
             }
         }
 
-        /// MeasurePoint == MeasurePoint -> bool
         impl<Unit, Number> PartialEq<MeasurePoint<Unit, Number>> for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
+            /// MeasurePoint == MeasurePoint -> bool
             fn eq(&self, other: &MeasurePoint<Unit, Number>) -> bool {
                 self.value == other.value
             }
         }
 
-        /// MeasurePoint < MeasurePoint -> bool
         impl<Unit, Number> PartialOrd<MeasurePoint<Unit, Number>> for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
+            /// MeasurePoint < MeasurePoint -> bool
             fn partial_cmp(&self, other: &MeasurePoint<Unit, Number>) -> Option<core::cmp::Ordering> {
                 self.value.partial_cmp(&other.value)
             }
         }
 
-        /// MeasurePoint.clone() -> Measure
         impl<Unit, Number> Clone for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
+            /// MeasurePoint.clone() -> Measure
             fn clone(&self) -> Self {
                 *self
             }
@@ -280,12 +284,12 @@ macro_rules! inner_define_measure_point {
         {
         }
 
-        /// format!("{}", MeasurePoint)
         impl<Unit, Number> fmt::Display for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
+            /// format!("{}", MeasurePoint)
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at ")?;
                 fmt::Display::fmt(&self.value, formatter)?;
@@ -293,12 +297,12 @@ macro_rules! inner_define_measure_point {
             }
         }
 
-        /// format!("{:?}", MeasurePoint)
         impl<Unit, Number> fmt::Debug for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
+            /// format!("{:?}", MeasurePoint)
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at ")?;
                 fmt::Display::fmt(&self.value, formatter)?;

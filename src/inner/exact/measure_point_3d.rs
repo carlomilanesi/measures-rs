@@ -36,7 +36,7 @@ macro_rules! inner_define_measure_point_3d {
                 MeasurePoint::<Unit, Number>::new(self.values[2])
             }
 
-            pub fn convert<DestUnit>(&self) -> MeasurePoint3d<DestUnit, Number>
+            pub fn convert<DestUnit>(self) -> MeasurePoint3d<DestUnit, Number>
             where
                 DestUnit: MeasurementUnit<Property = Unit::Property>,
             {
@@ -50,9 +50,10 @@ macro_rules! inner_define_measure_point_3d {
             }
 
             /// MeasurePoint3d.lossless_into() -> MeasurePoint3d
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                self,
-            ) -> MeasurePoint3d<Unit, DestNumber> {
+            pub fn lossless_into<DestNumber>(self) -> MeasurePoint3d<Unit, DestNumber>
+            where
+                DestNumber: ArithmeticOps + From<Number>,
+            {
                 MeasurePoint3d::<Unit, DestNumber>::new([
                     DestNumber::from(self.values[0]),
                     DestNumber::from(self.values[1]),
@@ -76,7 +77,8 @@ macro_rules! inner_define_measure_point_3d {
             Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
-            // It returns the origin.
+            /// MeasurePoint3d::default() -> MeasurePoint3d
+            /// It returns the origin.
             fn default() -> Self {
                 Self::new([Number::ZERO, Number::ZERO, Number::ZERO])
             }

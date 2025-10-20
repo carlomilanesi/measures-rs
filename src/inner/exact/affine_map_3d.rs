@@ -4,7 +4,7 @@ macro_rules! inner_define_affine_map_3d {
         /// Affine transformation of `MeasurePoint3d` objects.
         pub struct AffineMap3d<Unit, Number = f64>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
             pub c: [[Number; 4]; 3],
@@ -106,10 +106,13 @@ macro_rules! inner_define_affine_map_3d {
             // Projection onto a line identified by a unit vector
             // applied to a point.
             // Precondition: unit_vector.squared_norm().value == 1
-            pub fn projection_onto_line<AxisUnit: MeasurementUnit>(
+            pub fn projection_onto_line<AxisUnit>(
                 fixed_point: MeasurePoint3d<Unit, Number>,
                 unit_vector: Measure3d<AxisUnit, Number>,
-            ) -> Self {
+            ) -> Self
+            where
+                AxisUnit: MeasurementUnit<Property: VectorProperty>,
+            {
                 let fpx = fixed_point.values[0];
                 let fpy = fixed_point.values[1];
                 let fpz = fixed_point.values[2];
@@ -141,10 +144,13 @@ macro_rules! inner_define_affine_map_3d {
             // Projection onto a plane whose normal is identified by a unit vector.
             // applied to a point.
             // Precondition: unit_vector.squared_norm().value == 1
-            pub fn projection_onto_plane<AxisUnit: MeasurementUnit>(
+            pub fn projection_onto_plane<AxisUnit>(
                 fixed_point: MeasurePoint3d<Unit, Number>,
                 unit_vector: Measure3d<AxisUnit, Number>,
-            ) -> Self {
+            ) -> Self
+            where
+                AxisUnit: MeasurementUnit<Property: VectorProperty>,
+            {
                 let fpx = fixed_point.values[0];
                 let fpy = fixed_point.values[1];
                 let fpz = fixed_point.values[2];
@@ -172,10 +178,13 @@ macro_rules! inner_define_affine_map_3d {
             // Reflection over a line identified by a unit vector.
             // applied to a point.
             // Precondition: unit_vector.squared_norm().value == 1
-            pub fn reflection_over_line<AxisUnit: MeasurementUnit>(
+            pub fn reflection_over_line<AxisUnit>(
                 fixed_point: MeasurePoint3d<Unit, Number>,
                 unit_vector: Measure3d<AxisUnit, Number>,
-            ) -> Self {
+            ) -> Self
+            where
+                AxisUnit: MeasurementUnit<Property: VectorProperty>,
+            {
                 let two = Number::ONE + Number::ONE;
                 let fpx = fixed_point.values[0];
                 let fpy = fixed_point.values[1];
@@ -202,10 +211,13 @@ macro_rules! inner_define_affine_map_3d {
             // Reflection over a plane whose normal is identified by a unit vector.
             // applied to a point.
             // Precondition: unit_vector.squared_norm().value == 1
-            pub fn reflection_over_plane<AxisUnit: MeasurementUnit>(
+            pub fn reflection_over_plane<AxisUnit>(
                 fixed_point: MeasurePoint3d<Unit, Number>,
                 unit_vector: Measure3d<AxisUnit, Number>,
-            ) -> Self {
+            ) -> Self
+            where
+                AxisUnit: MeasurementUnit<Property: VectorProperty>,
+            {
                 let minus_two = -(Number::ONE + Number::ONE);
                 let fpx = fixed_point.values[0];
                 let fpy = fixed_point.values[1];
@@ -368,7 +380,8 @@ macro_rules! inner_define_affine_map_3d {
             Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
-            // It returns the identity transformation.
+            /// AffineMap3d::default() -> AffineMap3d
+            /// It returns the identity transformation.
             fn default() -> Self {
                 Self::new([
                     [Number::ONE, Number::ZERO, Number::ZERO, Number::ZERO],

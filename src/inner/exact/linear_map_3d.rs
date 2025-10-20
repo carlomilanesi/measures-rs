@@ -44,9 +44,10 @@ macro_rules! inner_define_linear_map_3d {
 
             // Projection onto a line identified by a unit vector.
             // Precondition: unit_vector.squared_norm().value == 1
-            pub fn projection_onto_line<Unit: MeasurementUnit>(
-                unit_vector: Measure3d<Unit, Number>,
-            ) -> Self {
+            pub fn projection_onto_line<Unit>(unit_vector: Measure3d<Unit, Number>) -> Self
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+            {
                 Self {
                     c: [
                         [
@@ -70,9 +71,10 @@ macro_rules! inner_define_linear_map_3d {
 
             // Projection onto a plane whose normal is identified by a unit vector.
             // Precondition: unit_vector.squared_norm().value == 1
-            pub fn projection_onto_plane<Unit: MeasurementUnit>(
-                unit_vector: Measure3d<Unit, Number>,
-            ) -> Self {
+            pub fn projection_onto_plane<Unit>(unit_vector: Measure3d<Unit, Number>) -> Self
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+            {
                 Self {
                     c: [
                         [
@@ -98,9 +100,10 @@ macro_rules! inner_define_linear_map_3d {
 
             // Reflection over a line identified by a unit vector.
             // Precondition: unit_vector.squared_norm().value == 1
-            pub fn reflection_over_line<Unit: MeasurementUnit>(
-                unit_vector: Measure3d<Unit, Number>,
-            ) -> Self {
+            pub fn reflection_over_line<AxisUnit>(unit_vector: Measure3d<AxisUnit, Number>) -> Self
+            where
+                AxisUnit: MeasurementUnit<Property: VectorProperty>,
+            {
                 let two = Number::ONE + Number::ONE;
                 Self {
                     c: [
@@ -125,9 +128,10 @@ macro_rules! inner_define_linear_map_3d {
 
             // Reflection over a plane whose normal is identified by a unit vector.
             // Precondition: unit_vector.squared_norm().value == 1
-            pub fn reflection_over_plane<Unit: MeasurementUnit>(
-                unit_vector: Measure3d<Unit, Number>,
-            ) -> Self {
+            pub fn reflection_over_plane<Unit>(unit_vector: Measure3d<Unit, Number>) -> Self
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+            {
                 let minus_two = -(Number::ONE + Number::ONE);
                 Self {
                     c: [
@@ -278,7 +282,8 @@ macro_rules! inner_define_linear_map_3d {
         where
             Number: ArithmeticOps,
         {
-            // It returns the identity transformation.
+            /// LinearMap3d::default() -> LinearMap3d
+            /// It returns the identity transformation.
             fn default() -> Self {
                 Self::new([
                     [Number::ONE, Number::ZERO, Number::ZERO],

@@ -89,9 +89,10 @@ macro_rules! inner_define_approx_measure_3d {
             }
 
             /// ApproxMeasure3d.lossless_into() -> ApproxMeasure3d
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                self,
-            ) -> ApproxMeasure3d<Unit, DestNumber> {
+            pub fn lossless_into<DestNumber>(self) -> ApproxMeasure3d<Unit, DestNumber>
+            where
+                DestNumber: ArithmeticOps + From<Number>,
+            {
                 ApproxMeasure3d::<Unit, DestNumber>::with_covariances(
                     [
                         self.values[0].into(),
@@ -186,7 +187,8 @@ macro_rules! inner_define_approx_measure_3d {
             Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
-            // It returns the zero vector.
+            /// ApproxMeasure3d::default() -> ApproxMeasure3d
+            /// It returns the zero vector, with no uncertainty.
             fn default() -> Self {
                 Self::with_covariances(
                     [Number::ZERO, Number::ZERO, Number::ZERO],

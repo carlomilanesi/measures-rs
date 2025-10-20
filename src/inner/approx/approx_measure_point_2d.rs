@@ -63,9 +63,10 @@ macro_rules! inner_define_approx_measure_point_2d {
                 )
             }
 
-            pub fn lossless_into<DestNumber: ArithmeticOps + From<Number>>(
-                &self,
-            ) -> ApproxMeasurePoint2d<Unit, DestNumber> {
+            pub fn lossless_into<DestNumber>(self) -> ApproxMeasurePoint2d<Unit, DestNumber>
+            where
+                DestNumber: ArithmeticOps + From<Number>,
+            {
                 ApproxMeasurePoint2d::<Unit, DestNumber>::with_covariances(
                     [
                         DestNumber::from(self.values[0]),
@@ -105,7 +106,8 @@ macro_rules! inner_define_approx_measure_point_2d {
             Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
-            // It returns the origin.
+            /// ApproxMeasurePoint2d::default() -> ApproxMeasurePoint2d
+            /// It returns the origin, with no uncertainty.
             fn default() -> Self {
                 Self::with_covariances(
                     [Number::ZERO, Number::ZERO],
