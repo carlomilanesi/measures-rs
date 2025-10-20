@@ -1,7 +1,7 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_approx_measure_point {
     { $exact:tt } => {
-        /// Approximate point measurement with static unit of measurement and value type,
+        /// Approximate point measurement with generic unit of measurement and value type,
         /// and with dynamic value and variance.
         pub struct ApproxMeasurePoint<Unit, Number = f64>
         where
@@ -350,7 +350,8 @@ macro_rules! inner_define_approx_measure_point {
         {
         }
 
-        // format!("{}", ApproxMeasurePoint)
+        /// format!("{}", ApproxMeasurePoint) -> String
+        /// ApproxMeasurePoint.to_string() -> String
         impl<Unit, Number> fmt::Display for ApproxMeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,

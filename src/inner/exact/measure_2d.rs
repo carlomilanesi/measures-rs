@@ -393,7 +393,8 @@ macro_rules! inner_define_measure_2d {
             Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
-            /// format!("{}", Measure2d)
+            /// format!("{}", Measure2d) -> String
+            /// Measure2d.to_string() -> String
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("(")?;
                 fmt::Display::fmt(&self.values[0], formatter)?;

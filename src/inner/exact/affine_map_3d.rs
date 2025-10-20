@@ -441,7 +441,8 @@ macro_rules! inner_define_affine_map_3d {
             }
         }
 
-        // format!("{}", AffineMap3d)
+        /// format!("{}", AffineMap3d) -> String
+        /// AffineMap3d.to_string() -> String
         impl<Unit, Number> fmt::Display for AffineMap3d<Unit, Number>
         where
             Unit: MeasurementUnit<Property: VectorProperty>,

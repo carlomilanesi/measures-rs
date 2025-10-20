@@ -237,7 +237,7 @@ macro_rules! inner_define_measure_point {
                 self.convert::<Radian>().value.tan()
             }
 
-            /// MeasurePoint.sin_cos() -> Number
+            /// MeasurePoint.sin_cos() -> (Number, Number)
             fn sin_cos(self) -> (Self::Output, Self::Output) {
                 self.convert::<Radian>().value.sin_cos()
             }
@@ -270,7 +270,7 @@ macro_rules! inner_define_measure_point {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
-            /// MeasurePoint.clone() -> Measure
+            /// MeasurePoint.clone() -> MeasurePoint
             fn clone(&self) -> Self {
                 *self
             }
@@ -289,7 +289,8 @@ macro_rules! inner_define_measure_point {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
-            /// format!("{}", MeasurePoint)
+            /// format!("{}", MeasurePoint) -> String
+            /// MeasurePoint.to_string() -> String
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at ")?;
                 fmt::Display::fmt(&self.value, formatter)?;

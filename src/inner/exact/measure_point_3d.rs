@@ -1,9 +1,13 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_point_3d {
     { $with_approx:ident } => {
-        /// 3D absolute measure with static unit of measurement, static value type,
+        /// 3D absolute measure with generic unit of measurement, generic value type,
         /// and with 3 dynamic components.
-        pub struct MeasurePoint3d<Unit, Number = f64> {
+        pub struct MeasurePoint3d<Unit, Number = f64>
+        where
+            Unit: MeasurementUnit<Property: VectorProperty>,
+            Number: ArithmeticOps,
+        {
             pub values: [Number; 3],
             phantom: PhantomData<Unit>,
         }
@@ -259,12 +263,13 @@ macro_rules! inner_define_measure_point_3d {
         {
         }
 
-        // format!("{}", MeasurePoint3d)
         impl<Unit, Number> fmt::Display for MeasurePoint3d<Unit, Number>
         where
             Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
+            /// format!("{}", MeasurePoint3d) -> String
+            /// MeasurePoint3d.to_string() -> String
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at (")?;
                 fmt::Display::fmt(&self.values[0], formatter)?;

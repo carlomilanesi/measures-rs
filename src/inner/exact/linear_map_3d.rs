@@ -323,7 +323,8 @@ macro_rules! inner_define_linear_map_3d {
             }
         }
 
-        // format!("{}", LinearMap3d)
+        /// format!("{}", LinearMap3d) -> String
+        /// LinearMap3d.to_string() -> String
         impl<Number: ArithmeticOps> fmt::Display for LinearMap3d<Number> {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(

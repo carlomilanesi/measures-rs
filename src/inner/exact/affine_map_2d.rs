@@ -4,7 +4,7 @@ macro_rules! inner_define_affine_map_2d {
         /// Affine transformation of `MeasurePoint2d` objects.
         pub struct AffineMap2d<Unit, Number = f64>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
             pub c: [[Number; 3]; 2],
@@ -257,7 +257,8 @@ macro_rules! inner_define_affine_map_2d {
             }
         }
 
-        // format!("{}", AffineMap2d)
+        /// format!("{}", AffineMap2d) -> String
+        /// AffineMap2d.to_string() -> String
         impl<Unit, Number> fmt::Display for AffineMap2d<Unit, Number>
         where
             Unit: MeasurementUnit<Property: VectorProperty>,

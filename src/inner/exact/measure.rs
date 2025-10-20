@@ -390,7 +390,8 @@ macro_rules! inner_define_measure {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
-            /// format!("{}", Measure)
+            /// format!("{}", Measure) -> String
+            /// Measure.to_string() -> String
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 fmt::Display::fmt(&self.value, formatter)?;
                 formatter.write_str(Unit::SUFFIX)
@@ -420,7 +421,8 @@ macro_rules! inner_define_measure {
             Unit: MeasurementUnit,
             Number: ArithmeticOps,
         {
-            /// format!("{}", Measure.decibels_formatter())
+            /// format!("{}", Measure.decibels_formatter()) -> String
+            /// Measure.decibels_formatter().to_string() -> String
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 fmt::Display::fmt(&self.0.value.to_decibels(), formatter)?;
                 formatter.write_str(" dB")?;

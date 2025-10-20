@@ -5,7 +5,7 @@ macro_rules! inner_define_measure_point_2d {
         /// and with 2 dynamic components.
         pub struct MeasurePoint2d<Unit, Number = f64>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
             pub values: [Number; 2],
@@ -268,7 +268,8 @@ macro_rules! inner_define_measure_point_2d {
             Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
-            /// format!("{}", MeasurePoint2d)
+            /// format!("{}", MeasurePoint2d) -> String
+            /// MeasurePoint2d.to_string() -> String
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at (")?;
                 fmt::Display::fmt(&self.values[0], formatter)?;

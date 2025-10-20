@@ -1,7 +1,7 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_3d {
     { $with_approx:ident } => {
-        /// 3D relative measure with static unit of measurement, static value type,
+        /// 3D relative measure with generic unit of measurement, generic value type,
         /// and with 3 dynamic components.
         pub struct Measure3d<Unit, Number = f64>
         where
@@ -398,7 +398,8 @@ macro_rules! inner_define_measure_3d {
             Unit: MeasurementUnit<Property: VectorProperty>,
             Number: ArithmeticOps,
         {
-            /// format!("{}", Measure3d)
+            /// format!("{}", Measure3d) -> String
+            /// Measure3d.to_string() -> String
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("(")?;
                 fmt::Display::fmt(&self.values[0], formatter)?;

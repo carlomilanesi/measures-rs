@@ -1,7 +1,7 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_approx_measure_2d {
     { $with_approx:ident } => {
-        /// Approximate 2d relative measure, with static unit of measurement and value type,
+        /// Approximate 2d relative measure, with generic unit of measurement and value type,
         /// and with dynamic values, variances, and covariances.
         pub struct ApproxMeasure2d<Unit, Number = f64>
         where
@@ -440,7 +440,8 @@ macro_rules! inner_define_approx_measure_2d {
         {
         }
 
-        /// format!("{}", ApproxMeasure2d)
+        /// format!("{}", ApproxMeasure2d) -> String
+        /// ApproxMeasure2d.to_string() -> String
         impl<Unit, Number> fmt::Display for ApproxMeasure2d<Unit, Number>
         where
             Unit: MeasurementUnit<Property: VectorProperty>,

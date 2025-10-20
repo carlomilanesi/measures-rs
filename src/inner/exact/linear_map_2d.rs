@@ -211,7 +211,8 @@ macro_rules! inner_define_linear_map_2d {
             }
         }
 
-        // format!("{}", LinearMap2d)
+        /// format!("{}", LinearMap2d) -> String
+        /// LinearMap2d.to_string() -> String
         impl<Number: ArithmeticOps> fmt::Display for LinearMap2d<Number> {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(
