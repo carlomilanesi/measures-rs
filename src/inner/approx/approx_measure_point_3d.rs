@@ -51,7 +51,7 @@ macro_rules! inner_define_approx_measure_point_3d {
                 ApproxMeasurePoint::<Unit, Number>::with_variance(self.values[02], self.covariances[2][2])
             }
 
-            pub fn convert<DestUnit>(&self) -> ApproxMeasurePoint3d<DestUnit, Number>
+            pub fn convert<DestUnit>(self) -> ApproxMeasurePoint3d<DestUnit, Number>
             where
                 DestUnit: MeasurementUnit<Property = Unit::Property>,
             {

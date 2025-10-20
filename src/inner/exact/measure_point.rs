@@ -26,7 +26,7 @@ macro_rules! inner_define_measure_point {
             }
 
             /// MeasurePoint.convert() -> MeasurePoint
-            pub fn convert<DestUnit>(&self) -> MeasurePoint<DestUnit, Number>
+            pub fn convert<DestUnit>(self) -> MeasurePoint<DestUnit, Number>
             where
                 DestUnit: MeasurementUnit<Property = Unit::Property>,
             {
@@ -46,7 +46,7 @@ macro_rules! inner_define_measure_point {
             }
 
             /// MeasurePoint.lossy_into() -> MeasurePoint
-            pub fn lossy_into<DestNumber>(&self) -> MeasurePoint<Unit, DestNumber>
+            pub fn lossy_into<DestNumber>(self) -> MeasurePoint<Unit, DestNumber>
             where
                 DestNumber: ArithmeticOps + LossyFrom<Number>,
             {
@@ -97,6 +97,7 @@ macro_rules! inner_define_measure_point {
         where
             Unit: MeasurementUnit,
         {
+            /// MeasurePoint<f64>::from(MeasurePoint<f32>) -> MeasurePoint<f64>
             fn from(measure_point: MeasurePoint<Unit, f32>) -> Self {
                 Self::new(measure_point.value as f64)
             }
@@ -108,6 +109,7 @@ macro_rules! inner_define_measure_point {
                 Unit: MeasurementUnit,
                 Number: ArithmeticOps,
             {
+                /// MeasurePoint::from(ApproxMeasurePoint) -> MeasurePoint
                 fn from(am: ApproxMeasurePoint<Unit, Number>) -> Self {
                     Self::new(am.value)
                 }
@@ -172,7 +174,7 @@ macro_rules! inner_define_measure_point {
             }
         }
 
-        /// weighted_midpoint(MeasurePoint, MeasurePoint, weight) -> MeasurePoint
+        /// weighted_midpoint(MeasurePoint, MeasurePoint, Number) -> MeasurePoint
         pub fn weighted_midpoint<Unit, Number>(
             p1: MeasurePoint<Unit, Number>,
             p2: MeasurePoint<Unit, Number>,

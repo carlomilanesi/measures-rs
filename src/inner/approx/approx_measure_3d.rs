@@ -56,7 +56,7 @@ macro_rules! inner_define_approx_measure_3d {
             }
 
             /// Measure3d.convert() -> Measure3d
-            pub fn convert<DestUnit>(&self) -> ApproxMeasure3d<DestUnit, Number>
+            pub fn convert<DestUnit>(self) -> ApproxMeasure3d<DestUnit, Number>
             where
                 DestUnit: MeasurementUnit<Property = Unit::Property>,
             {

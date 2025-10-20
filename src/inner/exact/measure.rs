@@ -26,7 +26,7 @@ macro_rules! inner_define_measure {
             }
 
             /// Measure.convert() -> Measure
-            pub fn convert<DestUnit>(&self) -> Measure<DestUnit, Number>
+            pub fn convert<DestUnit>(self) -> Measure<DestUnit, Number>
             where
                 DestUnit: MeasurementUnit<Property = Unit::Property>,
             {
