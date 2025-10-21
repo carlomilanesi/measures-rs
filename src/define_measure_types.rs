@@ -1391,24 +1391,38 @@ macro_rules! measurement_unit {
             const SUFFIX: &'static str = $suffix;
         }
 
-        /// Measure<One> * Measure -> Measure
         impl<Number> core::ops::Mul<Measure<$name, Number>> for Measure<measures::dimensionless::One, Number>
         where
             Number: measures::traits::ArithmeticOps,
         {
             type Output = Measure<$name, Number>;
+
+            /// Measure<One> * Measure -> Measure
             fn mul(self, other: Measure<$name, Number>) -> Measure<$name, Number> {
                 Measure::<$name, Number>::new(self.value * other.value)
             }
         }
 
+        impl<Number> core::ops::Div<Measure<measures::dimensionless::One, Number>> for Measure<$name, Number>
+        where
+            Number: measures::traits::ArithmeticOps,
+        {
+            type Output = Self;
+
+            /// Measure / Measure<One> -> Measure
+            fn div(self, other: Measure<measures::dimensionless::One, Number>) -> Self::Output {
+                Self::new(self.value / other.value)
+            }
+        }
+
         measures::if_all_true! { { $with_2d $vector }
-            /// Measure2d<One> * Measure -> Measure2d
             impl<Number> core::ops::Mul<Measure<$name, Number>> for Measure2d<measures::dimensionless::One, Number>
             where
                 Number: measures::traits::ArithmeticOps,
             {
                 type Output = Measure2d<$name, Number>;
+
+                /// Measure2d<One> * Measure -> Measure2d
                 fn mul(self, other: Measure<$name, Number>) -> Self::Output {
                     Measure2d::<$name, Number>::new([
                         self.values[0] * other.value,
@@ -1417,12 +1431,13 @@ macro_rules! measurement_unit {
                 }
             }
 
-            /// Measure * Measure2d<One> -> Measure2d
             impl<Number> core::ops::Mul<Measure2d<One, Number>> for Measure<$name, Number>
             where
                 Number: measures::traits::ArithmeticOps,
             {
                 type Output = Measure2d<$name, Number>;
+
+                /// Measure * Measure2d<One> -> Measure2d
                 fn mul(self, other: Measure2d<One, Number>) -> Self::Output {
                     Measure2d::<$name, Number>::new([
                         self.value * other.values[0],
@@ -1433,12 +1448,13 @@ macro_rules! measurement_unit {
         }
 
         measures::if_all_true! { { $with_3d $vector }
-            /// Measure3d<One> * Measure -> Measure3d
             impl<Number> core::ops::Mul<Measure<$name, Number>> for Measure3d<measures::dimensionless::One, Number>
             where
                 Number: measures::traits::ArithmeticOps,
             {
                 type Output = Measure3d<$name, Number>;
+
+                /// Measure3d<One> * Measure -> Measure3d
                 fn mul(self, other: Measure<$name, Number>) -> Self::Output {
                     Measure3d::<$name, Number>::new([
                         self.values[0] * other.value,
@@ -1448,12 +1464,13 @@ macro_rules! measurement_unit {
                 }
             }
 
-            /// Measure * Measure3d<One> -> Measure3d
             impl<Number> core::ops::Mul<Measure3d<One, Number>> for Measure<$name, Number>
             where
                 Number: measures::traits::ArithmeticOps,
             {
                 type Output = Measure3d<$name, Number>;
+
+                /// Measure * Measure3d<One> -> Measure3d
                 fn mul(self, other: Measure3d<One, Number>) -> Self::Output {
                     Measure3d::<$name, Number>::new([
                         self.value * other.values[0],
