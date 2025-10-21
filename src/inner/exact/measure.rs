@@ -85,8 +85,10 @@ macro_rules! inner_define_measure {
             }
 
             /// Measure.clamp(Measure, Measure) -> Measure
-            pub fn clamp(self, lower_bound: Self, upper_bound: Self) -> Self {
-                self.max(lower_bound).min(upper_bound)
+            /// It returns a value forced to be between the given bounds.
+            /// `bound1` is not required to be less then or equal to `bound2`.
+            pub fn clamp(self, bound1: Self, bound2: Self) -> Self {
+                self.max(bound1.min(bound2)).min(bound1.max(bound2))
             }
 
             /// Measure.decibels_formatter() -> DecibelsMeasureFormatter
