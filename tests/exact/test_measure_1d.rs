@@ -172,11 +172,11 @@ fn measure_normalized_negative_zero() {
 
 #[test]
 fn measure_min() {
-    let m1 = Measure::<Metre, f32>::new(12.);
-    let m2 = Measure::<Metre, f32>::new(13.);
-    let m3: Measure<Metre, f32> = m1.min(m2);
-    let m4: Measure<Metre, f32> = m2.min(m1);
-    let m5: Measure<Metre, f32> = m1.min(m1);
+    let m1 = Measure::<Metre>::new(12.);
+    let m2 = Measure::<Metre>::new(13.);
+    let m3: Measure<Metre> = m1.min(m2);
+    let m4: Measure<Metre> = m2.min(m1);
+    let m5: Measure<Metre> = m1.min(m1);
     assert_eq!(m3.value, 12.);
     assert_eq!(m4.value, 12.);
     assert_eq!(m5.value, 12.);
@@ -184,11 +184,11 @@ fn measure_min() {
 
 #[test]
 fn measure_max() {
-    let m1 = Measure::<Metre, f32>::new(12.);
-    let m2 = Measure::<Metre, f32>::new(13.);
-    let m3: Measure<Metre, f32> = m1.max(m2);
-    let m4: Measure<Metre, f32> = m2.max(m1);
-    let m5: Measure<Metre, f32> = m1.max(m1);
+    let m1 = Measure::<Metre>::new(12.);
+    let m2 = Measure::<Metre>::new(13.);
+    let m3: Measure<Metre> = m1.max(m2);
+    let m4: Measure<Metre> = m2.max(m1);
+    let m5: Measure<Metre> = m1.max(m1);
     assert_eq!(m3.value, 13.);
     assert_eq!(m4.value, 13.);
     assert_eq!(m5.value, 12.);
@@ -196,9 +196,9 @@ fn measure_max() {
 
 #[test]
 fn measure_clamp() {
-    let m1 = Measure::<Metre, f32>::new(12.);
-    let m2 = Measure::<Metre, f32>::new(13.2);
-    let m3 = Measure::<Metre, f32>::new(14.);
+    let m1 = Measure::<Metre>::new(12.);
+    let m2 = Measure::<Metre>::new(13.2);
+    let m3 = Measure::<Metre>::new(14.);
     assert_eq!(m1.clamp(m2, m3), m2);
     assert_eq!(m1.clamp(m3, m2), m2);
     assert_eq!(m2.clamp(m1, m3), m2);
@@ -449,20 +449,27 @@ fn measure_trigonometry() {
 
     let m = Measure::<Degree>::new(60.);
     assert_eq_64!(m.cos(), 0.5_f64);
-    assert_eq!(m.sin(), three_sqrt * 0.5);
+    assert_eq_64!(m.sin(), three_sqrt * 0.5);
     assert_eq_64!(m.tan(), three_sqrt);
     assert_eq_64!(m.sin_cos().0, three_sqrt * 0.5);
     assert_eq_64!(m.sin_cos().1, 0.5_f64);
 
     let m = Measure::<Degree>::new(90.);
     assert_eq_64!(m.cos(), 0_f64);
-    assert_eq!(m.sin(), 1_f64);
+    assert_eq_64!(m.sin(), 1_f64);
     assert!(m.tan().abs() > 1e12_f64);
-    assert_eq!(m.sin_cos().0, 1_f64);
+    assert_eq_64!(m.sin_cos().0, 1_f64);
     assert_eq_64!(m.sin_cos().1, 0_f64);
 
+    let m = Measure::<Degree>::new(-45.);
+    assert_eq_64!(m.cos(), half_sqrt);
+    assert_eq_64!(m.sin(), -half_sqrt);
+    assert_eq_64!(m.tan(), -1_f64);
+    assert_eq_64!(m.sin_cos().0, -half_sqrt);
+    assert_eq_64!(m.sin_cos().1, half_sqrt);
+
     let m = Measure::<Degree>::new(-135.);
-    assert_eq!(m.cos(), -half_sqrt);
+    assert_eq_64!(m.cos(), -half_sqrt);
     assert_eq_64!(m.sin(), -half_sqrt);
     assert_eq_64!(m.tan(), 1_f64);
     assert_eq_64!(m.sin_cos().0, -half_sqrt);
@@ -485,7 +492,7 @@ fn measure_equals() {
 }
 
 #[test]
-fn measure_differ() {
+fn measure_differs() {
     let m1 = Measure::<Metre, f32>::new(12.);
     let m2 = Measure::<Metre, f32>::new(12.);
     let m3 = Measure::<Metre, f32>::new(13.);
