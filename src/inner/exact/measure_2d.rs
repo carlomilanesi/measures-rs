@@ -334,6 +334,19 @@ macro_rules! inner_define_measure_2d {
             }
         }
 
+        impl<Unit, Number> Div<Measure<Unit, Number>> for Measure2d<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: VectorProperty>,
+            Number: ArithmeticOps,
+        {
+            type Output = Measure2d<One, Number>;
+
+            /// Measure2d / Measure -> Measure2d<One>
+            fn div(self, other: Measure<Unit, Number>) -> Self::Output {
+                Measure2d::new([self.values[0] / other.value, self.values[1] / other.value])
+            }
+        }
+
         impl<Unit, Number> DivAssign<Number> for Measure2d<Unit, Number>
         where
             Unit: MeasurementUnit<Property: VectorProperty>,

@@ -31,15 +31,15 @@ mod units {
 }
 
 #[test]
-fn measure_point_new() {
-    let m1: Measure<Celsius, f32> = Measure::<Celsius, f32>::new(12.);
+fn measure_point_1d_new() {
+    let m1: MeasurePoint<Celsius, f32> = MeasurePoint::<Celsius, f32>::new(12.);
     assert_eq!(m1.value, 12_f32);
-    let m2: Measure<Celsius> = Measure::<Celsius>::new(12.);
+    let m2: MeasurePoint<Celsius> = MeasurePoint::<Celsius>::new(12.);
     assert_eq!(m2.value, 12_f64);
 }
 
 #[test]
-fn measure_point_convert() {
+fn measure_point_1d_convert() {
     // 0 °C is 32 °F
     let mp1 = MeasurePoint::<Celsius, f32>::new(0.);
     let mp2: MeasurePoint<Fahrenheit, f32> = mp1.convert::<Fahrenheit>();
@@ -62,7 +62,7 @@ fn measure_point_convert() {
 }
 
 #[test]
-fn measure_point_lossless_into_32_to_32() {
+fn measure_point_1d_lossless_into_32_to_32() {
     let m1 = MeasurePoint::<Celsius, f32>::new(12.);
     #[allow(clippy::useless_conversion)]
     let m2: MeasurePoint<Celsius, f32> = m1.lossless_into::<f32>();
@@ -70,14 +70,14 @@ fn measure_point_lossless_into_32_to_32() {
 }
 
 #[test]
-fn measure_point_lossless_into_32_to_64() {
+fn measure_point_1d_lossless_into_32_to_64() {
     let m1 = MeasurePoint::<Celsius, f32>::new(12.);
     let m2: MeasurePoint<Celsius, f64> = m1.lossless_into::<f64>();
     assert_eq!(m2.value, 12.);
 }
 
 #[test]
-fn measure_point_lossless_into_64_to_64() {
+fn measure_point_1d_lossless_into_64_to_64() {
     let m1 = MeasurePoint::<Celsius, f64>::new(12.);
     #[allow(clippy::useless_conversion)]
     let m2: MeasurePoint<Celsius, f64> = m1.lossless_into::<f64>();
@@ -87,35 +87,35 @@ fn measure_point_lossless_into_64_to_64() {
 /*
 // ILLEGAL
 #[test]
-fn measure_point_lossless_into_64_to_32() {
+fn measure_point_1d_lossless_into_64_to_32() {
     let m1 = MeasurePoint::<Celsius, f64>::new(12.);
     let m2: MeasurePoint<Celsius, f32> = m1.lossless_into::<f32>();
 }
 */
 
 #[test]
-fn measure_point_lossy_into_32_to_32() {
+fn measure_point_1d_lossy_into_32_to_32() {
     let m1 = MeasurePoint::<Celsius, f32>::new(12.);
     let m2: MeasurePoint<Celsius, f32> = m1.lossy_into::<f32>();
     assert_eq!(m2.value, 12.);
 }
 
 #[test]
-fn measure_point_lossy_into_32_to_64() {
+fn measure_point_1d_lossy_into_32_to_64() {
     let m1 = MeasurePoint::<Celsius, f32>::new(12.);
     let m2: MeasurePoint<Celsius, f64> = m1.lossy_into::<f64>();
     assert_eq!(m2.value, 12.);
 }
 
 #[test]
-fn measure_point_lossy_into_64_to_32() {
+fn measure_point_1d_lossy_into_64_to_32() {
     let m1 = MeasurePoint::<Celsius, f64>::new(12.);
     let m2: MeasurePoint<Celsius, f32> = m1.lossy_into::<f32>();
     assert_eq!(m2.value, 12.);
 }
 
 #[test]
-fn measure_point_lossy_into_64_to_64() {
+fn measure_point_1d_lossy_into_64_to_64() {
     let m1 = MeasurePoint::<Celsius, f64>::new(12.);
     let m2: MeasurePoint<Celsius, f64> = m1.lossy_into::<f64>();
     assert_eq!(m2.value, 12.);
@@ -159,7 +159,7 @@ fn measure_clamp() {
 }
 
 #[test]
-fn measure_point_default() {
+fn measure_point_1d_default() {
     let mp: MeasurePoint<Celsius, f32> = MeasurePoint::default();
     assert_eq!(mp.value, 0_f32);
     let mp = MeasurePoint::<Celsius>::default();
@@ -185,7 +185,7 @@ fn measure_from_approx_into_measure() {
 }
 
 #[test]
-fn measure_point_addition_of_measure() {
+fn measure_point_1d_addition_of_measure() {
     let mp1 = MeasurePoint::<Celsius, f32>::new(12.);
     let m = Measure::<Celsius, f32>::new(7.);
     let mp2: MeasurePoint<Celsius, f32> = mp1 + m;
@@ -198,7 +198,7 @@ fn measure_point_addition_of_measure() {
 }
 
 #[test]
-fn measure_point_addition_of_measure_assignment() {
+fn measure_point_1d_addition_of_measure_assignment() {
     let mut mp = MeasurePoint::<Celsius, f32>::new(12.);
     mp += Measure::<Celsius, f32>::new(7.);
     assert_eq!(mp.value, 19_f32);
@@ -209,7 +209,7 @@ fn measure_point_addition_of_measure_assignment() {
 }
 
 #[test]
-fn measure_point_subtraction_of_measure() {
+fn measure_point_1d_subtraction_of_measure() {
     let mp1 = MeasurePoint::<Celsius, f32>::new(12.);
     let m = Measure::<Celsius, f32>::new(7.);
     let mp2: MeasurePoint<Celsius, f32> = mp1 - m;
@@ -222,7 +222,7 @@ fn measure_point_subtraction_of_measure() {
 }
 
 #[test]
-fn measure_point_subtraction_of_measure_assignment() {
+fn measure_point_1d_subtraction_of_measure_assignment() {
     let mut mp = MeasurePoint::<Celsius, f32>::new(12.);
     mp -= Measure::<Celsius, f32>::new(7.);
     assert_eq!(mp.value, 5_f32);
@@ -336,7 +336,7 @@ fn measure_trigonometry() {
 }
 
 #[test]
-fn measure_point_equals() {
+fn measure_point_1d_equals() {
     let mp1 = MeasurePoint::<Celsius, f32>::new(12.);
     let mp2 = MeasurePoint::<Celsius, f32>::new(12.);
     let mp3 = MeasurePoint::<Celsius, f32>::new(13.);
@@ -351,7 +351,7 @@ fn measure_point_equals() {
 }
 
 #[test]
-fn measure_point_differs() {
+fn measure_point_1d_differs() {
     let mp1 = MeasurePoint::<Celsius, f32>::new(12.);
     let mp2 = MeasurePoint::<Celsius, f32>::new(12.);
     let mp3 = MeasurePoint::<Celsius, f32>::new(13.);
@@ -366,7 +366,7 @@ fn measure_point_differs() {
 }
 
 #[test]
-fn measure_point_partial_cmp() {
+fn measure_point_1d_partial_cmp() {
     let mp1 = MeasurePoint::<Celsius>::new(12.);
     let mp2 = MeasurePoint::<Celsius>::new(12.);
     let mp3 = MeasurePoint::<Celsius>::new(13.);
@@ -379,7 +379,7 @@ fn measure_point_partial_cmp() {
 }
 
 #[test]
-fn measure_point_is_equal_to_its_copy() {
+fn measure_point_1d_is_equal_to_its_copy() {
     let mp1 = MeasurePoint::<Celsius, f32>::new(12.);
     let mp2 = mp1;
     let _ = mp1; // Copy again
@@ -387,30 +387,31 @@ fn measure_point_is_equal_to_its_copy() {
 }
 
 #[test]
-fn measure_point_formatting_in_celsius() {
+fn measure_point_1d_formatting_in_celsius() {
     let mp = MeasurePoint::<Celsius, f32>::new(12.25);
     assert_eq!(format!("{}", mp), "at 12.25 °C");
 }
 
 #[test]
-fn measure_point_formatting_in_celsius_with_one_fractional_digit() {
+fn measure_point_1d_formatting_in_celsius_with_one_fractional_digit() {
     let mp = MeasurePoint::<Celsius, f32>::new(12.25);
     assert_eq!(format!("{:.1}", mp), "at 12.2 °C");
 }
 
 #[test]
-fn measure_point_formatting_for_debug_in_celsius() {
+fn measure_point_1d_formatting_for_debug_in_celsius() {
     let mp = MeasurePoint::<Celsius, f32>::new(12.25);
     assert_eq!(format!("{:?}", mp), "at 12.25 °C");
 }
 
 #[test]
-fn measure_point_formatting_for_debug_in_celsius_with_one_fractional_digit() {
+fn measure_point_1d_formatting_for_debug_in_celsius_with_one_fractional_digit() {
     let mp = MeasurePoint::<Celsius, f32>::new(12.25);
     assert_eq!(format!("{:.1?}", mp), "at 12.2 °C");
 }
+
 #[test]
-fn measure_point_traits() {
+fn measure_point_1d_traits() {
     fn impl_common_traits<
         T: Sized
             + Copy

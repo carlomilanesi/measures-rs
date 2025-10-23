@@ -25,7 +25,7 @@ mod units {
 }
 
 #[test]
-fn measure_new() {
+fn measure_1d_new() {
     let m1: Measure<Metre, f32> = Measure::<Metre, f32>::new(12.);
     assert_eq!(m1.value, 12_f32);
     let m2: Measure<Metre> = Measure::<Metre>::new(12.);
@@ -33,7 +33,7 @@ fn measure_new() {
 }
 
 #[test]
-fn measure_convert() {
+fn measure_1d_convert() {
     let m1 = Measure::<Metre, f32>::new(12.);
     let m2: Measure<MilliMetre, f32> = m1.convert::<MilliMetre>();
     assert_eq!(m1.value, 12.);
@@ -41,7 +41,7 @@ fn measure_convert() {
 }
 
 #[test]
-fn measure_lossless_into_32_to_32() {
+fn measure_1d_lossless_into_32_to_32() {
     let m1 = Measure::<Metre, f32>::new(12.);
     #[allow(clippy::useless_conversion)]
     let m2: Measure<Metre, f32> = m1.lossless_into::<f32>();
@@ -49,14 +49,14 @@ fn measure_lossless_into_32_to_32() {
 }
 
 #[test]
-fn measure_lossless_into_32_to_64() {
+fn measure_1d_lossless_into_32_to_64() {
     let m1 = Measure::<Metre, f32>::new(12.);
     let m2: Measure<Metre, f64> = m1.lossless_into::<f64>();
     assert_eq!(m2.value, 12.);
 }
 
 #[test]
-fn measure_lossless_into_64_to_64() {
+fn measure_1d_lossless_into_64_to_64() {
     let m1 = Measure::<Metre, f64>::new(12.);
     #[allow(clippy::useless_conversion)]
     let m2: Measure<Metre, f64> = m1.lossless_into::<f64>();
@@ -66,112 +66,112 @@ fn measure_lossless_into_64_to_64() {
 /*
 ILLEGAL
 #[test]
-fn measure_lossless_into_64_to_32() {
+fn measure_1d_lossless_into_64_to_32() {
     let m1 = Measure::<Metre, f64>::new(12.);
     let m2: Measure<Metre, f32> = m1.lossless_into::<f32>();
 }
 */
 
 #[test]
-fn measure_lossy_into_32_to_32() {
+fn measure_1d_lossy_into_32_to_32() {
     let m1 = Measure::<Metre, f32>::new(12.);
     let m2: Measure<Metre, f32> = m1.lossy_into::<f32>();
     assert_eq!(m2.value, 12.);
 }
 
 #[test]
-fn measure_lossy_into_32_to_64() {
+fn measure_1d_lossy_into_32_to_64() {
     let m1 = Measure::<Metre, f32>::new(12.);
     let m2: Measure<Metre, f64> = m1.lossy_into::<f64>();
     assert_eq!(m2.value, 12.);
 }
 
 #[test]
-fn measure_lossy_into_64_to_32() {
+fn measure_1d_lossy_into_64_to_32() {
     let m1 = Measure::<Metre, f64>::new(12.);
     let m2: Measure<Metre, f32> = m1.lossy_into::<f32>();
     assert_eq!(m2.value, 12.);
 }
 
 #[test]
-fn measure_lossy_into_64_to_64() {
+fn measure_1d_lossy_into_64_to_64() {
     let m1 = Measure::<Metre, f64>::new(12.);
     let m2: Measure<Metre, f64> = m1.lossy_into::<f64>();
     assert_eq!(m2.value, 12.);
 }
 
 #[test]
-fn measure_norm_positive() {
+fn measure_1d_norm_positive() {
     let m1 = Measure::<Metre, f32>::new(12.);
     let m2: Measure<Metre, f32> = m1.norm();
     assert_eq!(m2.value, 12.);
 }
 
 #[test]
-fn measure_norm_negative() {
+fn measure_1d_norm_negative() {
     let m1 = Measure::<Metre, f64>::new(-12.);
     let m2: Measure<Metre, f64> = m1.norm();
     assert_eq!(m2.value, 12.);
 }
 
 #[test]
-fn measure_norm_zero() {
+fn measure_1d_norm_zero() {
     let m1 = Measure::<Metre, f64>::new(0.);
     let m2: Measure<Metre, f64> = m1.norm();
     assert_eq!(m2.value, 0.);
 }
 
 #[test]
-fn measure_squared_norm_positive() {
+fn measure_1d_squared_norm_positive() {
     let m1 = Measure::<Metre, f32>::new(12.);
     let m2: f32 = m1.squared_norm();
     assert_eq!(m2, 12. * 12.);
 }
 
 #[test]
-fn measure_squared_norm_negative() {
+fn measure_1d_squared_norm_negative() {
     let m1 = Measure::<Metre, f64>::new(-12.);
     let m2: f64 = m1.squared_norm();
     assert_eq!(m2, 12. * 12.);
 }
 
 #[test]
-fn measure_squared_norm_zero() {
+fn measure_1d_squared_norm_zero() {
     let m1 = Measure::<Metre, f64>::new(0.);
     let m2: f64 = m1.squared_norm();
     assert_eq!(m2, 0.);
 }
 
 #[test]
-fn measure_normalized_positive() {
+fn measure_1d_normalized_positive() {
     let m1 = Measure::<Metre, f32>::new(12.);
     let m2: Measure<Metre, f32> = m1.normalized();
     assert_eq!(m2.value, 1.);
 }
 
 #[test]
-fn measure_normalized_negative() {
+fn measure_1d_normalized_negative() {
     let m1 = Measure::<Metre, f64>::new(-12.);
     let m2: Measure<Metre, f64> = m1.normalized();
     assert_eq!(m2.value, -1.);
 }
 
 #[test]
-fn measure_normalized_positive_zero() {
+fn measure_1d_normalized_positive_zero() {
     let m1 = Measure::<Metre, f32>::new(0.);
     let m2: Measure<Metre, f32> = m1.normalized();
     assert_eq!(m2.value, 1.);
 }
 
 #[test]
-fn measure_normalized_negative_zero() {
+fn measure_1d_normalized_negative_zero() {
     let m1 = Measure::<Metre, f32>::new(-0.);
     let m2: Measure<Metre, f32> = m1.normalized();
     assert_eq!(m2.value, -1.);
 }
 
 #[test]
-fn measure_min() {
+fn measure_1d_min() {
     let m1 = Measure::<Metre>::new(12.);
     let m2 = Measure::<Metre>::new(13.);
     let m3: Measure<Metre> = m1.min(m2);
@@ -183,7 +183,7 @@ fn measure_min() {
 }
 
 #[test]
-fn measure_max() {
+fn measure_1d_max() {
     let m1 = Measure::<Metre>::new(12.);
     let m2 = Measure::<Metre>::new(13.);
     let m3: Measure<Metre> = m1.max(m2);
@@ -195,7 +195,7 @@ fn measure_max() {
 }
 
 #[test]
-fn measure_clamp() {
+fn measure_1d_clamp() {
     let m1 = Measure::<Metre>::new(12.);
     let m2 = Measure::<Metre>::new(13.2);
     let m3 = Measure::<Metre>::new(14.);
@@ -208,7 +208,7 @@ fn measure_clamp() {
 }
 
 #[test]
-fn measure_default() {
+fn measure_1d_default() {
     let m: Measure<Metre, f32> = Measure::default();
     assert_eq!(m.value, 0_f32);
     let m = Measure::<Metre>::default();
@@ -216,7 +216,7 @@ fn measure_default() {
 }
 
 #[test]
-fn measure_from_f32_into_f64() {
+fn measure_1d_from_f32_into_f64() {
     let m1 = Measure::<Metre, f32>::new(12.);
     let m2 = Measure::<Metre, f64>::from(m1);
     assert_eq!(m2.value, 12.);
@@ -225,7 +225,7 @@ fn measure_from_f32_into_f64() {
 }
 
 #[test]
-fn measure_from_approx_into_measure() {
+fn measure_1d_from_approx_into_measure() {
     let am = ApproxMeasure::<Metre, f32>::with_variance(12., 0.09);
     let m4 = Measure::<Metre, f32>::from(am);
     assert_eq!(m4.value, 12.);
@@ -234,7 +234,7 @@ fn measure_from_approx_into_measure() {
 }
 
 #[test]
-fn measure_unary_minus() {
+fn measure_1d_unary_minus() {
     let m1 = -Measure::<Metre>::new(12.);
     assert_eq!(m1.value, -12_f64);
     let m2 = -Measure::<Metre>::new(-13.);
@@ -246,7 +246,7 @@ fn measure_unary_minus() {
 }
 
 #[test]
-fn measure_addition() {
+fn measure_1d_addition() {
     let m1 = Measure::<Metre>::new(12.);
     let m2 = Measure::<Metre>::new(7.);
     let m3: Measure<Metre> = m1 + m2;
@@ -257,7 +257,7 @@ fn measure_addition() {
 }
 
 #[test]
-fn measure_addition_assignment() {
+fn measure_1d_addition_assignment() {
     let mut m = Measure::<Metre>::new(12.);
     m += Measure::<Metre>::new(7.);
     assert_eq!(m.value, 19_f64);
@@ -266,7 +266,7 @@ fn measure_addition_assignment() {
 }
 
 #[test]
-fn measure_subtraction() {
+fn measure_1d_subtraction() {
     let m1 = Measure::<Metre>::new(12.);
     let m2 = Measure::<Metre>::new(7.);
     let m3: Measure<Metre> = m1 - m2;
@@ -277,7 +277,7 @@ fn measure_subtraction() {
 }
 
 #[test]
-fn measure_subtraction_assignment() {
+fn measure_1d_subtraction_assignment() {
     let mut m = Measure::<Metre>::new(12.);
     m -= Measure::<Metre>::new(7.);
     assert_eq!(m.value, 5_f64);
@@ -286,7 +286,7 @@ fn measure_subtraction_assignment() {
 }
 
 #[test]
-fn measure_scalar_post_multiplication() {
+fn measure_1d_scalar_post_multiplication() {
     let m1 = Measure::<Metre, f32>::new(12.) * 3.;
     assert_eq!(m1.value, 36_f32);
 
@@ -295,7 +295,7 @@ fn measure_scalar_post_multiplication() {
 }
 
 #[test]
-fn measure_one_post_multiplication() {
+fn measure_1d_one_post_multiplication() {
     let m1 = Measure::<Metre, f32>::new(12.) * Measure::<One, f32>::new(3.);
     assert_eq!(m1.value, 36_f32);
 
@@ -304,7 +304,7 @@ fn measure_one_post_multiplication() {
 }
 
 #[test]
-fn measure_one_pre_multiplication() {
+fn measure_1d_one_pre_multiplication() {
     let m1 = Measure::<One, f32>::new(12.) * Measure::<Metre, f32>::new(3.);
     assert_eq!(m1.value, 36_f32);
 
@@ -313,7 +313,7 @@ fn measure_one_pre_multiplication() {
 }
 
 #[test]
-fn measure_one_one_multiplication() {
+fn measure_1d_one_one_multiplication() {
     let m1 = Measure::<One, f32>::new(12.) * Measure::<One, f32>::new(3.);
     assert_eq!(m1.value, 36_f32);
 
@@ -322,7 +322,7 @@ fn measure_one_one_multiplication() {
 }
 
 #[test]
-fn measure_scalar_multiplication_assignment() {
+fn measure_1d_scalar_multiplication_assignment() {
     let mut m1 = Measure::<Metre, f32>::new(12.);
     m1 *= 3.;
     assert_eq!(m1.value, 36_f32);
@@ -333,7 +333,7 @@ fn measure_scalar_multiplication_assignment() {
 }
 
 #[test]
-fn measure_one_multiplication_assignment() {
+fn measure_1d_one_multiplication_assignment() {
     let mut m1 = Measure::<Metre, f32>::new(12.);
     m1 *= Measure::<One, f32>::new(3.);
     assert_eq!(m1.value, 36_f32);
@@ -344,7 +344,7 @@ fn measure_one_multiplication_assignment() {
 }
 
 #[test]
-fn measure_scalar_pre_multiplication() {
+fn measure_1d_scalar_pre_multiplication() {
     let m1 = 3. * Measure::<Metre, f32>::new(12.);
     assert_eq!(m1.value, 36_f32);
 
@@ -353,7 +353,7 @@ fn measure_scalar_pre_multiplication() {
 }
 
 #[test]
-fn measure_scalar_division() {
+fn measure_1d_scalar_division() {
     let m1 = Measure::<Metre, f32>::new(12.) / 3.;
     assert_eq!(m1.value, 4_f32);
 
@@ -362,7 +362,7 @@ fn measure_scalar_division() {
 }
 
 #[test]
-fn measure_measure_division() {
+fn measure_1d_measure_division() {
     let m1 = Measure::<Metre, f32>::new(12.);
     let m2 = Measure::<Metre, f32>::new(3.);
     let m3: Measure<One, f32> = m1 / m2;
@@ -375,7 +375,7 @@ fn measure_measure_division() {
 }
 
 #[test]
-fn measure_one_division() {
+fn measure_1d_one_division() {
     let m1 = Measure::<Metre, f32>::new(12.);
     let m2 = Measure::<One, f32>::new(3.);
     let m3: Measure<Metre, f32> = m1 / m2;
@@ -388,7 +388,7 @@ fn measure_one_division() {
 }
 
 #[test]
-fn one_one_division() {
+fn measure_1d_one_one_division() {
     let m1 = Measure::<One, f32>::new(12.);
     let m2 = Measure::<One, f32>::new(3.);
     let m3: Measure<One, f32> = m1 / m2;
@@ -401,7 +401,7 @@ fn one_one_division() {
 }
 
 #[test]
-fn measure_scalar_division_assignment() {
+fn measure_1d_scalar_division_assignment() {
     let mut m1 = Measure::<Metre, f32>::new(12.);
     m1 /= 3.;
     assert_eq!(m1.value, 4_f32);
@@ -412,7 +412,7 @@ fn measure_scalar_division_assignment() {
 }
 
 #[test]
-fn measure_one_division_assignment() {
+fn measure_1d_one_division_assignment() {
     let mut m1 = Measure::<Metre, f32>::new(12.);
     m1 /= Measure::<One, f32>::new(3.);
     assert_eq!(m1.value, 4_f32);
@@ -423,7 +423,7 @@ fn measure_one_division_assignment() {
 }
 
 #[test]
-fn measure_trigonometry() {
+fn measure_1d_trigonometry() {
     let half_sqrt = 1. / 2_f64.sqrt();
     let three_sqrt = 3_f64.sqrt();
 
@@ -477,7 +477,7 @@ fn measure_trigonometry() {
 }
 
 #[test]
-fn measure_equals() {
+fn measure_1d_equals() {
     let m1 = Measure::<Metre, f32>::new(12.);
     let m2 = Measure::<Metre, f32>::new(12.);
     let m3 = Measure::<Metre, f32>::new(13.);
@@ -492,7 +492,7 @@ fn measure_equals() {
 }
 
 #[test]
-fn measure_differs() {
+fn measure_1d_differs() {
     let m1 = Measure::<Metre, f32>::new(12.);
     let m2 = Measure::<Metre, f32>::new(12.);
     let m3 = Measure::<Metre, f32>::new(13.);
@@ -507,7 +507,7 @@ fn measure_differs() {
 }
 
 #[test]
-fn measure_partial_cmp() {
+fn measure_1d_partial_cmp() {
     let m1 = Measure::<Metre>::new(12.);
     let m2 = Measure::<Metre>::new(12.);
     let m3 = Measure::<Metre>::new(13.);
@@ -520,7 +520,7 @@ fn measure_partial_cmp() {
 }
 
 #[test]
-fn measure_is_equal_to_its_copy() {
+fn measure_1d_is_equal_to_its_copy() {
     let m1 = Measure::<Metre>::new(12.);
     let m2 = m1;
     let _ = m1; // Copy again
@@ -528,55 +528,55 @@ fn measure_is_equal_to_its_copy() {
 }
 
 #[test]
-fn measure_formatting_in_metres() {
+fn measure_1d_formatting() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{}", m), "12.25 m");
 }
 
 #[test]
-fn measure_formatting_in_metres_with_one_fractional_digit() {
+fn measure_1d_formatting_with_one_fractional_digit() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{:.1}", m), "12.2 m");
 }
 
 #[test]
-fn measure_formatting_for_debug_in_metres() {
+fn measure_1d_formatting_for_debug() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{:?}", m), "12.25 m");
 }
 
 #[test]
-fn measure_formatting_for_debug_in_metres_with_one_fractional_digit() {
+fn measure_1d_formatting_for_debug_with_one_fractional_digit() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{:.1?}", m), "12.2 m");
 }
 
 #[test]
-fn measure_formatting_in_metres_in_decibels() {
+fn measure_1d_formatting_in_decibels() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{}", m.decibels_formatter()), "10.881361 dB m");
 }
 
 #[test]
-fn measure_formatting_in_metres_in_decibels_with_one_fractional_digit() {
+fn measure_1d_formatting_in_decibels_with_one_fractional_digit() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{:.1}", m.decibels_formatter()), "10.9 dB m");
 }
 
 #[test]
-fn measure_formatting_for_debug_in_metres_in_decibels() {
+fn measure_1d_formatting_for_debug_in_decibels() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{:?}", m.decibels_formatter()), "10.881361 dB m");
 }
 
 #[test]
-fn measure_formatting_for_debug_in_metres_in_decibels_with_one_fractional_digit() {
+fn measure_1d_formatting_for_debug_in_decibels_with_one_fractional_digit() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{:.1?}", m.decibels_formatter()), "10.9 dB m");
 }
 
 #[test]
-fn measure_traits() {
+fn measure_1d_traits() {
     fn impl_common_traits<
         T: Sized
             + Copy

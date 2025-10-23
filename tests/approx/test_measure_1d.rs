@@ -366,25 +366,25 @@ fn measure_is_equal_to_its_copy() {
 }
 
 #[test]
-fn measure_formatting_in_metres() {
+fn measure_formatting() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{}", m), "12.25 m");
 }
 
 #[test]
-fn measure_formatting_in_metres_one_fractional_digit() {
+fn measure_formatting_one_fractional_digit() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{:.1}", m), "12.2 m");
 }
 
 #[test]
-fn measure_formatting_for_debug_in_metres() {
+fn measure_formatting_for_debug() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{:?}", m), "12.25 m");
 }
 
 #[test]
-fn measure_formatting_for_debug_in_metres_one_fractional_digit() {
+fn measure_formatting_for_debug_one_fractional_digit() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{:.1?}", m), "12.2 m");
 }

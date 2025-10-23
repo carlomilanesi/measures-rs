@@ -1445,6 +1445,21 @@ macro_rules! measurement_unit {
                     ])
                 }
             }
+
+            impl<Number> core::ops::Div<Measure<measures::dimensionless::One, Number>> for Measure2d<$name, Number>
+            where
+                Number: measures::traits::ArithmeticOps,
+            {
+                type Output = Self;
+
+                /// Measure2d / Measure<One> -> Measure2d
+                fn div(self, other: Measure<measures::dimensionless::One, Number>) -> Self::Output {
+                    Self::new([
+                        self.values[0] / other.value,
+                        self.values[1] / other.value,
+                    ])
+                }
+            }
         }
 
         measures::if_all_true! { { $with_3d $vector }

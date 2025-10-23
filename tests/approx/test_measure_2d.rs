@@ -386,25 +386,25 @@ fn measure_2d_is_equal_to_its_copy() {
 }
 
 #[test]
-fn measure_2d_formatting_in_metres() {
+fn measure_2d_formatting() {
     let m = Measure2d::<Metre, f32>::new([12.25, 23.5020]);
     assert_eq!(format!("{}", m), "(12.25, 23.502) m");
 }
 
 #[test]
-fn measure_2d_formatting_in_metres_one_fractional_digit() {
+fn measure_2d_formatting_one_fractional_digit() {
     let m = Measure2d::<Metre, f32>::new([12.25, 23.5498]);
     assert_eq!(format!("{:.1}", m), "(12.2, 23.5) m");
 }
 
 #[test]
-fn measure_2d_formatting_for_debug_in_metres() {
+fn measure_2d_formatting_for_debug() {
     let m = Measure2d::<Metre, f32>::new([12.25, 23.5020]);
     assert_eq!(format!("{:?}", m), "(12.25, 23.502) m");
 }
 
 #[test]
-fn measure_2d_formatting_in_metres_for_debug_one_fractional_digit() {
+fn measure_2d_formatting_for_debug_one_fractional_digit() {
     let m = Measure2d::<Metre, f32>::new([12.25, 23.5498]);
     assert_eq!(format!("{:.1?}", m), "(12.2, 23.5) m");
 }
