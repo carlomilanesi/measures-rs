@@ -3,6 +3,8 @@ macro_rules! inner_define_measure_point_2d {
     { $with_approx:ident } => {
         /// 2D absolute measure with generic unit of measurement, generic value type,
         /// and with 2 dynamic components.
+        /// This type does not make sense for Unit::OFFSET != 0.
+        /// Though, the language does not allow such constraint yet.
         pub struct MeasurePoint2d<Unit, Number = f64>
         where
             Unit: MeasurementUnit<Property: VectorProperty>,
@@ -40,12 +42,10 @@ macro_rules! inner_define_measure_point_2d {
             where
                 DestUnit: MeasurementUnit<Property = Unit::Property>,
             {
+                debug_assert!(Unit::OFFSET == 0.);
+                debug_assert!(DestUnit::OFFSET == 0.);
                 let factor = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
-                let offset = Number::from_f64((Unit::OFFSET - DestUnit::OFFSET) / DestUnit::RATIO);
-                MeasurePoint2d::<DestUnit, Number>::new([
-                    self.values[0] * factor + offset,
-                    self.values[1] * factor + offset,
-                ])
+                MeasurePoint2d::<DestUnit, Number>::new([self.values[0] * factor, self.values[1] * factor])
             }
 
             /// MeasurePoint2d.lossless_into() -> MeasurePoint2d

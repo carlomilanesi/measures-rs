@@ -3,6 +3,8 @@ macro_rules! inner_define_measure_point_3d {
     { $with_approx:ident } => {
         /// 3D absolute measure with generic unit of measurement, generic value type,
         /// and with 3 dynamic components.
+        /// This type does not make sense for Unit::OFFSET != 0.
+        /// Though, the language does not allow such constraint yet.
         pub struct MeasurePoint3d<Unit, Number = f64>
         where
             Unit: MeasurementUnit<Property: VectorProperty>,
@@ -44,12 +46,13 @@ macro_rules! inner_define_measure_point_3d {
             where
                 DestUnit: MeasurementUnit<Property = Unit::Property>,
             {
+                debug_assert!(Unit::OFFSET == 0.);
+                debug_assert!(DestUnit::OFFSET == 0.);
                 let factor = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
-                let offset = Number::from_f64((Unit::OFFSET - DestUnit::OFFSET) / DestUnit::RATIO);
                 MeasurePoint3d::<DestUnit, Number>::new([
-                    self.values[0] * factor + offset,
-                    self.values[1] * factor + offset,
-                    self.values[2] * factor + offset,
+                    self.values[0] * factor,
+                    self.values[1] * factor,
+                    self.values[2] * factor,
                 ])
             }
 

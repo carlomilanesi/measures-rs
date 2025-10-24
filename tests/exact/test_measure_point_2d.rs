@@ -1,3 +1,4 @@
+use measures::assert_eq_32;
 use units::{
     barycentric_combination_2d, midpoint_2d, weighted_midpoint_2d, Measure2d, MeasurePoint,
     MeasurePoint2d, Metre, MilliMetre,
@@ -26,20 +27,26 @@ mod units {
     }
 }
 
-use measures::assert_eq_32;
-
 #[test]
-fn measure_point_2d_default() {
-    let mp: MeasurePoint2d<Metre, f32> = MeasurePoint2d::default();
-    assert_eq!(mp.values, [0., 0.]);
-    let mp = MeasurePoint2d::<Metre>::default();
-    assert_eq!(mp.values, [0., 0.]);
+fn measure_point_2d_new() {
+    let m1: MeasurePoint2d<Metre, f32> = MeasurePoint2d::<Metre, f32>::new([12., 23.]);
+    assert_eq!(m1.values, [12_f32, 23_f32]);
+
+    let m1: MeasurePoint2d<Metre> = MeasurePoint2d::<Metre>::new([12., 23.]);
+    assert_eq!(m1.values, [12_f64, 23_f64]);
 }
 
 #[test]
-fn measure_point_2d_new() {
-    let m: MeasurePoint2d<Metre, f32> = MeasurePoint2d::<Metre, f32>::new([12., 23.]);
-    assert_eq!(m.values, [12., 23.]);
+fn measure_point_2d_convert() {
+    let m1 = MeasurePoint2d::<Metre, f32>::new([12., 13.]);
+    let m2: MeasurePoint2d<MilliMetre, f32> = m1.convert::<MilliMetre>();
+    assert_eq!(m1.values, [12_f32, 13_f32]);
+    assert_eq!(m2.values, [12000_f32, 13000_f32]);
+
+    let m1 = MeasurePoint2d::<Metre>::new([12., 13.]);
+    let m2: MeasurePoint2d<MilliMetre> = m1.convert::<MilliMetre>();
+    assert_eq!(m1.values, [12_f64, 13_f64]);
+    assert_eq!(m2.values, [12000_f64, 13000_f64]);
 }
 
 #[test]
@@ -47,16 +54,14 @@ fn measure_point_2d_xy_functions() {
     let m: MeasurePoint2d<Metre, f32> = MeasurePoint2d::<Metre, f32>::new([12., 23.]);
     let mx: MeasurePoint<Metre, f32> = m.x();
     let my: MeasurePoint<Metre, f32> = m.y();
-    assert_eq!(mx.value, 12.);
-    assert_eq!(my.value, 23.);
-}
+    assert_eq!(mx.value, 12_f32);
+    assert_eq!(my.value, 23_f32);
 
-#[test]
-fn measure_point_2d_convert() {
-    let m1: MeasurePoint2d<Metre, f32> = MeasurePoint2d::<Metre, f32>::new([12., 23.]);
-    let m2: MeasurePoint2d<MilliMetre, f32> = m1.convert::<MilliMetre>();
-    assert_eq!(m1.values, [12., 23.]);
-    assert_eq!(m2.values, [12000., 23000.]);
+    let m: MeasurePoint2d<Metre> = MeasurePoint2d::<Metre>::new([12., 23.]);
+    let mx: MeasurePoint<Metre> = m.x();
+    let my: MeasurePoint<Metre> = m.y();
+    assert_eq!(mx.value, 12_f64);
+    assert_eq!(my.value, 23_f64);
 }
 
 #[test]
@@ -108,6 +113,14 @@ fn measure_point_2d_lossy_into_64_to_64() {
     let mp1 = MeasurePoint2d::<Metre, f64>::new([12., 23.]);
     let mp2: MeasurePoint2d<Metre, f64> = mp1.lossy_into::<f64>();
     assert_eq!(mp2.values, [12., 23.]);
+}
+
+#[test]
+fn measure_point_2d_default() {
+    let mp: MeasurePoint2d<Metre, f32> = MeasurePoint2d::default();
+    assert_eq!(mp.values, [0., 0.]);
+    let mp = MeasurePoint2d::<Metre>::default();
+    assert_eq!(mp.values, [0., 0.]);
 }
 
 #[test]

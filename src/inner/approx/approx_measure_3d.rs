@@ -60,6 +60,8 @@ macro_rules! inner_define_approx_measure_3d {
             where
                 DestUnit: MeasurementUnit<Property = Unit::Property>,
             {
+                debug_assert!(Unit::OFFSET == 0.);
+                debug_assert!(DestUnit::OFFSET == 0.);
                 let ratio = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
                 let r2 = ratio * ratio;
                 ApproxMeasure3d::<DestUnit, Number>::with_covariances(

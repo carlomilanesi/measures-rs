@@ -55,14 +55,15 @@ macro_rules! inner_define_approx_measure_point_3d {
             where
                 DestUnit: MeasurementUnit<Property = Unit::Property>,
             {
+                debug_assert!(Unit::OFFSET == 0.);
+                debug_assert!(DestUnit::OFFSET == 0.);
                 let ratio = Number::from_f64(Unit::RATIO / DestUnit::RATIO);
-                let offset = Number::from_f64((Unit::OFFSET - DestUnit::OFFSET) / DestUnit::RATIO);
                 let r2 = ratio * ratio;
                 ApproxMeasurePoint3d::<DestUnit, Number>::with_covariances(
                     [
-                        self.values[0] * ratio + offset,
-                        self.values[1] * ratio + offset,
-                        self.values[2] * ratio + offset,
+                        self.values[0] * ratio,
+                        self.values[1] * ratio,
+                        self.values[2] * ratio,
                     ],
                     [
                         [
