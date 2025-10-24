@@ -2,12 +2,13 @@ use measures::angle::Radian;
 use measures::dimensionless::One;
 use measures::{assert_eq_32, assert_eq_64};
 use units::{
-    Degree, Measure, Measure2d, MeasurePoint, Metre, MilliMetre, SignedDirection, UnsignedDirection,
+    ApproxMeasure2d, Degree, Measure, Measure2d, MeasurePoint, Metre, MilliMetre, SignedDirection,
+    UnsignedDirection,
 };
 
 mod units {
     measures::define_measure_types! {
-        with_points with_directions with_2d exact,
+        with_points with_directions with_2d exact with_approx,
         vector_properties [
             Length [
                 Metre {
@@ -84,8 +85,8 @@ fn measure_2d_lossless_into_64_to_64() {
 ILLEGAL
 #[test]
 fn measure_2d_lossless_into_64_to_32() {
-    let m1 = Measure2d::<Metre, f64>::new(12.);
-    let m2: Measure2d<Metre, f32> = m1.lossless_into::<f32>();
+    let m1 = Measure2d::<Metre, f64>::new([12., 23.]);
+    _ = m1.lossless_into::<f32>();
 }
 */
 
@@ -160,7 +161,7 @@ fn measure_2d_squared_norm_negative() {
 fn measure_2d_squared_norm_zero() {
     let m1 = Measure2d::<Metre, f64>::new([0., 0.]);
     let m2: f64 = m1.squared_norm();
-    assert_eq!(m2, 0.);
+    assert_eq!(m2, 0_f64);
 }
 
 #[test]
@@ -332,6 +333,37 @@ fn measure_2d_default() {
 }
 
 #[test]
+fn measure_2d_from_f32_into_f64() {
+    let m1 = Measure2d::<Metre, f32>::new([12., 23.]);
+    let m2 = Measure2d::<Metre, f64>::from(m1);
+    assert_eq!(m1.values, [12_f32, 23_f32]);
+    assert_eq!(m2.values, [12_f64, 23_f64]);
+    let m3: Measure2d<Metre, f64> = m1.into();
+    assert_eq!(m1.values, [12_f32, 23_f32]);
+    assert_eq!(m3.values, [12_f64, 23_f64]);
+}
+
+#[test]
+fn measure_2d_from_approx_into_measure() {
+    let am =
+        ApproxMeasure2d::<Metre, f32>::with_covariances([12., 23.], [[0.09, 0.01], [0.02, 0.16]]);
+    let m1 = Measure2d::<Metre, f32>::from(am);
+    assert_eq!(am.values, [12_f32, 23_f32]);
+    assert_eq!(m1.values, [12_f32, 23_f32]);
+    let m2: Measure2d<Metre, f32> = am.into();
+    assert_eq!(am.values, [12_f32, 23_f32]);
+    assert_eq!(m2.values, [12_f32, 23_f32]);
+
+    let am = ApproxMeasure2d::<Metre>::with_covariances([12., 23.], [[0.09, 0.01], [0.02, 0.16]]);
+    let m1 = Measure2d::<Metre>::from(am);
+    assert_eq!(am.values, [12_f64, 23_f64]);
+    assert_eq!(m1.values, [12_f64, 23_f64]);
+    let m2: Measure2d<Metre> = am.into();
+    assert_eq!(am.values, [12_f64, 23_f64]);
+    assert_eq!(m2.values, [12_f64, 23_f64]);
+}
+
+#[test]
 fn measure_2d_unary_minus() {
     let m = -Measure2d::<Metre, f32>::new([12., 23.]);
     assert_eq!(m.values, [-12_f32, -23_f32]);
@@ -360,6 +392,13 @@ fn measure_2d_addition() {
     assert_eq!(m1.values, [12_f32, 23_f32]);
     assert_eq!(m2.values, [34_f32, -45_f32]);
     assert_eq!(m3.values, [12_f32 + 34_f32, 23_f32 + -45_f32]);
+
+    let m1 = Measure2d::<Metre>::new([12., 23.]);
+    let m2 = Measure2d::<Metre>::new([34., -45.]);
+    let m3: Measure2d<Metre> = m1 + m2;
+    assert_eq!(m1.values, [12_f64, 23_f64]);
+    assert_eq!(m2.values, [34_f64, -45_f64]);
+    assert_eq!(m3.values, [12_f64 + 34_f64, 23_f64 + -45_f64]);
 }
 
 #[test]
@@ -367,8 +406,14 @@ fn measure_2d_addition_assignment() {
     let mut m1 = Measure2d::<Metre, f32>::new([12., 23.]);
     let m2 = Measure2d::<Metre, f32>::new([34., -45.]);
     m1 += m2;
-    assert_eq!(m1.values, [12. + 34., 23. + -45.]);
-    assert_eq!(m2.values, [34., -45.]);
+    assert_eq!(m1.values, [12_f32 + 34_f32, 23_f32 + -45_f32]);
+    assert_eq!(m2.values, [34_f32, -45_f32]);
+
+    let mut m1 = Measure2d::<Metre>::new([12., 23.]);
+    let m2 = Measure2d::<Metre>::new([34., -45.]);
+    m1 += m2;
+    assert_eq!(m1.values, [12_f64 + 34_f64, 23_f64 + -45_f64]);
+    assert_eq!(m2.values, [34_f64, -45_f64]);
 }
 
 #[test]
@@ -379,6 +424,13 @@ fn measure_2d_subtraction() {
     assert_eq!(m1.values, [12_f32, 23_f32]);
     assert_eq!(m2.values, [34_f32, -45_f32]);
     assert_eq!(m3.values, [12_f32 - 34_f32, 23_f32 - -45_f32]);
+
+    let m1 = Measure2d::<Metre>::new([12., 23.]);
+    let m2 = Measure2d::<Metre>::new([34., -45.]);
+    let m3 = m1 - m2;
+    assert_eq!(m1.values, [12_f64, 23_f64]);
+    assert_eq!(m2.values, [34_f64, -45_f64]);
+    assert_eq!(m3.values, [12_f64 - 34_f64, 23_f64 - -45_f64]);
 }
 
 #[test]
@@ -388,6 +440,12 @@ fn measure_2d_subtraction_assignment() {
     m1 -= m2;
     assert_eq!(m1.values, [12_f32 - 34_f32, 23_f32 - -45_f32]);
     assert_eq!(m2.values, [34_f32, -45_f32]);
+
+    let mut m1 = Measure2d::<Metre>::new([12., 23.]);
+    let m2 = Measure2d::<Metre>::new([34., -45.]);
+    m1 -= m2;
+    assert_eq!(m1.values, [12_f64 - 34_f64, 23_f64 - -45_f64]);
+    assert_eq!(m2.values, [34_f64, -45_f64]);
 }
 
 #[test]

@@ -66,7 +66,7 @@ macro_rules! inner_define_measure_3d {
             }
 
             /// Measure3d.lossy_into() -> Measure3d
-            pub fn lossy_into<DestNumber>(&self) -> Measure3d<Unit, DestNumber>
+            pub fn lossy_into<DestNumber>(self) -> Measure3d<Unit, DestNumber>
             where
                 DestNumber: ArithmeticOps + LossyFrom<Number>,
             {
@@ -118,8 +118,25 @@ macro_rules! inner_define_measure_3d {
             Unit: MeasurementUnit<Property: VectorProperty>,
         {
             /// Measure3d<f64>::from(Measure3d<f32>) -> Measure3d<f64>
-            fn from(m: Measure3d<Unit, f32>) -> Self {
-                Self::new([m.values[0] as f64, m.values[1] as f64, m.values[2] as f64])
+            fn from(measure: Measure3d<Unit, f32>) -> Self {
+                Self::new([
+                    measure.values[0] as f64,
+                    measure.values[1] as f64,
+                    measure.values[2] as f64,
+                ])
+            }
+        }
+
+        measures::if_all_true! { { $with_approx }
+            impl<Unit, Number> From<ApproxMeasure3d<Unit, Number>> for Measure3d<Unit, Number>
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+                Number: ArithmeticOps,
+            {
+                /// Measure3d::from(ApproxMeasure3d) -> Measure3d
+                fn from(am: ApproxMeasure3d<Unit, Number>) -> Self {
+                    Self::new(am.values)
+                }
             }
         }
 

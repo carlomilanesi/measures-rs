@@ -1325,8 +1325,22 @@ macro_rules! angle_measurement_unit {
             Number: measures::traits::ArithmeticOps,
         {
             type Output = Measure<$name, Number>;
+
+            /// Measure<One> * AngleMeasure -> AngleMeasure
             fn mul(self, other: Measure<$name, Number>) -> Measure<$name, Number> {
                 Measure::<$name, Number>::new(self.value * other.value)
+            }
+        }
+
+        impl<Number> core::ops::Div<Measure<measures::dimensionless::One, Number>> for Measure<$name, Number>
+        where
+            Number: measures::traits::ArithmeticOps,
+        {
+            type Output = Self;
+
+            /// AngleMeasure / Measure<One> -> AngleMeasure
+            fn div(self, other: Measure<measures::dimensionless::One, Number>) -> Self::Output {
+                Self::new(self.value / other.value)
             }
         }
     };
@@ -1491,6 +1505,22 @@ macro_rules! measurement_unit {
                         self.value * other.values[0],
                         self.value * other.values[1],
                         self.value * other.values[2],
+                    ])
+                }
+            }
+
+            impl<Number> core::ops::Div<Measure<measures::dimensionless::One, Number>> for Measure3d<$name, Number>
+            where
+                Number: measures::traits::ArithmeticOps,
+            {
+                type Output = Self;
+
+                /// Measure3d / Measure<One> -> Measure2d
+                fn div(self, other: Measure<measures::dimensionless::One, Number>) -> Self::Output {
+                    Self::new([
+                        self.values[0] / other.value,
+                        self.values[1] / other.value,
+                        self.values[2] / other.value,
                     ])
                 }
             }
