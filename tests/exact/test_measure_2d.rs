@@ -31,11 +31,11 @@ mod units {
 
 #[test]
 fn measure_2d_new() {
-    let m1: Measure2d<Metre, f32> = Measure2d::<Metre, f32>::new([12., 13.]);
-    assert_eq!(m1.values, [12_f32, 13_f32]);
+    let m1: Measure2d<Metre, f32> = Measure2d::<Metre, f32>::new([12., 23.]);
+    assert_eq!(m1.values, [12_f32, 23_f32]);
 
-    let m1: Measure2d<Metre> = Measure2d::<Metre>::new([12., 13.]);
-    assert_eq!(m1.values, [12_f64, 13_f64]);
+    let m1: Measure2d<Metre> = Measure2d::<Metre>::new([12., 23.]);
+    assert_eq!(m1.values, [12_f64, 23_f64]);
 }
 
 #[test]
@@ -44,6 +44,11 @@ fn measure_2d_convert() {
     let m2: Measure2d<MilliMetre, f32> = m1.convert::<MilliMetre>();
     assert_eq!(m1.values, [12_f32, 13_f32]);
     assert_eq!(m2.values, [12000_f32, 13000_f32]);
+
+    let m1 = Measure2d::<Metre>::new([12., 13.]);
+    let m2: Measure2d<MilliMetre> = m1.convert::<MilliMetre>();
+    assert_eq!(m1.values, [12_f64, 13_f64]);
+    assert_eq!(m2.values, [12000_f64, 13000_f64]);
 }
 
 #[test]
@@ -51,8 +56,14 @@ fn measure_2d_xy_functions() {
     let m: Measure2d<Metre, f32> = Measure2d::<Metre, f32>::new([12., 23.]);
     let mx: Measure<Metre, f32> = m.x();
     let my: Measure<Metre, f32> = m.y();
-    assert_eq!(mx.value, 12.);
-    assert_eq!(my.value, 23.);
+    assert_eq!(mx.value, 12_f32);
+    assert_eq!(my.value, 23_f32);
+
+    let m: Measure2d<Metre> = Measure2d::<Metre>::new([12., 23.]);
+    let mx: Measure<Metre> = m.x();
+    let my: Measure<Metre> = m.y();
+    assert_eq!(mx.value, 12_f64);
+    assert_eq!(my.value, 23_f64);
 }
 
 #[test]

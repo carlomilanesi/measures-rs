@@ -100,6 +100,19 @@ macro_rules! inner_define_measure_point_3d {
             }
         }
 
+        measures::if_all_true! { { $with_approx }
+            impl<Unit, Number> From<ApproxMeasurePoint3d<Unit, Number>> for MeasurePoint3d<Unit, Number>
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+                Number: ArithmeticOps,
+            {
+                /// MeasurePoint3d::from(ApproxMeasurePoint3d) -> MeasurePoint3d
+                fn from(am: ApproxMeasurePoint3d<Unit, Number>) -> Self {
+                    Self::new(am.values)
+                }
+            }
+        }
+
         // MeasurePoint3d + Measure3d -> MeasurePoint3d
         impl<Unit, Number> Add<Measure3d<Unit, Number>> for MeasurePoint3d<Unit, Number>
         where

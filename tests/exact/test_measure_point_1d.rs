@@ -162,6 +162,7 @@ fn measure_clamp() {
 fn measure_point_1d_default() {
     let mp: MeasurePoint<Celsius, f32> = MeasurePoint::default();
     assert_eq!(mp.value, 0_f32);
+
     let mp = MeasurePoint::<Celsius>::default();
     assert_eq!(mp.value, 0_f64);
 }
@@ -179,9 +180,15 @@ fn measure_from_f32_into_f64() {
 fn measure_from_approx_into_measure() {
     let am = ApproxMeasurePoint::<Celsius, f32>::with_variance(12., 0.09);
     let m4 = MeasurePoint::<Celsius, f32>::from(am);
-    assert_eq!(m4.value, 12.);
+    assert_eq!(m4.value, 12_f32);
     let m5: MeasurePoint<Celsius, f32> = am.into();
-    assert_eq!(m5.value, 12.);
+    assert_eq!(m5.value, 12_f32);
+
+    let am = ApproxMeasurePoint::<Celsius>::with_variance(12., 0.09);
+    let m4 = MeasurePoint::<Celsius>::from(am);
+    assert_eq!(m4.value, 12_f64);
+    let m5: MeasurePoint<Celsius> = am.into();
+    assert_eq!(m5.value, 12_f64);
 }
 
 #[test]
