@@ -37,7 +37,7 @@ macro_rules! inner_define_affine_map_2d {
             }
 
             // Translation.
-            pub fn translation(v: Measure2d<Unit, Number>) -> Self {
+            pub const fn translation(v: Measure2d<Unit, Number>) -> Self {
                 Self::new([
                     [Number::ONE, Number::ZERO, v.values[0]],
                     [Number::ZERO, Number::ONE, v.values[1]],

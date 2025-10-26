@@ -92,7 +92,7 @@ macro_rules! inner_define_measure {
             }
 
             /// Measure.decibels_formatter() -> DecibelsMeasureFormatter
-            pub fn decibels_formatter(self) -> DecibelsMeasureFormatter<Unit, Number> {
+            pub const fn decibels_formatter(self) -> DecibelsMeasureFormatter<Unit, Number> {
                 DecibelsMeasureFormatter(self)
             }
         }

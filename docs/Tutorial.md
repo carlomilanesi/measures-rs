@@ -5,7 +5,7 @@ The document [Motivation](Motivation.md) explains which are the advantages of us
 
 ## Creating a tutorial project
 
-Create a Rust project by using these commands:
+Let's create a Rust project by using these commands:
 ```
 cargo new measures-tut
 cd measures-tut
@@ -22,7 +22,7 @@ Save it.
 
 ## Creating a measure variable
 
-Edit the file `src/main.rs`, so that it contains this:
+Edit the file `src/main.rs`, so that it has this contents:
 ```rust
 mod units;
 use units::*;
@@ -35,7 +35,7 @@ fn main() {
 Run your project.
 It should print: `The distance is 100 km`.
 
-Notice that the characters "` km`" are not part of your code.
+Notice that the three characters "` km`" are not part of your code.
 They are printed because of the type of the variable `distance`.
 The type of such a variable is `Measure::<KiloMetre>`, meaning _"a measure whose unit of measurement is kilometres (or kilometers)"_.
 
@@ -50,13 +50,13 @@ You can access the value of a measure by adding these two statements at the end 
     println!("The distance is {distance_value}.");
 ```
 
-It will print:
+Now the program will print:
 ```
 The distance is 100 km.
 The distance is 100.
 ```
 
-The second printed line has no unit, because it is a primitive number.
+The second printed line has no unit, because a primitive number is printed there.
 
 This code is valid with `distance_value` having type `f64`, because `f64` is the default value type of the generic type `Measure`.
 The statement `let distance_value: f32 = distance.value;` would have been illegal.
@@ -68,11 +68,22 @@ Though, you can also use `f32` as value type, as long as you specify it explicit
 
 Currently, the library supports only the value types `f32` and `f64`.
 
+## `Clone` and `Copy`
+
+Measures are just wrappers of numbers that implement the traits `Clone` and `Copy`.
+Therefore, such traits have been implemented also for `Measures`, as this code demonstrates:
+```rust
+    let d1 = Measure::<Metre>::new(100.);
+    let d2 = d1;
+    let d3 = d1;
+    let d4 = d1.clone();
+```
+
 ## Numeric conversions
 
 From here on, to run the example code, just put it as the body of the function `main`.
 
-You can convert the value type of a measure, by using the standard `from`and like in these statements:
+You can convert the value type of a measure, by using the standard `from` and `into` methods, like in these statements:
 ```rust
     let distance32 = Measure::<Metre, f32>::new(100.);
     let distance64 = Measure::<Metre, f64>::new(100.);
@@ -83,13 +94,14 @@ You can convert the value type of a measure, by using the standard `from`and lik
     _ = Measure::<_, f64>::from(distance64); // From f64 to f64, just a copy
 
     let _: Measure::<_, f32> = distance32.into(); // From f32 to f32, just a copy
-    let _: Measure::<_, f64> = distance32.into(); // From f32 to f64, numeric conversion with 
+    let _: Measure::<_, f64> = distance32.into(); // From f32 to f64, numeric conversion with
     // let _: Measure::<_, f32> = distance64.into(); // From f64 to f32, not allowed
     let _: Measure::<_, f64> = distance64.into(); // From f64 to f64, just a copy
 ```
 
-You can convert a measure using an `f32` value to a measure using the same unit but an `f64` version.
-You can also trivially convert a measure to an identical measure, having te same unit, same numeric type and same numeric value.
+The code above shows that you can convert a measure using an `f32` value to a measure using the same unit but an `f64` version.
+
+You can also trivially convert a measure to an identical measure, having the same unit, the same numeric type and the same numeric value.
 
 But you cannot use such functions to convert a measure which uses an `f64` value to a measure which uses the same unit but an `f32` version, because such conversion could lose significant digits, or be even impossible.
 
@@ -104,7 +116,8 @@ To perform numeric conversions of measures even when information could be lost, 
     _ = distance64.lossy_into::<f64>(); // From f64 to f64, just a copy
 ```
 
-At last, the lossy conversions performed by the functions `from` and `into` shown above are a bit verbose. There is also the equivalent shorter method `lossless_into`:
+At last, the lossy conversions performed by the functions `from` and `into` shown above are a bit verbose.
+So, there is also the equivalent shorter method `lossless_into`:
 ```rust
     let distance32 = Measure::<Metre, f32>::new(100.);
     let distance64 = Measure::<Metre, f64>::new(100.);
@@ -115,10 +128,10 @@ At last, the lossy conversions performed by the functions `from` and `into` show
     _ = distance64.lossless_into::<f64>(); // From f64 to f64, just a copy
 ```
 
-## Arithmetic operations on measures
+## Printing measure objects
 
-We have already seen that the type `Measure` can be printed.
-This means it implements the trait `Display`, and it has the method `to_string()`.
+We have already seen that objects of type `Measure` can be printed.
+This means that such a type implements the trait `Display`, and it has the method `to_string()`.
 
 Printing a measure means printing its value followed by a suffix depending on its unit of measurement.
 For the unit `KiloMeter`, the suffix is `" km"`, with a leading space.
@@ -141,53 +154,81 @@ So, you can write:
 
 It will print: `TimeElapsed { hours: 3 h, minutes: 17 min }`.
 
-Here are some arithmetic operations that can be performed on one or two objects of type `Measure`, provided they have the same unit (here, `Metre`) and the same value type (here, `f64`).
+Also formatting options are supported.
+For example, the statement `print!("{:.2}", Measure::<Minute>::new(17.138276));` will print `17.14 min`.
 
-You can add or subtract measures:
+## Arithmetic operations on measures
+
+All the common arithmetic operations can be applied to the objects of type `Measure`, provided they have the same unit of measurement and the same value type of the other operand.
+Here are some examples.
+
+You can negate a measure:
 ```rust
     let mut length1 = Measure::<Metre>::new(7.);
-    let length2 = Measure::<Metre>::new(5.);
-    assert_eq!((-length1).value, -7.); // Negation
-    assert_eq!((length1 + length2).value, 12.); // Addition of two measures
-    assert_eq!((length1 - length2).value, 2.); // Subtraction between two measures
-    length1 += length2; // Increment of a measure
-    assert_eq!(length1.value, 12.);
-    length1 -= length2; // Decrement of a measure
-    assert_eq!(length1.value, 7.);
+    let mut length2 = -length1;
+    assert_eq!(length2.value, -7.);
 ```
 
-You can multiply or divide measures by a number:
+You can add or subtract two measures:
+```rust
+    let length1 = Measure::<Metre>::new(7.);
+    let length2 = Measure::<Metre>::new(4.);
+    let length3 = length1 + length2;
+    assert_eq!(length3.value, 11.);
+    let length3 = length1 - length2;
+    assert_eq!(length3.value, 3.);
+```
+
+You can increment or decrement a mutable measures by another measure:
+```rust
+    let mut length1 = Measure::<Metre>::new(7.);
+    let length2 = Measure::<Metre>::new(4.);
+    length1 += length2;
+    assert_eq!(length1.value, 11.);
+    length1 -= Measure::<Metre>::new(9.);
+    assert_eq!(length1.value, 2.);
+```
+
+You can multiply or divide a measure by a number:
 ```rust
     let mut length1 = Measure::<Metre>::new(7.);
     assert_eq!((length1 * 3.).value, 21.); // Multiplication of a measure by a number
     assert_eq!((3. * length1).value, 21.); // Multiplication of a number by a measure
-    length1 *= 3.; // Upscaling of a measure
-    assert_eq!(length1.value, 21.);
     assert_eq!((length1 / 3.).value, 7.); // Division of a measure by a number
-    length1 /= 3.; // Downscaling of a measure
-    assert_eq!(length1.value, 7.);
+```
+
+You can upscale or downscale a mutable measures by a number:
+```rust
+    let mut length1 = Measure::<Metre>::new(6.);
+    length1 *= 3.;
+    assert_eq!(length1.value, 18.);
+    length1 /= 2.;
+    assert_eq!(length1.value, 9.);
 ```
 
 You can also compute the division between two measures of the same unit, obtaining a dimensionless number, which is represented by a measure having, as unit of measurement, the built-in unit `One`, of the built-in property `Dimensionless`.
-Any measure can be multiplied or divided by such dimensionless measures:
+
+Any measure can be multiplied or divided by such dimensionless measures, obtaining a Measure of the same original unit of measurement:
 ```rust
     let mut length1 = Measure::<Metre>::new(7.);
-    let length2 = Measure::<Metre>::new(5.);
-    let ratio: Measure<measures::dimensionless::One> = length1 / length2;
+    let mut length2 = Measure::<Metre>::new(5.);
+    let ratio: Measure<measures::dimensionless::One> = length1 / length2; // 7. / 5. -> 1.4
     assert_eq!(ratio.value, 1.4);
-    let length3: Measure<Metre> = ratio * length2;
+    let length3: Measure<Metre> = ratio * length2; // 1.4 * 5. -> 7.
     assert_eq!(length3.value, 7.);
-    let length4: Measure<Metre> = length2 * ratio;
+    let length4: Measure<Metre> = length2 * ratio; // 5. * 1.4 -> 7.
     assert_eq!(length4.value, 7.);
-    length1 /= ratio;
+    let length5: Measure<Metre> = length1 / ratio; // 7. / 1.4 -> 5.
+    assert_eq!(length5.value, 5.);
+    length2 *= ratio; // 5. * 1.4 -> 7.
+    assert_eq!(length2.value, 7.);
+    length1 /= ratio; // 7. / 1.4 -> 5.
     assert_eq!(length1.value, 5.);
-    length1 *= ratio;
-    assert_eq!(length1.value, 7.);
 ```
 
 ## Comparisons between measures
 
-Measures can also be compared, using the comparison operators:
+Measures can also be compared, using the comparison operators, because they implement the traits `PartialEq` and `PartialOrd`:
 ```rust
     let length1 = Measure::<Metre>::new(5.);
     let length2 = Measure::<Metre>::new(7.);
@@ -199,10 +240,10 @@ Measures can also be compared, using the comparison operators:
     assert!(length2 >= length1);
 ```
 
-For the type `Measure` the following methods have also been implemented:
+For the type `Measure`, the following methods have also been implemented:
 * `min`: It returns the lesser of two measures.
 * `max`: It returns the greater of two measures.
-* `clamp`: It forces the receiver to be between the specified bounds.
+* `clamp`: It forces the receiver to be between the specified bounds, without requiring that the bounds are ordered.
 
 Here is an example:
 ```rust
@@ -210,32 +251,37 @@ Here is an example:
     let m2 = Measure::<Celsius>::new(27.);
     let m3 = Measure::<Celsius>::new(37.);
     println!("{}, {};", m1.min(m2), m1.max(m2));
-    println!("{};", m1.clamp(m2, m3));
+    println!("{}, {};", m1.clamp(m2, m3), m1.clamp(m3, m2));
+    println!("{}, {};", m2.clamp(m1, m3), m2.clamp(m3, m1));
+    println!("{}, {};", m3.clamp(m1, m2), m3.clamp(m2, m1));
 ```
 
 It will print:
 ```text
 17 °C, 27 °C;
-27 °C;
+27 °C, 27 °C;
+27 °C, 27 °C;
+27 °C, 27 °C;
 ```
 
 ## Conversions between units
 
-One of the main advantages of encapsulating measures is the simplification and added safety of unit conversions.
-You can convert between units of measurement of the same physical or geometrical property, using the following code:
+Conversions between units of measurement are one of the main advantages of encapsulating measures, because of the added simplicity and safety.
+
+For example, you can convert between units of measurement of the same physical or geometrical property, using the following code:
 ```rust
     let distance1 = Measure::<KiloMetre>::new(100.);
     let distance2 = distance1.convert::<Mile>();
     let time1 = Measure::<Hour>::new(2.);
     let time2 = time1.convert::<Minute>();
-    println!("The distances {distance1} and {distance2} are equivalent.");
-    println!("The time spans {time1} and {time2} are equivalent.");
+    println!("The distances [{distance1}] and [{distance2}] are equivalent.");
+    println!("The time spans [{time1}] and [{time2}] are equivalent.");
 ```
 
 It will print:
 ```
-The distances 100 km and 62.15040397762586 mi are equivalent.
-The time spans 2 h and 120 min are equivalent.
+The distances [100 km] and [62.15040397762586 mi] are equivalent.
+The time spans [2 h] and [120 min] are equivalent.
 ```
 
 Of course, it makes no sense to convert between units of measurement representing different physical or geometrical properties, and so such operations cause compilation errors:
@@ -250,6 +296,47 @@ type mismatch resolving `<Hour as MeasurementUnit>::Property == Length`
 ```
 because the property of `KiloMetre` is `Length`, but the property of `Hour` is `Time`.
 
+## The `default` method
+
+The type `Measure` implements the `Default` trait, and therefore, instead of the expression `Measure<Metre>::new(0.)`, you can write `Measure<Metre>::default()`.
+
+A good reason to stick to the method `new` is that it is a `const` function, and so you can write this:
+```rust
+const ZERO_LENGTH: Measure<Metre> = Measure<Metre>::new(0.);
+```
+
+Instead, the following statement is illegal:
+```rust
+const ZERO_LENGTH: Measure<Metre> = Measure<Metre>::default();
+```
+
+## Norms
+
+Given a real number, we can compute its "absolute value", a.k.a. "modulus" or "norm".
+Such terms have different meanings in other mathematical spaces, but, when speaking of real numbers, they are equivalent.
+
+So, we could need the absolute value of a `Measure` object.
+For numbers, the standard library provides the method `abs`.
+Instead, the type `Measure` has the method `norm`, which returns another `Measure`, like this example shows:
+```rust
+    let m1 = Measure::<Metre>::new(5.);
+    let m2 = Measure::<Metre>::new(-5.);
+    println!("{}, {};", m1.norm(), m2.norm());
+```
+
+It will print `5 m, 5 m;`.
+
+Other available method are `squared_norm`, which returns the squared value of the measure, as a number, and `normalized`, which returns a `Measure` having norm 1, and the same sign of the original measure:
+```rust
+    let m1 = Measure::<Metre>::new(5.);
+    let m2 = Measure::<Metre>::new(-5.);
+    let m3 = Measure::<Metre>::new(0.);
+    let m4 = Measure::<Metre>::new(-0.);
+    println!("{}, {}, {}, {};", m1.normalized(), m2.normalized(), m3.normalized(), m4.normalized());
+```
+
+It will print `1 m, -1 m, 1 m, -1 m;`.
+
 ## Absolute values
 
 Does it make sense to sum the temperature at which water freezes to the temperature at which water boils? No, it doesn't.
@@ -262,17 +349,17 @@ This happens because they are absolute measures, not relative measures, like the
 
 Mathematically speaking, such absolute measures are *points* of an *affine space*, while the relative measures, like lengths, temperature variations, and time durations are *vectors* of a *vector space*.
 
-To avoid using points instead of vectors or vice versa, the generic type `MeasurePoint` should be used, instead of using the generic type `Measure`, like shown in the following code:
+To avoid using points instead of vectors or vice versa, the generic type `MeasurePoint` should be used, instead of using the generic type `Measure`, like demonstrated by the following code:
 ```rust
     let point1 = MeasurePoint::<Celsius>::new(10.);
     let variation = Measure::<Celsius>::new(2.);
     let point2 = point1 + variation;
-    println!("When increasing temperature {point1} by {variation}, we reach temperature {point2}.");
+    println!("When increasing temperature [{point1}] by [{variation}], we reach temperature [{point2}].");
 ```
 
 It will print:
 ```
-When increasing temperature at 10 °C by 2 °C, we reach temperature at 12 °C.
+When increasing temperature [at 10 °C] by [2 °C], we reach temperature [at 12 °C].
 ```
 
 When a measure point is printed, the three characters "`at `" are prefixed to it.
@@ -290,8 +377,8 @@ The difference between two points is the vector from the second point to the fir
 ```rust
     let point1 = MeasurePoint::<Celsius>::new(10.);
     let point2 = MeasurePoint::<Celsius>::new(2.);
-    let variation = point2 - point1; // Variation from point1 to point2.
-    assert_eq!(variation.value, -8.);
+    let variation = point1 - point2; // Variation from point2 to point1.
+    assert_eq!(variation.value, 8.);
 ```
 
 We can also compute the average between two points.
@@ -344,7 +431,7 @@ The initial position of the screw is 3 cycles. We turn it by 90 degrees, that is
 For some applications, such unconstrained angular positions and rotations are useful.
 Though, for some other applications, angles are used just to indicate a direction, or a spherical coordinate.
 For such cases, when a full cycle is completed, we reach the same position than before the turn.
-It is a kind of *modulo* arithmetics.
+It is a kind of *modulo* arithmetic.
 
 This is supported by this library, using the type `UnsignedDirection` or the type `SignedDirection`, as shown in this code:
 ```rust
@@ -406,24 +493,52 @@ Though, there are also some functions that allow a direct conversion:
     assert_eq!(ud2.value, 358.);
 ```
 
+## Trigonometry
+
+For signed or unsigned directions, but also for absolute or relative measures representing an angle, it makes sense to compute the trigonometric functions for such an angle.
+
+Though, if you use directly the encapsulated value, you risk to make the mistake shown by the following code:
+```rust
+    let a = Measure::<Degree>::new(90);
+    let _sine = a.value.sin();
+```
+
+This is wrong, because it applies the method `sin` to the number `90`, which is meant to be the value of the angle in degrees, while the method `sin` expects an angle in radians.
+
+Instead, using the library `measures`, you can write this correct code:
+```rust
+    let a = Measure::<Degree>::new(90);
+    let _sine = a.sin();
+```
+
+The `sin` method of the type `Measure` implicitly converts the unit to `Radians`, before applying the standard-library method to the value.
+
+The trigonometric functions available for the types `Measure`, `MeasurePoint`, `SignedDirection`, and `UnsignedDirection` are:
+* `sin`, which returns the sine of the angle.
+* `cos`, which returns the cosine of the angle.
+* `tan`, which returns the tangent of the angle.
+* `sin_cos`, which returns a pair containing the sine and the cosine of the angle.
+
+Such four functions are available only for angles, that is when the property of the unit of measurement of the measure is the built-in type `Angle`.
+
 The next sections explain how to use 2D measures in a plane and 3D measures in space.
 If you are not interested in them, you can jump to the section [Mixed-unit operations](#mixed-unit-operations).
 
 ## Working in a plane
 
 If our measures represent vectors or points in a plane, they must be represented by two numbers, which may be its norm and direction or its X and Y components.
-The `measures` library uses the latter representation, like this example shows:
+The `measures` library uses the latter representation, like this example demonstrates:
 ```rust
     let position1 = MeasurePoint2d::<Metre>::new([4., 7.]);
     let displacement = Measure2d::<Metre>::new([2., -12.]);
     let position2 = position1 + displacement;
-    println!("After I moved from position {position1} in the plane \
-    by {displacement}, my position had become {position2}.");
+    println!("After I moved from position [{position1}] in the plane \
+    by [{displacement}], my position had become [{position2}].");
 ```
 
 It will print:
 ```
-After I moved from position at (4, 7) m in the plane by (2, -12) m, my position had become at (6, -5) m.
+After I moved from position [at (4, 7) m] in the plane by [(2, -12) m], my position had become [at (6, -5) m].
 ```
 
 Notice that relative 2D-measures are encapsulated in the type `Measure2d`, and absolute 2D-measures are encapsulated in the type `MeasurePoint2d`.
@@ -473,10 +588,10 @@ It will print:
 The squared norm of (3, 4) m is 25; its norm is 5 m.
 ```
 
-The method `m.squared_norm()` returns the value of the formula `m.x * m.x + m.y * m.y`.
+The method `squared_norm` returns the value of the formula `m.x * m.x + m.y * m.y`.
 According with the Pythagorean theorem, this value is the square of the length of the vector.
 
-The method `m.norm()` returns the one-dimensional measure representing the length of the vector. Its value is the square root of the value returned by `squared_norm`.
+The method `norm` returns the one-dimensional measure representing the length of the vector. Its value is the square root of the value returned by `squared_norm`.
 
 The method `normalized` returns a vector having the same direction of the original vector, but with norm one.
 ```rust
@@ -939,7 +1054,7 @@ In 3D space we have this:
 
 It will print:
 ```
-In space, if a force of (10, 20, 0.4) N is applied to an object, while it moves by (4, 3, -5) m, 
+In space, if a force of (10, 20, 0.4) N is applied to an object, while it moves by (4, 3, -5) m,
 then a work of 98 J is performed.
 If that force is applied to a point which is detached from a pivot by an arm of (4, 3, -5) m, that force causes a torque of (-101.2, 51.6, -50) N·m.
 ```
@@ -954,6 +1069,8 @@ Therefore, cross products in a plane expression return a scalar, containing the 
 Instead, in 3D space, the torque is a vector which could have any direction, and so the cross product returns a value of type `Measure3d`.
 
 ## Measures with uncertainty
+
+_Warning: The implementation of uncertainty handling with measures is not complete yet._
 
 So far, every 1-dimension measure encapsulated just one number, every 2-dimension measure encapsulated two numbers, and every 3-dimension measure encapsulated three numbers.
 So, every measure was represented by as many numeric values as the dimensions of the space.
@@ -1046,7 +1163,7 @@ Actually, our small program begins by importing all there is in the module `unit
 
 Let's see its contents.
 
-### Defining measure types
+### Features
 
 It begins with this statement:
 ```rust
@@ -1054,7 +1171,7 @@ measures::define_measure_types! {
     with_points with_directions with_2d with_3d with_transformations exact with_approx,
 ```
 
-This is a macro invocation which expands to the code which defines these types:
+This is a macro invocation, which expands to the code which defines these types:
 * `Measure`: 1D relative measure.
 * `MeasurePoint`: 1D absolute measure.
 * `Measure2d`: 2D relative measure.
@@ -1084,34 +1201,37 @@ This is a macro invocation which expands to the code which defines these types:
 * `Angle`: Property of angle units.
 * `Radian`: The only built-in unit having the property `Angle`.
 
+The first line in the macro invocation contains the list of desired features.
+In this example, all the features are specified.
+
 Therefore, if there is the need to work using relative and absolute measures, using angular directions, in 1D, in 2D, in 3D, using transformation objects, with exact measures and measures with uncertainty, the macro `define_measure_types` with such arguments should be used.
 It will declare every kind of measures, directions and transformations.
 
-Though, if only some of such types are needed, you can remove some of those arguments, and so reduce the number of declared types.
-In this way, the resulting code would be quicker to compile, and developers would not be not bothered by unneeded types.
+Though, if only some of such types are needed, you can remove some of those arguments, so reducing the number of declared types.
+In this way, the resulting code would be quicker to compile, and developers would not be bothered by unneeded types.
 
-Relative measures cannot be removed, but if absolute measures, i.e. points in affine spaces, are not needed, you can remove the option `with_points` from the macro invocation.
+Relative measures cannot be removed, but if absolute measures, i.e. points in affine spaces, are not needed, you can remove the feature *`with_points`* from the macro invocation.
 The following types will not be generated: `MeasurePoint`, `MeasurePoint2d`, `MeasurePoint3d`, `AffineMap2d`, and `AffineMap3d`.
 
-If angular directions are not needed, you can remove the option `with_directions`.
+If angular directions are not needed, you can remove the feature *`with_directions`*.
 The types `UnsignedDirections` and `SignedDirections` will not be generated.
 
-1-dimension measures cannot be removed, but if 2-dimension measures are not needed, you can remove the option `with_2d`.
+1-dimension measures cannot be removed, but if 2-dimension measures are not needed, you can remove the feature *`with_2d`*.
 The following types will not be generated: `Measure2d`, `MeasurePoint2d`, `LinearMap2d` and `AffineMap2d`.
 
-If 3-dimension measures are not needed, you can remove the option `with_3d`.
+If 3-dimension measures are not needed, you can remove the feature *`with_3d`*.
 The following types will not be generated: `Measure3d`, `MeasurePoint3d`, `LinearMap3d` and `AffineMap3d`.
 
-If the linear or affine transformations in a plane or in the space are not needed, you can remove the option `with_transformations`.
+If the linear or affine transformations in a plane or in the space are not needed, you can remove the feature *`with_transformations`*.
 The following types will not be generated: `LinearMap2d`, `AffineMap2d`, `LinearMap3d` and `AffineMap3d`.
 
-If exact measures are not needed, because you are going to use only measures with uncertainty, you can remove the option `exact`.
+If exact measures are not needed, because you are going to use only measures with uncertainty, you can remove the feature *`exact`*.
 The following types will not be generated: `Measure`, `MeasurePoint`, `Measure2d`, `MeasurePoint2d`, `Measure3d`, `MeasurePoint3d`, `LinearMap2d`, `AffineMap2d`, `LinearMap3d`, `AffineMap3d`, `MeasurePoint3d`, `UnsignedDirections`,`SignedDirections`, `DecibelsMeasureFormatter`.
 
-Conversely, if measures with uncertainty are not needed, because you are going to use only exact measures, you can remove the option `with_approx`.
+Conversely, if measures with uncertainty are not needed, because you are going to use only exact measures, you can remove the feature *`with_approx`*.
 The following types will not be generated: `ApproxMeasure`, `ApproxMeasurePoint`, `ApproxMeasure2d`, `ApproxMeasurePoint2d`, `ApproxMeasure3d`, `ApproxMeasurePoint3d`, `ApproxLinearMap2d`, `ApproxAffineMap2d`, `ApproxLinearMap3d`, `ApproxAffineMap3d`, `ApproxMeasurePoint3d`, `ApproxUnsignedDirections`,`ApproxSignedDirections`, `ApproxDecibelsMeasureFormatter`.
 
-Notice that it makes no sense to remove both the options `exact` and `with_approx`.
+Notice that it makes no sense to remove both the features `exact` and `with_approx`.
 
 Actually, these definitions do not define all the properties and all the units of measurement we used in our examples.
 
@@ -1119,97 +1239,90 @@ The only predefined properties are `Dimensionless` and `Angle`, and the only pre
 
 Every other property and every other unit must be explicitly defined.
 
-### Defining properties
+### Sections
 
-Actually, if you search the file `units.rs` for the first occurrence of the closed brace character (`}`), you will see the following statement after it:
-```rust
-measures::measurement_vector_property! { Acceleration }
+The file `units.rs`, from the third line, contains the sections
+```
+    scalar_properties [
+      ...
+    ]
+    vector_properties [
+      ...
+    ]
+    angle_measurement_units [
+      ...
+    ]
+    relationships [
+      ...
+    ]
 ```
 
-This macro invocation defines the *property* `Acceleration`.
-A (physical or geometrical) property is something you want to measure, and, for such a purpose, it needs one or more units of measurement.
+For some properties, it makes sense to have a 2D measure or 3D measure, but for others properties it does not make sense.
+To forbid the creation of nonsensical expressions like `Measure2d<Kilogram>` or `MeasurePoint3d<Minute>`, properties are classified as:
+* *Scalar properties*: The ones for which it is forbidden to create multidimensional measures. Examples of scalar properties are `Angle`, `Time`, `Mass`, `Temperature`, `ElectricCharge`, and `Information`.
+* *Vector properties*: The ones for which it is allowed to create multidimensional measures. Examples of vector properties are `Dimensionless`, `Length`, `Velocity`, `Acceleration`, `Force`, `Torque`, `ElectricFieldStrength`, and `MagneticFieldStrength`.
 
-Its main purpose is to avoid unit conversions which do not make sense.
-For example, `Mile`, `Inch`, `NanoMetre` and `KiloMetre` are all units of the property `Length` and so it will be allowed to convert between two of them. Instead, `MetrePerSquareSecond` is a unit of the property `Acceleration`, and so it will be forbidden to convert from `Mile` or `MetrePerSquareSecond` or conversely.
+The section starting with `scalar_properties` contains the definitions of scalar properties and their units of measurement.
 
-Can you have a 2-dimension mass, or a 3-dimension time? No.
-Instead you have a 2-dimension velocity, or a 3-dimension electric field strength.
+The section starting with `vector_properties` contains the definitions of vector properties and their units of measurement.
 
-Actually, for some properties, it makes sense to have a 2D measure or 3D measure.
-They are called *vector properties*.
-Example of vector properties are: length, velocity, force, torque, electric field strength, magnetic field strength, and dimensionless.
+The section starting with `angle_measurement_units` contains the definitions of the units of measurement of the only angle property, which is built-in, it is named `Angle`.
+The property `Angle` is a scalar property, and it has a built-in unit of measurement, named `Radian`.
+In this section, additional units of measurement can be defined, like `Degree` or `Cycle`.
 
-Instead, for other properties it make sense only to have 1D measures.
-They are called *scalar properties*. 
-Example of scalar properties are: mass, temperature, time, electric charge, information, and angle.
+Also the property `Dimensionless` is built-in.
+It is a vector property, and it has a built-in unit of measurement, named `One`.
+Yet, no other unit of measurement can be defined for this property.
 
-It is useful to forbid creating vectors for scalar properties.
-To such a purpose, the statement `measures::measurement_vector_property! { Acceleration }` just marks the property `Acceleration` as a vector property.
-Later, any attempt to create a 2D or 3D measure with a unit of this property will be allowed.
-For example, this is allowed: `Measure3d<MetrePerSquareSecond>`.
+The section starting with `relationships` contains the definitions of the relationships among units of measurement, used to divide or multiply two measures.
 
-Instead, the declaration of the time property should be this:
+### Scalar and vector properties
+
+Inside the section `scalar_properties`, there is a subsection for each scalar property to define.
+For example, a possible content to define the property `Time` is this:
 ```rust
-measures::measurement_scalar_property! { Time }
+        Time [
+            Second {
+                suffix: " s",
+            }
+            Day {
+                suffix: " D",
+                ratio: 86400.,
+            }
+        ]
 ```
 
-Later, any attempt to create a 2D or 3D measure with a unit of this property will generate a compilation error.
-For example, this is not allowed: `Measure3d<Second>`.
+It declares that there is a scalar property named `Time`, for which there are two units of measurement, named `Second` and `Day`.
 
-### Defining units of measurement
-
-In the file `units.rs`, after the definition of the property `Acceleration`, there is:
+For another example, a possible content to define the property `Temperature` is this:
 ```rust
-measures::measurement_unit! {
-    name: MetrePerSquareSecond,
-    property: Acceleration,
-    suffix: " m/s\u{b2}", // m/s²
-}
+        Temperature [
+            Kelvin {
+                suffix: " \u{b0}K", // °K
+            }
+            Celsius {
+                suffix: " \u{b0}C", // °C
+                ratio: 1.,
+                offset: 273.15,
+            }
+        ]
 ```
 
-This macro call defines a unit of measurement, by specifying some attributes.
+It declares that there is a scalar property named `Temperature`, for which there are two units of measurement, named `Kelvin` and `Celsius`.
 
-The attribute `name` specifies the name of the unit of measurement we are defining.
+The definition of a unit of measurement includes some fields.
+Here are the possible fields:
+* *`suffix`*: This is the only mandatory field for every unit of measurement.
+It is the text to be appended after the numeric value, when a measure is converted to a string.
+* *`ratio`* is an `f64` value that represents how many base units there are in this unit of measurement. For example, the base unit of `Time` is the second, and there are 86400 seconds in a single day, and so the ratio for `Day` is `86400.`.
+If this field is not specified, it is assumed to be equal to 1.
+Therefore, for the base unit, which, by definition, has ratio 1, this field is not needed.
+* *`offset`* is an `f64` value that represents how many base units there are from the origin of the base unit and the origin of this unit of measurement. For example, the base unit of `Temperature` is the kelvin, and there are 273.15 kelvins from the origin of the kelvin scale to the origin of the celsius scale, and so the offset for `Celsius` is `273.15`.
+If this field is not specified, it is assumed to be equal to 0.
+Therefore, for the base unit, which, by definition, has offset 0, this field is not needed.
+Actually, the property `offset` is very rarely used. In this example file is used only for temperature scales. It could be used also for calendars.
 
-The attribute `property` specifies the property of this unit.
-We mean `MetrePerSquareSecond` to be an `Acceleration`, and so its attribute `property` specifies such value.
-
-The attribute `suffix` specifies what should be printed after the numeric value of the measure, when a measure is printed or converted to a string.
-
-The conversion between measures having different unit needs two pieces of information:
-* The ratio between the sizes of the two units. For example, to convert a mass from grams to ounces, it must be taken into account that one ounce corresponds to 28.34952 grams.
-* The offset between the origins of the two units. For example, to convert from a temperature point from  Celsius degrees to Fahrenheit degrees, it must be taken into account that the temperature point of 0 Celsius degrees corresponds to 32 Fahrenheit degrees.
-
-The solution of the library `measures` is that for every property, a base unit should be defined.
-In the file `units.rs`, `MetrePerSquareSecond` is taken as the base unit for acceleration.
-By the way, this is in accordance with the SI international standard.
-
-Then, every unit of measurement of that property should specify the ratio between itself and the base unit, and it should specify the offset between its origin and the origin of the base unit.
-Of course, for the base unit, such ratio is 1, and such origin is 0.
-
-The general form to define a unit is like the one used in `units.rs` to define the Fahrenheit degree:
-```rust
-measures::measurement_unit! {
-    name: Fahrenheit,
-    property: Temperature,
-    ratio: 5. / 9.,
-    offset: 273.15 - 32. * 5. / 9.,
-    suffix: " \u{b0}F", // °F
-}
-```
-
-For temperatures, the base unit is the Kelvin degree.
-In the above definition, the attribute `ratio` specifies that each Fahrenheit degree is `5. / 9.` of a Kelvin degree.
-And the attribute `offset` specifies specifies that the origin of the Fahrenheit scale is at a point corresponding to `273.15 - 32. * 5. / 9.` Kelvin degrees.
-
-The attribute `offset` can be omitted, having a default value of 0.
-So, for most measurement units, it is actually omitted.
-
-The only sensible uses of the attribute `offset` are for temperature (every temperature scale has a distinct origin) or for time (every calendar has a distinct origin or epoch).
-
-Also the attribute `ratio` can be omitted, having a default value of 1.
-So, for every measurement unit which is not a base unit, it is actually omitted.
-Notice that `ratio` can be omitted only is `offset` is also omitted.
+Vector properties and their units are defined with the same syntax.
 
 ### Defining units of angles
 
@@ -1218,23 +1331,30 @@ Angles are a particular property.
 The property `Angle` is predefined.
 The unit `Radian` is the only predefined unit of `Angle`, and its ratio is 1, i.e. it is the base unit of angles.
 
-Other angle units can be defined, but using a different macro, like shown here:
+Other angle units can be defined, but only in the section `angle_measurement_units`, like it is demonstrated here:
 ```rust
-measures::angle_measurement_unit! {
-    name: Degree,
-    suffix: " deg",
-    cycle_fraction: 360.,
-}
+        Cycle {
+            suffix: " rev",
+            cycle_fraction: 1.,
+        }
+        Degree {
+            suffix: " deg",
+            cycle_fraction: 360.,
+        }
 ```
 
-The macro `angle_measurement_unit` has only three attributes:
-* `name` is the name of the angular unit of measurement, similarly to other units;
-* `suffix` is the string printed after the number, when the measure is printed, similarly to other units;
-* `cycle_fraction` is ratio between the full cycle and the current unit.
+The definition of an angle unit of measurement includes two mandatory properties.
+* *`suffix`* is the string printed after the number, when the measure is printed, similarly to other units.
+* *`cycle_fraction`* is ratio between the full cycle and the current unit.
 
-The attribute `offset` is not allowed, because it is restricted to be 0.
+Notice that the properties `offset` and `ratio` are not allowed.
 
-The attribute `ratio` is not allowed, because it is automatically computed as `2 * PI / cycle_fraction`.
+The unit `Radian` is predefined with these values:
+```rust
+            suffix: " rad",
+            cycle_fraction: core::f64::consts::TAU,
+```
+Where the constant TAU is about 6.283185307.
 
 ## Defining relationships among units
 
@@ -1373,10 +1493,11 @@ The transmission rate is 4235.29 b/s.
 
 ## Using decibels
 
-For some kinds of measures, it is customary to use logarithmic values, typically in the form of decibels, that are tenths of the 10-base logarithm of the actual value.
+For some kinds of measures, it is customary to use logarithmic values, typically in the form of decibels.
+Decibels are tenths of the 10-base logarithm of the actual value.
 
 For example, if we have a measure of 0.001 watts, we can compute its 10-base logarithms, obtaining -3.
-So, this measure can be said to be -30 decibels of watts, or `-30 db W`.
+So, this measure can be said to be -30 decibels of watt, or `-30 db W`.
 
 The crate `measures` supports decibels only for the types `Measure` and `ApproxMeasure`, as shown in the following code:
 ```rust

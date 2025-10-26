@@ -112,7 +112,7 @@ macro_rules! inner_define_approx_measure {
                 )
             }
 
-            pub fn decibels_formatter(self) -> ApproxDecibelsMeasureFormatter<Unit, Number> {
+            pub const fn decibels_formatter(self) -> ApproxDecibelsMeasureFormatter<Unit, Number> {
                 ApproxDecibelsMeasureFormatter(self)
             }
         }

@@ -173,9 +173,9 @@ error[E0308]: mismatched types
    |            |
    |            expected due to this
    |
-   = note: expected struct `Quantity<dyn Dimension<I = ..., J = ..., Kind = ..., L = ..., M = ..., N = ..., T 
+   = note: expected struct `Quantity<dyn Dimension<I = ..., J = ..., Kind = ..., L = ..., M = ..., N = ..., T
 = ..., Th = ...>, ..., ...>` (`Z0`)
-              found struct `Quantity<dyn Dimension<I = ..., J = ..., Kind = ..., L = ..., M = ..., N = ..., T 
+              found struct `Quantity<dyn Dimension<I = ..., J = ..., Kind = ..., L = ..., M = ..., N = ..., T
 = ..., Th = ...>, ..., ...>` (`PInt<UInt<..., ...>>`)
 ```
 
@@ -536,12 +536,15 @@ However, when more complex linear or affine transformations are needed, it is po
 
 In experimental science and in engineering, you rarely handle exact measures.
 Typically, every measure is affected by some _uncertainty_ (often improperly named "error").
-his means that a measure is not a number, but a probability distribution.
+This means that a measure is not a number, but a probability distribution.
 
 Measuring something means to extract samples from this distribution.
 
 In most cases, the uncertainty is much smaller than the average value of the measurement.
-In such cases, the probability distribution can be represented by a bell-shaped _normal_ distribution.
+For example, you typically can say that a table is long 150 cm, plus or minus 1 cm.
+You are not going to say that a table is long 150 cm, plus or minus 100 cm.
+
+In such cases, the probability distribution can be well represented by a bell-shaped _normal_ distribution.
 Such kind of distributions can be characterized by two numbers: the mean (μ) and the standard deviation (σ).
 
 So, it is quite typical to express a length as `170 ± 1.5 cm`, or a mass as `87.3 ± 0.2 kg`.
@@ -553,12 +556,12 @@ A problem regarding uncertainty is its propagation.
 
 For example, let's consider a physical object, for which we measured its mass as `87.3 ± 0.2 kg` and its volume as `0.3 ± 0.012 m³`.
 We can say that, for its mass density, the most likely value is `87.3 / 0.3 = 291 kg/m³`.
-But about the uncertainty of such derived measure?
+But what about the uncertainty of such derived measure?
 
 The library `measures` allows to define measures with an associated variance, that is the square of the standard deviation.
 In addition, the library allows to perform arithmetic operations on such measures, propagating the uncertainty to the results.
 
 The propagation of the uncertainty of measures follows rules depending on the statistical correlation of the measures involved in the operations.
-The usual infix operators (`+`, `-`, `*`, `/`) assume that their operands are statistically independent (i.e. they have correlation = 0).
+The usual infix operators (`+`, `-`, `*`, `/`) assume that their operands are statistically independent (i.e. they have correlation equal to zero).
 
 Though, in some applications, a non-zero correlation is a better representation of reality, and so, for every mathematical operation involving two measures, an alternate operation is provided, in which the correlation can be specified.
