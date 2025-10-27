@@ -1347,45 +1347,7 @@ macro_rules! angle_measurement_unit {
 }
 
 #[macro_export]
-macro_rules! measurement_unit {
-    {
-        name: $name:ident,
-        property: $property:ident,
-        suffix: $suffix:expr,
-        with_2d: $with_2d:tt,
-        with_3d: $with_3d:tt,
-        vector: $vector:tt,
-    } => {
-        $crate::measurement_unit! {
-            name: $name,
-            property: $property,
-            suffix: $suffix,
-            ratio: 1.,
-            with_2d: $with_2d,
-            with_3d: $with_3d,
-            vector: $vector,
-        }
-    };
-    {
-        name: $name:ident,
-        property: $property:ident,
-        suffix: $suffix:expr,
-        ratio: $ratio:expr,
-        with_2d: $with_2d:tt,
-        with_3d: $with_3d:tt,
-        vector: $vector:tt,
-    } => {
-        $crate::measurement_unit! {
-            name: $name,
-            property: $property,
-            suffix: $suffix,
-            ratio: $ratio,
-            offset: 0.,
-            with_2d: $with_2d,
-            with_3d: $with_3d,
-            vector: $vector,
-        }
-    };
+macro_rules! measurement_unit_aux {
     {
         name: $name:ident,
         property: $property:ident,
@@ -1524,6 +1486,89 @@ macro_rules! measurement_unit {
                     ])
                 }
             }
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! measurement_unit {
+    {
+        name: $name:ident,
+        property: $property:ident,
+        suffix: $suffix:expr,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        vector: $vector:tt,
+    } => {
+        $crate::measurement_unit! {
+            name: $name,
+            property: $property,
+            suffix: $suffix,
+            ratio: 1.,
+            with_2d: $with_2d,
+            with_3d: $with_3d,
+            vector: $vector,
+        }
+    };
+    {
+        name: $name:ident,
+        property: $property:ident,
+        suffix: $suffix:expr,
+        ratio: $ratio:expr,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        vector: true,
+    } => {
+        $crate::measurement_unit_aux! {
+            name: $name,
+            property: $property,
+            suffix: $suffix,
+            ratio: $ratio,
+            offset: 0.,
+            with_2d: $with_2d,
+            with_3d: $with_3d,
+            vector: true,
+        }
+    };
+    {
+        name: $name:ident,
+        property: $property:ident,
+        suffix: $suffix:expr,
+        ratio: $ratio:expr,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        vector: false,
+    } => {
+        $crate::measurement_unit_aux! {
+            name: $name,
+            property: $property,
+            suffix: $suffix,
+            ratio: $ratio,
+            offset: 0.,
+            with_2d: $with_2d,
+            with_3d: $with_3d,
+            vector: false,
+        }
+    };
+    {
+        name: $name:ident,
+        property: $property:ident,
+        suffix: $suffix:expr,
+        ratio: $ratio:expr,
+        offset: $offset:expr,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        vector: false,
+    } => {
+        $crate::measurement_unit_aux! {
+            name: $name,
+            property: $property,
+            suffix: $suffix,
+            ratio: $ratio,
+            offset: $offset,
+            with_2d: $with_2d,
+            with_3d: $with_3d,
+            vector: false,
         }
     };
 }

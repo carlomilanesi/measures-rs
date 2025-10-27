@@ -1322,7 +1322,8 @@ If this field is not specified, it is assumed to be equal to 0.
 Therefore, for the base unit, which, by definition, has offset 0, this field is not needed.
 Actually, the property `offset` is very rarely used. In this example file is used only for temperature scales. It could be used also for calendars.
 
-Vector properties and their units are defined with the same syntax.
+Vector properties and their units are defined with a similar syntax.
+The only difference is that, for vector properties, the field `offset` is not allowed, because it makes little sense to have a different origin for two vector units of the same property.
 
 ### Defining units of angles
 
