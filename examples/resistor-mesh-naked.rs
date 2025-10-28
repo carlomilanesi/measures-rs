@@ -3,93 +3,100 @@
 // Expected output:
 // R = 1.60899124172989
 
-#[derive(Clone, Copy, PartialEq)]
-enum Fixed {
-    A,
-    B,
-    Free,
-}
+use std::fmt;
 
-#[derive(Clone)]
+#[derive(Clone, Copy)]
 struct Node {
-    current: f64,
-    fixed: Fixed,
+    v: f64,
+    fixed: i32,
 }
 
 impl Node {
     fn new() -> Self {
-        Self {
-            current: 0.,
-            fixed: Fixed::Free,
-        }
+        Node { v: 0.0, fixed: 0 }
+    }
+
+    fn get_v(&self) -> f64 {
+        self.v
+    }
+
+    fn set_v(&mut self, nv: f64) {
+        self.v = nv;
+    }
+
+    fn get_fixed(&self) -> i32 {
+        self.fixed
+    }
+
+    fn set_fixed(&mut self, nf: i32) {
+        self.fixed = nf;
     }
 }
 
-type Mesh = Vec<Vec<Node>>;
-
-fn set_boundary(m: &mut Mesh) {
-    m[1][1] = Node {
-        current: 1.,
-        fixed: Fixed::A,
-    };
-    m[6][7] = Node {
-        current: -1.,
-        fixed: Fixed::B,
-    };
+impl fmt::Display for Node {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Node {{ v: {}, fixed: {} }}", self.v, self.fixed)
+    }
 }
 
-fn calculate_difference(m: &Mesh, d: &mut Mesh) -> f64 {
-    let w = m[0].len();
-    let h = m.len();
-    let mut total = 0.;
+fn set_boundary(m: &mut [Vec<Node>]) {
+    m[1][1].set_v(1.0);
+    m[1][1].set_fixed(1);
+
+    m[6][7].set_v(-1.0);
+    m[6][7].set_fixed(-1);
+}
+
+fn calculate_difference(m: &[Vec<Node>], d: &mut [Vec<Node>], w: usize, h: usize) -> f64 {
+    let mut total = 0.0;
     for i in 0..h {
         for j in 0..w {
-            let mut current = 0.;
+            let mut v = 0.0;
             let mut n = 0;
             if i > 0 {
-                current += m[i - 1][j].current;
+                v += m[i - 1][j].get_v();
                 n += 1;
             }
             if j > 0 {
-                current += m[i][j - 1].current;
+                v += m[i][j - 1].get_v();
                 n += 1;
             }
             if i + 1 < h {
-                current += m[i + 1][j].current;
+                v += m[i + 1][j].get_v();
                 n += 1;
             }
             if j + 1 < w {
-                current += m[i][j + 1].current;
+                v += m[i][j + 1].get_v();
                 n += 1;
             }
-            current = m[i][j].current - current / n as f64;
-            d[i][j].current = current;
-            if m[i][j].fixed == Fixed::Free {
-                total += current * current;
+            let val = m[i][j].get_v() - v / n as f64;
+            d[i][j].set_v(val);
+            if m[i][j].get_fixed() == 0 {
+                total += val * val;
             }
         }
     }
     total
 }
 
-fn iter(m: &mut Mesh) -> f64 {
-    let w = m[0].len();
-    let h = m.len();
-    let mut d = vec![vec![Node::new(); w]; h];
+fn iter(m: &mut [Vec<Node>], w: usize, h: usize) -> f64 {
+    let mut d: Vec<Vec<Node>> = vec![vec![Node::new(); w]; h];
+
+    let mut curr: [f64; 3] = [0.0, 0.0, 0.0];
     let mut diff = 1e10;
-    let tolerance = 1e-24;
-    while diff > tolerance {
+
+    while diff > 1e-24 {
         set_boundary(m);
-        diff = calculate_difference(m, &mut d);
+        diff = calculate_difference(m, &mut d, w, h);
         for i in 0..h {
             for j in 0..w {
-                m[i][j].current -= d[i][j].current;
+                let current_v = m[i][j].get_v();
+                let diff_v = d[i][j].get_v();
+                m[i][j].set_v(current_v - diff_v);
             }
         }
     }
 
-    let mut current_a = 0.;
-    let mut current_b = 0.;
     for i in 0..h {
         for j in 0..w {
             let mut k = 0;
@@ -105,20 +112,18 @@ fn iter(m: &mut Mesh) -> f64 {
             if j < w - 1 {
                 k += 1;
             }
-            let increment = d[i][j].current * k as f64;
-            match m[i][j].fixed {
-                Fixed::A => current_a += increment,
-                Fixed::B => current_b += increment,
-                Fixed::Free => {}
-            }
+            curr[(m[i][j].get_fixed() + 1) as usize] += d[i][j].get_v() * k as f64;
         }
     }
-    (current_a - current_b) / 2.
+
+    (curr[2] - curr[0]) / 2.0
 }
 
+const S: usize = 10;
+
 fn main() {
-    const SIZE: usize = 10;
-    let mut mesh = vec![vec![Node::new(); SIZE]; SIZE];
-    let r = 2. / iter(&mut mesh);
-    println!("R = {r:.14}");
+    let mut mesh: Vec<Vec<Node>> = vec![vec![Node::new(); S]; S];
+
+    let r = 2.0 / iter(&mut mesh, S, S);
+    println!("R = {:.14}", r);
 }

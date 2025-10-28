@@ -1,3 +1,4 @@
+// Taken from https://rosettacode.org/wiki/Resistor_mesh#C++ .
 // To run this, type:
 // g++ examples/resistor-mesh-naked.cpp -o resistor-mesh-naked && ./resistor-mesh-naked && rm resistor-mesh-naked
 // Expected output:
