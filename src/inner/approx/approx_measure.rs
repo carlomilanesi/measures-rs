@@ -494,7 +494,7 @@ macro_rules! inner_define_approx_measure {
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 fmt::Display::fmt(&self.value, formatter)?;
-                formatter.write_str("\u{b1}")?;
+                formatter.write_str(" \u{b1} ")?; // ±
                 fmt::Display::fmt(&self.variance.sqrt(), formatter)?;
                 formatter.write_str(Unit::SUFFIX)
             }
@@ -533,7 +533,7 @@ macro_rules! inner_define_approx_measure {
 
                 // It is plus or minus the square root of the variance, in dB,
                 // that is the variance in dB divided by two.
-                formatter.write_str("\u{b1}")?;
+                formatter.write_str(" \u{b1} ")?; // ±
                 fmt::Display::fmt(&(self.0.variance.to_decibels() * Number::HALF), formatter)?;
                 formatter.write_str(" dB")?;
 
@@ -549,7 +549,7 @@ macro_rules! inner_define_approx_measure {
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 fmt::Display::fmt(&self.0.value.to_decibels(), formatter)?;
-                formatter.write_str("\u{b1}")?;
+                formatter.write_str(" \u{b1} ")?; // ±
                 fmt::Display::fmt(&(self.0.variance.to_decibels() * Number::HALF), formatter)?;
                 formatter.write_str(" dB")?;
                 formatter.write_str(Unit::SUFFIX)

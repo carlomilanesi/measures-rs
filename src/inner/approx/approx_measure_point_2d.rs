@@ -312,11 +312,11 @@ macro_rules! inner_define_approx_measure_point_2d {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at (")?;
                 fmt::Display::fmt(&self.values[0], formatter)?;
-                formatter.write_str("\u{b1}")?;
+                formatter.write_str(" \u{b1} ")?; // ±
                 fmt::Display::fmt(&self.covariances[0][0].sqrt(), formatter)?;
                 formatter.write_str(", ")?;
                 fmt::Display::fmt(&self.values[1], formatter)?;
-                formatter.write_str("\u{b1}")?;
+                formatter.write_str(" \u{b1} ")?; // ±
                 fmt::Display::fmt(&self.covariances[1][1].sqrt(), formatter)?;
                 formatter.write_str(")")?;
                 formatter.write_str(Unit::SUFFIX)

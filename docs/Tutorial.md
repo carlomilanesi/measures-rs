@@ -1149,7 +1149,7 @@ Here are some examples:
 ```rust
     let mass = ApproxMeasure::<KiloGram>::with_variance(87.3, 0.04); // mean and variance
     assert_eq!(mass.uncertainty(), Measure::<KiloGram>::new(0.2)); // standard deviation
-    assert_eq!(format!("{mass}, {mass:?}"), "87.3±0.2 kg, [µ=87.3 σ²=0.04] kg");
+    assert_eq!(format!("{mass}, {mass:?}"), "87.3 ± 0.2 kg, [µ=87.3 σ²=0.04] kg");
 ```
 
 The variable `mass` represents an approximate measure of a mass in kilograms.

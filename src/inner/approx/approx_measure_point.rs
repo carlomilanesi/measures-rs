@@ -360,7 +360,7 @@ macro_rules! inner_define_approx_measure_point {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at ")?;
                 fmt::Display::fmt(&self.value, formatter)?;
-                formatter.write_str("\u{b1}")?;
+                formatter.write_str(" \u{b1} ")?; // ±
                 fmt::Display::fmt(&self.variance.sqrt(), formatter)?;
                 formatter.write_str(Unit::SUFFIX)
             }
@@ -375,7 +375,7 @@ macro_rules! inner_define_approx_measure_point {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at ")?;
                 fmt::Display::fmt(&self.value, formatter)?;
-                formatter.write_str("\u{b1}")?;
+                formatter.write_str(" \u{b1} ")?; // ±
                 fmt::Display::fmt(&self.variance.sqrt(), formatter)?;
                 formatter.write_str(Unit::SUFFIX)
             }
