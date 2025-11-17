@@ -1,6 +1,6 @@
 use measures::{assert_eq_32, assert_eq_64};
 use units::{
-    AffineMap2d, Degree, Measure, Measure2d, MeasurePoint, MeasurePoint2d, Metre, MilliMetre,
+    AffineMap2d, Degree, Measure, Measure2d, MeasurePoint, MeasurePoint2d, Metre, Millimetre,
     SignedDirection, UnsignedDirection,
 };
 
@@ -12,7 +12,7 @@ mod units {
                 Metre {
                     suffix: " m",
                 }
-                MilliMetre {
+                Millimetre {
                     suffix: " mm",
                     ratio: 1e-3,
                 }
@@ -63,7 +63,7 @@ fn affine_map_2d_new() {
 #[test]
 fn affine_map_2d_convert() {
     let am1 = AffineMap2d::<Metre, f32>::new([[12., 23., 34.], [-45., 56., 67.]]);
-    let am2: AffineMap2d<MilliMetre, f32> = am1.convert::<MilliMetre>();
+    let am2: AffineMap2d<Millimetre, f32> = am1.convert::<Millimetre>();
     assert_eq!(am2.c[0][0], 12.);
     assert_eq!(am2.c[0][1], 23.);
     assert_eq_32!(am2.c[0][2], 34000.);

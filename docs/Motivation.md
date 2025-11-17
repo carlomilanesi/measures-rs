@@ -24,14 +24,14 @@ In the last statement, a function meant to receive a value in pounds receives a 
 This is avoided by using this code:
 
 ```rust
-    let mass_in_kg = Measure::<KiloGram>::new(1.2);
+    let mass_in_kg = Measure::<Kilogram>::new(1.2);
     let mut mass_in_pounds: Measure<Pound>;
     mass_in_pounds = mass_in_kg; // Compilation error.
     fn set_mass(val: Measure<Pound>) { /* ... */ }
     set_mass(mass_in_kg); // Compilation error.
 ```
 
-The third and the last statements cause "type mismatch" compilation errors, because we are trying to assign a `Measure<KiloGram>` to a `Measure<Pound>`.
+The third and the last statements cause "type mismatch" compilation errors, because we are trying to assign a `Measure<Kilogram>` to a `Measure<Pound>`.
 Here, the values are encapsulated in objects whose types is characterized by a unit of measurement.
 In Rust, the left and right side of an assignment must have the same type.
 
@@ -56,7 +56,7 @@ Also the fourth statement tries to do the same unit conversion, but it uses a wr
 This is avoided by using the following code:
 
 ```rust
-    let mass_in_kilograms = Measure::<KiloGram>::new(1.2);
+    let mass_in_kilograms = Measure::<Kilogram>::new(1.2);
     let mut mass_in_pounds: Measure<Pound>;
     mass_in_pounds = mass_in_kilograms.convert();
     // or
@@ -119,7 +119,7 @@ The corresponding program using Measures is this:
 fn main() {
     let mass1 = Measure::<Gram, f32>::new(8030.);
     let mass2 = Measure::<Pound, f32>::new(27.);
-    println!("{}, {}, {}.", mass1, mass1.convert::<KiloGram>(), mass2);
+    println!("{}, {}, {}.", mass1, mass1.convert::<Kilogram>(), mass2);
 }
 ```
 

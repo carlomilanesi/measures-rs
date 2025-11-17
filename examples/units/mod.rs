@@ -23,7 +23,7 @@ measures::define_measure_types! {
             SquareMetre {
                 suffix: " m\u{b2}", // m²
             }
-            SquareKiloMetre {
+            SquareKilometre {
                 suffix: " km\u{b2}", // km²
                 ratio: 1e6,
             }
@@ -35,23 +35,23 @@ measures::define_measure_types! {
                 suffix: " are",
                 ratio: 100.,
             }
-            SquareDeciMetre {
+            SquareDecimetre {
                 suffix: " dm\u{b2}", // dm²
                 ratio: 0.01,
             }
-            SquareCentiMetre {
+            SquareCentimetre {
                 suffix: " cm\u{b2}", // cm²
                 ratio: 1e-4,
             }
-            SquareMilliMetre {
+            SquareMillimetre {
                 suffix: " mm\u{b2}", // mm²
                 ratio: 1e-6,
             }
-            SquareMicroMetre {
+            SquareMicrometre {
                 suffix: " \u{b5}m\u{b2}", // µm²
                 ratio: 1e-12,
             }
-            SquareNanoMetre {
+            SquareNanometre {
                 suffix: " nm\u{b2}", // nm²
                 ratio: 1e-18,
             }
@@ -76,19 +76,19 @@ measures::define_measure_types! {
             Farad {
                 suffix: " F",
             }
-            MilliFarad {
+            Millifarad {
                 suffix: " mF",
                 ratio: 1e-3,
             }
-            MicroFarad {
+            Microfarad {
                 suffix: " \u{b5}F", // µF
                 ratio: 1e-6,
             }
-            NanoFarad {
+            Nanofarad {
                 suffix: " nF",
                 ratio: 1e-9,
             }
-            PicoFarad {
+            Picofarad {
                 suffix: " pF",
                 ratio: 1e-12,
             }
@@ -131,11 +131,11 @@ measures::define_measure_types! {
             Ohm {
                 suffix: " \u{3a9}", // Ω
             }
-            MilliOhm {
+            Milliohm {
                 suffix: " m\u{3a9}", // mΩ
                 ratio: 1e-3,
             }
-            KiloOhm {
+            Kiloohm {
                 suffix: " k\u{3a9}", // kΩ
                 ratio: 1e3,
             }
@@ -149,19 +149,19 @@ measures::define_measure_types! {
             Coulomb {
                 suffix: " C",
             }
-            MilliCoulomb {
+            Millicoulomb {
                 suffix: " mC",
                 ratio: 1e-3,
             }
-            MicroCoulomb {
+            Microcoulomb {
                 suffix: " \u{b5}C", // µC
                 ratio: 1e-6,
             }
-            NanoCoulomb {
+            Nanocoulomb {
                 suffix: " ",
                 ratio: 1e-9,
             }
-            PicoCoulomb {
+            Picocoulomb {
                 suffix: " pC",
                 ratio: 1e-12,
             }
@@ -175,12 +175,12 @@ measures::define_measure_types! {
             Ampere {
                 suffix: " A",
             }
-            MilliAmpere {
+            Milliampere {
                 suffix: " mA",
                 ratio: 1e-3,
             }
 
-            MicroAmpere {
+            Microampere {
                 suffix: " \u{b5}A", // µA
                 ratio: 1e-6,
             }
@@ -194,15 +194,15 @@ measures::define_measure_types! {
             Volt {
                 suffix: " V",
             }
-            KiloVolt {
+            Kilovolt {
                 suffix: " kV",
                 ratio: 1e3,
             }
-            MilliVolt {
+            Millivolt {
                 suffix: " mV",
                 ratio: 1e-3,
             }
-            MicroVolt {
+            Microvolt {
                 suffix: " \u{b5}V", // µV
                 ratio: 1e-6,
             }
@@ -219,11 +219,11 @@ measures::define_measure_types! {
                 suffix: " W\u{b7}h", // W·h
                 ratio: 3600.,
             }
-            KiloWattHour {
+            KilowattHour {
                 suffix: " kW\u{b7}h", // kW·h
                 ratio: 3.6e6,
             }
-            MegaWattHour {
+            MegawattHour {
                 suffix: " MW\u{b7}h", // MW·h
                 ratio: 3.6e9,
             }
@@ -231,27 +231,27 @@ measures::define_measure_types! {
                 suffix: " cal",
                 ratio: 4.187,
             }
-            KiloCalorie {
+            Kilocalorie {
                 suffix: " kcal",
                 ratio: 4187.,
             }
-            ElectronVolt {
+            Electronvolt {
                 suffix: " eV",
                 ratio: 1.602176634e-19,
             }
-            KiloElectronVolt {
+            Kiloelectronvolt {
                 suffix: " keV",
                 ratio: 1.602176634e-16,
             }
-            MegaElectronVolt {
+            Megaelectronvolt {
                 suffix: " MeV",
                 ratio: 1.602176634e-13,
             }
-            GigaElectronVolt {
+            Gigaelectronvolt {
                 suffix: " GeV",
                 ratio: 1.602176634e-10,
             }
-            TeraElectronVolt {
+            Teraelectronvolt {
                 suffix: " TeV",
                 ratio: 1.602176634e-7,
             }
@@ -273,15 +273,15 @@ measures::define_measure_types! {
             CyclePerSecond { // Equivalent to Hertz, but with different suffix.
                 suffix: " c/s",
             }
-            KiloHertz {
+            Kilohertz {
                 suffix: " kHz",
                 ratio: 1e3,
             }
-            MegaHertz {
+            Megahertz {
                 suffix: " MHz",
                 ratio: 1e6,
             }
-            GigaHertz {
+            Gigahertz {
                 suffix: " GHz",
                 ratio: 1e9,
             }
@@ -321,67 +321,67 @@ measures::define_measure_types! {
                 suffix: " B",
                 ratio: 8.,
             }
-            KiloBit {
+            Kilobit {
                 suffix: " kb",
                 ratio: 1e3,
             }
-            KiloByte {
+            Kilobyte {
                 suffix: " kB",
                 ratio: 8e3,
             }
-            KibiBit {
+            Kibibit {
                 suffix: " kib",
                 ratio: 1024.,
             }
-            KibiByte {
+            Kibibyte {
                 suffix: " kiB",
                 ratio: 8. * 1024.,
             }
-            MegaBit {
+            Megabit {
                 suffix: " Mb",
                 ratio: 1e6,
             }
-            MegaByte {
+            Megabyte {
                 suffix: " MB",
                 ratio: 8e6,
             }
-            MebiBit {
+            Mebibit {
                 suffix: " Mib",
                 ratio: 1024. * 1024.,
             }
-            MebiByte {
+            Mebibyte {
                 suffix: " MiB",
                 ratio: 8. * 1024. * 1024.,
             }
-            GigaBit {
+            Gigabit {
                 suffix: " Gb",
                 ratio: 1e9,
             }
-            GigaByte {
+            Gigabyte {
                 suffix: " GB",
                 ratio: 8e9,
             }
-            GibiBit {
+            Gibibit {
                 suffix: " Gib",
                 ratio: 1024. * 1024. * 1024.,
             }
-            GibiByte {
+            Gibibyte {
                 suffix: " GiB",
                 ratio: 8. * 1024. * 1024. * 1024.,
             }
-            TeraBit {
+            Terabit {
                 suffix: " Tb",
                 ratio: 1e12,
             }
-            TeraByte {
+            Terabyte {
                 suffix: " TB",
                 ratio: 8e12,
             }
-            TebiBit {
+            Tebibit {
                 suffix: " TiB",
                 ratio: 1024. * 1024. * 1024. * 1024.,
             }
-            TebiByte {
+            Tebibyte {
                 suffix: " TiB",
                 ratio: 8. * 1024. * 1024. * 1024. * 1024.,
             }
@@ -394,67 +394,67 @@ measures::define_measure_types! {
                 suffix: " B/s",
                 ratio: 8.,
             }
-            KiloBitPerSecond {
+            KilobitPerSecond {
                 suffix: " kb/s",
                 ratio: 1e3,
             }
-            KiloBytePerSecond {
+            KilobytePerSecond {
                 suffix: " kB/s",
                 ratio: 8e3,
             }
-            KibiBitPerSecond {
+            KibibitPerSecond {
                 suffix: " kib/s",
                 ratio: 1024.,
             }
-            KibiBytePerSecond {
+            KibibytePerSecond {
                 suffix: " kiB/s",
                 ratio: 8. * 1024.,
             }
-            MegaBitPerSecond {
+            MegabitPerSecond {
                 suffix: " Mb/s",
                 ratio: 1e6,
             }
-            MegaBytePerSecond {
+            MegabytePerSecond {
                 suffix: " MB/s",
                 ratio: 8e6,
             }
-            MebiBitPerSecond {
+            MebibitPerSecond {
                 suffix: " Mib/s",
                 ratio: 1024. * 1024.,
             }
-            MebiBytePerSecond {
+            MebibytePerSecond {
                 suffix: " MiB/s",
                 ratio: 8. * 1024. * 1024.,
             }
-            GigaBitPerSecond {
+            GigabitPerSecond {
                 suffix: " Gb/s",
                 ratio: 1e9,
             }
-            GigaBytePerSecond {
+            GigabytePerSecond {
                 suffix: " GB/s",
                 ratio: 8e9,
             }
-            GibiBitPerSecond {
+            GibibitPerSecond {
                 suffix: " Gib/s",
                 ratio: 1024. * 1024. * 1024.,
             }
-            GibiBytePerSecond {
+            GibibytePerSecond {
                 suffix: " GiB/s",
                 ratio: 8. * 1024. * 1024. * 1024.,
             }
-            TeraBitPerSecond {
+            TerabitPerSecond {
                 suffix: " Tb/s",
                 ratio: 1e12,
             }
-            TeraBytePerSecond {
+            TerabytePerSecond {
                 suffix: " TB/s",
                 ratio: 8e12,
             }
-            TebiBitPerSecond {
+            TebibitPerSecond {
                 suffix: " Tib/s",
                 ratio: 1024. * 1024. * 1024. * 1024.,
             }
-            TebiBytePerSecond {
+            TebibytePerSecond {
                 suffix: " TiB/s",
                 ratio: 8. * 1024. * 1024. * 1024. * 1024.,
             }
@@ -472,16 +472,16 @@ measures::define_measure_types! {
                 suffix: " St",
                 ratio: 1e-4,
             }
-            CentiStoke {
+            Centistoke {
                 suffix: " cSt",
                 ratio: 1e-6,
             }
         ]
         LinearDensity [
-            KiloGramPerMetre {
+            KilogramPerMetre {
                 suffix: " kg/m",
             }
-            GramPerCentiMetre {
+            GramPerCentimetre {
                 suffix: " g/cm",
                 ratio: 0.1,
             }
@@ -528,22 +528,22 @@ measures::define_measure_types! {
             }
         ]
         Mass [
-            KiloGram {
+            Kilogram {
                 suffix: " kg",
             }
             Tonne {
                 suffix: " t",
                 ratio: 1e3,
             }
-            MegaGram {
+            Megagram {
                 suffix: " Mg",
                 ratio: 1e3,
             }
-            HectoGram {
+            Hectogram {
                 suffix: " hg",
                 ratio: 0.1,
             }
-            DecaGram {
+            Decagram {
                 suffix: " dag",
                 ratio: 0.01,
             }
@@ -551,15 +551,15 @@ measures::define_measure_types! {
                 suffix: " g",
                 ratio: 1e-3,
             }
-            MilliGram {
+            Milligram {
                 suffix: " mg",
                 ratio: 1e-6,
             }
-            MicroGram {
+            Microgram {
                 suffix: " \u{b5}g", // µg
                 ratio: 1e-9,
             }
-            NanoGram {
+            Nanogram {
                 suffix: " ng",
                 ratio: 1e-12,
             }
@@ -589,16 +589,16 @@ measures::define_measure_types! {
             }
         ]
         MassDensity [
-            KiloGramPerCubicMetre {
+            KilogramPerCubicMetre {
                 suffix: " kg/m\u{b3}", // kg/m³
             }
-            GramPerMilliLitre {
+            GramPerMillilitre {
                 suffix: " g/ml",
                 ratio: 1e3,
             }
         ]
         MassFlowRate [
-            KiloGramPerSecond {
+            KilogramPerSecond {
                 suffix: " kg/s",
             }
             GramPerSecond {
@@ -617,10 +617,10 @@ measures::define_measure_types! {
             }
         ]
         MomentOfInertia [
-            KiloGramSquareMetre {
+            KilogramSquareMetre {
                 suffix: " kg\u{b7}m\u{b2}", // kg·m²
             }
-            GramSquareCentiMetre {
+            GramSquareCentimetre {
                 suffix: " g\u{b7}cm\u{b2}", // g·cm²
                 ratio: 1e-7,
             }
@@ -634,19 +634,19 @@ measures::define_measure_types! {
             Watt {
                 suffix: " W",
             }
-            MilliWatt {
+            Milliwatt {
                 suffix: " mW",
                 ratio: 1e-3,
             }
-            KiloWatt {
+            Kilowatt {
                 suffix: " kW",
                 ratio: 1e3,
             }
-            MegaWatt {
+            Megawatt {
                 suffix: " MW",
                 ratio: 1e6,
             }
-            GigaWatt {
+            Gigawatt {
                 suffix: " GW",
                 ratio: 1e9,
             }
@@ -663,7 +663,7 @@ measures::define_measure_types! {
             Pascal {
                 suffix: " Pa",
             }
-            HectoPascal {
+            Hectopascal {
                 suffix: " hPa",
                 ratio: 100.,
             }
@@ -675,7 +675,7 @@ measures::define_measure_types! {
                 suffix: " bar",
                 ratio: 1e5,
             }
-            MilliBar {
+            Millibar {
                 suffix: " mbar",
                 ratio: 100.,
             }
@@ -702,15 +702,15 @@ measures::define_measure_types! {
             Becquerel {
                 suffix: " Bq",
             }
-            KiloBecquerel {
+            Kilobecquerel {
                 suffix: " kBq",
                 ratio: 1e3,
             }
-            MegaBecquerel {
+            Megabecquerel {
                 suffix: " MBq",
                 ratio: 1e6,
             }
-            GigaBecquerel {
+            Gigabecquerel {
                 suffix: " GBq",
                 ratio: 1e9,
             }
@@ -752,17 +752,17 @@ measures::define_measure_types! {
             }
         ]
         SpecificEnergy [
-            JoulePerKiloGram {
+            JoulePerKilogram {
                 suffix: " J/kg",
             }
         ]
         SpecificHeatCapacity [
-            JoulePerKiloGramPerKelvin {
+            JoulePerKilogramPerKelvin {
                 suffix: " J/kg/\u{b0}K", // J/kg/°K
             }
         ]
         SpecificVolume [
-            CubicMetrePerKiloGram {
+            CubicMetrePerKilogram {
                 suffix: " m\u{b3}/kg", // m³/kg
             }
         ]
@@ -780,7 +780,7 @@ measures::define_measure_types! {
             }
         ]
         SurfaceDensity [
-            KiloGramPerSquareMetre {
+            KilogramPerSquareMetre {
                 suffix: " kg/m\u{b2}", // kg/m²
             }
         ]
@@ -833,23 +833,23 @@ measures::define_measure_types! {
                 suffix: " min",
                 ratio: 60.,
             }
-            MilliSecond {
+            Millisecond {
                 suffix: " ms",
                 ratio: 1e-3,
             }
-            MicroSecond {
+            Microsecond {
                 suffix: " \u{b5}s", // µs
                 ratio: 1e-6,
             }
-            NanoSecond {
+            Nanosecond {
                 suffix: " ns",
                 ratio: 1e-9,
             }
-            PicoSecond {
+            Picosecond {
                 suffix: " ps",
                 ratio: 1e-12,
             }
-            FemtoSecond {
+            Femtosecond {
                 suffix: " fs",
                 ratio: 1e-15,
             }
@@ -858,15 +858,15 @@ measures::define_measure_types! {
             CubicMetre {
                 suffix: " m\u{b3}", // m³
             }
-            CubicKiloMetre {
+            CubicKilometre {
                 suffix: " km\u{b3}", // km³
                 ratio: 1e9,
             }
-            CubicMicroMetre {
+            CubicMicrometre {
                 suffix: " \u{b5}m\u{b3}?", // µm³
                 ratio: 1e-18,
             }
-            CubicNanoMetre {
+            CubicNanometre {
                 suffix: " nm\u{b3}", // nm³
                 ratio: 1e-27,
             }
@@ -894,7 +894,7 @@ measures::define_measure_types! {
                 suffix: " dm\u{b3}", //dm³
                 ratio: 1e-3,
             }
-            MilliLitre {
+            Millilitre {
                 suffix: " ml",
                 ratio: 1e-6,
             }
@@ -902,7 +902,7 @@ measures::define_measure_types! {
                 suffix: " cm\u{b3}", // cm³
                 ratio: 1e-6,
             }
-            MicroLitre {
+            Microlitre {
                 suffix: " \u{b5}l", // µl
                 ratio: 1e-9,
             }
@@ -910,11 +910,11 @@ measures::define_measure_types! {
                 suffix: " mm\u{b3}", // mm³
                 ratio: 1e-9,
             }
-            NanoLitre {
+            Nanolitre {
                 suffix: " nl",
                 ratio: 1e-12,
             }
-            PicoLitre {
+            Picolitre {
                 suffix: " pl",
                 ratio: 1e-15,
             }
@@ -931,7 +931,7 @@ measures::define_measure_types! {
             CubicMetrePerSecond {
                 suffix: " m\u{b3}/s", // m³/s
             }
-            MilliLitrePerSecond {
+            MillilitrePerSecond {
                 suffix: " ml/s",
                 ratio: 1e-6,
             }
@@ -955,7 +955,7 @@ measures::define_measure_types! {
             MetrePerSquareSecond {
                 suffix: " m/s\u{b2}", // m/s²
             }
-            CentiMetrePerSquareSecond {
+            CentimetrePerSquareSecond {
                 suffix: " cm/s\u{b2}", // cm/s²
                 ratio: 1e-2,
             }
@@ -963,7 +963,7 @@ measures::define_measure_types! {
                 suffix: " g",
                 ratio: 9.80665,
             }
-            KiloMetrePerHourPerSecond {
+            KilometrePerHourPerSecond {
                 suffix: " km/h/s",
                 ratio: 1. / 3.6,
             }
@@ -974,10 +974,10 @@ measures::define_measure_types! {
             }
         ]
         AngularMomentum [
-            KiloGramSquareMetrePerSecond {
+            KilogramSquareMetrePerSecond {
                 suffix: " kg\u{b7}m\u{b2}/s", // kg·m²/s
             }
-            GramSquareCentiMetrePerSecond {
+            GramSquareCentimetrePerSecond {
                 suffix: " g\u{b7}cm\u{b2}/s", // g·cm²/s
                 ratio: 1e-7,
             }
@@ -1003,7 +1003,7 @@ measures::define_measure_types! {
                 suffix: " dyn",
                 ratio: 1e-5,
             }
-            KiloGramForce {
+            KilogramForce {
                 suffix: " kgf",
                 ratio: 9.80665,
             }
@@ -1032,35 +1032,35 @@ measures::define_measure_types! {
                 suffix: " ly",
                 ratio: 31557600. * 2.99792458e8,
             }
-            KiloMetre {
+            Kilometre {
                 suffix: " km",
                 ratio: 1e3,
             }
-            HectoMetre {
+            Hectometre {
                 suffix: " hm",
                 ratio: 100.,
             }
-            DecaMetre {
+            Decametre {
                 suffix: " dam",
                 ratio: 10.,
             }
-            DeciMetre {
+            Decimetre {
                 suffix: " dm",
                 ratio: 0.1,
             }
-            CentiMetre {
+            Centimetre {
                 suffix: " cm",
                 ratio: 0.01,
             }
-            MilliMetre {
+            Millimetre {
                 suffix: " mm",
                 ratio: 1e-3,
             }
-            MicroMetre {
+            Micrometre {
                 suffix: " \u{b5}m", // µm
                 ratio: 1e-6,
             }
-            NanoMetre {
+            Nanometre {
                 suffix: " nm",
                 ratio: 1e-9,
             }
@@ -1112,14 +1112,14 @@ measures::define_measure_types! {
             NewtonSecond {
                 suffix: " N\u{b7}s", // N·s
             }
-            KiloGramMetrePerSecond {
+            KilogramMetrePerSecond {
                 suffix: " kg\u{b7}m/s", // kg·m/s
             }
             DyneSecond {
                 suffix: " dyn\u{b7}s", // dyn·s
                 ratio: 1e-5,
             }
-            GramCentiMetrePerSecond {
+            GramCentimetrePerSecond {
                 suffix: " g\u{b7}cm/s", // g·cm/s
                 ratio: 1e-5,
             }
@@ -1145,7 +1145,7 @@ measures::define_measure_types! {
                 suffix: " kt",
                 ratio: 1852. / 3600.,
             }
-            KiloMetrePerHour {
+            KilometrePerHour {
                 suffix: " km/h",
                 ratio: 1. / 3.6,
             }
@@ -1153,11 +1153,11 @@ measures::define_measure_types! {
                 suffix: " mi/h",
                 ratio: 1609.344 / 3600.,
             }
-            CentiMetrePerSecond {
+            CentimetrePerSecond {
                 suffix: " cm/s",
                 ratio: 0.01,
             }
-            KiloMetrePerSecond {
+            KilometrePerSecond {
                 suffix: " km/s",
                 ratio: 1e3,
             }
@@ -1195,22 +1195,22 @@ measures::define_measure_types! {
         // InformationRate == Information / Time
         Bit 1 == BitPerSecond 1 * Second 1,
         Byte 1 == BytePerSecond 1 * Second 1,
-        KiloBit 1 == KiloBitPerSecond 1 * Second 1,
-        KiloByte 1 == KiloBytePerSecond 1 * Second 1,
-        KibiBit 1 == KibiBitPerSecond 1 * Second 1,
-        KibiByte 1 == KibiBytePerSecond 1 * Second 1,
-        MegaBit 1 == MegaBitPerSecond 1 * Second 1,
-        MegaByte 1 == MegaBytePerSecond 1 * Second 1,
-        MebiBit 1 == MebiBitPerSecond 1 * Second 1,
-        MebiByte 1 == MebiBytePerSecond 1 * Second 1,
-        GigaBit 1 == GigaBitPerSecond 1 * Second 1,
-        GigaByte 1 == GigaBytePerSecond 1 * Second 1,
-        GibiBit 1 == GibiBitPerSecond 1 * Second 1,
-        GibiByte 1 == GibiBytePerSecond 1 * Second 1,
-        TeraBit 1 == TeraBitPerSecond 1 * Second 1,
-        TeraByte 1 == TeraBytePerSecond 1 * Second 1,
-        TebiBit 1 == TebiBitPerSecond 1 * Second 1,
-        TebiByte 1 == TebiBytePerSecond 1 * Second 1,
+        Kilobit 1 == KilobitPerSecond 1 * Second 1,
+        Kilobyte 1 == KilobytePerSecond 1 * Second 1,
+        Kibibit 1 == KibibitPerSecond 1 * Second 1,
+        Kibibyte 1 == KibibytePerSecond 1 * Second 1,
+        Megabit 1 == MegabitPerSecond 1 * Second 1,
+        Megabyte 1 == MegabytePerSecond 1 * Second 1,
+        Mebibit 1 == MebibitPerSecond 1 * Second 1,
+        Mebibyte 1 == MebibytePerSecond 1 * Second 1,
+        Gigabit 1 == GigabitPerSecond 1 * Second 1,
+        Gigabyte 1 == GigabytePerSecond 1 * Second 1,
+        Gibibit 1 == GibibitPerSecond 1 * Second 1,
+        Gibibyte 1 == GibibytePerSecond 1 * Second 1,
+        Terabit 1 == TerabitPerSecond 1 * Second 1,
+        Terabyte 1 == TerabytePerSecond 1 * Second 1,
+        Tebibit 1 == TebibitPerSecond 1 * Second 1,
+        Tebibyte 1 == TebibytePerSecond 1 * Second 1,
 
         // Geometry
 
@@ -1224,14 +1224,14 @@ measures::define_measure_types! {
 
         // Area == Length * Length
         SquareMetre 1 == Metre 1 * __ 1,
-        SquareKiloMetre 1 == KiloMetre 1 * __ 1,
-        Hectare 1 == HectoMetre 1 * __ 1,
-        Are 1 == DecaMetre 1 * __ 1,
-        SquareDeciMetre 1 == DeciMetre 1 * __ 1,
-        SquareCentiMetre 1 == CentiMetre 1 * __ 1,
-        SquareMilliMetre 1 == MilliMetre 1 * __ 1,
-        SquareMicroMetre 1 == MicroMetre 1 * __ 1,
-        SquareNanoMetre 1 == NanoMetre 1 * __ 1,
+        SquareKilometre 1 == Kilometre 1 * __ 1,
+        Hectare 1 == Hectometre 1 * __ 1,
+        Are 1 == Decametre 1 * __ 1,
+        SquareDecimetre 1 == Decimetre 1 * __ 1,
+        SquareCentimetre 1 == Centimetre 1 * __ 1,
+        SquareMillimetre 1 == Millimetre 1 * __ 1,
+        SquareMicrometre 1 == Micrometre 1 * __ 1,
+        SquareNanometre 1 == Nanometre 1 * __ 1,
         SquareInch 1 == Inch 1 * __ 1,
         SquareFoot 1 == Foot 1 * __ 1,
         SquareYard 1 == Yard 1 * __ 1,
@@ -1239,12 +1239,12 @@ measures::define_measure_types! {
 
         // Volume == Area * Length
         CubicMetre 1 == SquareMetre 1 * Metre 1,
-        CubicKiloMetre 1 == SquareKiloMetre 1 * KiloMetre 1,
-        Litre 1 == SquareDeciMetre 1 * DeciMetre 1,
-        MilliLitre 1 == SquareCentiMetre 1 * CentiMetre 1,
-        MicroLitre 1 == SquareMilliMetre 1 * MilliMetre 1,
-        CubicMicroMetre 1 == SquareMicroMetre 1 * MicroMetre 1,
-        CubicNanoMetre 1 == SquareNanoMetre 1 * NanoMetre 1,
+        CubicKilometre 1 == SquareKilometre 1 * Kilometre 1,
+        Litre 1 == SquareDecimetre 1 * Decimetre 1,
+        Millilitre 1 == SquareCentimetre 1 * Centimetre 1,
+        Microlitre 1 == SquareMillimetre 1 * Millimetre 1,
+        CubicMicrometre 1 == SquareMicrometre 1 * Micrometre 1,
+        CubicNanometre 1 == SquareNanometre 1 * Nanometre 1,
         CubicInch 1 == SquareInch 1 * Inch 1,
         CubicFoot 1 == SquareFoot 1 * Foot 1,
         CubicYard 1 == SquareYard 1 * Yard 1,
@@ -1270,12 +1270,12 @@ measures::define_measure_types! {
         MetrePerSecond 1 == MetrePerSquareSecond 1 * Second 1,
         MetrePerSecond 2 == MetrePerSquareSecond 2 * Second 1,
         MetrePerSecond 3 == MetrePerSquareSecond 3 * Second 1,
-        CentiMetrePerSecond 1 == CentiMetrePerSquareSecond 1 * Second 1,
-        CentiMetrePerSecond 2 == CentiMetrePerSquareSecond 2 * Second 1,
-        CentiMetrePerSecond 3 == CentiMetrePerSquareSecond 3 * Second 1,
-        KiloMetrePerHour 1 == KiloMetrePerHourPerSecond 1 * Second 1,
-        KiloMetrePerHour 2 == KiloMetrePerHourPerSecond 2 * Second 1,
-        KiloMetrePerHour 3 == KiloMetrePerHourPerSecond 3 * Second 1,
+        CentimetrePerSecond 1 == CentimetrePerSquareSecond 1 * Second 1,
+        CentimetrePerSecond 2 == CentimetrePerSquareSecond 2 * Second 1,
+        CentimetrePerSecond 3 == CentimetrePerSquareSecond 3 * Second 1,
+        KilometrePerHour 1 == KilometrePerHourPerSecond 1 * Second 1,
+        KilometrePerHour 2 == KilometrePerHourPerSecond 2 * Second 1,
+        KilometrePerHour 3 == KilometrePerHourPerSecond 3 * Second 1,
 
         // Velocity == Length / Time
         Metre 1 == MetrePerSecond 1 * Second 1,
@@ -1284,15 +1284,15 @@ measures::define_measure_types! {
         NauticalMile 1 == Knot 1 * Hour 1,
         NauticalMile 2 == Knot 2 * Hour 1,
         NauticalMile 3 == Knot 3 * Hour 1,
-        KiloMetre 1 == KiloMetrePerHour 1 * Hour 1,
-        KiloMetre 2 == KiloMetrePerHour 2 * Hour 1,
-        KiloMetre 3 == KiloMetrePerHour 3 * Hour 1,
+        Kilometre 1 == KilometrePerHour 1 * Hour 1,
+        Kilometre 2 == KilometrePerHour 2 * Hour 1,
+        Kilometre 3 == KilometrePerHour 3 * Hour 1,
         Mile 1 == MilePerHour 1 * Hour 1,
         Mile 2 == MilePerHour 2 * Hour 1,
         Mile 3 == MilePerHour 3 * Hour 1,
-        CentiMetre 1 == CentiMetrePerSecond 1 * Second 1,
-        CentiMetre 2 == CentiMetrePerSecond 2 * Second 1,
-        CentiMetre 3 == CentiMetrePerSecond 3 * Second 1,
+        Centimetre 1 == CentimetrePerSecond 1 * Second 1,
+        Centimetre 2 == CentimetrePerSecond 2 * Second 1,
+        Centimetre 3 == CentimetrePerSecond 3 * Second 1,
 
         // AngularAcceleration == Frequency / Time
         RadianPerSecond 1 == RadianPerSquareSecond 1 * Second 1,
@@ -1304,17 +1304,17 @@ measures::define_measure_types! {
 
         // KinematicViscosity == Area / Time
         SquareMetre 1 == SquareMetrePerSecond 1 * Second 1,
-        SquareMilliMetre 1 == SquareMetrePerSecond 1 * MicroSecond 1,
-        SquareMicroMetre 1 == SquareMetrePerSecond 1 * PicoSecond 1,
-        SquareCentiMetre 1 == Stoke 1 * Second 1,
-        SquareMilliMetre 1 == CentiStoke 1 * Second 1,
-        SquareMicroMetre 1 == CentiStoke 1 * MicroSecond 1,
-        SquareNanoMetre 1 == CentiStoke 1 * PicoSecond 1,
+        SquareMillimetre 1 == SquareMetrePerSecond 1 * Microsecond 1,
+        SquareMicrometre 1 == SquareMetrePerSecond 1 * Picosecond 1,
+        SquareCentimetre 1 == Stoke 1 * Second 1,
+        SquareMillimetre 1 == Centistoke 1 * Second 1,
+        SquareMicrometre 1 == Centistoke 1 * Microsecond 1,
+        SquareNanometre 1 == Centistoke 1 * Picosecond 1,
 
         // KinematicViscosity == Length * Velocity
         SquareMetrePerSecond 1 == Metre 1 * MetrePerSecond 1,
-        SquareMetrePerSecond 1 == HectoMetre 1 * CentiMetrePerSecond 1,
-        Stoke 1 == CentiMetre 1 * CentiMetrePerSecond 1,
+        SquareMetrePerSecond 1 == Hectometre 1 * CentimetrePerSecond 1,
+        Stoke 1 == Centimetre 1 * CentimetrePerSecond 1,
 
         // SquareTime == Time * Time
         SquareSecond 1 == Second 1 * __ 1,
@@ -1323,11 +1323,11 @@ measures::define_measure_types! {
 
         // VolumetricFlowRate == Volume / Time
         CubicMetre 1 == CubicMetrePerSecond 1 * Second 1,
-        MilliLitre 1 == MilliLitrePerSecond 1 * Second 1,
+        Millilitre 1 == MillilitrePerSecond 1 * Second 1,
 
         // VolumetricFlowRate == Area * Velocity
         CubicMetrePerSecond 1 == SquareMetre 1 * MetrePerSecond 1,
-        MilliLitrePerSecond 1 == SquareCentiMetre 1 * CentiMetrePerSecond 1,
+        MillilitrePerSecond 1 == SquareCentimetre 1 * CentimetrePerSecond 1,
 
         // Dynamics
 
@@ -1360,11 +1360,11 @@ measures::define_measure_types! {
         JouleSecond 1 == Watt 1 * SquareSecond 1,
 
         // AngularMomentum == Momentum * Length
-        KiloGramSquareMetrePerSecond 1 == KiloGramMetrePerSecond 2 X Metre 2,
-        KiloGramSquareMetrePerSecond 3 == KiloGramMetrePerSecond 3 X Metre 3,
+        KilogramSquareMetrePerSecond 1 == KilogramMetrePerSecond 2 X Metre 2,
+        KilogramSquareMetrePerSecond 3 == KilogramMetrePerSecond 3 X Metre 3,
 
         // AngularMomentum == MomentOfInertia / Time
-        KiloGramSquareMetre 1 == KiloGramSquareMetrePerSecond 1 * Second 1,
+        KilogramSquareMetre 1 == KilogramSquareMetrePerSecond 1 * Second 1,
 
         // DynamicViscosity == Pressure * Time
         PascalSecond 1 == Pascal 1 * Second 1,
@@ -1381,50 +1381,50 @@ measures::define_measure_types! {
         Joule 1 == Newton 1 * Metre 1,
         Joule 1 == Newton 2 * Metre 2,
         Joule 1 == Newton 3 * Metre 3,
-        Erg 1 == Dyne 1 * CentiMetre 1,
-        Erg 1 == Dyne 2 * CentiMetre 2,
-        Erg 1 == Dyne 3 * CentiMetre 3,
+        Erg 1 == Dyne 1 * Centimetre 1,
+        Erg 1 == Dyne 2 * Centimetre 2,
+        Erg 1 == Dyne 3 * Centimetre 3,
 
         // Energy == Momentum * Velocity
         Joule 1 == NewtonSecond 1 * MetrePerSecond 1,
         Joule 1 == NewtonSecond 2 * MetrePerSecond 2,
         Joule 1 == NewtonSecond 3 * MetrePerSecond 3,
-        Erg 1 == DyneSecond 1 * CentiMetrePerSecond 1,
-        Erg 1 == DyneSecond 2 * CentiMetrePerSecond 2,
-        Erg 1 == DyneSecond 3 * CentiMetrePerSecond 3,
+        Erg 1 == DyneSecond 1 * CentimetrePerSecond 1,
+        Erg 1 == DyneSecond 2 * CentimetrePerSecond 2,
+        Erg 1 == DyneSecond 3 * CentimetrePerSecond 3,
 
         // Energy == MomentOfInertia / SquareTime
-        KiloGramSquareMetre 1 == Joule 1 * SquareSecond 1,
+        KilogramSquareMetre 1 == Joule 1 * SquareSecond 1,
 
         // EnergyDensity == Energy / Volume
         Joule 1 == JoulePerCubicMetre 1 * CubicMetre 1,
 
         // Force == Mass * Acceleration
-        Newton 1 == KiloGram 1 * MetrePerSquareSecond 1,
-        Newton 2 == KiloGram 1 * MetrePerSquareSecond 2,
-        Newton 3 == KiloGram 1 * MetrePerSquareSecond 3,
-        Dyne 1 == Gram 1 * CentiMetrePerSquareSecond 1,
-        Dyne 2 == Gram 1 * CentiMetrePerSquareSecond 2,
-        Dyne 3 == Gram 1 * CentiMetrePerSquareSecond 3,
-        KiloGramForce 1 == KiloGram 1 * GForce 1,
-        KiloGramForce 2 == KiloGram 1 * GForce 2,
-        KiloGramForce 3 == KiloGram 1 * GForce 3,
+        Newton 1 == Kilogram 1 * MetrePerSquareSecond 1,
+        Newton 2 == Kilogram 1 * MetrePerSquareSecond 2,
+        Newton 3 == Kilogram 1 * MetrePerSquareSecond 3,
+        Dyne 1 == Gram 1 * CentimetrePerSquareSecond 1,
+        Dyne 2 == Gram 1 * CentimetrePerSquareSecond 2,
+        Dyne 3 == Gram 1 * CentimetrePerSquareSecond 3,
+        KilogramForce 1 == Kilogram 1 * GForce 1,
+        KilogramForce 2 == Kilogram 1 * GForce 2,
+        KilogramForce 3 == Kilogram 1 * GForce 3,
 
         // LinearDensity == Mass / Length
-        KiloGram 1 == KiloGramPerMetre 1 * Metre 1,
-        Gram 1 == GramPerCentiMetre 1 * CentiMetre 1,
+        Kilogram 1 == KilogramPerMetre 1 * Metre 1,
+        Gram 1 == GramPerCentimetre 1 * Centimetre 1,
 
         // MassDensity == Mass / Volume
-        KiloGram 1 == KiloGramPerCubicMetre 1 * CubicMetre 1,
-        Gram 1 == GramPerMilliLitre 1 * MilliLitre 1,
+        Kilogram 1 == KilogramPerCubicMetre 1 * CubicMetre 1,
+        Gram 1 == GramPerMillilitre 1 * Millilitre 1,
 
         // MassFlowRate == Mass / Time
-        KiloGram 1 == KiloGramPerSecond 1 * Second 1,
+        Kilogram 1 == KilogramPerSecond 1 * Second 1,
         Gram 1 == GramPerSecond 1 * Second 1,
 
         // MomentOfInertia == Mass * Area
-        KiloGramSquareMetre 1 == KiloGram 1 * SquareMetre 1,
-        GramSquareCentiMetre 1 == Gram 1 * SquareCentiMetre 1,
+        KilogramSquareMetre 1 == Kilogram 1 * SquareMetre 1,
+        GramSquareCentimetre 1 == Gram 1 * SquareCentimetre 1,
 
         // Momentum == Force * Time
         NewtonSecond 1 == Newton 1 * Second 1,
@@ -1435,35 +1435,35 @@ measures::define_measure_types! {
         DyneSecond 3 == Dyne 3 * Second 1,
 
         // Momentum == Mass * Velocity
-        NewtonSecond 1 == KiloGram 1 * MetrePerSecond 1,
-        NewtonSecond 2 == KiloGram 1 * MetrePerSecond 2,
-        NewtonSecond 3 == KiloGram 1 * MetrePerSecond 3,
-        DyneSecond 1 == Gram 1 * CentiMetrePerSecond 1,
-        DyneSecond 2 == Gram 1 * CentiMetrePerSecond 2,
-        DyneSecond 3 == Gram 1 * CentiMetrePerSecond 3,
+        NewtonSecond 1 == Kilogram 1 * MetrePerSecond 1,
+        NewtonSecond 2 == Kilogram 1 * MetrePerSecond 2,
+        NewtonSecond 3 == Kilogram 1 * MetrePerSecond 3,
+        DyneSecond 1 == Gram 1 * CentimetrePerSecond 1,
+        DyneSecond 2 == Gram 1 * CentimetrePerSecond 2,
+        DyneSecond 3 == Gram 1 * CentimetrePerSecond 3,
 
         // Power == Energy / Time
         Joule 1 == Watt 1 * Second 1,
         WattHour 1 == Watt 1 * Hour 1,
-        KiloWattHour 1 == KiloWatt 1 * Hour 1,
+        KilowattHour 1 == Kilowatt 1 * Hour 1,
         Erg 1 == ErgPerSecond 1 * Second 1,
 
         // Pressure == Force / Area
         Newton 1 == Pascal 1 * SquareMetre 1,
         PoundForce 1 == PoundForcePerSquareInch 1 * SquareInch 1,
-        Newton 1 == HectoPascal 1 * SquareDeciMetre 1,
+        Newton 1 == Hectopascal 1 * SquareDecimetre 1,
 
         // SpecificEnergy == Energy / Mass
-        Joule 1 == JoulePerKiloGram 1 * KiloGram 1,
+        Joule 1 == JoulePerKilogram 1 * Kilogram 1,
 
         // SpecificVolume == Volume / Mass
-        CubicMetre 1 == CubicMetrePerKiloGram 1 * KiloGram 1,
+        CubicMetre 1 == CubicMetrePerKilogram 1 * Kilogram 1,
 
         // SpecificVolume == 1 / MassDensity
-        One 1 == CubicMetrePerKiloGram 1 * KiloGramPerCubicMetre 1,
+        One 1 == CubicMetrePerKilogram 1 * KilogramPerCubicMetre 1,
 
         // SurfaceDensity == Mass / Area
-        KiloGram 1 == KiloGramPerSquareMetre 1 * SquareMetre 1,
+        Kilogram 1 == KilogramPerSquareMetre 1 * SquareMetre 1,
 
         // SurfaceTension == Energy / Area
         Joule 1 == JoulePerSquareMetre 1 * SquareMetre 1,
@@ -1488,7 +1488,7 @@ measures::define_measure_types! {
         Joule 1 == JoulePerKelvin 1 * Kelvin 1,
 
         // SpecificHeatCapacity == Entropy / Mass
-        JoulePerKelvin 1 == JoulePerKiloGramPerKelvin 1 * KiloGram 1,
+        JoulePerKelvin 1 == JoulePerKilogramPerKelvin 1 * Kilogram 1,
 
         // TODO  ThermalConductivity == Power / Length / Temperature
         // TODO  WattPerMetrePerKelvin == ?,
@@ -1545,7 +1545,7 @@ measures::define_measure_types! {
         // Illuminance == LuminousFlux / Area
         Lumen 1 == Lux 1 * SquareMetre 1,
         Lux 1 == CandelaPerSquareMetre 1 * Steradian 1,
-        Lumen 1 == Phot 1 * SquareCentiMetre 1,
+        Lumen 1 == Phot 1 * SquareCentimetre 1,
         Phot 1 == Stilb 1 * Steradian 1,
         Lumen 1 == FootCandle 1 * SquareFoot 1,
         FootCandle 1 == CandelaPerSquareFoot 1 * Steradian 1,
@@ -1555,7 +1555,7 @@ measures::define_measure_types! {
 
         // Luminance == LuminousIntensity / Area
         Candela 1 == CandelaPerSquareMetre 1 * SquareMetre 1,
-        Candela 1 == Stilb 1 * SquareCentiMetre 1,
+        Candela 1 == Stilb 1 * SquareCentimetre 1,
         Candela 1 == CandelaPerSquareFoot 1 * SquareFoot 1,
 
         // LuminousFlux == LuminousIntensity * SolidAngle
@@ -1589,21 +1589,21 @@ measures::define_measure_types! {
 
         // Capacitance == ElectricCharge / ElectricPotential
         Coulomb 1 == Farad 1 * Volt 1,
-        MilliCoulomb 1 == MilliFarad 1 * Volt 1,
-        Coulomb 1 == MilliFarad 1 * KiloVolt 1,
-        MicroCoulomb 1 == MicroFarad 1 * Volt 1,
-        MilliCoulomb 1 == MicroFarad 1 * KiloVolt 1,
-        NanoCoulomb 1 == NanoFarad 1 * Volt 1,
-        MicroCoulomb 1 == NanoFarad 1 * KiloVolt 1,
-        PicoCoulomb 1 == PicoFarad 1 * Volt 1,
-        NanoCoulomb 1 == PicoFarad 1 * KiloVolt 1,
+        Millicoulomb 1 == Millifarad 1 * Volt 1,
+        Coulomb 1 == Millifarad 1 * Kilovolt 1,
+        Microcoulomb 1 == Microfarad 1 * Volt 1,
+        Millicoulomb 1 == Microfarad 1 * Kilovolt 1,
+        Nanocoulomb 1 == Nanofarad 1 * Volt 1,
+        Microcoulomb 1 == Nanofarad 1 * Kilovolt 1,
+        Picocoulomb 1 == Picofarad 1 * Volt 1,
+        Nanocoulomb 1 == Picofarad 1 * Kilovolt 1,
 
         // CurrentDensity == ElectricCurrent * Area
         Ampere 1 == AmperePerSquareMetre 1 * SquareMetre 1,
 
         // ElectricalConductance == ElectricCurrent / ElectricPotential
         Ampere 1 == Siemens 1 * Volt 1,
-        MilliAmpere 1 == Siemens 1 * KiloVolt 1,
+        Milliampere 1 == Siemens 1 * Kilovolt 1,
 
         // ElectricalConductance == 1 / ElectricalResistance
         One 1 == Siemens 1 * Ohm 1,
@@ -1616,19 +1616,19 @@ measures::define_measure_types! {
 
         // ElectricCurrent == ElectricCharge / Time
         Coulomb 1 == Ampere 1 * Second 1,
-        MilliCoulomb 1 == Ampere 1 * MilliSecond 1,
-        MilliCoulomb 1 == MilliAmpere 1 * Second 1,
-        MicroCoulomb 1 == MilliAmpere 1 * MilliSecond 1,
-        MicroCoulomb 1 == MicroAmpere 1 * Second 1,
+        Millicoulomb 1 == Ampere 1 * Millisecond 1,
+        Millicoulomb 1 == Milliampere 1 * Second 1,
+        Microcoulomb 1 == Milliampere 1 * Millisecond 1,
+        Microcoulomb 1 == Microampere 1 * Second 1,
 
         // ElectricChargeDensity == ElectricCharge / Volume
         Coulomb 1 == CoulombPerCubicMetre 1 * CubicMetre 1,
-        MilliCoulomb 1 == CoulombPerCubicMetre 1 * Litre 1,
-        MicroCoulomb 1 == CoulombPerCubicMetre 1 * MilliLitre 1,
+        Millicoulomb 1 == CoulombPerCubicMetre 1 * Litre 1,
+        Microcoulomb 1 == CoulombPerCubicMetre 1 * Millilitre 1,
 
         // ElectricDisplacement == ElectricCharge / Area
         Coulomb 1 == CoulombPerSquareMetre 1 * SquareMetre 1,
-        MicroCoulomb 1 == CoulombPerSquareMetre 1 * SquareMilliMetre 1,
+        Microcoulomb 1 == CoulombPerSquareMetre 1 * SquareMillimetre 1,
 
         // ElectricFieldStrength == ElectricPotential / Length
         Volt 1 == VoltPerMetre 1 * Metre 1,
@@ -1638,22 +1638,22 @@ measures::define_measure_types! {
 
         // ElectricPotential == Power / ElectricCurrent
         Watt 1 == Volt 1 * Ampere 1,
-        MilliWatt 1 == Volt 1 * MilliAmpere 1,
-        Watt 1 == KiloVolt 1 * MilliAmpere 1,
-        MilliWatt 1 == KiloVolt 1 * MicroAmpere 1,
-        KiloWatt 1 == KiloVolt 1 * Ampere 1,
-        MilliWatt 1 == MilliVolt 1 * Ampere 1,
+        Milliwatt 1 == Volt 1 * Milliampere 1,
+        Watt 1 == Kilovolt 1 * Milliampere 1,
+        Milliwatt 1 == Kilovolt 1 * Microampere 1,
+        Kilowatt 1 == Kilovolt 1 * Ampere 1,
+        Milliwatt 1 == Millivolt 1 * Ampere 1,
 
         // LinearElectricChargeDensity == ElectricCharge / Length
         Coulomb 1 == CoulombPerMetre 1 * Metre 1,
-        MilliCoulomb 1 == CoulombPerMetre 1 * MilliMetre 1,
-        MicroCoulomb 1 == CoulombPerMetre 1 * MicroMetre 1,
+        Millicoulomb 1 == CoulombPerMetre 1 * Millimetre 1,
+        Microcoulomb 1 == CoulombPerMetre 1 * Micrometre 1,
 
         // Permittivity == Capacitance / Length
         Farad 1 == FaradPerMetre 1 * Metre 1,
-        MilliFarad 1 == FaradPerMetre 1 * MilliMetre 1,
-        MicroFarad 1 == FaradPerMetre 1 * MicroMetre 1,
-        NanoFarad 1 == FaradPerMetre 1 * NanoMetre 1,
+        Millifarad 1 == FaradPerMetre 1 * Millimetre 1,
+        Microfarad 1 == FaradPerMetre 1 * Micrometre 1,
+        Nanofarad 1 == FaradPerMetre 1 * Nanometre 1,
 
         // Magnetism
 
@@ -1670,8 +1670,8 @@ measures::define_measure_types! {
 
         // MagneticFieldStrength == ElectricCurrent / Length
         Ampere 1 == AmperePerMetre 1 * Metre 1,
-        MilliAmpere 1 == AmperePerMetre 1 * MilliMetre 1,
-        MicroAmpere 1 == AmperePerMetre 1 * MicroMetre 1,
+        Milliampere 1 == AmperePerMetre 1 * Millimetre 1,
+        Microampere 1 == AmperePerMetre 1 * Micrometre 1,
 
         // TODO  MagneticFlux == Mass * Area / SquareTime / Current
 

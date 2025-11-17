@@ -8,7 +8,7 @@ measures::define_measure_types! {
     with_points exact with_approx,
     scalar_properties [
         Time [
-            NanoSecond {
+            Nanosecond {
                 suffix: " ns",
                 ratio: 1e-9,
             }
@@ -85,7 +85,7 @@ fn use_primitive_numbers(n_data_size: usize) {
     for _ in 0..N_ITERATIONS {
         using_directly_f64();
     }
-    let duration = Measure::<NanoSecond, f64>::new(start.elapsed().as_nanos() as f64);
+    let duration = Measure::<Nanosecond, f64>::new(start.elapsed().as_nanos() as f64);
     println!(
         "Time per item using directly f64: {}.",
         duration / (n_data_size * N_ITERATIONS) as f64
@@ -119,7 +119,7 @@ fn use_measures(n_data_size: usize) {
     for _ in 0..N_ITERATIONS {
         using_measure();
     }
-    let duration = Measure::<NanoSecond>::new(start.elapsed().as_nanos() as f64);
+    let duration = Measure::<Nanosecond>::new(start.elapsed().as_nanos() as f64);
     println!(
         "Time per item using Measure<Metre, f64>: {}.",
         duration / (n_data_size * N_ITERATIONS) as f64
@@ -140,7 +140,7 @@ fn use_measures(n_data_size: usize) {
     for _ in 0..N_ITERATIONS {
         using_measure_value();
     }
-    let duration = Measure::<NanoSecond>::new(start.elapsed().as_nanos() as f64);
+    let duration = Measure::<Nanosecond>::new(start.elapsed().as_nanos() as f64);
     println!(
         "Time per item using Measure<Metre, f64>.value: {}.",
         duration / (n_data_size * N_ITERATIONS) as f64
@@ -184,7 +184,7 @@ fn use_approx_measures(n_data_size: usize) {
     for _ in 0..N_ITERATIONS {
         using_approx_measure();
     }
-    let duration = Measure::<NanoSecond>::new(start.elapsed().as_nanos() as f64);
+    let duration = Measure::<Nanosecond>::new(start.elapsed().as_nanos() as f64);
     println!(
         "Time per item using ApproxMeasure<Metre, f64>: {}.",
         duration / (n_data_size * N_ITERATIONS) as f64
@@ -205,7 +205,7 @@ fn use_approx_measures(n_data_size: usize) {
     for _ in 0..N_ITERATIONS {
         using_approx_measure_value();
     }
-    let duration = Measure::<NanoSecond>::new(start.elapsed().as_nanos() as f64);
+    let duration = Measure::<Nanosecond>::new(start.elapsed().as_nanos() as f64);
     println!(
         "Time per item using ApproxMeasure<Metre, f64>.value: {}.",
         duration / (n_data_size * N_ITERATIONS) as f64

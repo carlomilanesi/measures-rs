@@ -2,7 +2,7 @@ use measures::angle::Radian;
 use measures::dimensionless::One;
 use measures::{assert_eq_32, assert_eq_64};
 use units::{
-    ApproxMeasure2d, Degree, Measure, Measure2d, MeasurePoint, Metre, MilliMetre, SignedDirection,
+    ApproxMeasure2d, Degree, Measure, Measure2d, MeasurePoint, Metre, Millimetre, SignedDirection,
     UnsignedDirection,
 };
 
@@ -14,7 +14,7 @@ mod units {
                 Metre {
                     suffix: " m",
                 }
-                MilliMetre {
+                Millimetre {
                     suffix: " mm",
                     ratio: 1e-3,
                 }
@@ -41,12 +41,12 @@ fn measure_2d_new() {
 #[test]
 fn measure_2d_convert() {
     let m1 = Measure2d::<Metre, f32>::new([12., 13.]);
-    let m2: Measure2d<MilliMetre, f32> = m1.convert::<MilliMetre>();
+    let m2: Measure2d<Millimetre, f32> = m1.convert::<Millimetre>();
     assert_eq!(m1.values, [12_f32, 13_f32]);
     assert_eq!(m2.values, [12000_f32, 13000_f32]);
 
     let m1 = Measure2d::<Metre>::new([12., 13.]);
-    let m2: Measure2d<MilliMetre> = m1.convert::<MilliMetre>();
+    let m2: Measure2d<Millimetre> = m1.convert::<Millimetre>();
     assert_eq!(m1.values, [12_f64, 13_f64]);
     assert_eq!(m2.values, [12000_f64, 13000_f64]);
 }

@@ -1,5 +1,5 @@
 use measures::dimensionless::One;
-use units::{ApproxMeasure, Measure, Metre, MilliMetre};
+use units::{ApproxMeasure, Measure, Metre, Millimetre};
 
 mod units {
     measures::define_measure_types! {
@@ -9,7 +9,7 @@ mod units {
                 Metre {
                     suffix: " m",
                 }
-                MilliMetre {
+                Millimetre {
                     suffix: " mm",
                     ratio: 1e-3,
                 }
@@ -73,7 +73,7 @@ fn approx_measure_to_measure() {
 #[test]
 fn approx_measure_convert() {
     let am1 = ApproxMeasure::<Metre, f32>::with_variance(12., 9.);
-    let am2: ApproxMeasure<MilliMetre, f32> = am1.convert::<MilliMetre>();
+    let am2: ApproxMeasure<Millimetre, f32> = am1.convert::<Millimetre>();
     assert_eq!(am1.value, 12.);
     assert_eq!(am1.variance, 9.);
     assert_eq!(am2.value, 12_000.);

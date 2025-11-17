@@ -1,4 +1,4 @@
-use units::{Measure, Measure3d, Metre, MilliMetre};
+use units::{Measure, Measure3d, Metre, Millimetre};
 
 mod units {
     measures::define_measure_types! {
@@ -8,7 +8,7 @@ mod units {
                 Metre {
                     suffix: " m",
                 }
-                MilliMetre {
+                Millimetre {
                     suffix: " mm",
                     ratio: 1e-3,
                 }
@@ -53,7 +53,7 @@ fn measure_3d_xyz_functions() {
 #[test]
 fn measure_3d_convert() {
     let m1: Measure3d<Metre, f32> = Measure3d::<Metre, f32>::new([12., 23., 34.]);
-    let m2: Measure3d<MilliMetre, f32> = m1.convert::<MilliMetre>();
+    let m2: Measure3d<Millimetre, f32> = m1.convert::<Millimetre>();
     assert_eq!(m1.values, [12., 23., 34.]);
     assert_eq!(m2.values, [12000., 23000., 34000.]);
 }

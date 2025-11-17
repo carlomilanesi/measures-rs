@@ -23,11 +23,11 @@ The corresponding version using UOM would emit a compilation error.
 */
 
 mod units;
-use units::{CentiMetre, Measure, Metre, Second};
+use units::{Centimetre, Measure, Metre, Second};
 
 fn main() {
     let l1 = Measure::<Metre, f32>::new(1.);
-    let l2 = Measure::<CentiMetre, f32>::new(1.);
+    let l2 = Measure::<Centimetre, f32>::new(1.);
     let t1 = Measure::<Second, f32>::new(15.);
 
     println!("length: {:?}", l1);

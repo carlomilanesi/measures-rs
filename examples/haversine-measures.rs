@@ -7,7 +7,7 @@ measures::define_measure_types! {
     with_directions exact,
     vector_properties [
         Length [
-            KiloMetre {
+            Kilometre {
                 suffix: " km",
             }
             Mile {
@@ -29,8 +29,8 @@ struct Point {
     lon: SignedDirection<Degree>,
 }
 
-fn haversine(origin: Point, destination: Point) -> Measure<KiloMetre> {
-    const R: Measure<KiloMetre> = Measure::<KiloMetre>::new(6372.8);
+fn haversine(origin: Point, destination: Point) -> Measure<Kilometre> {
+    const R: Measure<Kilometre> = Measure::<Kilometre>::new(6372.8);
     let a = ((destination.lat - origin.lat) / 2.0).sin().powi(2)
         + ((destination.lon - origin.lon) / 2.0).sin().powi(2)
             * origin.lat.cos()

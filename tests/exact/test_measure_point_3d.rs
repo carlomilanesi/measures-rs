@@ -1,7 +1,7 @@
 use measures::{assert_eq_32, assert_eq_64};
 use units::{
     barycentric_combination_3d, midpoint_3d, weighted_midpoint_3d, ApproxMeasurePoint3d, Measure3d,
-    MeasurePoint, MeasurePoint3d, Metre, MilliMetre,
+    MeasurePoint, MeasurePoint3d, Metre, Millimetre,
 };
 
 mod units {
@@ -12,7 +12,7 @@ mod units {
                 Metre {
                     suffix: " m",
                 }
-                MilliMetre {
+                Millimetre {
                     suffix: " mm",
                     ratio: 1e-3,
                 }
@@ -39,12 +39,12 @@ fn measure_point_3d_new() {
 #[test]
 fn measure_point_3d_convert() {
     let m1 = MeasurePoint3d::<Metre, f32>::new([12., 23., 34.]);
-    let m2: MeasurePoint3d<MilliMetre, f32> = m1.convert::<MilliMetre>();
+    let m2: MeasurePoint3d<Millimetre, f32> = m1.convert::<Millimetre>();
     assert_eq!(m1.values, [12_f32, 23_f32, 34_f32]);
     assert_eq!(m2.values, [12000_f32, 23000_f32, 34000_f32]);
 
     let m1 = MeasurePoint3d::<Metre>::new([12., 23., 34.]);
-    let m2: MeasurePoint3d<MilliMetre> = m1.convert::<MilliMetre>();
+    let m2: MeasurePoint3d<Millimetre> = m1.convert::<Millimetre>();
     assert_eq!(m1.values, [12_f64, 23_f64, 34_f64]);
     assert_eq!(m2.values, [12000_f64, 23000_f64, 34000_f64]);
 }

@@ -27,7 +27,7 @@ Edit the file `src/main.rs`, so that it has this contents:
 mod units;
 use units::*;
 fn main() {
-    let distance = Measure::<KiloMetre>::new(100.);
+    let distance = Measure::<Kilometre>::new(100.);
     println!("The distance is {distance}.");
 }
 ```
@@ -37,7 +37,7 @@ It should print: `The distance is 100 km`.
 
 Notice that the three characters "` km`" are not part of your code.
 They are printed because of the type of the variable `distance`.
-The type of such a variable is `Measure::<KiloMetre>`, meaning _"a measure whose unit of measurement is kilometres (or kilometers)"_.
+The type of such a variable is `Measure::<Kilometre>`, meaning _"a measure whose unit of measurement is kilometres (or kilometers)"_.
 
 Such a variable encapsulates an `f64` number, whose value is `100`.
 
@@ -63,7 +63,7 @@ The statement `let distance_value: f32 = distance.value;` would have been illega
 
 Though, you can also use `f32` as value type, as long as you specify it explicitly, like in the following statement:
 ```rust
-    let _distance: f32 = Measure::<KiloMetre, f32>::new(100.).value;
+    let _distance: f32 = Measure::<Kilometre, f32>::new(100.).value;
 ```
 
 Currently, the library supports only the value types `f32` and `f64`.
@@ -134,7 +134,7 @@ We have already seen that objects of type `Measure` can be printed.
 This means that such a type implements the trait `Display`, and it has the method `to_string()`.
 
 Printing a measure means printing its value followed by a suffix depending on its unit of measurement.
-For the unit `KiloMeter`, the suffix is `" km"`, with a leading space.
+For the unit `Kilometer`, the suffix is `" km"`, with a leading space.
 
 Measures implement also the trait `Debug`.
 So, you can write:
@@ -270,7 +270,7 @@ Conversions between units of measurement are one of the main advantages of encap
 
 For example, you can convert between units of measurement of the same physical or geometrical property, using the following code:
 ```rust
-    let distance1 = Measure::<KiloMetre>::new(100.);
+    let distance1 = Measure::<Kilometre>::new(100.);
     let distance2 = distance1.convert::<Mile>();
     let time1 = Measure::<Hour>::new(2.);
     let time2 = time1.convert::<Minute>();
@@ -286,7 +286,7 @@ The time spans [2 h] and [120 min] are equivalent.
 
 Of course, it makes no sense to convert between units of measurement representing different physical or geometrical properties, and so such operations cause compilation errors:
 ```rust
-    _ = Measure::<KiloMetre>::new(100.).convert::<Hour>(); // ILLEGAL
+    _ = Measure::<Kilometre>::new(100.).convert::<Hour>(); // ILLEGAL
     _ = Measure::<Mile>::new(100.).convert::<SquareMile>(); // ILLEGAL
 ```
 
@@ -294,7 +294,7 @@ For the first of the above statements, the compilation will emit the error messa
 ```
 type mismatch resolving `<Hour as MeasurementUnit>::Property == Length`
 ```
-because the property of `KiloMetre` is `Length`, but the property of `Hour` is `Time`.
+because the property of `Kilometre` is `Length`, but the property of `Hour` is `Time`.
 
 ## The `default` method
 
@@ -838,7 +838,7 @@ This is because, to transform a point measure, an affine transformation is neede
 
 For many affine transformations, it is needed to specify a fixed point in the transformation.
 Such a point must have the same unit of measurement of the point we want to transform, and so also the objects of type `AffineMap2d` will be characterized by that unit.
-You cannot use an `AffineMap2d<KiloMetre>` to transform a `MeasurePoint2d<Mile>`.
+You cannot use an `AffineMap2d<Kilometre>` to transform a `MeasurePoint2d<Mile>`.
 
 This introduces the need to change the unit of an affine transformation, like this code does:
 ```rust
@@ -1115,10 +1115,10 @@ Though, in many application fields, measures are probability distributions, desc
 The library `measures` allows to specify also such kind of measures, as demonstrated by the following code:
 
 ```rust
-    let mass = ApproxMeasure::<KiloGram>::with_variance(87.3, 0.04); // mean and variance
+    let mass = ApproxMeasure::<Kilogram>::with_variance(87.3, 0.04); // mean and variance
     assert_eq!(mass.value, 87.3);
     assert_eq!(mass.variance, 0.04);
-    assert_eq!(mass.uncertainty(), Measure::<KiloGram>::new(0.2)); // standard deviation
+    assert_eq!(mass.uncertainty(), Measure::<Kilogram>::new(0.2)); // standard deviation
     println!("{mass}, {mass:?}"); // It prints: 87.3 ± 0.2 Kg, 87.3 [σ²=0.04] Kg
 ```
 
@@ -1127,12 +1127,12 @@ It is create by the function `with_variance`, which requires to specify also the
 
 The mean is accessed by the member used for exact measures, `value`.
 The unit of measurement of the mean is the same of the measure.
-So, in this example, it is `KiloGram`, although the member `value` is a primitive number.
+So, in this example, it is `Kilogram`, although the member `value` is a primitive number.
 
 The variance is stored in a separate public field, named `variance`.
 
 In theory, the unit of measurement of the variance is the square of the unit of measurement of the measure.
-In this example, it would be `KiloGram²`.
+In this example, it would be `Kilogram²`.
 Though, such a value is not actually needed as a measure, and so there is no need to define such a unit of measurement.
 
 The square root of the variance is used often.
@@ -1147,8 +1147,8 @@ Instead, when an approximate measure is printed for debug, its variance is print
 Here are some examples:
 
 ```rust
-    let mass = ApproxMeasure::<KiloGram>::with_variance(87.3, 0.04); // mean and variance
-    assert_eq!(mass.uncertainty(), Measure::<KiloGram>::new(0.2)); // standard deviation
+    let mass = ApproxMeasure::<Kilogram>::with_variance(87.3, 0.04); // mean and variance
+    assert_eq!(mass.uncertainty(), Measure::<Kilogram>::new(0.2)); // standard deviation
     assert_eq!(format!("{mass}, {mass:?}"), "87.3 ± 0.2 kg, [µ=87.3 σ²=0.04] kg");
 ```
 
@@ -1164,9 +1164,9 @@ Such assumptions allow to keep simple the library API and rather efficient the i
 Here are some examples:
 
 ```rust
-    let mass1 = ApproxMeasure::<KiloGram>::with_variance(87.3, 0.04);
-    assert_eq!((mass1 * 3.).uncertainty(), Measure::<KiloGram>::new(0.6));
-    let mass2 = ApproxMeasure::<KiloGram>::with_variance(100., 0.09);
+    let mass1 = ApproxMeasure::<Kilogram>::with_variance(87.3, 0.04);
+    assert_eq!((mass1 * 3.).uncertainty(), Measure::<Kilogram>::new(0.6));
+    let mass2 = ApproxMeasure::<Kilogram>::with_variance(100., 0.09);
     assert_eq!((mass1 + mass2).variance, 0.13);
     assert_eq!((mass1 - mass2).variance, 0.13);
 ```
@@ -1177,8 +1177,8 @@ The above example demonstrates that:
 
 Here are examples involving multiplication and division:
 ```rust
-    let mass1 = ApproxMeasure::<KiloGram>::with_variance(87.3, 0.04);
-    let mass2 = ApproxMeasure::<KiloGram>::with_variance(100., 0.09);
+    let mass1 = ApproxMeasure::<Kilogram>::with_variance(87.3, 0.04);
+    let mass2 = ApproxMeasure::<Kilogram>::with_variance(100., 0.09);
     let computed_variance = (0.04 / 87.3 / 87.3 + 0.09 / 100. / 100.) * (87.3 / 100.) * (87.3 / 100.);
     assert_eq!((mass1 / mass2).variance, computed_variance);
     let velocity = ApproxMeasure::<MetrePerSecond>::with_variance(2.3, 0.000144); // mean and variance
@@ -1616,7 +1616,7 @@ In addition, in this library there is not just one kind of measures, and so it i
 However, if you prefer to be more concise, it is quite easy to do so, by using some small definitions:
 ```rust
 const M: Measure<Metre> = Measure::<Metre>::new(1.);
-const KG: Measure<KiloGram> = Measure::<KiloGram>::new(1.);
+const KG: Measure<Kilogram> = Measure::<Kilogram>::new(1.);
 ```
 
 After the previous definitions, you can write this code:

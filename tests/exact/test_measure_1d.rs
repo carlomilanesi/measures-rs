@@ -1,5 +1,5 @@
 use measures::{assert_eq_64, dimensionless::One, traits::Trigonometry};
-use units::{ApproxMeasure, Degree, Measure, Metre, MilliMetre};
+use units::{ApproxMeasure, Degree, Measure, Metre, Millimetre};
 
 mod units {
     measures::define_measure_types! {
@@ -9,7 +9,7 @@ mod units {
                 Metre {
                     suffix: " m",
                 }
-                MilliMetre {
+                Millimetre {
                     suffix: " mm",
                     ratio: 1e-3,
                 }
@@ -35,7 +35,7 @@ fn measure_1d_new() {
 #[test]
 fn measure_1d_convert() {
     let m1 = Measure::<Metre, f32>::new(12.);
-    let m2: Measure<MilliMetre, f32> = m1.convert::<MilliMetre>();
+    let m2: Measure<Millimetre, f32> = m1.convert::<Millimetre>();
     assert_eq!(m1.value, 12.);
     assert_eq!(m2.value, 12000.);
 }

@@ -1,7 +1,7 @@
 use measures::{assert_eq_32, assert_eq_64};
 use units::{
     barycentric_combination_2d, midpoint_2d, weighted_midpoint_2d, ApproxMeasurePoint2d, Measure2d,
-    MeasurePoint, MeasurePoint2d, Metre, MilliMetre,
+    MeasurePoint, MeasurePoint2d, Metre, Millimetre,
 };
 
 mod units {
@@ -12,7 +12,7 @@ mod units {
                 Metre {
                     suffix: " m",
                 }
-                MilliMetre {
+                Millimetre {
                     suffix: " mm",
                     ratio: 1e-3,
                 }
@@ -39,12 +39,12 @@ fn measure_point_2d_new() {
 #[test]
 fn measure_point_2d_convert() {
     let m1 = MeasurePoint2d::<Metre, f32>::new([12., 23.]);
-    let m2: MeasurePoint2d<MilliMetre, f32> = m1.convert::<MilliMetre>();
+    let m2: MeasurePoint2d<Millimetre, f32> = m1.convert::<Millimetre>();
     assert_eq!(m1.values, [12_f32, 23_f32]);
     assert_eq!(m2.values, [12000_f32, 23000_f32]);
 
     let m1 = MeasurePoint2d::<Metre>::new([12., 23.]);
-    let m2: MeasurePoint2d<MilliMetre> = m1.convert::<MilliMetre>();
+    let m2: MeasurePoint2d<Millimetre> = m1.convert::<Millimetre>();
     assert_eq!(m1.values, [12_f64, 23_f64]);
     assert_eq!(m2.values, [12000_f64, 23000_f64]);
 }

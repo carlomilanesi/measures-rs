@@ -1,5 +1,5 @@
 use measures::dimensionless::One;
-use units::{AffineMap3d, Degree, Measure, Measure3d, MeasurePoint3d, Metre, MilliMetre};
+use units::{AffineMap3d, Degree, Measure, Measure3d, MeasurePoint3d, Metre, Millimetre};
 
 mod units {
     measures::define_measure_types! {
@@ -9,7 +9,7 @@ mod units {
                 Metre {
                     suffix: " m",
                 }
-                MilliMetre {
+                Millimetre {
                     suffix: " mm",
                     ratio: 1e-3,
                 }
@@ -88,7 +88,7 @@ fn affine_map_3d_convert() {
         [-56., 67., 78., 89.],
         [91., -102., 113., 124.],
     ]);
-    let am2: AffineMap3d<MilliMetre, f32> = am1.convert::<MilliMetre>();
+    let am2: AffineMap3d<Millimetre, f32> = am1.convert::<Millimetre>();
     assert_eq!(am2.c[0][0], 12.);
     assert_eq!(am2.c[0][1], 23.);
     assert_eq!(am2.c[0][2], -34.);

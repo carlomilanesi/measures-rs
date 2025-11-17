@@ -39,7 +39,7 @@ measures::define_measure_types! {
             }
         ]
         Mass [
-            KiloGram {
+            Kilogram {
                 suffix: " kg",
             }
         ]
@@ -54,12 +54,12 @@ measures::define_measure_types! {
             }
         ]
         SquareMass [
-            SquareKiloGram {
+            SquareKilogram {
                 suffix: " kg2",
             }
         ]
         SquareMassPerLength [
-            SquareKiloGramPerMetre {
+            SquareKilogramPerMetre {
                 suffix: " km2/m",
             }
         ]
@@ -81,7 +81,7 @@ measures::define_measure_types! {
             }
         ]
         MassTimePerArea [
-            KiloGramSecondPerSquareMetre {
+            KilogramSecondPerSquareMetre {
                 suffix: " kg s/m2",
             }
         ]
@@ -93,24 +93,24 @@ measures::define_measure_types! {
         CubicMetre 1 == SquareMetre 1 * Metre 1,
         Second 1 == SecondPerCubicMetre 1 * CubicMetre 1,
         SquareMetrePerSquareSecond 1 == MetrePerSecond 3 * __ 3,
-        SquareKiloGram 1 == KiloGram 1 * __ 1,
-        Joule 1 == KiloGram 1 * SquareMetrePerSquareSecond 1,
-        SquareKiloGram 1 == SquareKiloGramPerMetre 1 * Metre 1,
-        Joule 1 == NewtonSquareMetrePerSquareKilogram 1 * SquareKiloGramPerMetre 1,
+        SquareKilogram 1 == Kilogram 1 * __ 1,
+        Joule 1 == Kilogram 1 * SquareMetrePerSquareSecond 1,
+        SquareKilogram 1 == SquareKilogramPerMetre 1 * Metre 1,
+        Joule 1 == NewtonSquareMetrePerSquareKilogram 1 * SquareKilogramPerMetre 1,
         SecondPerSquareMetre 3 == Metre 3 * SecondPerCubicMetre 1,
-        KiloGramSecondPerSquareMetre 3 == SecondPerSquareMetre 3 * KiloGram 1,
-        MetrePerSecond 3 == KiloGramSecondPerSquareMetre 3 * NewtonSquareMetrePerSquareKilogram 1,
+        KilogramSecondPerSquareMetre 3 == SecondPerSquareMetre 3 * Kilogram 1,
+        MetrePerSecond 3 == KilogramSecondPerSquareMetre 3 * NewtonSquareMetrePerSquareKilogram 1,
     ]
 }
 
 use std::f64::consts::PI;
 
-const SOLAR_MASS: Measure<KiloGram> = Measure::<KiloGram>::new(4.0 * PI * PI);
+const SOLAR_MASS: Measure<Kilogram> = Measure::<Kilogram>::new(4.0 * PI * PI);
 const DPY: f64 = 365.24;
 
 pub struct Body {
     pub x: MeasurePoint3d<Metre>,
-    pub mass: Measure<KiloGram>, // By putting `mass` here, the alignment is improved.
+    pub mass: Measure<Kilogram>, // By putting `mass` here, the alignment is improved.
     pub v: Measure3d<MetrePerSecond>,
 }
 

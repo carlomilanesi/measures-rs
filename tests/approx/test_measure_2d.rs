@@ -1,5 +1,5 @@
 use measures::angle::Radian;
-use units::{Degree, Measure, Measure2d, MeasurePoint, Metre, MilliMetre};
+use units::{Degree, Measure, Measure2d, MeasurePoint, Metre, Millimetre};
 
 mod units {
     measures::define_measure_types! {
@@ -9,7 +9,7 @@ mod units {
                 Metre {
                     suffix: " m",
                 }
-                MilliMetre {
+                Millimetre {
                     suffix: " mm",
                     ratio: 1e-3,
                 }
@@ -55,7 +55,7 @@ fn measure_2d_xy_functions() {
 #[test]
 fn measure_2d_convert() {
     let m1: Measure2d<Metre, f32> = Measure2d::<Metre, f32>::new([12., 23.]);
-    let m2: Measure2d<MilliMetre, f32> = m1.convert::<MilliMetre>();
+    let m2: Measure2d<Millimetre, f32> = m1.convert::<Millimetre>();
     assert_eq!(m1.values[0], 12.);
     assert_eq!(m1.values[1], 23.);
     assert_eq!(m2.values[0], 12000.);

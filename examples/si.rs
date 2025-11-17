@@ -17,17 +17,17 @@ UOM will print:
 */
 
 mod units;
-use units::{CentiMetre, KiloMetre, KiloMetrePerSecond, Measure, Metre, Second};
+use units::{Centimetre, Kilometre, KilometrePerSecond, Measure, Metre, Second};
 
 fn main() {
     let mo = Measure::<measures::dimensionless::One>::new(2.3);
-    let m = Measure::<CentiMetre>::new(3.6);
+    let m = Measure::<Centimetre>::new(3.6);
     let _r1 = m * mo;
     let _r2 = mo * m;
 
     // Setup length and time quantities using different units.
     let l1 = Measure::<Metre>::new(15.);
-    let l2 = Measure::<CentiMetre>::new(10.);
+    let l2 = Measure::<Centimetre>::new(10.);
     let t1 = Measure::<Second>::new(50.0);
     let v1 = l1 / t1;
     //let error = l1 + t1; // error[E0308]: mismatched types
@@ -40,8 +40,8 @@ fn main() {
         "{} + {} = {}",
         l1,
         l2,
-        (l1 + l2.convert()).convert::<KiloMetre>()
+        (l1 + l2.convert()).convert::<Kilometre>()
     );
     println!("{} / {} = {}", l1, t1, v1);
-    println!("{} / {} = {}", l1, t1, v1.convert::<KiloMetrePerSecond>());
+    println!("{} / {} = {}", l1, t1, v1.convert::<KilometrePerSecond>());
 }
