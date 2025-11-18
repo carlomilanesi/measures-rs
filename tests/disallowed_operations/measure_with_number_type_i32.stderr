@@ -1,0 +1,312 @@
+error[E0277]: the trait bound `i32: Pow` is not satisfied
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:15
+   |
+15 |     let _m1 = Measure::<U1, i32>::new(1.);
+   |               ^^^^^^^^^^^^^^^^^^ the trait `Pow` is not implemented for `i32`
+   |
+   = help: the following other types implement trait `Pow`:
+             f32
+             f64
+   = note: required for `i32` to implement `ArithmeticOps`
+note: required by a bound in `Measure`
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:4:5
+   |
+ 4 | /     measures::define_measure_types! {
+ 5 | |         exact,
+ 6 | |         vector_properties [
+ 7 | |             P1 [
+...  |
+11 | |     }
+   | |     ^
+   | |     |
+   | |_____required by a bound in this struct
+   |       required by this bound in `Measure`
+   = note: this error originates in the macro `measures::inner_define_measure` which comes from the expansion of the macro `measures::define_measure_types` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `i32: FromF64` is not satisfied
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:15
+   |
+15 |     let _m1 = Measure::<U1, i32>::new(1.);
+   |               ^^^^^^^^^^^^^^^^^^ the trait `FromF64` is not implemented for `i32`
+   |
+   = help: the following other types implement trait `FromF64`:
+             f32
+             f64
+   = note: required for `i32` to implement `ArithmeticOps`
+note: required by a bound in `Measure`
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:4:5
+   |
+ 4 | /     measures::define_measure_types! {
+ 5 | |         exact,
+ 6 | |         vector_properties [
+ 7 | |             P1 [
+...  |
+11 | |     }
+   | |     ^
+   | |     |
+   | |_____required by a bound in this struct
+   |       required by this bound in `Measure`
+   = note: this error originates in the macro `measures::inner_define_measure` which comes from the expansion of the macro `measures::define_measure_types` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `i32: Sqrt` is not satisfied
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:15
+   |
+15 |     let _m1 = Measure::<U1, i32>::new(1.);
+   |               ^^^^^^^^^^^^^^^^^^ the trait `Sqrt` is not implemented for `i32`
+   |
+   = help: the following other types implement trait `Sqrt`:
+             f32
+             f64
+   = note: required for `i32` to implement `ArithmeticOps`
+note: required by a bound in `Measure`
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:4:5
+   |
+ 4 | /     measures::define_measure_types! {
+ 5 | |         exact,
+ 6 | |         vector_properties [
+ 7 | |             P1 [
+...  |
+11 | |     }
+   | |     ^
+   | |     |
+   | |_____required by a bound in this struct
+   |       required by this bound in `Measure`
+   = note: this error originates in the macro `measures::inner_define_measure` which comes from the expansion of the macro `measures::define_measure_types` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `i32: CubicRoot` is not satisfied
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:15
+   |
+15 |     let _m1 = Measure::<U1, i32>::new(1.);
+   |               ^^^^^^^^^^^^^^^^^^ the trait `CubicRoot` is not implemented for `i32`
+   |
+   = help: the following other types implement trait `CubicRoot`:
+             f32
+             f64
+   = note: required for `i32` to implement `ArithmeticOps`
+note: required by a bound in `Measure`
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:4:5
+   |
+ 4 | /     measures::define_measure_types! {
+ 5 | |         exact,
+ 6 | |         vector_properties [
+ 7 | |             P1 [
+...  |
+11 | |     }
+   | |     ^
+   | |     |
+   | |_____required by a bound in this struct
+   |       required by this bound in `Measure`
+   = note: this error originates in the macro `measures::inner_define_measure` which comes from the expansion of the macro `measures::define_measure_types` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `i32: Trigonometry` is not satisfied
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:15
+   |
+15 |     let _m1 = Measure::<U1, i32>::new(1.);
+   |               ^^^^^^^^^^^^^^^^^^ the trait `Trigonometry` is not implemented for `i32`
+   |
+   = help: the following other types implement trait `Trigonometry`:
+             f32
+             f64
+   = note: required for `i32` to implement `ArithmeticOps`
+note: required by a bound in `Measure`
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:4:5
+   |
+ 4 | /     measures::define_measure_types! {
+ 5 | |         exact,
+ 6 | |         vector_properties [
+ 7 | |             P1 [
+...  |
+11 | |     }
+   | |     ^
+   | |     |
+   | |_____required by a bound in this struct
+   |       required by this bound in `Measure`
+   = note: this error originates in the macro `measures::inner_define_measure` which comes from the expansion of the macro `measures::define_measure_types` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `i32: InverseTrigonometry` is not satisfied
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:15
+   |
+15 |     let _m1 = Measure::<U1, i32>::new(1.);
+   |               ^^^^^^^^^^^^^^^^^^ the trait `InverseTrigonometry` is not implemented for `i32`
+   |
+   = help: the following other types implement trait `InverseTrigonometry`:
+             f32
+             f64
+   = note: required for `i32` to implement `ArithmeticOps`
+note: required by a bound in `Measure`
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:4:5
+   |
+ 4 | /     measures::define_measure_types! {
+ 5 | |         exact,
+ 6 | |         vector_properties [
+ 7 | |             P1 [
+...  |
+11 | |     }
+   | |     ^
+   | |     |
+   | |_____required by a bound in this struct
+   |       required by this bound in `Measure`
+   = note: this error originates in the macro `measures::inner_define_measure` which comes from the expansion of the macro `measures::define_measure_types` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `i32: Decibel` is not satisfied
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:15
+   |
+15 |     let _m1 = Measure::<U1, i32>::new(1.);
+   |               ^^^^^^^^^^^^^^^^^^ the trait `Decibel` is not implemented for `i32`
+   |
+   = help: the following other types implement trait `Decibel`:
+             f32
+             f64
+   = note: required for `i32` to implement `ArithmeticOps`
+note: required by a bound in `Measure`
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:4:5
+   |
+ 4 | /     measures::define_measure_types! {
+ 5 | |         exact,
+ 6 | |         vector_properties [
+ 7 | |             P1 [
+...  |
+11 | |     }
+   | |     ^
+   | |     |
+   | |_____required by a bound in this struct
+   |       required by this bound in `Measure`
+   = note: this error originates in the macro `measures::inner_define_measure` which comes from the expansion of the macro `measures::define_measure_types` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `i32: HasZero` is not satisfied
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:15
+   |
+15 |     let _m1 = Measure::<U1, i32>::new(1.);
+   |               ^^^^^^^^^^^^^^^^^^ the trait `HasZero` is not implemented for `i32`
+   |
+   = help: the following other types implement trait `HasZero`:
+             f32
+             f64
+   = note: required for `i32` to implement `ArithmeticOps`
+note: required by a bound in `Measure`
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:4:5
+   |
+ 4 | /     measures::define_measure_types! {
+ 5 | |         exact,
+ 6 | |         vector_properties [
+ 7 | |             P1 [
+...  |
+11 | |     }
+   | |     ^
+   | |     |
+   | |_____required by a bound in this struct
+   |       required by this bound in `Measure`
+   = note: this error originates in the macro `measures::inner_define_measure` which comes from the expansion of the macro `measures::define_measure_types` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `i32: HasOne` is not satisfied
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:15
+   |
+15 |     let _m1 = Measure::<U1, i32>::new(1.);
+   |               ^^^^^^^^^^^^^^^^^^ the trait `HasOne` is not implemented for `i32`
+   |
+   = help: the following other types implement trait `HasOne`:
+             f32
+             f64
+   = note: required for `i32` to implement `ArithmeticOps`
+note: required by a bound in `Measure`
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:4:5
+   |
+ 4 | /     measures::define_measure_types! {
+ 5 | |         exact,
+ 6 | |         vector_properties [
+ 7 | |             P1 [
+...  |
+11 | |     }
+   | |     ^
+   | |     |
+   | |_____required by a bound in this struct
+   |       required by this bound in `Measure`
+   = note: this error originates in the macro `measures::inner_define_measure` which comes from the expansion of the macro `measures::define_measure_types` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `i32: HasHalf` is not satisfied
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:15
+   |
+15 |     let _m1 = Measure::<U1, i32>::new(1.);
+   |               ^^^^^^^^^^^^^^^^^^ the trait `HasHalf` is not implemented for `i32`
+   |
+   = help: the following other types implement trait `HasHalf`:
+             f32
+             f64
+   = note: required for `i32` to implement `ArithmeticOps`
+note: required by a bound in `Measure`
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:4:5
+   |
+ 4 | /     measures::define_measure_types! {
+ 5 | |         exact,
+ 6 | |         vector_properties [
+ 7 | |             P1 [
+...  |
+11 | |     }
+   | |     ^
+   | |     |
+   | |_____required by a bound in this struct
+   |       required by this bound in `Measure`
+   = note: this error originates in the macro `measures::inner_define_measure` which comes from the expansion of the macro `measures::define_measure_types` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `i32: HasSign` is not satisfied
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:15
+   |
+15 |     let _m1 = Measure::<U1, i32>::new(1.);
+   |               ^^^^^^^^^^^^^^^^^^ the trait `HasSign` is not implemented for `i32`
+   |
+   = help: the following other types implement trait `HasSign`:
+             f32
+             f64
+   = note: required for `i32` to implement `ArithmeticOps`
+note: required by a bound in `Measure`
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:4:5
+   |
+ 4 | /     measures::define_measure_types! {
+ 5 | |         exact,
+ 6 | |         vector_properties [
+ 7 | |             P1 [
+...  |
+11 | |     }
+   | |     ^
+   | |     |
+   | |_____required by a bound in this struct
+   |       required by this bound in `Measure`
+   = note: this error originates in the macro `measures::inner_define_measure` which comes from the expansion of the macro `measures::define_measure_types` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0599]: the function or associated item `new` exists for struct `Measure<U1, i32>`, but its trait bounds were not satisfied
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:35
+   |
+ 4 | /     measures::define_measure_types! {
+ 5 | |         exact,
+ 6 | |         vector_properties [
+ 7 | |             P1 [
+...  |
+11 | |     }
+   | |_____- function or associated item `new` not found for this struct
+...
+15 |       let _m1 = Measure::<U1, i32>::new(1.);
+   |                                     ^^^ function or associated item cannot be called on `Measure<U1, i32>` due to unsatisfied trait bounds
+   |
+   = note: the following trait bounds were not satisfied:
+           `i32: Pow`
+           which is required by `i32: ArithmeticOps`
+           `i32: FromF64`
+           which is required by `i32: ArithmeticOps`
+           `i32: Sqrt`
+           which is required by `i32: ArithmeticOps`
+           `i32: CubicRoot`
+           which is required by `i32: ArithmeticOps`
+           `i32: Trigonometry`
+           which is required by `i32: ArithmeticOps`
+           `i32: InverseTrigonometry`
+           which is required by `i32: ArithmeticOps`
+           `i32: Decibel`
+           which is required by `i32: ArithmeticOps`
+           `i32: HasZero`
+           which is required by `i32: ArithmeticOps`
+           `i32: HasOne`
+           which is required by `i32: ArithmeticOps`
+           `i32: HasHalf`
+           which is required by `i32: ArithmeticOps`
+           `i32: HasSign`
+           which is required by `i32: ArithmeticOps`

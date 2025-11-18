@@ -14,8 +14,10 @@ Such units can be the ones used in physics or in geometry, but also the ones com
 
 This purpose is achieved by encapsulating such numbers into objects whose type represents their unit of measurement, and providing for such types only the operations which make sense.
 
+In other libraries, this is achieved through compile-time dimensional analysis.
+
 The documentation is in these files:
-* [**Motivation**](docs/Motivation.md): It describes the advantages of using this library instead of other libraries or naked numbers.
+* [**Motivation**](docs/Motivation.md): It describes the advantages of using this library instead of using primitive numbers or libraries performing dimensional analysis.
 * [**Tutorial**](docs/Tutorial.md): It is a step-by-step course on the use of this library.
 * [**Architecture**](docs/Architecture.md): It explains the design choices of the library.
 

@@ -1,5 +1,5 @@
 error: no rules expected `4`
- --> tests/define-units-relationship/fail_4_is_1_mul_1.rs:9:28
+ --> tests/define_units_relationship/fail_4_is_1_mul_1.rs:9:28
   |
 9 |         relationships [ U1 4 == U2 1 * U3 1 ]
   |                            ^ no rules expected this token in macro call

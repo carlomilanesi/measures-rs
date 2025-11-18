@@ -1,11 +1,11 @@
 use trybuild::TestCases;
 
 fn pass(tester: &TestCases, case: &str) {
-    tester.pass(format!("tests/define-units-relationship/{}.rs", case));
+    tester.pass(format!("tests/define_units_relationship/{}.rs", case));
 }
 
 fn compile_fail(tester: &TestCases, case: &str) {
-    tester.compile_fail(format!("tests/define-units-relationship/{}.rs", case));
+    tester.compile_fail(format!("tests/define_units_relationship/{}.rs", case));
 }
 
 #[test]

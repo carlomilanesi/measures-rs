@@ -1,0 +1,8 @@
+error[E0308]: mismatched types
+  --> tests/disallowed_operations/sum_with_different_unit_type.rs:18:14
+   |
+18 |     _ = m1 + m2;
+   |              ^^ expected `Measure<U1>`, found `Measure<U2>`
+   |
+   = note: expected struct `Measure<U1>`
+              found struct `Measure<U2>`

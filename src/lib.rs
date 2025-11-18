@@ -124,10 +124,12 @@
 //!     ]
 //!     [
 //!     angle_measurement_units \[
+//!         (
 //!         <Name of a unit of measurement> {
 //!             suffix: <string literal>,
 //!             cycle_fraction: <f64 const expression>,
 //!         }
+//!         )*
 //!     \]
 //!     ]
 //!     [
