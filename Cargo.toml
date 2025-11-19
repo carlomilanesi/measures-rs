@@ -1,6 +1,6 @@
 [package]
 name = "measures-rs"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Carlo Milanesi <carlo.milanesi@libero.it>"]
 edition = "2018"
 description = "A Rust macro to generate a library to statically encapsulate numbers in objects having a unit of measurement, allowing any meaningful operation, but statically forbidding meaningless operations with them. Optionally, measures have uncertainties, which are propagated in every operation."
