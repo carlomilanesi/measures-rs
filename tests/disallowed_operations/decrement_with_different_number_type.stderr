@@ -1,0 +1,12 @@
+error[E0308]: mismatched types
+  --> tests/disallowed_operations/decrement_with_different_number_type.rs:15:11
+   |
+15 |     m2 -= m1;
+   |           ^^ expected `Measure<U1>`, found `Measure<U1, f32>`
+   |
+   = note: expected struct `Measure<U1, f64>`
+              found struct `Measure<U1, f32>`
+help: call `Into::into` on this expression to convert `Measure<U1, f32>` into `Measure<U1>`
+   |
+15 |     m2 -= m1.into();
+   |             +++++++

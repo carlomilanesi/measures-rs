@@ -1,4 +1,4 @@
-use units::{Measure, U1};
+use units::{Measure, U1, U2};
 
 mod units {
     measures::define_measure_types! {
@@ -6,11 +6,14 @@ mod units {
         vector_properties [
             P1 [
                 U1 { suffix: " u1" }
+                U2 { suffix: " u2" }
             ]
         ]
     }
 }
 
 fn main() {
-    _ = Measure::<U1, i32>::new(1.);
+    let m1 = Measure::<U1>::new(1.);
+    let mut m2 = Measure::<U2>::new(2.);
+    m2 -= m1;
 }

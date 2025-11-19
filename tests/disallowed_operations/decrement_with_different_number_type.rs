@@ -4,13 +4,13 @@ mod units {
     measures::define_measure_types! {
         exact,
         vector_properties [
-            P1 [
-                U1 { suffix: " u1" }
-            ]
+            P1 [ U1 { suffix: " u1" } ]
         ]
     }
 }
 
 fn main() {
-    _ = Measure::<U1, i32>::new(1.);
+    let m1 = Measure::<U1, f32>::new(1.);
+    let mut m2 = Measure::<U1, f64>::new(2.);
+    m2 -= m1;
 }

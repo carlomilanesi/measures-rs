@@ -12,13 +12,14 @@ fn tests() {
     compile_fail(&t, "measure_with_number_type_i32");
     compile_fail(&t, "sum_with_different_number_type");
     compile_fail(&t, "sum_with_different_unit_type");
+    compile_fail(&t, "increment_with_different_number_type");
+    compile_fail(&t, "increment_with_different_unit_type");
+    compile_fail(&t, "difference_with_different_number_type");
+    compile_fail(&t, "difference_with_different_unit_type");
+    compile_fail(&t, "decrement_with_different_number_type");
+    compile_fail(&t, "decrement_with_different_unit_type");
+
     /*TODO: Add tests for the following disallowed operations:
-        - Increment between Measures of different number type (f32 and f64)
-        - Increment between Measures of different unit type (kilogram and gram)
-        - Difference between Measures of different number type (f32 and f64)
-        - Difference between Measures of different unit type (kilogram and gram)
-        - Decrement between Measures of different number type (f32 and f64)
-        - Decrement between Measures of different unit type (kilogram and gram)
         - Conversion between types of different property (kilogram and second)
         - Multiplication of a Measure by a factor of different number type (f32 and f64)
         - Multiplication of a factor by a Measure of different number type (f32 and f64)
