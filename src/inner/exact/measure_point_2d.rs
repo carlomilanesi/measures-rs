@@ -1,6 +1,6 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_point_2d {
-    { $with_approx:ident } => {
+    { $with_approx:ident $with_serde:ident } => {
         /// 2D absolute measure with generic unit of measurement, generic value type,
         /// and with 2 dynamic components.
         /// This type does not make sense for Unit::OFFSET != 0.
@@ -102,6 +102,34 @@ macro_rules! inner_define_measure_point_2d {
                 /// MeasurePoint2d::from(ApproxMeasurePoint2d) -> MeasurePoint2d
                 fn from(am: ApproxMeasurePoint2d<Unit, Number>) -> Self {
                     Self::new(am.values)
+                }
+            }
+        }
+
+        measures::if_all_true! { { $with_serde }
+            impl<Unit, Number> serde::Serialize for MeasurePoint2d<Unit, Number>
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+                Number: ArithmeticOps + serde::Serialize,
+            {
+                fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+                where
+                    S: serde::Serializer
+                {
+                    self.values.serialize(serializer)
+                }
+            }
+
+            impl<'de, Unit, Number> serde::Deserialize<'de> for MeasurePoint2d<Unit, Number>
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+                Number: ArithmeticOps + serde::Deserialize<'de>,
+            {
+                fn deserialize<De>(deserializer: De) -> Result<Self, De::Error>
+                where
+                    De: serde::Deserializer<'de>,
+                {
+                    Ok(Self::new(serde::Deserialize::deserialize(deserializer)?))
                 }
             }
         }

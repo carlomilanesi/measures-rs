@@ -1,6 +1,6 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_signed_direction {
-    { $with_points:ident } => {
+    { $with_points:ident $with_serde:ident } => {
         /// Direction in a plane, represented by an angle with value
         /// between minus half cycle (included) and plus half cycle (excluded),
         /// with generic angular unit of measurement, generic value type,
@@ -123,6 +123,34 @@ macro_rules! inner_define_signed_direction {
             /// SignedDirection<f32>.into() -> SignedDirection<f64>
             fn from(m: SignedDirection<Unit, f32>) -> Self {
                 Self::new(m.value as f64)
+            }
+        }
+
+        measures::if_all_true! { { $with_serde }
+            impl<Unit, Number> serde::Serialize for SignedDirection<Unit, Number>
+            where
+                Unit: AngleMeasurementUnit,
+                Number: ArithmeticOps + serde::Serialize,
+            {
+                fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+                where
+                    S: serde::Serializer
+                {
+                    self.value.serialize(serializer)
+                }
+            }
+
+            impl<'de, Unit, Number> serde::Deserialize<'de> for SignedDirection<Unit, Number>
+            where
+                Unit: AngleMeasurementUnit,
+                Number: ArithmeticOps + serde::Deserialize<'de>,
+            {
+                fn deserialize<De>(deserializer: De) -> Result<Self, De::Error>
+                where
+                    De: serde::Deserializer<'de>,
+                {
+                    Ok(Self::new(serde::Deserialize::deserialize(deserializer)?))
+                }
             }
         }
 

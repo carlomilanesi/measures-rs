@@ -1,6 +1,6 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_approx_measure_point_3d {
-    { $with_approx:ident } => {
+    { $with_approx:ident $with_serde:ident } => {
         /// Approximate 3d absolute measure, with generic unit of measurement and value type,
         /// and with dynamic values, variances, and covariances.
         pub struct ApproxMeasurePoint3d<Unit, Number = f64>
@@ -189,6 +189,35 @@ macro_rules! inner_define_approx_measure_point_3d {
                         ],
                     ],
                 )
+            }
+        }
+
+        measures::if_all_true! { { $with_serde }
+            impl<Unit, Number> serde::Serialize for ApproxMeasurePoint3d<Unit, Number>
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+                Number: ArithmeticOps + serde::Serialize,
+            {
+                fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+                where
+                    S: serde::Serializer
+                {
+                    (self.values, self.covariances).serialize(serializer)
+                }
+            }
+
+            impl<'de, Unit, Number> serde::Deserialize<'de> for ApproxMeasurePoint3d<Unit, Number>
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+                Number: ArithmeticOps + serde::Deserialize<'de>,
+            {
+                fn deserialize<De>(deserializer: De) -> Result<Self, De::Error>
+                where
+                    De: serde::Deserializer<'de>,
+                {
+                    let (values, covariances) = serde::Deserialize::deserialize(deserializer)?;
+                    Ok(Self::with_covariances(values, covariances))
+                }
             }
         }
 
@@ -386,16 +415,29 @@ macro_rules! inner_define_approx_measure_point_3d {
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("at (")?;
+                formatter.write_str("(")?;
                 fmt::Display::fmt(&self.values[0], formatter)?;
-                formatter.write_str(" \u{b1} ")?; // ±
-                fmt::Display::fmt(&self.covariances[0][0].sqrt(), formatter)?;
                 formatter.write_str(", ")?;
                 fmt::Display::fmt(&self.values[1], formatter)?;
-                formatter.write_str(" \u{b1} ")?; // ±
-                fmt::Display::fmt(&self.covariances[1][1].sqrt(), formatter)?;
                 formatter.write_str(", ")?;
                 fmt::Display::fmt(&self.values[2], formatter)?;
-                formatter.write_str(" \u{b1} ")?; // ±
+                formatter.write_str(") \u{b1} (")?;
+                fmt::Display::fmt(&self.covariances[0][0].sqrt(), formatter)?;
+                formatter.write_str(", ")?;
+                fmt::Display::fmt(&self.covariances[0][1].sqrt(), formatter)?;
+                formatter.write_str(", ")?;
+                fmt::Display::fmt(&self.covariances[0][2].sqrt(), formatter)?;
+                formatter.write_str(", ")?;
+                fmt::Display::fmt(&self.covariances[1][0].sqrt(), formatter)?;
+                formatter.write_str(", ")?;
+                fmt::Display::fmt(&self.covariances[1][1].sqrt(), formatter)?;
+                formatter.write_str(", ")?;
+                fmt::Display::fmt(&self.covariances[1][2].sqrt(), formatter)?;
+                formatter.write_str(", ")?;
+                fmt::Display::fmt(&self.covariances[2][0].sqrt(), formatter)?;
+                formatter.write_str(", ")?;
+                fmt::Display::fmt(&self.covariances[2][1].sqrt(), formatter)?;
+                formatter.write_str(", ")?;
                 fmt::Display::fmt(&self.covariances[2][2].sqrt(), formatter)?;
                 formatter.write_str(")")?;
                 formatter.write_str(Unit::SUFFIX)
@@ -416,7 +458,7 @@ macro_rules! inner_define_approx_measure_point_3d {
                 fmt::Display::fmt(&self.values[1], formatter)?;
                 formatter.write_str(", ")?;
                 fmt::Display::fmt(&self.values[2], formatter)?;
-                formatter.write_str("), covariances=")?;
+                formatter.write_str("), covariances=\n")?;
                 write!(
                     formatter,
                     "{}",

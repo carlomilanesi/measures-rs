@@ -1,6 +1,6 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_approx_measure_point {
-    { $exact:tt } => {
+    { $exact:tt $with_serde:ident } => {
         /// Approximate point measurement with generic unit of measurement and value type,
         /// and with dynamic value and variance.
         pub struct ApproxMeasurePoint<Unit, Number = f64>
@@ -104,6 +104,35 @@ macro_rules! inner_define_approx_measure_point {
         {
             fn from(m: ApproxMeasurePoint<Unit, f32>) -> Self {
                 Self::with_variance(m.value as f64, m.variance as f64)
+            }
+        }
+
+        measures::if_all_true! { { $with_serde }
+            impl<Unit, Number> serde::Serialize for ApproxMeasurePoint<Unit, Number>
+            where
+                Unit: MeasurementUnit,
+                Number: ArithmeticOps + serde::Serialize,
+            {
+                fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+                where
+                    S: serde::Serializer
+                {
+                    (self.value, self.variance).serialize(serializer)
+                }
+            }
+
+            impl<'de, Unit, Number> serde::Deserialize<'de> for ApproxMeasurePoint<Unit, Number>
+            where
+                Unit: MeasurementUnit,
+                Number: ArithmeticOps + serde::Deserialize<'de>,
+            {
+                fn deserialize<De>(deserializer: De) -> Result<Self, De::Error>
+                where
+                    De: serde::Deserializer<'de>,
+                {
+                    let (value, variance) = serde::Deserialize::deserialize(deserializer)?;
+                    Ok(Self::with_variance(value, variance))
+                }
             }
         }
 

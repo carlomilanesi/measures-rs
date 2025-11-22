@@ -29,8 +29,8 @@ macro_rules! define_measure_types_aux {
         with_transformations: $with_transformations:tt,
         exact: $exact:tt,
         with_approx: $with_approx:tt,
-        with_correlation: $with_correlation:tt;
-
+        with_correlation: $with_correlation:tt,
+        with_serde: $with_serde:tt;
         $(
             scalar_properties [
                 $(
@@ -88,33 +88,33 @@ macro_rules! define_measure_types_aux {
         use core::fmt;
         use core::marker::PhantomData;
 
-        measures::inner_define_measure! { $with_approx }
+        measures::inner_define_measure! { $with_approx $with_serde }
         measures::if_all_true! { { $with_approx }
-            measures::inner_define_approx_measure! { $exact }
+            measures::inner_define_approx_measure! { $exact $with_serde }
         }
         measures::if_all_true! { { $with_points }
-            measures::inner_define_measure_point! { $with_approx }
+            measures::inner_define_measure_point! { $with_approx $with_serde }
         }
         measures::if_all_true! { { $with_approx $with_points }
-            measures::inner_define_approx_measure_point ! { $exact }
+            measures::inner_define_approx_measure_point ! { $exact $with_serde }
         }
         measures::if_all_true! { { $exact $with_directions }
-            measures::inner_define_unsigned_direction! { $with_points }
+            measures::inner_define_unsigned_direction! { $with_points $with_serde }
         }
         measures::if_all_true! { { $exact $with_directions }
-            measures::inner_define_signed_direction! { $with_points }
+            measures::inner_define_signed_direction! { $with_points $with_serde }
         }
         measures::if_all_true! { { $with_2d }
-            measures::inner_define_measure_2d! { $with_points $with_directions $with_approx }
+            measures::inner_define_measure_2d! { $with_points $with_directions $with_approx $with_serde }
         }
         measures::if_all_true! { { $with_2d $with_points $exact }
-            measures::inner_define_measure_point_2d! { $with_approx }
+            measures::inner_define_measure_point_2d! { $with_approx $with_serde}
         }
         measures::if_all_true! { { $with_3d }
-            measures::inner_define_measure_3d! { $with_approx }
+            measures::inner_define_measure_3d! { $with_approx $with_serde }
         }
         measures::if_all_true! { { $with_points $with_3d }
-            measures::inner_define_measure_point_3d! { $with_approx }
+            measures::inner_define_measure_point_3d! { $with_approx $with_serde }
         }
         measures::if_all_true! { { $with_2d $with_transformations }
             measures::inner_define_linear_map_2d! {}
@@ -130,16 +130,16 @@ macro_rules! define_measure_types_aux {
         }
 
         measures::if_all_true! { { $with_approx $with_2d }
-            measures::inner_define_approx_measure_2d! { $exact }
+            measures::inner_define_approx_measure_2d! { $exact $with_serde }
         }
         measures::if_all_true! { { $with_approx $with_points $with_2d }
-            measures::inner_define_approx_measure_point_2d! { $exact }
+            measures::inner_define_approx_measure_point_2d! { $exact $with_serde }
         }
         measures::if_all_true! { { $with_approx $with_3d }
-            measures::inner_define_approx_measure_3d! { $exact }
+            measures::inner_define_approx_measure_3d! { $exact $with_serde }
         }
         measures::if_all_true! { { $with_approx $with_points $with_3d }
-            measures::inner_define_approx_measure_point_3d! { $exact }
+            measures::inner_define_approx_measure_point_3d! { $exact $with_serde }
         }
 
         // `scalar_properties` section
@@ -214,7 +214,8 @@ macro_rules! define_measure_types_aux {
         with_transformations: $with_transformations:tt,
         exact: $exact:tt,
         with_approx: $with_approx:tt,
-        with_correlation: $with_correlation:tt;
+        with_correlation: $with_correlation:tt,
+        with_serde: $with_serde:tt;
 
         $(
             scalar_properties [
@@ -272,7 +273,8 @@ macro_rules! define_measure_types_aux {
             with_transformations: $with_transformations,
             exact: $exact,
             with_approx: $with_approx,
-            with_correlation: $with_correlation;
+            with_correlation: $with_correlation,
+            with_serde: $with_serde;
 
             $(
                 scalar_properties [
@@ -333,7 +335,8 @@ macro_rules! define_measure_types_aux {
         with_transformations: $with_transformations:tt,
         exact: $exact:tt,
         with_approx: $with_approx:tt,
-        with_correlation: $with_correlation:tt;
+        with_correlation: $with_correlation:tt,
+        with_serde: $with_serde:tt;
 
         $(
             scalar_properties [
@@ -391,7 +394,8 @@ macro_rules! define_measure_types_aux {
             with_transformations: $with_transformations,
             exact: $exact,
             with_approx: $with_approx,
-            with_correlation: $with_correlation;
+            with_correlation: $with_correlation,
+            with_serde: $with_serde;
 
             $(
                 scalar_properties [
@@ -452,7 +456,8 @@ macro_rules! define_measure_types_aux {
         with_transformations: $with_transformations:tt,
         exact: $exact:tt,
         with_approx: $with_approx:tt,
-        with_correlation: $with_correlation:tt;
+        with_correlation: $with_correlation:tt,
+        with_serde: $with_serde:tt;
 
         $(
             scalar_properties [
@@ -510,7 +515,8 @@ macro_rules! define_measure_types_aux {
             with_transformations: $with_transformations,
             exact: $exact,
             with_approx: $with_approx,
-            with_correlation: $with_correlation;
+            with_correlation: $with_correlation,
+            with_serde: $with_serde;
 
             $(
                 scalar_properties [
@@ -571,7 +577,8 @@ macro_rules! define_measure_types_aux {
         with_transformations: $with_transformations:tt,
         exact: $exact:tt,
         with_approx: $with_approx:tt,
-        with_correlation: $with_correlation:tt;
+        with_correlation: $with_correlation:tt,
+        with_serde: $with_serde:tt;
 
         $(
             scalar_properties [
@@ -629,7 +636,8 @@ macro_rules! define_measure_types_aux {
             with_transformations: $with_transformations,
             exact: $exact,
             with_approx: $with_approx,
-            with_correlation: $with_correlation;
+            with_correlation: $with_correlation,
+            with_serde: $with_serde;
 
             $(
                 scalar_properties [
@@ -690,7 +698,8 @@ macro_rules! define_measure_types_aux {
         with_transformations: false,
         exact: $exact:tt,
         with_approx: $with_approx:tt,
-        with_correlation: $with_correlation:tt;
+        with_correlation: $with_correlation:tt,
+        with_serde: $with_serde:tt;
 
         $(
             scalar_properties [
@@ -748,7 +757,8 @@ macro_rules! define_measure_types_aux {
             with_transformations: true,
             exact: $exact,
             with_approx: $with_approx,
-            with_correlation: $with_correlation;
+            with_correlation: $with_correlation,
+            with_serde: $with_serde;
 
             $(
                 scalar_properties [
@@ -809,7 +819,8 @@ macro_rules! define_measure_types_aux {
         with_transformations: $with_transformations:tt,
         exact: false,
         with_approx: $with_approx:tt,
-        with_correlation: $with_correlation:tt;
+        with_correlation: $with_correlation:tt,
+        with_serde: $with_serde:tt;
 
         $(
             scalar_properties [
@@ -867,7 +878,8 @@ macro_rules! define_measure_types_aux {
             with_transformations: $with_transformations,
             exact: true,
             with_approx: $with_approx,
-            with_correlation: $with_correlation;
+            with_correlation: $with_correlation,
+            with_serde: $with_serde;
 
             $(
                 scalar_properties [
@@ -928,7 +940,8 @@ macro_rules! define_measure_types_aux {
         with_transformations: $with_transformations:tt,
         exact: $exact:tt,
         with_approx: false,
-        with_correlation: $with_correlation:tt;
+        with_correlation: $with_correlation:tt,
+        with_serde: $with_serde:tt;
 
         $(
             scalar_properties [
@@ -986,7 +999,8 @@ macro_rules! define_measure_types_aux {
             with_transformations: $with_transformations,
             exact: $exact,
             with_approx: true,
-            with_correlation: $with_correlation;
+            with_correlation: $with_correlation,
+            with_serde: $with_serde;
 
             $(
                 scalar_properties [
@@ -1047,7 +1061,8 @@ macro_rules! define_measure_types_aux {
         with_transformations: $with_transformations:tt,
         exact: $exact:tt,
         with_approx: $with_approx:tt,
-        with_correlation: false;
+        with_correlation: false,
+        with_serde: $with_serde:tt;
 
         $(
             scalar_properties [
@@ -1104,7 +1119,128 @@ macro_rules! define_measure_types_aux {
             with_transformations: $with_transformations,
             exact: $exact,
             with_approx: $with_approx,
-            with_correlation: true;
+            with_correlation: true,
+            with_serde: $with_serde;
+
+            $(
+                scalar_properties [
+                    $(
+                        $scalar_prop [
+                            $(
+                                $scalar_unit {
+                                    $($scalar_key : $scalar_val),*
+                                }
+                            )*
+                        ]
+                    )*
+                ]
+            )?
+
+            $(
+                vector_properties [
+                    $(
+                        $vector_prop [
+                            $(
+                                $vector_unit {
+                                    $($vector_key : $vector_val),*
+                                }
+                            )*
+                        ]
+                    )*
+                ]
+            )?
+
+            $(
+                angle_measurement_units [
+                    $(
+                        $angle_unit {
+                            $($angle_key : $angle_val),*
+                        }
+                    )*
+                ]
+            )?
+
+            $(
+                relationships [
+                    $(
+                        $unit1 $dim1 == $unit2 $dim2 $op $unit3 $dim3
+                    )*
+                ]
+            )?
+        }
+    };
+
+    // First option is "with_serde"
+    {
+        with_serde $( $flag:ident )*,
+
+        with_points: $with_points:tt,
+        with_directions: $with_directions:tt,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        with_transformations: $with_transformations:tt,
+        exact: $exact:tt,
+        with_approx: $with_approx:tt,
+        with_correlation: $with_correlation:tt,
+        with_serde: false;
+
+        $(
+            scalar_properties [
+                $(
+                    $scalar_prop:ident [
+                        $(
+                            $scalar_unit:ident {
+                                $($scalar_key:ident : $scalar_val:expr),* $(,)?
+                            }
+                        )*
+                    ]
+                )*
+            ]
+        )?
+
+        $(
+            vector_properties [
+                $(
+                    $vector_prop:ident [
+                        $(
+                            $vector_unit:ident {
+                                $($vector_key:ident : $vector_val:expr),* $(,)?
+                            }
+                        )*
+                    ]
+                )*
+            ]
+        )?
+
+        $(
+            angle_measurement_units [
+                $(
+                    $angle_unit:ident {
+                        $($angle_key:ident : $angle_val:expr),* $(,)?
+                    }
+                )*
+            ]
+        )?
+
+        $(
+            relationships [
+                $(
+                    $unit1:ident $dim1:tt == $unit2:ident $dim2:tt $op:tt $unit3:ident $dim3:tt $(,)?
+                )*
+            ]
+        )?
+    } => {
+        measures::define_measure_types_aux!{
+            $( $flag ) *,
+            with_points: $with_points,
+            with_directions: $with_directions,
+            with_2d: $with_2d,
+            with_3d: $with_3d,
+            with_transformations: $with_transformations,
+            exact: $exact,
+            with_approx: $with_approx,
+            with_correlation: $with_correlation,
+            with_serde: true;
 
             $(
                 scalar_properties [
@@ -1216,7 +1352,8 @@ macro_rules! define_measure_types {
             with_transformations: false,
             exact: false,
             with_approx: false,
-            with_correlation: false;
+            with_correlation: false,
+            with_serde: false;
 
             $(
                 scalar_properties [

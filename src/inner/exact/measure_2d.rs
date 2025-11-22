@@ -1,6 +1,6 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_2d {
-    { $with_points:tt $with_directions:tt $with_approx:ident } => {
+    { $with_points:tt $with_directions:tt $with_approx:ident $with_serde:ident } => {
         /// 2D relative measure with generic unit of measurement, generic value type,
         /// and with 2 dynamic components.
         pub struct Measure2d<Unit, Number = f64>
@@ -161,6 +161,34 @@ macro_rules! inner_define_measure_2d {
                 /// Measure2d::from(ApproxMeasure2d) -> Measure2d
                 fn from(am: ApproxMeasure2d<Unit, Number>) -> Self {
                     Self::new(am.values)
+                }
+            }
+        }
+
+        measures::if_all_true! { { $with_serde }
+            impl<Unit, Number> serde::Serialize for Measure2d<Unit, Number>
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+                Number: ArithmeticOps + serde::Serialize,
+            {
+                fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+                where
+                    S: serde::Serializer
+                {
+                    self.values.serialize(serializer)
+                }
+            }
+
+            impl<'de, Unit, Number> serde::Deserialize<'de> for Measure2d<Unit, Number>
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+                Number: ArithmeticOps + serde::Deserialize<'de>,
+            {
+                fn deserialize<De>(deserializer: De) -> Result<Self, De::Error>
+                where
+                    De: serde::Deserializer<'de>,
+                {
+                    Ok(Self::new(serde::Deserialize::deserialize(deserializer)?))
                 }
             }
         }

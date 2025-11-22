@@ -1,6 +1,6 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines.
 macro_rules! inner_define_measure_point_3d {
-    { $with_approx:ident } => {
+    { $with_approx:ident $with_serde:ident } => {
         /// 3D absolute measure with generic unit of measurement, generic value type,
         /// and with 3 dynamic components.
         /// This type does not make sense for Unit::OFFSET != 0.
@@ -109,6 +109,34 @@ macro_rules! inner_define_measure_point_3d {
                 /// MeasurePoint3d::from(ApproxMeasurePoint3d) -> MeasurePoint3d
                 fn from(am: ApproxMeasurePoint3d<Unit, Number>) -> Self {
                     Self::new(am.values)
+                }
+            }
+        }
+
+        measures::if_all_true! { { $with_serde }
+            impl<Unit, Number> serde::Serialize for MeasurePoint3d<Unit, Number>
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+                Number: ArithmeticOps + serde::Serialize,
+            {
+                fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+                where
+                    S: serde::Serializer
+                {
+                    self.values.serialize(serializer)
+                }
+            }
+
+            impl<'de, Unit, Number> serde::Deserialize<'de> for MeasurePoint3d<Unit, Number>
+            where
+                Unit: MeasurementUnit<Property: VectorProperty>,
+                Number: ArithmeticOps + serde::Deserialize<'de>,
+            {
+                fn deserialize<De>(deserializer: De) -> Result<Self, De::Error>
+                where
+                    De: serde::Deserializer<'de>,
+                {
+                    Ok(Self::new(serde::Deserialize::deserialize(deserializer)?))
                 }
             }
         }

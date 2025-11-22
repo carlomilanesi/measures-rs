@@ -1,6 +1,6 @@
 #[macro_export] // Don't add nor remove the first three lines and the last two lines of this file.
 macro_rules! inner_define_measure {
-    { $with_approx:ident } => {
+    { $with_approx:ident $with_serde:ident } => {
         /// 1D relative measure with generic unit of measurement, generic value type,
         /// and with a dynamic value.
         pub struct Measure<Unit, Number = f64>
@@ -133,6 +133,34 @@ macro_rules! inner_define_measure {
                 /// Measure::from(ApproxMeasure) -> Measure
                 fn from(am: ApproxMeasure<Unit, Number>) -> Self {
                     Self::new(am.value)
+                }
+            }
+        }
+
+        measures::if_all_true! { { $with_serde }
+            impl<Unit, Number> serde::Serialize for Measure<Unit, Number>
+            where
+                Unit: MeasurementUnit,
+                Number: ArithmeticOps + serde::Serialize,
+            {
+                fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+                where
+                    S: serde::Serializer
+                {
+                    self.value.serialize(serializer)
+                }
+            }
+
+            impl<'de, Unit, Number> serde::Deserialize<'de> for Measure<Unit, Number>
+            where
+                Unit: MeasurementUnit,
+                Number: ArithmeticOps + serde::Deserialize<'de>,
+            {
+                fn deserialize<De>(deserializer: De) -> Result<Self, De::Error>
+                where
+                    De: serde::Deserializer<'de>,
+                {
+                    Ok(Self::new(serde::Deserialize::deserialize(deserializer)?))
                 }
             }
         }
