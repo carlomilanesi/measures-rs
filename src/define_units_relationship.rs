@@ -196,7 +196,7 @@ macro_rules! expand_1_1_same {
         $unit1:ident $unit3:ident
     } => {
         measures::if_all_true! { { $exact }
-            // Measure<U1> * Measure<U1> -> Measure<U3>
+            /// Measure<U1> * Measure<U1> -> Measure<U3>
             impl<Number: ArithmeticOps> Mul<Measure<$unit1, Number>> for Measure<$unit1, Number> {
                 type Output = Measure<$unit3, Number>;
                 fn mul(self, other: Measure<$unit1, Number>) -> Self::Output {
@@ -204,7 +204,7 @@ macro_rules! expand_1_1_same {
                 }
             }
 
-            // Measure<U3> / Measure<U1> -> Measure<U1>
+            /// Measure<U3> / Measure<U1> -> Measure<U1>
             impl<Number: ArithmeticOps> Div<Measure<$unit1, Number>> for Measure<$unit3, Number> {
                 type Output = Measure<$unit1, Number>;
                 fn div(self, other: Measure<$unit1, Number>) -> Self::Output {
@@ -212,25 +212,16 @@ macro_rules! expand_1_1_same {
                 }
             }
 
-            // Measure<U1>.squared() -> Measure<U3>
+            /// Measure<U1>.squared() -> Measure<U3>
             impl<Number: ArithmeticOps> Measure<$unit1, Number> {
                 pub fn squared(self) -> Measure<$unit3, Number> {
                     Measure::<$unit3, Number>::new(self.value * self.value)
                 }
             }
 
-            // Measure<U3>.sqrt() -> Measure<U1>
-            // A generic implementation caused a slowdown in some cases,
-            // and so it was replaced by the following implementations, specific,
-            // respectively, for f64 and f32.
-            impl Sqrt for Measure<$unit3, f64> {
-                type Output = Measure<$unit1, f64>;
-                fn sqrt(self) -> Self::Output {
-                    Self::Output::new(self.value.sqrt())
-                }
-            }
-            impl Sqrt for Measure<$unit3, f32> {
-                type Output = Measure<$unit1, f32>;
+            /// Measure<U3>.sqrt() -> Measure<U1>
+            impl<Number: ArithmeticOps> Sqrt for Measure<$unit3, Number> {
+                type Output = Measure<$unit1, Number>;
                 fn sqrt(self) -> Self::Output {
                     Self::Output::new(self.value.sqrt())
                 }
@@ -238,7 +229,7 @@ macro_rules! expand_1_1_same {
         }
 
         measures::if_all_true! { { $with_approx }
-            // ApproxMeasure<U1> * ApproxMeasure<U1> -> ApproxMeasure<U3>
+            /// ApproxMeasure<U1> * ApproxMeasure<U1> -> ApproxMeasure<U3>
             impl<Number: ArithmeticOps> Mul<ApproxMeasure<$unit1, Number>> for ApproxMeasure<$unit1, Number> {
                 type Output = ApproxMeasure<$unit3, Number>;
                 fn mul(self, other: ApproxMeasure<$unit1, Number>) -> Self::Output {
@@ -252,7 +243,7 @@ macro_rules! expand_1_1_same {
                 }
             }
 
-            // ApproxMeasure<U3> / ApproxMeasure<U1> -> ApproxMeasure<U1>
+            /// ApproxMeasure<U3> / ApproxMeasure<U1> -> ApproxMeasure<U1>
             impl<Number: ArithmeticOps> Div<ApproxMeasure<$unit1, Number>> for ApproxMeasure<$unit3, Number> {
                 type Output = ApproxMeasure<$unit1, Number>;
                 fn div(self, other: ApproxMeasure<$unit1, Number>) -> Self::Output {
@@ -266,7 +257,7 @@ macro_rules! expand_1_1_same {
                 }
             }
 
-            // ApproxMeasure<U1>.squared() -> ApproxMeasure<U3>
+            /// ApproxMeasure<U1>.squared() -> ApproxMeasure<U3>
             impl<Number: ArithmeticOps> ApproxMeasure<$unit1, Number> {
                 fn squared(self) -> ApproxMeasure<$unit3, Number> {
                     let value_product = self.value * self.value;
@@ -277,7 +268,7 @@ macro_rules! expand_1_1_same {
                 }
             }
 
-            // ApproxMeasure<U3>.sqrt() -> ApproxMeasure<U1>
+            /// ApproxMeasure<U3>.sqrt() -> ApproxMeasure<U1>
             impl<Number: ArithmeticOps> Sqrt for ApproxMeasure<$unit3, Number> {
                 type Output = ApproxMeasure<$unit1, Number>;
                 fn sqrt(self) -> Self::Output {
@@ -298,7 +289,7 @@ macro_rules! expand_1_2 {
         $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
-        // Measure<U1> * Measure2d<U2> -> Measure2d<U3>
+        /// Measure<U1> * Measure2d<U2> -> Measure2d<U3>
         impl<Number: ArithmeticOps> Mul<Measure2d<$unit2, Number>> for Measure<$unit1, Number> {
             type Output = Measure2d<$unit3, Number>;
             fn mul(self, other: Measure2d<$unit2, Number>) -> Self::Output {
@@ -306,7 +297,7 @@ macro_rules! expand_1_2 {
             }
         }
 
-        // Measure2d<U2> * Measure<U1> -> Measure2d<U3>
+        /// Measure2d<U2> * Measure<U1> -> Measure2d<U3>
         impl<Number: ArithmeticOps> Mul<Measure<$unit1, Number>> for Measure2d<$unit2, Number> {
             type Output = Measure2d<$unit3, Number>;
             fn mul(self, other: Measure<$unit1, Number>) -> Self::Output {
@@ -314,7 +305,7 @@ macro_rules! expand_1_2 {
             }
         }
 
-        // Measure2d<U3> / Measure<U1> -> Measure2d<U2>
+        /// Measure2d<U3> / Measure<U1> -> Measure2d<U2>
         impl<Number: ArithmeticOps> Div<Measure<$unit1, Number>> for Measure2d<$unit3, Number> {
             type Output = Measure2d<$unit2, Number>;
             fn div(self, other: Measure<$unit1, Number>) -> Self::Output {
@@ -331,7 +322,7 @@ macro_rules! expand_1_3 {
         $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
-        // Measure<U1> * Measure3d<U2> -> Measure3d<U3>
+        /// Measure<U1> * Measure3d<U2> -> Measure3d<U3>
         impl<Number: ArithmeticOps> Mul<Measure3d<$unit2, Number>> for Measure<$unit1, Number> {
             type Output = Measure3d<$unit3, Number>;
             fn mul(self, other: Measure3d<$unit2, Number>) -> Self::Output {
@@ -343,7 +334,7 @@ macro_rules! expand_1_3 {
             }
         }
 
-        // Measure3d<U2> * Measure<U1> -> Measure3d<U3>
+        /// Measure3d<U2> * Measure<U1> -> Measure3d<U3>
         impl<Number: ArithmeticOps> Mul<Measure<$unit1, Number>> for Measure3d<$unit2, Number> {
             type Output = Measure3d<$unit3, Number>;
             fn mul(self, other: Measure<$unit1, Number>) -> Self::Output {
@@ -351,7 +342,7 @@ macro_rules! expand_1_3 {
             }
         }
 
-        // Measure3d<U3> / Measure<U1> -> Measure3d<U2>
+        /// Measure3d<U3> / Measure<U1> -> Measure3d<U2>
         impl<Number: ArithmeticOps> Div<Measure<$unit1, Number>> for Measure3d<$unit3, Number> {
             type Output = Measure3d<$unit2, Number>;
             fn div(self, other: Measure<$unit1, Number>) -> Self::Output {
@@ -364,7 +355,7 @@ macro_rules! expand_1_3 {
         }
 
         measures::if_all_true! { { $with_approx }
-            // ApproxMeasure<U1> * ApproxMeasure3d<U2> -> ApproxMeasure3d<U3>
+            /// ApproxMeasure<U1> * ApproxMeasure3d<U2> -> ApproxMeasure3d<U3>
             impl<Number: ArithmeticOps> Mul<ApproxMeasure3d<$unit2, Number>> for ApproxMeasure<$unit1, Number> {
                 type Output = ApproxMeasure3d<$unit3, Number>;
                 fn mul(self, other: ApproxMeasure3d<$unit2, Number>) -> Self::Output {
@@ -382,7 +373,7 @@ macro_rules! expand_1_3 {
                 }
             }
 
-            // ApproxMeasure3d<U2> * ApproxMeasure<U1> -> ApproxMeasure3d<U3>
+            /// ApproxMeasure3d<U2> * ApproxMeasure<U1> -> ApproxMeasure3d<U3>
             impl<Number: ArithmeticOps> Mul<ApproxMeasure<$unit1, Number>> for ApproxMeasure3d<$unit2, Number> {
                 type Output = ApproxMeasure3d<$unit3, Number>;
                 fn mul(self, other: ApproxMeasure<$unit1, Number>) -> Self::Output {
@@ -390,7 +381,7 @@ macro_rules! expand_1_3 {
                 }
             }
 
-            // ApproxMeasure3d<U3> / ApproxMeasure<U1> -> ApproxMeasure3d<U2>
+            /// ApproxMeasure3d<U3> / ApproxMeasure<U1> -> ApproxMeasure3d<U2>
             impl<Number: ArithmeticOps> Div<ApproxMeasure<$unit1, Number>> for ApproxMeasure3d<$unit3, Number> {
                 type Output = ApproxMeasure3d<$unit2, Number>;
                 fn div(self, other: ApproxMeasure<$unit1, Number>) -> Self::Output {
@@ -418,7 +409,7 @@ macro_rules! expand_2_2 {
         $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
-        // Measure2d<U1> * Measure2d<U2> -> Measure<U3>
+        /// Measure2d<U1> * Measure2d<U2> -> Measure<U3>
         impl<Number: ArithmeticOps> Mul<Measure2d<$unit2, Number>> for Measure2d<$unit1, Number> {
             type Output = Measure<$unit3, Number>;
             fn mul(self, other: Measure2d<$unit2, Number>) -> Self::Output {
@@ -426,7 +417,7 @@ macro_rules! expand_2_2 {
             }
         }
 
-        // Measure2d<U2> * Measure2d<U1> -> Measure<U3>
+        /// Measure2d<U2> * Measure2d<U1> -> Measure<U3>
         impl<Number: ArithmeticOps> Mul<Measure2d<$unit1, Number>> for Measure2d<$unit2, Number> {
             type Output = Measure<$unit3, Number>;
             fn mul(self, other: Measure2d<$unit1, Number>) -> Self::Output {
@@ -446,7 +437,7 @@ macro_rules! expand_2_2_same {
         $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident
     } => {
-        // Measure2d<U1> * Measure2d<U1> -> Measure<U3>
+        /// Measure2d<U1> * Measure2d<U1> -> Measure<U3>
         impl<Number: ArithmeticOps> Mul<Measure2d<$unit1, Number>> for Measure2d<$unit1, Number> {
             type Output = Measure<$unit2, Number>;
             fn mul(self, other: Measure2d<$unit1, Number>) -> Self::Output {
@@ -454,7 +445,7 @@ macro_rules! expand_2_2_same {
             }
         }
 
-        // Measure2d<U1>.squared() -> Measure<U3>
+        /// Measure2d<U1>.squared() -> Measure<U3>
         impl<Number: ArithmeticOps> Measure2d<$unit1, Number> {
             pub fn squared(self) -> Measure<$unit2, Number> {
                 Measure::<$unit2, Number>::new(self.values[0] * self.values[0] + self.values[1] * self.values[1])
@@ -473,7 +464,7 @@ macro_rules! expand_3_3_same {
         $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident
     } => {
-        // Measure3d<U1> * Measure3d<U1> -> Measure<U3>
+        /// Measure3d<U1> * Measure3d<U1> -> Measure<U3>
         impl<Number: ArithmeticOps> Mul<Measure3d<$unit1, Number>> for Measure3d<$unit1, Number> {
             type Output = Measure<$unit2, Number>;
             fn mul(self, other: Measure3d<$unit1, Number>) -> Self::Output {
@@ -481,7 +472,7 @@ macro_rules! expand_3_3_same {
             }
         }
 
-        // Measure3d<U1>.squared() -> Measure<U3>
+        /// Measure3d<U1>.squared() -> Measure<U3>
         impl<Number: ArithmeticOps> Measure3d<$unit1, Number> {
             pub fn squared(self) -> Measure<$unit2, Number> {
                 Measure::<$unit2, Number>::new(self.values[0] * self.values[0] + self.values[1] * self.values[1] + self.values[2] * self.values[2])
@@ -489,7 +480,7 @@ macro_rules! expand_3_3_same {
         }
 
         measures::if_all_true! { { $with_approx }
-            // ApproxMeasure3d<U1> * ApproxMeasure3d<U1> -> ApproxMeasure<U3>
+            /// ApproxMeasure3d<U1> * ApproxMeasure3d<U1> -> ApproxMeasure<U3>
             impl<Number: ArithmeticOps> Mul<ApproxMeasure3d<$unit1, Number>> for ApproxMeasure3d<$unit1, Number> {
                 type Output = ApproxMeasure<$unit2, Number>;
                 fn mul(self, other: ApproxMeasure3d<$unit1, Number>) -> Self::Output {
@@ -505,7 +496,7 @@ macro_rules! expand_3_3_same {
                 }
             }
 
-            // ApproxMeasure3d<U1>.squared() -> ApproxMeasure<U3>
+            /// ApproxMeasure3d<U1>.squared() -> ApproxMeasure<U3>
             impl<Number: ArithmeticOps> ApproxMeasure3d<$unit1, Number> {
                 fn squared(self) -> ApproxMeasure<$unit2, Number> {
                     let value = self.values[0] * self.values[0] + self.values[1] * self.values[1] + self.values[2] * self.values[2];
@@ -526,7 +517,7 @@ macro_rules! expand_3_3 {
         $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
-        // Measure3d<U1> * Measure3d<U2> -> Measure<U3>
+        /// Measure3d<U1> * Measure3d<U2> -> Measure<U3>
         impl<Number: ArithmeticOps> Mul<Measure3d<$unit2, Number>> for Measure3d<$unit1, Number> {
             type Output = Measure<$unit3, Number>;
             fn mul(self, other: Measure3d<$unit2, Number>) -> Self::Output {
@@ -534,7 +525,7 @@ macro_rules! expand_3_3 {
             }
         }
 
-        // Measure3d<U2> * Measure3d<U1> -> Measure<U3>
+        /// Measure3d<U2> * Measure3d<U1> -> Measure<U3>
         impl<Number: ArithmeticOps> Mul<Measure3d<$unit1, Number>> for Measure3d<$unit2, Number> {
             type Output = Measure<$unit3, Number>;
             fn mul(self, other: Measure3d<$unit1, Number>) -> Self::Output {
@@ -543,7 +534,7 @@ macro_rules! expand_3_3 {
         }
 
         measures::if_all_true! { { $with_approx }
-            // Measure3d<U1> * Measure3d<U2> -> Measure<U3>
+            /// Measure3d<U1> * Measure3d<U2> -> Measure<U3>
             impl<Number: ArithmeticOps> Mul<ApproxMeasure3d<$unit2, Number>> for ApproxMeasure3d<$unit1, Number> {
                 type Output = ApproxMeasure<$unit3, Number>;
                 fn mul(self, other: ApproxMeasure3d<$unit2, Number>) -> Self::Output {
@@ -557,7 +548,7 @@ macro_rules! expand_3_3 {
                 }
             }
 
-            // Measure3d<U2> * Measure3d<U1> -> Measure<U3>
+            /// Measure3d<U2> * Measure3d<U1> -> Measure<U3>
             impl<Number: ArithmeticOps> Mul<ApproxMeasure3d<$unit1, Number>> for ApproxMeasure3d<$unit2, Number> {
                 type Output = ApproxMeasure<$unit3, Number>;
                 fn mul(self, other: ApproxMeasure3d<$unit1, Number>) -> Self::Output {
@@ -581,7 +572,7 @@ macro_rules! expand_cross_2_same {
         $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident
     } => {
-        // Measure2d<U1>.cross_product(Measure2d<U1>) -> Measure<U3>
+        /// Measure2d<U1>.cross_product(Measure2d<U1>) -> Measure<U3>
         impl<Number: ArithmeticOps> measures::traits::CrossProduct<Measure2d<$unit1, Number>> for Measure2d<$unit1, Number> {
             type Output = Measure<$unit2, Number>;
             fn cross_product(self, other: Measure2d<$unit1, Number>) -> Self::Output {
@@ -601,7 +592,7 @@ macro_rules! expand_cross_2 {
         $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
-        // Measure2d<U1>.cross_product(Measure2d<U2>) -> Measure<U3>
+        /// Measure2d<U1>.cross_product(Measure2d<U2>) -> Measure<U3>
         impl<Number: ArithmeticOps> measures::traits::CrossProduct<Measure2d<$unit2, Number>> for Measure2d<$unit1, Number> {
             type Output = Measure<$unit3, Number>;
             fn cross_product(self, other: Measure2d<$unit2, Number>) -> Self::Output {
@@ -609,7 +600,7 @@ macro_rules! expand_cross_2 {
             }
         }
 
-        // Measure2d<U2>.cross_product(Measure2d<U1>) -> Measure<U3>
+        /// Measure2d<U2>.cross_product(Measure2d<U1>) -> Measure<U3>
         impl<Number: ArithmeticOps> measures::traits::CrossProduct<Measure2d<$unit1, Number>> for Measure2d<$unit2, Number> {
             type Output = Measure<$unit3, Number>;
             fn cross_product(self, other: Measure2d<$unit1, Number>) -> Self::Output {
@@ -629,7 +620,7 @@ macro_rules! expand_cross_3_same {
         $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident
     } => {
-        // Measure3d<U1>.cross_product(Measure3d<U1>) -> Measure<U3>
+        /// Measure3d<U1>.cross_product(Measure3d<U1>) -> Measure<U3>
         impl<Number: ArithmeticOps> measures::traits::CrossProduct<Measure3d<$unit1, Number>> for Measure3d<$unit1, Number> {
             type Output = Measure3d<$unit2, Number>;
             fn cross_product(self, other: Measure3d<$unit1, Number>) -> Self::Output {
@@ -655,7 +646,7 @@ macro_rules! expand_cross_3 {
         $exact:ident $with_approx:ident $with_correlation:ident,
         $unit1:ident $unit2:ident $unit3:ident
     } => {
-        // Measure3d<U1>.cross_product(Measure3d<U2>) -> Measure<U4>
+        /// Measure3d<U1>.cross_product(Measure3d<U2>) -> Measure<U4>
         impl<Number: ArithmeticOps> measures::traits::CrossProduct<Measure3d<$unit2, Number>> for Measure3d<$unit1, Number> {
             type Output = Measure3d<$unit3, Number>;
             fn cross_product(self, other: Measure3d<$unit2, Number>) -> Self::Output {
@@ -667,7 +658,7 @@ macro_rules! expand_cross_3 {
             }
         }
 
-        // Measure3d<U2>.cross_product(Measure3d<U1>) -> Measure<U4>
+        /// Measure3d<U2>.cross_product(Measure3d<U1>) -> Measure<U4>
         impl<Number: ArithmeticOps> measures::traits::CrossProduct<Measure3d<$unit1, Number>> for Measure3d<$unit2, Number> {
             type Output = Measure3d<$unit3, Number>;
             fn cross_product(self, other: Measure3d<$unit1, Number>) -> Self::Output {
