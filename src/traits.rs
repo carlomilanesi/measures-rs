@@ -229,6 +229,8 @@ pub trait ArithmeticOps:
     + std::iter::Sum
     + fmt::Display
     + fmt::Debug
+    + fmt::LowerExp
+    + fmt::UpperExp
     + Clone
     + Copy
     + PartialOrd
@@ -263,6 +265,8 @@ impl<T> ArithmeticOps for T where
         + std::iter::Sum
         + fmt::Display
         + fmt::Debug
+        + fmt::LowerExp
+        + fmt::UpperExp
         + Clone
         + Copy
         + PartialOrd

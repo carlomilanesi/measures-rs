@@ -552,6 +552,30 @@ fn measure_1d_formatting_for_debug_with_one_fractional_digit() {
 }
 
 #[test]
+fn measure_1d_formatting_for_lowerexp() {
+    let m = Measure::<Metre, f32>::new(12.25);
+    assert_eq!(format!("{:e}", m), "1.225e1 m");
+}
+
+#[test]
+fn measure_1d_formatting_for_lowerexp_with_one_fractional_digit() {
+    let m = Measure::<Metre, f32>::new(12.25);
+    assert_eq!(format!("{:.1e}", m), "1.2e1 m");
+}
+
+#[test]
+fn measure_1d_formatting_for_upperexp() {
+    let m = Measure::<Metre, f32>::new(12.25);
+    assert_eq!(format!("{:E}", m), "1.225E1 m");
+}
+
+#[test]
+fn measure_1d_formatting_for_upperexp_with_one_fractional_digit() {
+    let m = Measure::<Metre, f32>::new(12.25);
+    assert_eq!(format!("{:.1E}", m), "1.2E1 m");
+}
+
+#[test]
 fn measure_1d_formatting_in_decibels() {
     let m = Measure::<Metre, f32>::new(12.25);
     assert_eq!(format!("{}", m.decibels_formatter()), "10.881361 dB m");

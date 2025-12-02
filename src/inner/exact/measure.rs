@@ -440,6 +440,30 @@ macro_rules! inner_define_measure {
             }
         }
 
+        impl<Unit, Number> fmt::LowerExp for Measure<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
+            /// format!("{:e}", Measure) -> String
+            fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+                fmt::LowerExp::fmt(&self.value, formatter)?;
+                formatter.write_str(Unit::SUFFIX)
+            }
+        }
+
+        impl<Unit, Number> fmt::UpperExp for Measure<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
+            /// format!("{:E}", Measure) -> String
+            fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+                fmt::UpperExp::fmt(&self.value, formatter)?;
+                formatter.write_str(Unit::SUFFIX)
+            }
+        }
+
         /// Wrapper of a `Measure<Unit, Number>`, printing in decibels.
         pub struct DecibelsMeasureFormatter<Unit, Number>(Measure<Unit, Number>)
         where
