@@ -113,6 +113,21 @@ macro_rules! inner_define_measure_3d {
             }
         }
 
+        impl<Unit, Number> From<[Measure<Unit, Number>; 3]> for Measure3d<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: VectorProperty>,
+            Number: ArithmeticOps,
+        {
+            /// Measure3d::from([Measure; 3]) -> Measure3d
+            fn from(three_measures: [Measure<Unit, Number>; 3]) -> Self {
+                Self::new([
+                    three_measures[0].value,
+                    three_measures[1].value,
+                    three_measures[2].value,
+                ])
+            }
+        }
+
         impl<Unit> From<Measure3d<Unit, f32>> for Measure3d<Unit, f64>
         where
             Unit: MeasurementUnit<Property: VectorProperty>,

@@ -247,6 +247,21 @@ fn measure_3d_default() {
 }
 
 #[test]
+fn measure_3d_from_three_measures() {
+    let three_measures = [
+        Measure::<Metre, f32>::new(12.),
+        Measure::<Metre, f32>::new(23.),
+        Measure::<Metre, f32>::new(34.),
+    ];
+
+    let m1 = Measure3d::<Metre, f32>::from(three_measures);
+    assert_eq!(m1.values, [12_f32, 23_f32, 34_f32]);
+
+    let m2: Measure3d<Metre, f32> = three_measures.into();
+    assert_eq!(m2.values, [12_f32, 23_f32, 34_f32]);
+}
+
+#[test]
 fn measure_3d_from_f32_into_f64() {
     let m1 = Measure3d::<Metre, f32>::new([12., 23., 34.]);
     let m2 = Measure3d::<Metre, f64>::from(m1);
