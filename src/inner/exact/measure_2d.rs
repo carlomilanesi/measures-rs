@@ -142,6 +142,17 @@ macro_rules! inner_define_measure_2d {
             }
         }
 
+        impl<Unit, Number> From<[Measure<Unit, Number>; 2]> for Measure2d<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: VectorProperty>,
+            Number: ArithmeticOps,
+        {
+            /// Measure2d::from([Measure; 2]) -> Measure2d
+            fn from(two_measures: [Measure<Unit, Number>; 2]) -> Self {
+                Self::new([two_measures[0].value, two_measures[1].value])
+            }
+        }
+
         impl<Unit> From<Measure2d<Unit, f32>> for Measure2d<Unit, f64>
         where
             Unit: MeasurementUnit<Property: VectorProperty>,

@@ -138,6 +138,21 @@ fn measure_point_3d_default() {
 }
 
 #[test]
+fn measure_point_3d_from_three_measure_points() {
+    let three_measure_points = [
+        MeasurePoint::<Metre, f32>::new(12.),
+        MeasurePoint::<Metre, f32>::new(23.),
+        MeasurePoint::<Metre, f32>::new(34.),
+    ];
+
+    let m1 = MeasurePoint3d::<Metre, f32>::from(three_measure_points);
+    assert_eq!(m1.values, [12_f32, 23_f32, 34_f32]);
+
+    let m2: MeasurePoint3d<Metre, f32> = three_measure_points.into();
+    assert_eq!(m2.values, [12_f32, 23_f32, 34_f32]);
+}
+
+#[test]
 fn measure_from_f32_into_f64() {
     let m1 = MeasurePoint3d::<Metre, f32>::new([12., 23., 34.]);
     let m2 = MeasurePoint3d::<Metre, f64>::from(m1);

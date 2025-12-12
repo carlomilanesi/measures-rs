@@ -134,6 +134,20 @@ fn measure_point_2d_default() {
 }
 
 #[test]
+fn measure_point_2d_from_two_measure_points() {
+    let two_measure_points = [
+        MeasurePoint::<Metre, f32>::new(12.),
+        MeasurePoint::<Metre, f32>::new(23.),
+    ];
+
+    let m1 = MeasurePoint2d::<Metre, f32>::from(two_measure_points);
+    assert_eq!(m1.values, [12_f32, 23_f32]);
+
+    let m2: MeasurePoint2d<Metre, f32> = two_measure_points.into();
+    assert_eq!(m2.values, [12_f32, 23_f32]);
+}
+
+#[test]
 fn measure_from_f32_into_f64() {
     let m1 = MeasurePoint2d::<Metre, f32>::new([12., 23.]);
     let m2 = MeasurePoint2d::<Metre, f64>::from(m1);
