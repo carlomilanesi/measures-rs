@@ -323,5 +323,37 @@ macro_rules! inner_define_measure_point_2d {
                 formatter.write_str(Unit::SUFFIX)
             }
         }
+
+        impl<Unit, Number> fmt::LowerExp for MeasurePoint2d<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: VectorProperty>,
+            Number: ArithmeticOps,
+        {
+            /// format!("{:e}", MeasurePoint2d) -> String
+            fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+                formatter.write_str("at (")?;
+                fmt::LowerExp::fmt(&self.values[0], formatter)?;
+                formatter.write_str(", ")?;
+                fmt::LowerExp::fmt(&self.values[1], formatter)?;
+                formatter.write_str(")")?;
+                formatter.write_str(Unit::SUFFIX)
+            }
+        }
+
+        impl<Unit, Number> fmt::UpperExp for MeasurePoint2d<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: VectorProperty>,
+            Number: ArithmeticOps,
+        {
+            /// format!("{:E}", MeasurePoint2d) -> String
+            fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+                formatter.write_str("at (")?;
+                fmt::UpperExp::fmt(&self.values[0], formatter)?;
+                formatter.write_str(", ")?;
+                fmt::UpperExp::fmt(&self.values[1], formatter)?;
+                formatter.write_str(")")?;
+                formatter.write_str(Unit::SUFFIX)
+            }
+        }
     };
 }
