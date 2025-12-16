@@ -344,6 +344,20 @@ fn measure_2d_default() {
 }
 
 #[test]
+fn measure_2d_from_two_measures() {
+    let two_measures = [
+        Measure::<Metre, f32>::new(12.),
+        Measure::<Metre, f32>::new(23.),
+    ];
+
+    let m1 = Measure2d::<Metre, f32>::from(two_measures);
+    assert_eq!(m1.values, [12_f32, 23_f32]);
+
+    let m2: Measure2d<Metre, f32> = two_measures.into();
+    assert_eq!(m2.values, [12_f32, 23_f32]);
+}
+
+#[test]
 fn measure_2d_from_f32_into_f64() {
     let m1 = Measure2d::<Metre, f32>::new([12., 23.]);
     let m2 = Measure2d::<Metre, f64>::from(m1);

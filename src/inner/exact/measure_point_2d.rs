@@ -83,6 +83,17 @@ macro_rules! inner_define_measure_point_2d {
             }
         }
 
+        impl<Unit, Number> From<[MeasurePoint<Unit, Number>; 2]> for MeasurePoint2d<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: VectorProperty>,
+            Number: ArithmeticOps,
+        {
+            /// MeasurePoint2d::from([MeasurePoint; 2]) -> MeasurePoint2d
+            fn from(two_measure_points: [MeasurePoint<Unit, Number>; 2]) -> Self {
+                Self::new([two_measure_points[0].value, two_measure_points[1].value])
+            }
+        }
+
         impl<Unit> From<MeasurePoint2d<Unit, f32>> for MeasurePoint2d<Unit, f64>
         where
             Unit: MeasurementUnit<Property: VectorProperty>,
