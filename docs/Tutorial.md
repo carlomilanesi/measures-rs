@@ -564,12 +564,16 @@ The numeric components of (4, 7) m are 4 and 7.
 
 Any 2D measure or measure point, in addition to being able to be created from an array of numbers, can also be created from an array of 1D-measures of the same unit and number type, using the `from` method:
 ```rust
-    let array = [
+    let measure_array = [
         Measure::<Metre, f32>::new(4.),
         Measure::<Metre, f32>::new(7.),
     ];
-    let displacement = Measure2d::<Metre, f32>::from(array);    
-    let position = MeasurePoint2d::<Metre, f32>::from(array);
+    let displacement = Measure2d::<Metre, f32>::from(measure_array);
+    let measure_point_array = [
+        MeasurePoint::<Metre, f32>::new(4.),
+        MeasurePoint::<Metre, f32>::new(7.),
+    ];
+    let position = MeasurePoint2d::<Metre, f32>::from(measure_point_array);
 ```
 
 Such arrays can be extracted from a slice in this way:
