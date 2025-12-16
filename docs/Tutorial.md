@@ -562,7 +562,33 @@ It will print:
 The numeric components of (4, 7) m are 4 and 7.
 ```
 
-The components can be accessed also by the methods `x()` and `y()`, which returns measures, instead of primitive numbers.
+Any 2D measure or measure point, in addition to being able to be created from an array of numbers, can also be created from an array of 1D-measures of the same unit and number type, using the `from` method:
+```rust
+    let array = [
+        Measure::<Metre, f32>::new(4.),
+        Measure::<Metre, f32>::new(7.),
+    ];
+    let displacement = Measure2d::<Metre, f32>::from(array);    
+    let position = MeasurePoint2d::<Metre, f32>::from(array);
+```
+
+Such arrays can be extracted from a slice in this way:
+```rust
+    use std::convert::TryFrom;
+    let number_vector = vec![4., 7., 12.];
+    let measure_vector = vec![
+        Measure::<Metre, f32>::new(4.),
+        Measure::<Metre, f32>::new(7.),
+        Measure::<Metre, f32>::new(12.),
+    ];
+    let position1 = Measure2d::<Metre, f32>::new(
+        <[f32; 2]>::try_from(&number_vector[1..]).unwrap()); // Use [7, 12]
+    let position2 = Measure2d::<Metre, f32>::from(
+        <[Measure<Metre, f32>; 2]>::try_from(&measure_vector[1..]).unwrap(), // Use [7 m, 12 m]
+    );
+```
+
+The components of 2D-measures or measure points can be accessed also by the methods `x()` and `y()`, which returns measures, instead of primitive numbers.
 
 ```rust
     let position = Measure2d::<Metre>::new([4., 7.]);
