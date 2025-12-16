@@ -418,6 +418,30 @@ fn measure_point_1d_formatting_for_debug_in_celsius_with_one_fractional_digit() 
 }
 
 #[test]
+fn measure_point_1d_formatting_for_lowerexp_in_celsius() {
+    let mp = MeasurePoint::<Celsius, f32>::new(12.25);
+    assert_eq!(format!("{:e}", mp), "at 1.225e1 °C");
+}
+
+#[test]
+fn measure_point_1d_formatting_for_lowerexp_in_celsius_with_one_fractional_digit() {
+    let mp = MeasurePoint::<Celsius, f32>::new(12.25);
+    assert_eq!(format!("{:.1e}", mp), "at 1.2e1 °C");
+}
+
+#[test]
+fn measure_point_1d_formatting_for_upperexp_in_celsius() {
+    let mp = MeasurePoint::<Celsius, f32>::new(12.25);
+    assert_eq!(format!("{:E}", mp), "at 1.225E1 °C");
+}
+
+#[test]
+fn measure_point_1d_formatting_for_upperexp_in_celsius_with_one_fractional_digit() {
+    let mp = MeasurePoint::<Celsius, f32>::new(12.25);
+    assert_eq!(format!("{:.1E}", mp), "at 1.2E1 °C");
+}
+
+#[test]
 fn measure_point_1d_traits() {
     fn impl_common_traits<
         T: Sized

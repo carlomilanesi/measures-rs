@@ -716,6 +716,30 @@ fn measure_2d_formatting_for_debug_with_one_fractional_digit() {
 }
 
 #[test]
+fn measure_2d_formatting_for_lowerexp() {
+    let m = Measure2d::<Metre, f32>::new([12.25, 23.5020]);
+    assert_eq!(format!("{:e}", m), "(1.225e1, 2.3502e1) m");
+}
+
+#[test]
+fn measure_2d_formatting_for_lowerexp_with_one_fractional_digit() {
+    let m = Measure2d::<Metre, f32>::new([12.25, 23.5498]);
+    assert_eq!(format!("{:.1e}", m), "(1.2e1, 2.4e1) m");
+}
+
+#[test]
+fn measure_2d_formatting_for_upperexp() {
+    let m = Measure2d::<Metre, f32>::new([12.25, 23.5020]);
+    assert_eq!(format!("{:E}", m), "(1.225E1, 2.3502E1) m");
+}
+
+#[test]
+fn measure_2d_formatting_for_upperexp_with_one_fractional_digit() {
+    let m = Measure2d::<Metre, f32>::new([12.25, 23.5498]);
+    assert_eq!(format!("{:.1E}", m), "(1.2E1, 2.4E1) m");
+}
+
+#[test]
 fn measure_2d_traits() {
     fn impl_common_traits<
         T: Sized

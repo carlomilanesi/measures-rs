@@ -340,5 +340,31 @@ macro_rules! inner_define_measure_point {
                 formatter.write_str(Unit::SUFFIX)
             }
         }
+
+        impl<Unit, Number> fmt::LowerExp for MeasurePoint<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
+            /// format!("{:e}", MeasurePoint) -> String
+            fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+                formatter.write_str("at ")?;
+                fmt::LowerExp::fmt(&self.value, formatter)?;
+                formatter.write_str(Unit::SUFFIX)
+            }
+        }
+
+        impl<Unit, Number> fmt::UpperExp for MeasurePoint<Unit, Number>
+        where
+            Unit: MeasurementUnit,
+            Number: ArithmeticOps,
+        {
+            /// format!("{:E}", MeasurePoint) -> String
+            fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+                formatter.write_str("at ")?;
+                fmt::UpperExp::fmt(&self.value, formatter)?;
+                formatter.write_str(Unit::SUFFIX)
+            }
+        }
     };
 }

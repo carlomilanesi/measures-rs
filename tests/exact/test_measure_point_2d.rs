@@ -407,6 +407,42 @@ fn measure_point_2d_formatting_for_debug_one_fractional_digit() {
 }
 
 #[test]
+fn measure_point_2d_formatting_for_lowerexp() {
+    let mp = MeasurePoint2d::<Metre, f32>::new([12.25, 23.50203]);
+    assert_eq!(format!("{:e}", mp), "at (1.225e1, 2.350203e1) m");
+
+    let mp = MeasurePoint2d::<Metre>::new([12.25, 23.50203]);
+    assert_eq!(format!("{:e}", mp), "at (1.225e1, 2.350203e1) m");
+}
+
+#[test]
+fn measure_point_2d_formatting_for_lowerexp_one_fractional_digit() {
+    let mp = MeasurePoint2d::<Metre, f32>::new([12.25, 23.50203]);
+    assert_eq!(format!("{:.1e}", mp), "at (1.2e1, 2.4e1) m");
+
+    let mp = MeasurePoint2d::<Metre>::new([12.25, 23.50203]);
+    assert_eq!(format!("{:.1e}", mp), "at (1.2e1, 2.4e1) m");
+}
+
+#[test]
+fn measure_point_2d_formatting_for_upperexp() {
+    let mp = MeasurePoint2d::<Metre, f32>::new([12.25, 23.50203]);
+    assert_eq!(format!("{:E}", mp), "at (1.225E1, 2.350203E1) m");
+
+    let mp = MeasurePoint2d::<Metre>::new([12.25, 23.50203]);
+    assert_eq!(format!("{:E}", mp), "at (1.225E1, 2.350203E1) m");
+}
+
+#[test]
+fn measure_point_2d_formatting_for_upperexp_one_fractional_digit() {
+    let mp = MeasurePoint2d::<Metre, f32>::new([12.25, 23.50203]);
+    assert_eq!(format!("{:.1E}", mp), "at (1.2E1, 2.4E1) m");
+
+    let mp = MeasurePoint2d::<Metre>::new([12.25, 23.50203]);
+    assert_eq!(format!("{:.1E}", mp), "at (1.2E1, 2.4E1) m");
+}
+
+#[test]
 fn measure_point_2d_traits() {
     fn impl_common_traits<
         T: Sized
