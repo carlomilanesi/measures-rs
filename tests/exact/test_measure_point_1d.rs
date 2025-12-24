@@ -159,6 +159,39 @@ fn measure_clamp() {
 }
 
 #[test]
+fn measure_1d_total_cmp() {
+    let m = MeasurePoint::<Celsius, f32>::new(22.);
+    assert_eq!(
+        m.total_cmp(&MeasurePoint::<Celsius, f32>::new(31.)),
+        std::cmp::Ordering::Less
+    );
+    assert_eq!(
+        m.total_cmp(&MeasurePoint::<Celsius, f32>::new(22.)),
+        std::cmp::Ordering::Equal
+    );
+    assert_eq!(
+        m.total_cmp(&MeasurePoint::<Celsius, f32>::new(13.)),
+        std::cmp::Ordering::Greater
+    );
+    let mut m_array = [
+        MeasurePoint::<Celsius, f64>::new(31.),
+        MeasurePoint::<Celsius, f64>::new(12.),
+        MeasurePoint::<Celsius, f64>::new(43.),
+        MeasurePoint::<Celsius, f64>::new(24.),
+    ];
+    m_array.sort_by(MeasurePoint::<Celsius>::total_cmp);
+    assert_eq!(
+        m_array,
+        [
+            MeasurePoint::<Celsius>::new(12.),
+            MeasurePoint::<Celsius>::new(24.),
+            MeasurePoint::<Celsius>::new(31.),
+            MeasurePoint::<Celsius>::new(43.),
+        ]
+    );
+}
+
+#[test]
 fn measure_point_1d_default() {
     let mp: MeasurePoint<Celsius, f32> = MeasurePoint::default();
     assert_eq!(mp.value, 0_f32);

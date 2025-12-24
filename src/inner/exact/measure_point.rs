@@ -79,6 +79,18 @@ macro_rules! inner_define_measure_point {
             }
         }
 
+        impl<Unit: MeasurementUnit> MeasurePoint<Unit, f32> {
+            pub fn total_cmp(&self, other: &Self) -> std::cmp::Ordering {
+                self.value.total_cmp(&other.value)
+            }
+        }
+
+        impl<Unit: MeasurementUnit> MeasurePoint<Unit, f64> {
+            pub fn total_cmp(&self, other: &Self) -> std::cmp::Ordering {
+                self.value.total_cmp(&other.value)
+            }
+        }
+
         impl<Unit, Number> Default for MeasurePoint<Unit, Number>
         where
             Unit: MeasurementUnit,

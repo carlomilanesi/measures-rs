@@ -97,6 +97,18 @@ macro_rules! inner_define_measure {
             }
         }
 
+        impl<Unit: MeasurementUnit> Measure<Unit, f32> {
+            pub fn total_cmp(&self, other: &Self) -> std::cmp::Ordering {
+                self.value.total_cmp(&other.value)
+            }
+        }
+
+        impl<Unit: MeasurementUnit> Measure<Unit, f64> {
+            pub fn total_cmp(&self, other: &Self) -> std::cmp::Ordering {
+                self.value.total_cmp(&other.value)
+            }
+        }
+
         impl<Unit, Number> Default for Measure<Unit, Number>
         where
             Unit: MeasurementUnit,
