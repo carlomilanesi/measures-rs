@@ -208,6 +208,39 @@ fn measure_1d_clamp() {
 }
 
 #[test]
+fn measure_1d_total_cmp() {
+    let m = Measure::<Metre, f32>::new(22.);
+    assert_eq!(
+        m.total_cmp(&Measure::<Metre, f32>::new(31.)),
+        std::cmp::Ordering::Less
+    );
+    assert_eq!(
+        m.total_cmp(&Measure::<Metre, f32>::new(22.)),
+        std::cmp::Ordering::Equal
+    );
+    assert_eq!(
+        m.total_cmp(&Measure::<Metre, f32>::new(13.)),
+        std::cmp::Ordering::Greater
+    );
+    let mut m_array = [
+        Measure::<Metre, f64>::new(31.),
+        Measure::<Metre, f64>::new(12.),
+        Measure::<Metre, f64>::new(43.),
+        Measure::<Metre, f64>::new(24.),
+    ];
+    m_array.sort_by(Measure::<Metre>::total_cmp);
+    assert_eq!(
+        m_array,
+        [
+            Measure::<Metre>::new(12.),
+            Measure::<Metre>::new(24.),
+            Measure::<Metre>::new(31.),
+            Measure::<Metre>::new(43.),
+        ]
+    );
+}
+
+#[test]
 fn measure_1d_default() {
     let m: Measure<Metre, f32> = Measure::default();
     assert_eq!(m.value, 0_f32);
