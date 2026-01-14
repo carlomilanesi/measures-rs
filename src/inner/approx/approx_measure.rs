@@ -111,9 +111,29 @@ macro_rules! inner_define_approx_measure {
                     self.variance / (self.value * self.value),
                 )
             }
+        }
 
-            pub const fn decibels_formatter(self) -> ApproxDecibelsMeasureFormatter<Unit, Number> {
-                ApproxDecibelsMeasureFormatter(self)
+        impl<Unit, Number> ApproxMeasure<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: PowerQuantity>,
+            Number: ArithmeticOps,
+        {
+            pub const fn power_decibels_formatter(
+                self,
+            ) -> ApproxPowerDecibelsMeasureFormatter<Unit, Number> {
+                ApproxPowerDecibelsMeasureFormatter(self)
+            }
+        }
+
+        impl<Unit, Number> ApproxMeasure<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: RootPowerQuantity>,
+            Number: ArithmeticOps,
+        {
+            pub const fn root_power_decibels_formatter(
+                self,
+            ) -> ApproxRootPowerDecibelsMeasureFormatter<Unit, Number> {
+                ApproxRootPowerDecibelsMeasureFormatter(self)
             }
         }
 
@@ -545,25 +565,56 @@ macro_rules! inner_define_approx_measure {
             }
         }
 
-        pub struct ApproxDecibelsMeasureFormatter<Unit, Number>(ApproxMeasure<Unit, Number>)
+        pub struct ApproxPowerDecibelsMeasureFormatter<Unit, Number>(ApproxMeasure<Unit, Number>)
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: PowerQuantity>,
             Number: ArithmeticOps;
 
         /// format!("{}", ApproxMeasure.decibels_formatter())
         /// ApproxMeasure.decibels_formatter().to_string() -> String
-        impl<Unit, Number> fmt::Display for ApproxDecibelsMeasureFormatter<Unit, Number>
+        impl<Unit, Number> fmt::Display for ApproxPowerDecibelsMeasureFormatter<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: PowerQuantity>,
             Number: ArithmeticOps,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-                fmt::Display::fmt(&self.0.value.to_decibels(), formatter)?;
+                fmt::Display::fmt(&self.0.value.to_power_decibels(), formatter)?;
 
                 // It is plus or minus the square root of the variance, in dB,
                 // that is the variance in dB divided by two.
                 formatter.write_str(" \u{b1} ")?; // ±
-                fmt::Display::fmt(&(self.0.variance.to_decibels() * Number::HALF), formatter)?;
+                fmt::Display::fmt(
+                    &(self.0.variance.to_power_decibels() * Number::HALF),
+                    formatter,
+                )?;
+                formatter.write_str(" dB")?;
+
+                formatter.write_str(Unit::SUFFIX)
+            }
+        }
+
+        pub struct ApproxRootPowerDecibelsMeasureFormatter<Unit, Number>(ApproxMeasure<Unit, Number>)
+        where
+            Unit: MeasurementUnit<Property: RootPowerQuantity>,
+            Number: ArithmeticOps;
+
+        /// format!("{}", ApproxMeasure.root_decibels_formatter())
+        /// ApproxMeasure.root_decibels_formatter().to_string() -> String
+        impl<Unit, Number> fmt::Display for ApproxRootPowerDecibelsMeasureFormatter<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: RootPowerQuantity>,
+            Number: ArithmeticOps,
+        {
+            fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+                fmt::Display::fmt(&self.0.value.to_root_power_decibels(), formatter)?;
+
+                // It is plus or minus the square root of the variance, in dB,
+                // that is the variance in dB divided by two.
+                formatter.write_str(" \u{b1} ")?; // ±
+                fmt::Display::fmt(
+                    &(self.0.variance.to_root_power_decibels() * Number::HALF),
+                    formatter,
+                )?;
                 formatter.write_str(" dB")?;
 
                 formatter.write_str(Unit::SUFFIX)
@@ -571,15 +622,36 @@ macro_rules! inner_define_approx_measure {
         }
 
         // format!("{:?}", ApproxMeasure.decibels_formatter())
-        impl<Unit, Number> fmt::Debug for ApproxDecibelsMeasureFormatter<Unit, Number>
+        impl<Unit, Number> fmt::Debug for ApproxPowerDecibelsMeasureFormatter<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: PowerQuantity>,
             Number: ArithmeticOps,
         {
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-                fmt::Display::fmt(&self.0.value.to_decibels(), formatter)?;
+                fmt::Display::fmt(&self.0.value.to_power_decibels(), formatter)?;
                 formatter.write_str(" \u{b1} ")?; // ±
-                fmt::Display::fmt(&(self.0.variance.to_decibels() * Number::HALF), formatter)?;
+                fmt::Display::fmt(
+                    &(self.0.variance.to_power_decibels() * Number::HALF),
+                    formatter,
+                )?;
+                formatter.write_str(" dB")?;
+                formatter.write_str(Unit::SUFFIX)
+            }
+        }
+
+        // format!("{:?}", ApproxMeasure.decibels_formatter())
+        impl<Unit, Number> fmt::Debug for ApproxRootPowerDecibelsMeasureFormatter<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: RootPowerQuantity>,
+            Number: ArithmeticOps,
+        {
+            fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+                fmt::Display::fmt(&self.0.value.to_root_power_decibels(), formatter)?;
+                formatter.write_str(" \u{b1} ")?; // ±
+                fmt::Display::fmt(
+                    &(self.0.variance.to_root_power_decibels() * Number::HALF),
+                    formatter,
+                )?;
                 formatter.write_str(" dB")?;
                 formatter.write_str(Unit::SUFFIX)
             }

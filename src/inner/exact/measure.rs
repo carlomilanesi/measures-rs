@@ -90,10 +90,29 @@ macro_rules! inner_define_measure {
             pub fn clamp(self, bound1: Self, bound2: Self) -> Self {
                 self.max(bound1.min(bound2)).min(bound1.max(bound2))
             }
+        }
 
-            /// Measure.decibels_formatter() -> DecibelsMeasureFormatter
-            pub const fn decibels_formatter(self) -> DecibelsMeasureFormatter<Unit, Number> {
-                DecibelsMeasureFormatter(self)
+        impl<Unit, Number> Measure<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: PowerQuantity>,
+            Number: ArithmeticOps,
+        {
+            /// Measure.power_decibels_formatter() -> PowerDecibelsMeasureFormatter
+            pub const fn power_decibels_formatter(self) -> PowerDecibelsMeasureFormatter<Unit, Number> {
+                PowerDecibelsMeasureFormatter(self)
+            }
+        }
+
+        impl<Unit, Number> Measure<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: RootPowerQuantity>,
+            Number: ArithmeticOps,
+        {
+            /// Measure.root_power_decibels_formatter() -> RootPowerDecibelsMeasureFormatter
+            pub const fn root_power_decibels_formatter(
+                self,
+            ) -> RootPowerDecibelsMeasureFormatter<Unit, Number> {
+                RootPowerDecibelsMeasureFormatter(self)
             }
         }
 
@@ -477,33 +496,65 @@ macro_rules! inner_define_measure {
         }
 
         /// Wrapper of a `Measure<Unit, Number>`, printing in decibels.
-        pub struct DecibelsMeasureFormatter<Unit, Number>(Measure<Unit, Number>)
+        pub struct PowerDecibelsMeasureFormatter<Unit, Number>(Measure<Unit, Number>)
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: PowerQuantity>,
             Number: ArithmeticOps;
 
-        impl<Unit, Number> fmt::Display for DecibelsMeasureFormatter<Unit, Number>
+        pub struct RootPowerDecibelsMeasureFormatter<Unit, Number>(Measure<Unit, Number>)
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: RootPowerQuantity>,
+            Number: ArithmeticOps;
+
+        impl<Unit, Number> fmt::Display for PowerDecibelsMeasureFormatter<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: PowerQuantity>,
             Number: ArithmeticOps,
         {
             /// format!("{}", Measure.decibels_formatter()) -> String
             /// Measure.decibels_formatter().to_string() -> String
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-                fmt::Display::fmt(&self.0.value.to_decibels(), formatter)?;
+                fmt::Display::fmt(&self.0.value.to_power_decibels(), formatter)?;
                 formatter.write_str(" dB")?;
                 formatter.write_str(Unit::SUFFIX)
             }
         }
 
-        impl<Unit, Number> fmt::Debug for DecibelsMeasureFormatter<Unit, Number>
+        impl<Unit, Number> fmt::Display for RootPowerDecibelsMeasureFormatter<Unit, Number>
         where
-            Unit: MeasurementUnit,
+            Unit: MeasurementUnit<Property: RootPowerQuantity>,
             Number: ArithmeticOps,
         {
-            /// format!("{:?}", Measure.decibels_formatter())
+            /// format!("{}", Measure.decibels_formatter()) -> String
+            /// Measure.decibels_formatter().to_string() -> String
             fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-                fmt::Display::fmt(&self.0.value.to_decibels(), formatter)?;
+                fmt::Display::fmt(&self.0.value.to_root_power_decibels(), formatter)?;
+                formatter.write_str(" dB")?;
+                formatter.write_str(Unit::SUFFIX)
+            }
+        }
+
+        impl<Unit, Number> fmt::Debug for PowerDecibelsMeasureFormatter<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: PowerQuantity>,
+            Number: ArithmeticOps,
+        {
+            /// format!("{:?}", Measure.power_decibels_formatter())
+            fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+                fmt::Display::fmt(&self.0.value.to_power_decibels(), formatter)?;
+                formatter.write_str(" dB")?;
+                formatter.write_str(Unit::SUFFIX)
+            }
+        }
+
+        impl<Unit, Number> fmt::Debug for RootPowerDecibelsMeasureFormatter<Unit, Number>
+        where
+            Unit: MeasurementUnit<Property: RootPowerQuantity>,
+            Number: ArithmeticOps,
+        {
+            /// format!("{:?}", Measure.root_power_decibels_formatter())
+            fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+                fmt::Display::fmt(&self.0.value.to_root_power_decibels(), formatter)?;
                 formatter.write_str(" dB")?;
                 formatter.write_str(Unit::SUFFIX)
             }

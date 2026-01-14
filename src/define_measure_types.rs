@@ -82,7 +82,7 @@ macro_rules! define_measure_types_aux {
             dimensionless::{Dimensionless, One},
             angle::{Angle, Radian},
             traits::{
-                AngleMeasurementUnit, ArithmeticOps, LossyFrom, MeasurementUnit, Sqrt, VectorProperty, Trigonometry,
+                AngleMeasurementUnit, ArithmeticOps, LossyFrom, MeasurementUnit, Sqrt, VectorProperty, Trigonometry, PowerQuantity, RootPowerQuantity,
             },
         };
         use core::fmt;

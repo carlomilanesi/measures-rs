@@ -132,24 +132,45 @@ impl InverseTrigonometry for f64 {
     }
 }
 
-pub trait Decibel {
-    fn to_decibels(self) -> Self;
-    fn decibels_to_value(self) -> Self;
+pub trait PowerDecibel {
+    fn to_power_decibels(self) -> Self;
+    fn power_decibels_to_value(self) -> Self;
 }
-impl Decibel for f32 {
-    fn to_decibels(self) -> Self {
+impl PowerDecibel for f32 {
+    fn to_power_decibels(self) -> Self {
         self.log10() * 10.
     }
-    fn decibels_to_value(self) -> Self {
+    fn power_decibels_to_value(self) -> Self {
         10_f32.powf(self * 0.1)
     }
 }
-impl Decibel for f64 {
-    fn to_decibels(self) -> Self {
+impl PowerDecibel for f64 {
+    fn to_power_decibels(self) -> Self {
         self.log10() * 10.
     }
-    fn decibels_to_value(self) -> Self {
+    fn power_decibels_to_value(self) -> Self {
         10_f64.powf(self * 0.1)
+    }
+}
+
+pub trait RootPowerDecibel {
+    fn to_root_power_decibels(self) -> Self;
+    fn root_power_decibels_to_value(self) -> Self;
+}
+impl RootPowerDecibel for f32 {
+    fn to_root_power_decibels(self) -> Self {
+        self.log10() * 20.
+    }
+    fn root_power_decibels_to_value(self) -> Self {
+        10_f32.powf(self * 0.05)
+    }
+}
+impl RootPowerDecibel for f64 {
+    fn to_root_power_decibels(self) -> Self {
+        self.log10() * 20.
+    }
+    fn root_power_decibels_to_value(self) -> Self {
+        10_f64.powf(self * 0.05)
     }
 }
 
@@ -221,7 +242,8 @@ pub trait ArithmeticOps:
     + CubicRoot<Output = Self>
     + Trigonometry<Output = Self>
     + InverseTrigonometry<Output = Self>
-    + Decibel
+    + PowerDecibel
+    + RootPowerDecibel
     + HasZero
     + HasOne
     + HasHalf
@@ -257,7 +279,8 @@ impl<T> ArithmeticOps for T where
         + CubicRoot<Output = Self>
         + Trigonometry<Output = Self>
         + InverseTrigonometry<Output = Self>
-        + Decibel
+        + PowerDecibel
+        + RootPowerDecibel
         + HasZero
         + HasOne
         + HasHalf
@@ -341,3 +364,7 @@ pub trait MeasurementProperty {}
 pub trait ScalarProperty: MeasurementProperty {}
 
 pub trait VectorProperty: MeasurementProperty {}
+
+pub trait PowerQuantity: MeasurementProperty {}
+
+pub trait RootPowerQuantity: MeasurementProperty {}

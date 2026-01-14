@@ -1,9 +1,26 @@
-use measures::{assert_eq_64, dimensionless::One, traits::Trigonometry};
-use units::{ApproxMeasure, Degree, Measure, Metre, Millimetre};
+use measures::{
+    assert_eq_64, dimensionless::One, traits::PowerQuantity, traits::RootPowerQuantity,
+    traits::Trigonometry,
+};
+use units::{
+    ApproxMeasure, Degree, ElectricPotential, Measure, Metre, Millimetre, Power, Volt, Watt,
+};
 
 mod units {
     measures::define_measure_types! {
         exact with_approx,
+        scalar_properties [
+            Power [
+                Watt {
+                    suffix: " W",
+                }
+            ]
+            ElectricPotential [
+                Volt {
+                    suffix: " V",
+                }
+            ]
+        ]
         vector_properties [
             Length [
                 Metre {
@@ -23,6 +40,10 @@ mod units {
         ]
     }
 }
+
+impl PowerQuantity for Power {}
+
+impl RootPowerQuantity for ElectricPotential {}
 
 #[test]
 fn measure_1d_new() {
@@ -609,27 +630,69 @@ fn measure_1d_formatting_for_upperexp_with_one_fractional_digit() {
 }
 
 #[test]
-fn measure_1d_formatting_in_decibels() {
-    let m = Measure::<Metre, f32>::new(12.25);
-    assert_eq!(format!("{}", m.decibels_formatter()), "10.881361 dB m");
+fn measure_1d_formatting_in_power_decibels() {
+    let m = Measure::<Watt, f32>::new(12.25);
+    assert_eq!(
+        format!("{}", m.power_decibels_formatter()),
+        "10.881361 dB W"
+    );
 }
 
 #[test]
-fn measure_1d_formatting_in_decibels_with_one_fractional_digit() {
-    let m = Measure::<Metre, f32>::new(12.25);
-    assert_eq!(format!("{:.1}", m.decibels_formatter()), "10.9 dB m");
+fn measure_1d_formatting_in_power_decibels_with_one_fractional_digit() {
+    let m = Measure::<Watt, f32>::new(12.25);
+    assert_eq!(format!("{:.1}", m.power_decibels_formatter()), "10.9 dB W");
 }
 
 #[test]
-fn measure_1d_formatting_for_debug_in_decibels() {
-    let m = Measure::<Metre, f32>::new(12.25);
-    assert_eq!(format!("{:?}", m.decibels_formatter()), "10.881361 dB m");
+fn measure_1d_formatting_for_debug_in_power_decibels() {
+    let m = Measure::<Watt, f32>::new(12.25);
+    assert_eq!(
+        format!("{:?}", m.power_decibels_formatter()),
+        "10.881361 dB W"
+    );
 }
 
 #[test]
-fn measure_1d_formatting_for_debug_in_decibels_with_one_fractional_digit() {
-    let m = Measure::<Metre, f32>::new(12.25);
-    assert_eq!(format!("{:.1?}", m.decibels_formatter()), "10.9 dB m");
+fn measure_1d_formatting_for_debug_in_power_decibels_with_one_fractional_digit() {
+    let m = Measure::<Watt, f32>::new(12.25);
+    assert_eq!(format!("{:.1?}", m.power_decibels_formatter()), "10.9 dB W");
+}
+
+#[test]
+fn measure_1d_formatting_in_root_power_decibels() {
+    let m = Measure::<Volt, f32>::new(12.25);
+    assert_eq!(
+        format!("{}", m.root_power_decibels_formatter()),
+        "21.762722 dB V"
+    );
+}
+
+#[test]
+fn measure_1d_formatting_in_root_power_decibels_with_one_fractional_digit() {
+    let m = Measure::<Volt, f32>::new(12.25);
+    assert_eq!(
+        format!("{:.1}", m.root_power_decibels_formatter()),
+        "21.8 dB V"
+    );
+}
+
+#[test]
+fn measure_1d_formatting_for_debug_in_root_power_decibels() {
+    let m = Measure::<Volt, f32>::new(12.25);
+    assert_eq!(
+        format!("{:?}", m.root_power_decibels_formatter()),
+        "21.762722 dB V"
+    );
+}
+
+#[test]
+fn measure_1d_formatting_for_debug_in_root_power_decibels_with_one_fractional_digit() {
+    let m = Measure::<Volt, f32>::new(12.25);
+    assert_eq!(
+        format!("{:.1?}", m.root_power_decibels_formatter()),
+        "21.8 dB V"
+    );
 }
 
 #[test]

@@ -1564,16 +1564,23 @@ Decibels are tenths of the 10-base logarithm of the actual value.
 For example, if we have a measure of 0.001 watts, we can compute its 10-base logarithms, obtaining -3.
 So, this measure can be said to be -30 decibels of watt, or `-30 db W`.
 
-The crate `measures` supports decibels only for the types `Measure` and `ApproxMeasure`, as demonstrated in the following code:
+The crate `measures` supports decibels only for the types `Measure` and `ApproxMeasure`.
+To print the decibels value of a measure, the unit of measurement of that measure must be declared to be a _power quantity_ or a _root-power quantity_.
+The some conversione methods become available.
+
+The following code shows the case of a power quantity:
 ```rust
-    use measures::traits::Decibel;
+impl PowerQuantity for Power {}
+fn main() {
+    use measures::traits::PowerDecibel;
     let one_milliwatt = Measure::<Watt>::new(0.001);
     print!("{one_milliwatt:.4} "); // 0.0010 W
-    let one_milliwatt_in_db = one_milliwatt.value.to_decibels();
+    let one_milliwatt_in_db = one_milliwatt.value.to_power_decibels();
     print!(",{one_milliwatt_in_db:.1}, "); // -30.0
-    let one_milliwatt_value = one_milliwatt_in_db.decibels_to_value();
+    let one_milliwatt_value = one_milliwatt_in_db.power_decibels_to_value();
     print!("{one_milliwatt_value:.4}, "); // 0.0010
-    print!("{:.4};", one_milliwatt.decibels_formatter()); // -30.0000 dB W
+    println!("{:.4};", one_milliwatt.power_decibels_formatter()); // -30.0000 dB W
+}
 ```
 
 It will print: `0.0010 W, -30.0, 0.0010, -30.0000 dB W;`.
@@ -1593,6 +1600,23 @@ Then, to print the decibels corresponding to the measure `one_milliwatt`, its me
 It returns an object of type `DecibelsMeasureFormatter`, which encapsulates the measure, and which implements the traits `Display` and `Debug`.
 Such implementations cause that, when this object is printed, it will show the string "` dB`" between the numeric value and the unit suffix.
 Therefore, it is printed as `-30.0 dB W`.
+
+Instead, the following code shows the case of a root-power quantity:
+```rust
+impl RootPowerQuantity for ElectricPotential {}
+fn main() {
+    use measures::traits::RootPowerDecibel;
+    let one_millivolt = Measure::<Volt>::new(0.001);
+    print!("{one_millivolt:.4} "); // 0.0010 W
+    let one_millivolt_in_db = one_millivolt.value.to_root_power_decibels();
+    print!(",{one_millivolt_in_db:.1}, "); // -30.0
+    let one_millivolt_value = one_millivolt_in_db.root_power_decibels_to_value();
+    print!("{one_millivolt_value:.4}, "); // 0.0010
+    println!("{:.4};", one_millivolt.root_power_decibels_formatter()); // -30.0000 dB V
+}
+```
+
+It will print: `0.0010 V, -60.0, 0.0010, -60.0000 dB V;`.
 
 ## The trait `Default`
 

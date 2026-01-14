@@ -148,13 +148,38 @@ note: required by a bound in `Measure`
    |       required by this bound in `Measure`
    = note: this error originates in the macro `measures::inner_define_measure` which comes from the expansion of the macro `measures::define_measure_types` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error[E0277]: the trait bound `i32: Decibel` is not satisfied
+error[E0277]: the trait bound `i32: PowerDecibel` is not satisfied
   --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:9
    |
 15 |     _ = Measure::<U1, i32>::new(1.);
-   |         ^^^^^^^^^^^^^^^^^^ the trait `Decibel` is not implemented for `i32`
+   |         ^^^^^^^^^^^^^^^^^^ the trait `PowerDecibel` is not implemented for `i32`
    |
-   = help: the following other types implement trait `Decibel`:
+   = help: the following other types implement trait `PowerDecibel`:
+             f32
+             f64
+   = note: required for `i32` to implement `ArithmeticOps`
+note: required by a bound in `Measure`
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:4:5
+   |
+ 4 | /     measures::define_measure_types! {
+ 5 | |         exact,
+ 6 | |         vector_properties [
+ 7 | |             P1 [
+...  |
+11 | |     }
+   | |     ^
+   | |     |
+   | |_____required by a bound in this struct
+   |       required by this bound in `Measure`
+   = note: this error originates in the macro `measures::inner_define_measure` which comes from the expansion of the macro `measures::define_measure_types` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `i32: RootPowerDecibel` is not satisfied
+  --> tests/disallowed_operations/measure_with_number_type_i32.rs:15:9
+   |
+15 |     _ = Measure::<U1, i32>::new(1.);
+   |         ^^^^^^^^^^^^^^^^^^ the trait `RootPowerDecibel` is not implemented for `i32`
+   |
+   = help: the following other types implement trait `RootPowerDecibel`:
              f32
              f64
    = note: required for `i32` to implement `ArithmeticOps`
@@ -300,7 +325,9 @@ error[E0599]: the function or associated item `new` exists for struct `Measure<U
            which is required by `i32: ArithmeticOps`
            `i32: InverseTrigonometry`
            which is required by `i32: ArithmeticOps`
-           `i32: Decibel`
+           `i32: PowerDecibel`
+           which is required by `i32: ArithmeticOps`
+           `i32: RootPowerDecibel`
            which is required by `i32: ArithmeticOps`
            `i32: HasZero`
            which is required by `i32: ArithmeticOps`
