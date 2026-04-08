@@ -78,7 +78,7 @@ macro_rules! define_measure_types_aux {
         )?
     } => {
         use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
-        use measures::{
+        pub use measures::{
             dimensionless::{Dimensionless, One},
             angle::{Angle, Radian},
             traits::{
