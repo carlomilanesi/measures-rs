@@ -1345,10 +1345,13 @@ The section starting with `relationships` contains the definitions of the relati
 Inside the section `scalar_properties`, there is a subsection for each scalar property to define.
 For example, a possible content to define the property `Time` is this:
 ```rust
+        /// Scalar measurement property for time intervals
         Time [
+            /// One second (base unit for [`Time`])
             Second {
                 suffix: " s",
             }
+            /// One day (comprising 86400 [`Second`] units)
             Day {
                 suffix: " D",
                 ratio: 86400.,
@@ -1356,7 +1359,7 @@ For example, a possible content to define the property `Time` is this:
         ]
 ```
 
-It declares that there is a scalar property named `Time`, for which there are two units of measurement, named `Second` and `Day`.
+It declares that there is a scalar property named `Time`, for which there are two units of measurement, named `Second` and `Day`. The documentation for the property `Time` and the units `Second` and `Day` is optional (if omitted, generic documentation is generated automatically).
 
 For another example, a possible content to define the property `Temperature` is this:
 ```rust
@@ -1398,10 +1401,12 @@ The unit `Radian` is the only predefined unit of `Angle`, and its ratio is 1, i.
 
 Other angle units can be defined, but only in the section `angle_measurement_units`, like it is demonstrated here:
 ```rust
+        /// One full cycle
         Cycle {
             suffix: " rev",
             cycle_fraction: 1.,
         }
+        /// One degree (a [`Cycle`] comprises 360 degrees)
         Degree {
             suffix: " deg",
             cycle_fraction: 360.,
@@ -1412,7 +1417,7 @@ The definition of an angle unit of measurement includes two mandatory properties
 * *`suffix`* is the string printed after the number, when the measure is printed, similarly to other units.
 * *`cycle_fraction`* is ratio between the full cycle and the current unit.
 
-Notice that the properties `offset` and `ratio` are not allowed.
+Notice that the properties `offset` and `ratio` are not allowed. The documentation is again optional (if omitted, default documentation will be generated automatically).
 
 The unit `Radian` is predefined with these values:
 ```rust

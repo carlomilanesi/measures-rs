@@ -34,8 +34,10 @@ macro_rules! define_measure_types_aux {
         $(
             scalar_properties [
                 $(
+                    $(#[$scalar_prop_meta:meta])*
                     $scalar_prop:ident [
                         $(
+                            $(#[$scalar_unit_meta:meta])*
                             $scalar_unit:ident {
                                 $($scalar_key:ident : $scalar_val:expr),* $(,)?
                             }
@@ -48,8 +50,10 @@ macro_rules! define_measure_types_aux {
         $(
             vector_properties [
                 $(
+                    $(#[$vector_prop_meta:meta])*
                     $vector_prop:ident [
                         $(
+                            $(#[$vector_unit_meta:meta])*
                             $vector_unit:ident {
                                 $($vector_key:ident : $vector_val:expr),* $(,)?
                             }
@@ -62,6 +66,7 @@ macro_rules! define_measure_types_aux {
         $(
             angle_measurement_units [
                 $(
+                    $(#[$angle_unit_meta:meta])*
                     $angle_unit:ident {
                         $($angle_key:ident : $angle_val:expr),* $(,)?
                     }
@@ -145,9 +150,13 @@ macro_rules! define_measure_types_aux {
         // `scalar_properties` section
         $(
             $(
-                measures::measurement_scalar_property! { $scalar_prop }
+                measures::measurement_scalar_property! {
+                    $(#[$scalar_prop_meta])*
+                    $scalar_prop
+                }
                 $(
                     measures::measurement_unit! {
+                        $(#[$scalar_unit_meta])*
                         name: $scalar_unit,
                         property: $scalar_prop,
                         $(
@@ -164,9 +173,13 @@ macro_rules! define_measure_types_aux {
         // `vector_properties` section
         $(
             $(
-                measures::measurement_vector_property! { $vector_prop }
+                measures::measurement_vector_property! {
+                    $(#[$vector_prop_meta])*
+                    $vector_prop
+                }
                 $(
                     measures::measurement_unit! {
+                        $(#[$vector_unit_meta])*
                         name: $vector_unit,
                         property: $vector_prop,
                         $(
@@ -184,6 +197,7 @@ macro_rules! define_measure_types_aux {
         $(
             $(
                 measures::angle_measurement_unit! {
+                    $(#[$angle_unit_meta])*
                     name: $angle_unit,
                     $(
                         $angle_key: $angle_val,
@@ -220,8 +234,10 @@ macro_rules! define_measure_types_aux {
         $(
             scalar_properties [
                 $(
+                    $(#[$scalar_prop_meta:meta])*
                     $scalar_prop:ident [
                         $(
+                            $(#[$scalar_unit_meta:meta])*
                             $scalar_unit:ident {
                                 $($scalar_key:ident : $scalar_val:expr),* $(,)?
                             }
@@ -234,8 +250,10 @@ macro_rules! define_measure_types_aux {
         $(
             vector_properties [
                 $(
+                    $(#[$vector_prop_meta:meta])*
                     $vector_prop:ident [
                         $(
+                            $(#[$vector_unit_meta:meta])*
                             $vector_unit:ident {
                                 $($vector_key:ident : $vector_val:expr),* $(,)?
                             }
@@ -248,6 +266,7 @@ macro_rules! define_measure_types_aux {
         $(
             angle_measurement_units [
                 $(
+                    $(#[$angle_unit_meta:meta])*
                     $angle_unit:ident {
                         $($angle_key:ident : $angle_val:expr),* $(,)?
                     }
@@ -279,8 +298,10 @@ macro_rules! define_measure_types_aux {
             $(
                 scalar_properties [
                     $(
+                        $(#[$scalar_prop_meta])*
                         $scalar_prop [
                             $(
+                                $(#[$scalar_unit_meta])*
                                 $scalar_unit {
                                     $($scalar_key : $scalar_val),*
                                 }
@@ -293,8 +314,10 @@ macro_rules! define_measure_types_aux {
             $(
                 vector_properties [
                     $(
+                        $(#[$vector_prop_meta])*
                         $vector_prop [
                             $(
+                                $(#[$vector_unit_meta])*
                                 $vector_unit {
                                     $($vector_key : $vector_val),*
                                 }
@@ -307,6 +330,7 @@ macro_rules! define_measure_types_aux {
             $(
                 angle_measurement_units [
                     $(
+                        $(#[$angle_unit_meta])*
                         $angle_unit {
                             $($angle_key : $angle_val),*
                         }
@@ -341,8 +365,10 @@ macro_rules! define_measure_types_aux {
         $(
             scalar_properties [
                 $(
+                    $(#[$scalar_prop_meta:meta])*
                     $scalar_prop:ident [
                         $(
+                            $(#[$scalar_unit_meta:meta])*
                             $scalar_unit:ident {
                                 $($scalar_key:ident : $scalar_val:expr),* $(,)?
                             }
@@ -355,8 +381,10 @@ macro_rules! define_measure_types_aux {
         $(
             vector_properties [
                 $(
+                    $(#[$vector_prop_meta:meta])*
                     $vector_prop:ident [
                         $(
+                            $(#[$vector_unit_meta:meta])*
                             $vector_unit:ident {
                                 $($vector_key:ident : $vector_val:expr),* $(,)?
                             }
@@ -369,6 +397,7 @@ macro_rules! define_measure_types_aux {
         $(
             angle_measurement_units [
                 $(
+                    $(#[$angle_unit_meta:meta])*
                     $angle_unit:ident {
                         $($angle_key:ident : $angle_val:expr),* $(,)?
                     }
@@ -400,8 +429,10 @@ macro_rules! define_measure_types_aux {
             $(
                 scalar_properties [
                     $(
+                        $(#[$scalar_prop_meta])*
                         $scalar_prop [
                             $(
+                                $(#[$scalar_unit_meta])*
                                 $scalar_unit {
                                     $($scalar_key : $scalar_val),*
                                 }
@@ -414,8 +445,10 @@ macro_rules! define_measure_types_aux {
             $(
                 vector_properties [
                     $(
+                        $(#[$vector_prop_meta])*
                         $vector_prop [
                             $(
+                                $(#[$vector_unit_meta])*
                                 $vector_unit {
                                     $($vector_key : $vector_val),*
                                 }
@@ -428,6 +461,7 @@ macro_rules! define_measure_types_aux {
             $(
                 angle_measurement_units [
                     $(
+                        $(#[$angle_unit_meta])*
                         $angle_unit {
                             $($angle_key : $angle_val),*
                         }
@@ -462,8 +496,10 @@ macro_rules! define_measure_types_aux {
         $(
             scalar_properties [
                 $(
+                    $(#[$scalar_prop_meta:meta])*
                     $scalar_prop:ident [
                         $(
+                            $(#[$scalar_unit_meta:meta])*
                             $scalar_unit:ident {
                                 $($scalar_key:ident : $scalar_val:expr),* $(,)?
                             }
@@ -476,8 +512,10 @@ macro_rules! define_measure_types_aux {
         $(
             vector_properties [
                 $(
+                    $(#[$vector_prop_meta:meta])*
                     $vector_prop:ident [
                         $(
+                            $(#[$vector_unit_meta:meta])*
                             $vector_unit:ident {
                                 $($vector_key:ident : $vector_val:expr),* $(,)?
                             }
@@ -490,6 +528,7 @@ macro_rules! define_measure_types_aux {
         $(
             angle_measurement_units [
                 $(
+                    $(#[$angle_unit_meta:meta])*
                     $angle_unit:ident {
                         $($angle_key:ident : $angle_val:expr),* $(,)?
                     }
@@ -521,8 +560,10 @@ macro_rules! define_measure_types_aux {
             $(
                 scalar_properties [
                     $(
+                        $(#[$scalar_prop_meta])*
                         $scalar_prop [
                             $(
+                                $(#[$scalar_unit_meta])*
                                 $scalar_unit {
                                     $($scalar_key : $scalar_val),*
                                 }
@@ -535,8 +576,10 @@ macro_rules! define_measure_types_aux {
             $(
                 vector_properties [
                     $(
+                        $(#[$vector_prop_meta])*
                         $vector_prop [
                             $(
+                                $(#[$vector_unit_meta])*
                                 $vector_unit {
                                     $($vector_key : $vector_val),*
                                 }
@@ -549,6 +592,7 @@ macro_rules! define_measure_types_aux {
             $(
                 angle_measurement_units [
                     $(
+                        $(#[$angle_unit_meta])*
                         $angle_unit {
                             $($angle_key : $angle_val),*
                         }
@@ -583,8 +627,10 @@ macro_rules! define_measure_types_aux {
         $(
             scalar_properties [
                 $(
+                    $(#[$scalar_prop_meta:meta])*
                     $scalar_prop:ident [
                         $(
+                            $(#[$scalar_unit_meta:meta])*
                             $scalar_unit:ident {
                                 $($scalar_key:ident : $scalar_val:expr),* $(,)?
                             }
@@ -597,8 +643,10 @@ macro_rules! define_measure_types_aux {
         $(
             vector_properties [
                 $(
+                    $(#[$vector_prop_meta:meta])*
                     $vector_prop:ident [
                         $(
+                            $(#[$vector_unit_meta:meta])*
                             $vector_unit:ident {
                                 $($vector_key:ident : $vector_val:expr),* $(,)?
                             }
@@ -611,6 +659,7 @@ macro_rules! define_measure_types_aux {
         $(
             angle_measurement_units [
                 $(
+                    $(#[$angle_unit_meta:meta])*
                     $angle_unit:ident {
                         $($angle_key:ident : $angle_val:expr),* $(,)?
                     }
@@ -642,8 +691,10 @@ macro_rules! define_measure_types_aux {
             $(
                 scalar_properties [
                     $(
+                        $(#[$scalar_prop_meta])*
                         $scalar_prop [
                             $(
+                                $(#[$scalar_unit_meta])*
                                 $scalar_unit {
                                     $($scalar_key : $scalar_val),*
                                 }
@@ -656,8 +707,10 @@ macro_rules! define_measure_types_aux {
             $(
                 vector_properties [
                     $(
+                        $(#[$vector_prop_meta])*
                         $vector_prop [
                             $(
+                                $(#[$vector_unit_meta])*
                                 $vector_unit {
                                     $($vector_key : $vector_val),*
                                 }
@@ -670,6 +723,7 @@ macro_rules! define_measure_types_aux {
             $(
                 angle_measurement_units [
                     $(
+                        $(#[$angle_unit_meta])*
                         $angle_unit {
                             $($angle_key : $angle_val),*
                         }
@@ -704,8 +758,10 @@ macro_rules! define_measure_types_aux {
         $(
             scalar_properties [
                 $(
+                    $(#[$scalar_prop_meta:meta])*
                     $scalar_prop:ident [
                         $(
+                            $(#[$scalar_unit_meta:meta])*
                             $scalar_unit:ident {
                                 $($scalar_key:ident : $scalar_val:expr),* $(,)?
                             }
@@ -718,8 +774,10 @@ macro_rules! define_measure_types_aux {
         $(
             vector_properties [
                 $(
+                    $(#[$vector_prop_meta:meta])*
                     $vector_prop:ident [
                         $(
+                            $(#[$vector_unit_meta:meta])*
                             $vector_unit:ident {
                                 $($vector_key:ident : $vector_val:expr),* $(,)?
                             }
@@ -732,6 +790,7 @@ macro_rules! define_measure_types_aux {
         $(
             angle_measurement_units [
                 $(
+                    $(#[$angle_unit_meta:meta])*
                     $angle_unit:ident {
                         $($angle_key:ident : $angle_val:expr),* $(,)?
                     }
@@ -763,8 +822,10 @@ macro_rules! define_measure_types_aux {
             $(
                 scalar_properties [
                     $(
+                        $(#[$scalar_prop_meta])*
                         $scalar_prop [
                             $(
+                                $(#[$scalar_unit_meta])*
                                 $scalar_unit {
                                     $($scalar_key : $scalar_val),*
                                 }
@@ -777,8 +838,10 @@ macro_rules! define_measure_types_aux {
             $(
                 vector_properties [
                     $(
+                        $(#[$vector_prop_meta])*
                         $vector_prop [
                             $(
+                                $(#[$vector_unit_meta])*
                                 $vector_unit {
                                     $($vector_key : $vector_val),*
                                 }
@@ -791,6 +854,7 @@ macro_rules! define_measure_types_aux {
             $(
                 angle_measurement_units [
                     $(
+                        $(#[$angle_unit_meta])*
                         $angle_unit {
                             $($angle_key : $angle_val),*
                         }
@@ -825,8 +889,10 @@ macro_rules! define_measure_types_aux {
         $(
             scalar_properties [
                 $(
+                    $(#[$scalar_prop_meta:meta])*
                     $scalar_prop:ident [
                         $(
+                            $(#[$scalar_unit_meta:meta])*
                             $scalar_unit:ident {
                                 $($scalar_key:ident : $scalar_val:expr),* $(,)?
                             }
@@ -839,8 +905,10 @@ macro_rules! define_measure_types_aux {
         $(
             vector_properties [
                 $(
+                    $(#[$vector_prop_meta:meta])*
                     $vector_prop:ident [
                         $(
+                            $(#[$vector_unit_meta:meta])*
                             $vector_unit:ident {
                                 $($vector_key:ident : $vector_val:expr),* $(,)?
                             }
@@ -853,6 +921,7 @@ macro_rules! define_measure_types_aux {
         $(
             angle_measurement_units [
                 $(
+                    $(#[$angle_unit_meta:meta])*
                     $angle_unit:ident {
                         $($angle_key:ident : $angle_val:expr),* $(,)?
                     }
@@ -884,8 +953,10 @@ macro_rules! define_measure_types_aux {
             $(
                 scalar_properties [
                     $(
+                        $(#[$scalar_prop_meta])*
                         $scalar_prop [
                             $(
+                                $(#[$scalar_unit_meta])*
                                 $scalar_unit {
                                     $($scalar_key : $scalar_val),*
                                 }
@@ -898,8 +969,10 @@ macro_rules! define_measure_types_aux {
             $(
                 vector_properties [
                     $(
+                        $(#[$vector_prop_meta])*
                         $vector_prop [
                             $(
+                                $(#[$vector_unit_meta])*
                                 $vector_unit {
                                     $($vector_key : $vector_val),*
                                 }
@@ -912,6 +985,7 @@ macro_rules! define_measure_types_aux {
             $(
                 angle_measurement_units [
                     $(
+                        $(#[$angle_unit_meta])*
                         $angle_unit {
                             $($angle_key : $angle_val),*
                         }
@@ -946,8 +1020,10 @@ macro_rules! define_measure_types_aux {
         $(
             scalar_properties [
                 $(
+                    $(#[$scalar_prop_meta:meta])*
                     $scalar_prop:ident [
                         $(
+                            $(#[$scalar_unit_meta:meta])*
                             $scalar_unit:ident {
                                 $($scalar_key:ident : $scalar_val:expr),* $(,)?
                             }
@@ -960,8 +1036,10 @@ macro_rules! define_measure_types_aux {
         $(
             vector_properties [
                 $(
+                    $(#[$vector_prop_meta:meta])*
                     $vector_prop:ident [
                         $(
+                            $(#[$vector_unit_meta:meta])*
                             $vector_unit:ident {
                                 $($vector_key:ident : $vector_val:expr),* $(,)?
                             }
@@ -974,6 +1052,7 @@ macro_rules! define_measure_types_aux {
         $(
             angle_measurement_units [
                 $(
+                    $(#[$angle_unit_meta:meta])*
                     $angle_unit:ident {
                         $($angle_key:ident : $angle_val:expr),* $(,)?
                     }
@@ -1005,8 +1084,10 @@ macro_rules! define_measure_types_aux {
             $(
                 scalar_properties [
                     $(
+                        $(#[$scalar_prop_meta])*
                         $scalar_prop [
                             $(
+                                $(#[$scalar_unit_meta])*
                                 $scalar_unit {
                                     $($scalar_key : $scalar_val),*
                                 }
@@ -1019,8 +1100,10 @@ macro_rules! define_measure_types_aux {
             $(
                 vector_properties [
                     $(
+                        $(#[$vector_prop_meta])*
                         $vector_prop [
                             $(
+                                $(#[$vector_unit_meta])*
                                 $vector_unit {
                                     $($vector_key : $vector_val),*
                                 }
@@ -1033,6 +1116,7 @@ macro_rules! define_measure_types_aux {
             $(
                 angle_measurement_units [
                     $(
+                        $(#[$angle_unit_meta])*
                         $angle_unit {
                             $($angle_key : $angle_val),*
                         }
@@ -1067,8 +1151,10 @@ macro_rules! define_measure_types_aux {
         $(
             scalar_properties [
                 $(
+                    $(#[$scalar_prop_meta:meta])*
                     $scalar_prop:ident [
                         $(
+                            $(#[$scalar_unit_meta:meta])*
                             $scalar_unit:ident {
                                 $($scalar_key:ident : $scalar_val:expr),* $(,)?
                             }
@@ -1081,8 +1167,10 @@ macro_rules! define_measure_types_aux {
         $(
             vector_properties [
                 $(
+                    $(#[$vector_prop_meta:meta])*
                     $vector_prop:ident [
                         $(
+                            $(#[$vector_unit_meta:meta])*
                             $vector_unit:ident {
                                 $($vector_key:ident : $vector_val:expr),* $(,)?
                             }
@@ -1095,6 +1183,7 @@ macro_rules! define_measure_types_aux {
         $(
             angle_measurement_units [
                 $(
+                    $(#[$angle_unit_meta:meta])*
                     $angle_unit:ident {
                         $($angle_key:ident : $angle_val:expr),* $(,)?
                     }
@@ -1125,8 +1214,10 @@ macro_rules! define_measure_types_aux {
             $(
                 scalar_properties [
                     $(
+                        $(#[$scalar_prop_meta])*
                         $scalar_prop [
                             $(
+                                $(#[$scalar_unit_meta])*
                                 $scalar_unit {
                                     $($scalar_key : $scalar_val),*
                                 }
@@ -1139,8 +1230,10 @@ macro_rules! define_measure_types_aux {
             $(
                 vector_properties [
                     $(
+                        $(#[$vector_prop_meta])*
                         $vector_prop [
                             $(
+                                $(#[$vector_unit_meta])*
                                 $vector_unit {
                                     $($vector_key : $vector_val),*
                                 }
@@ -1153,6 +1246,7 @@ macro_rules! define_measure_types_aux {
             $(
                 angle_measurement_units [
                     $(
+                        $(#[$angle_unit_meta])*
                         $angle_unit {
                             $($angle_key : $angle_val),*
                         }
@@ -1187,8 +1281,10 @@ macro_rules! define_measure_types_aux {
         $(
             scalar_properties [
                 $(
+                    $(#[$scalar_prop_meta:meta])*
                     $scalar_prop:ident [
                         $(
+                            $(#[$scalar_unit_meta:meta])*
                             $scalar_unit:ident {
                                 $($scalar_key:ident : $scalar_val:expr),* $(,)?
                             }
@@ -1201,8 +1297,10 @@ macro_rules! define_measure_types_aux {
         $(
             vector_properties [
                 $(
+                    $(#[$vector_prop_meta:meta])*
                     $vector_prop:ident [
                         $(
+                            $(#[$vector_unit_meta:meta])*
                             $vector_unit:ident {
                                 $($vector_key:ident : $vector_val:expr),* $(,)?
                             }
@@ -1215,6 +1313,7 @@ macro_rules! define_measure_types_aux {
         $(
             angle_measurement_units [
                 $(
+                    $(#[$angle_unit_meta:meta])*
                     $angle_unit:ident {
                         $($angle_key:ident : $angle_val:expr),* $(,)?
                     }
@@ -1245,8 +1344,10 @@ macro_rules! define_measure_types_aux {
             $(
                 scalar_properties [
                     $(
+                        $(#[$scalar_prop_meta])*
                         $scalar_prop [
                             $(
+                                $(#[$scalar_unit_meta])*
                                 $scalar_unit {
                                     $($scalar_key : $scalar_val),*
                                 }
@@ -1259,8 +1360,10 @@ macro_rules! define_measure_types_aux {
             $(
                 vector_properties [
                     $(
+                        $(#[$vector_prop_meta])*
                         $vector_prop [
                             $(
+                                $(#[$vector_unit_meta])*
                                 $vector_unit {
                                     $($vector_key : $vector_val),*
                                 }
@@ -1273,6 +1376,7 @@ macro_rules! define_measure_types_aux {
             $(
                 angle_measurement_units [
                     $(
+                        $(#[$angle_unit_meta])*
                         $angle_unit {
                             $($angle_key : $angle_val),*
                         }
@@ -1299,8 +1403,10 @@ macro_rules! define_measure_types {
         $(
             scalar_properties [
                 $(
+                    $(#[$scalar_prop_meta:meta])*
                     $scalar_prop:ident [
                         $(
+                            $(#[$scalar_unit_meta:meta])*
                             $scalar_unit:ident {
                                 $($scalar_key:ident : $scalar_val:expr),* $(,)?
                             }
@@ -1313,8 +1419,10 @@ macro_rules! define_measure_types {
         $(
             vector_properties [
                 $(
+                    $(#[$vector_prop_meta:meta])*
                     $vector_prop:ident [
                         $(
+                            $(#[$vector_unit_meta:meta])*
                             $vector_unit:ident {
                                 $($vector_key:ident : $vector_val:expr),* $(,)?
                             }
@@ -1327,6 +1435,7 @@ macro_rules! define_measure_types {
         $(
             angle_measurement_units [
                 $(
+                    $(#[$angle_unit_meta:meta])*
                     $angle_unit:ident {
                         $($angle_key:ident : $angle_val:expr),* $(,)?
                     }
@@ -1358,8 +1467,10 @@ macro_rules! define_measure_types {
             $(
                 scalar_properties [
                     $(
+                        $(#[$scalar_prop_meta])*
                         $scalar_prop [
                             $(
+                                $(#[$scalar_unit_meta])*
                                 $scalar_unit {
                                     $($scalar_key : $scalar_val),*
                                 }
@@ -1372,8 +1483,10 @@ macro_rules! define_measure_types {
             $(
                 vector_properties [
                     $(
+                        $(#[$vector_prop_meta])*
                         $vector_prop [
                             $(
+                                $(#[$vector_unit_meta])*
                                 $vector_unit {
                                     $($vector_key : $vector_val),*
                                 }
@@ -1386,6 +1499,7 @@ macro_rules! define_measure_types {
             $(
                 angle_measurement_units [
                     $(
+                        $(#[$angle_unit_meta])*
                         $angle_unit {
                             $($angle_key : $angle_val),*
                         }
@@ -1407,7 +1521,16 @@ macro_rules! define_measure_types {
 #[macro_export]
 macro_rules! measurement_scalar_property {
     ($name:ident) => {
-        /// A scalar measure property.
+        $crate::measurement_scalar_property! {
+            /// A scalar measure property.
+            $name
+        }
+    };
+    (
+        $(#[$meta:meta])+
+        $name:ident
+    ) => {
+        $(#[$meta])*
         pub struct $name;
         impl $crate::traits::MeasurementProperty for $name {}
         impl $crate::traits::ScalarProperty for $name {}
@@ -1417,7 +1540,16 @@ macro_rules! measurement_scalar_property {
 #[macro_export]
 macro_rules! measurement_vector_property {
     ($name:ident) => {
-        /// A vector measure property.
+        $crate::measurement_vector_property! {
+            /// A vector measure property.
+            $name
+        }
+    };
+    (
+        $(#[$meta:meta])+
+        $name:ident
+    ) => {
+        $(#[$meta])*
         pub struct $name;
         impl $crate::traits::MeasurementProperty for $name {}
         impl $crate::traits::VectorProperty for $name {}
@@ -1444,7 +1576,36 @@ macro_rules! angle_measurement_unit {
         offset: $offset:expr,
         cycle_fraction: $cycle_fraction:expr,
     } => {
-        /// An `Angle` unit of measurement.
+        $crate::angle_measurement_unit! {
+            /// A unit of measurement for [`Angle`].
+            name: $name,
+            suffix: $suffix,
+            offset: $offset,
+            cycle_fraction: $cycle_fraction,
+        }
+    };
+    {
+        $(#[$meta:meta])+
+        name: $name:ident,
+        suffix: $suffix:expr,
+        cycle_fraction: $cycle_fraction:expr,
+    } => {
+        $crate::angle_measurement_unit! {
+            $(#[$meta])*
+            name: $name,
+            suffix: $suffix,
+            offset: 0.,
+            cycle_fraction: $cycle_fraction,
+        }
+    };
+    {
+        $(#[$meta:meta])*
+        name: $name:ident,
+        suffix: $suffix:expr,
+        offset: $offset:expr,
+        cycle_fraction: $cycle_fraction:expr,
+    } => {
+        $(#[$meta])*
         pub struct $name;
         impl measures::traits::MeasurementUnit for $name {
             type Property = $crate::angle::Angle;
@@ -1495,7 +1656,32 @@ macro_rules! measurement_unit_aux {
         with_3d: $with_3d:tt,
         vector: $vector:tt,
     } => {
-        /// A unit of measurement.
+        $crate::measurement_unit_aux! {
+            #[doc = "A unit of measurement for [`"]
+            #[doc = stringify!($property)]
+            #[doc = "`]."]
+            name: $name,
+            property: $property,
+            suffix: $suffix,
+            ratio: $ratio,
+            offset: $offset,
+            with_2d: $with_2d,
+            with_3d: $with_3d,
+            vector: $vector,
+        }
+    };
+    {
+        $(#[$meta:meta])*
+        name: $name:ident,
+        property: $property:ident,
+        suffix: $suffix:expr,
+        ratio: $ratio:expr,
+        offset: $offset:expr,
+        with_2d: $with_2d:tt,
+        with_3d: $with_3d:tt,
+        vector: $vector:tt,
+    } => {
+        $(#[$meta])*
         pub struct $name;
         impl measures::traits::MeasurementUnit for $name {
             type Property = $property;
@@ -1630,6 +1816,7 @@ macro_rules! measurement_unit_aux {
 #[macro_export]
 macro_rules! measurement_unit {
     {
+        $(#[$meta:meta])*
         name: $name:ident,
         property: $property:ident,
         suffix: $suffix:expr,
@@ -1638,6 +1825,7 @@ macro_rules! measurement_unit {
         vector: $vector:tt,
     } => {
         $crate::measurement_unit! {
+            $(#[$meta])*
             name: $name,
             property: $property,
             suffix: $suffix,
@@ -1648,6 +1836,7 @@ macro_rules! measurement_unit {
         }
     };
     {
+        $(#[$meta:meta])*
         name: $name:ident,
         property: $property:ident,
         suffix: $suffix:expr,
@@ -1657,6 +1846,7 @@ macro_rules! measurement_unit {
         vector: true,
     } => {
         $crate::measurement_unit_aux! {
+            $(#[$meta])*
             name: $name,
             property: $property,
             suffix: $suffix,
@@ -1668,6 +1858,7 @@ macro_rules! measurement_unit {
         }
     };
     {
+        $(#[$meta:meta])*
         name: $name:ident,
         property: $property:ident,
         suffix: $suffix:expr,
@@ -1677,6 +1868,7 @@ macro_rules! measurement_unit {
         vector: false,
     } => {
         $crate::measurement_unit_aux! {
+            $(#[$meta])*
             name: $name,
             property: $property,
             suffix: $suffix,
@@ -1688,6 +1880,7 @@ macro_rules! measurement_unit {
         }
     };
     {
+        $(#[$meta:meta])*
         name: $name:ident,
         property: $property:ident,
         suffix: $suffix:expr,
@@ -1698,6 +1891,7 @@ macro_rules! measurement_unit {
         vector: false,
     } => {
         $crate::measurement_unit_aux! {
+            $(#[$meta])*
             name: $name,
             property: $property,
             suffix: $suffix,
