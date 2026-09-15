@@ -1,6 +1,6 @@
 # Tutorial for the library `measures`
 
-This documents explains how to use, in Rust software development projects, the library (or _crate_) `measures`, contained in the package `measures-rs`.
+This document explains how to use, in Rust software development projects, the library (or _crate_) `measures`, contained in the package `measures-rs`.
 The document [Motivation](Motivation.md) explains which are the advantages of using this library, with respect to using other libraries or to using only primitive numbers.
 
 ## Creating a tutorial project
@@ -94,16 +94,16 @@ You can convert the value type of a measure, by using the standard `from` and `i
     _ = Measure::<_, f64>::from(distance64); // From f64 to f64, just a copy
 
     let _: Measure<_, f32> = distance32.into(); // From f32 to f32, just a copy
-    let _: Measure<_, f64> = distance32.into(); // From f32 to f64, numeric conversion with
+    let _: Measure<_, f64> = distance32.into(); // From f32 to f64, numeric conversion with no information loss
     // let _: Measure<_, f32> = distance64.into(); // From f64 to f32, not allowed
     let _: Measure<_, f64> = distance64.into(); // From f64 to f64, just a copy
 ```
 
-The code above demonstrates that you can convert a measure using an `f32` value to a measure using the same unit but an `f64` version.
+The code above demonstrates that you can convert a measure using an `f32` value type to a measure using the same unit but an `f64` value type.
 
 You can also trivially convert a measure to an identical measure, having the same unit, the same numeric type and the same numeric value.
 
-But you cannot use such functions to convert a measure which uses an `f64` value to a measure which uses the same unit but an `f32` version, because such conversion could lose significant digits, or be even impossible.
+But you cannot use such functions to convert a measure which uses an `f64` value type to a measure which uses the same unit but an `f32` value type, because such conversion could lose significant digits, or be even impossible.
 
 To perform numeric conversions of measures even when information could be lost, there is the method `lossy_into`:
 ```rust
@@ -116,7 +116,7 @@ To perform numeric conversions of measures even when information could be lost, 
     _ = distance64.lossy_into::<f64>(); // From f64 to f64, just a copy
 ```
 
-At last, the lossy conversions performed by the functions `from` and `into` shown above are a bit verbose.
+At last, the lossless conversions performed by the functions `from` and `into` shown above are a bit verbose.
 So, there is also the equivalent shorter method `lossless_into`:
 ```rust
     let distance32 = Measure::<Metre, f32>::new(100.);
@@ -326,7 +326,7 @@ Instead, the type `Measure` has the method `norm`, which returns another `Measur
 
 It will print `5 m, 5 m;`.
 
-Other available method are `squared_norm`, which returns the squared value of the measure, as a number, and `normalized`, which returns a `Measure` having norm 1, and the same sign of the original measure:
+Other available methods are `squared_norm`, which returns the squared value of the measure, as a number, and `normalized`, which returns a `Measure` having norm 1, and the same sign of the original measure:
 ```rust
     let m1 = Measure::<Metre>::new(5.);
     let m2 = Measure::<Metre>::new(-5.);
@@ -347,7 +347,7 @@ For some kinds of measures, to add two values of the same type or to multiply a 
 
 This happens because they are absolute measures, not relative measures, like the ones shown in the previous sections.
 
-Mathematically speaking, such absolute measures are *points* of an *affine space*, while the relative measures, like lengths, temperature variations, and time durations are *vectors* of a *vector space*.
+Mathematically speaking, such absolute measures are *points* of an *affine space*, while the relative measures, like lengths, temperature variations, and time intervals are *vectors* of a *vector space*.
 
 To avoid using points instead of vectors or vice versa, the generic type `MeasurePoint` should be used, instead of using the generic type `Measure`, like demonstrated by the following code:
 ```rust
@@ -389,8 +389,8 @@ The simplest way is by calling the function `midpoint`:
     assert_eq!(midpoint(point1, point2).value, 6.);
 ```
 
-The function `midpoint` assumes that the two points have the same weight.
-In case the points have different weight, you can call the function `weighted_midpoint`:
+The function `midpoint` assumes that the two points have the same *weight*.
+In case the points have different weights, you can call the function `weighted_midpoint`:
 ```rust
     let point1 = MeasurePoint::<Celsius>::new(10.);
     let point2 = MeasurePoint::<Celsius>::new(2.);
@@ -445,7 +445,6 @@ This is supported by this library, using the type `UnsignedDirection` or the typ
 When 30 degrees is added to 350 degrees, you get 380 degrees, but because we want to restrict our angles in the range from 0 to 360 degrees, that value becomes 20 degrees.
 
 The name `UnsignedDirection` contains the word `Direction`, because it is meant to represent directions in the plane, not positions of a screw.
-
 And it contains the word `Unsigned` because its values are constrained to be non-negative numbers.
 
 Another common convention to represent directions is to use the range from -180 to +180 degrees.
