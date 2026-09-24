@@ -15,9 +15,19 @@ the value of a measure or measure point can be printed in scientific
 notation, with either `e` or `E` as a separator between mantissa and
 exponent.
 
-Added `From` trait implementations that allow a `Measure2d` (resp. `Measure3d`) to be directly obtained from a `[Measure; 2]` (resp. `[Measure; 3]`), and similarly for `MeasurePoint2d` and `MeasurePoint3d` as well.
+Added `From` trait implementations that allow a `Measure2d` (resp. `Measure3d`)
+to be directly obtained from a `[Measure; 2]` (resp. `[Measure; 3]`), and
+similarly for `MeasurePoint2d` and `MeasurePoint3d` as well.
 
 Added a `total_cmp` method to `Measure<Unit, Number>` and
 `MeasurePoint<Unit, Number>`, when `Number` is either `f32` or `f64`. This
 allows a slice of measures (or measure points) to be sorted with `sort_by`,
 using the `total_cmp` method as the comparison function.
+
+### Changed
+
+Made it possible for the end user to customize the documentation attribute of
+each measurement property and unit. For (scalar and vector) properties, the
+previously hard-coded documentation is preserved as the default. For units,
+a new default, including a hyperlink to the underlying property, is provided.
+Modified the tutorial to illustrate how to provide custom documentation.
